@@ -1,0 +1,189 @@
+{
+  "contact_messages": [],
+  "services": [
+    {
+      "id": 1,
+      "title": "Sistema de Automatización & Bot Básico",
+      "description": "Asistente web inteligente conectado a tus datos y servicios.",
+      "price_usd": 350,
+      "time_days": "3 días",
+      "icon": "fa-robot",
+      "selected": 1,
+      "created_at": "2026-07-31 22:50:52"
+    },
+    {
+      "id": 2,
+      "title": "Flujo de Automatización n8n / Make",
+      "description": "Conexión de CRM, Email, Bases de datos y procesos en segundo plano.",
+      "price_usd": 450,
+      "time_days": "4 días",
+      "icon": "fa-network-wired",
+      "selected": 0,
+      "created_at": "2026-07-31 22:50:52"
+    },
+    {
+      "id": 3,
+      "title": "Desarrollo Web App Completo",
+      "description": "Aplicación Frontend + Backend responsiva con diseño Cyberpunk/Glassmorphism.",
+      "price_usd": 600,
+      "time_days": "5 días",
+      "icon": "fa-laptop-code",
+      "selected": 0,
+      "created_at": "2026-07-31 22:50:52"
+    },
+    {
+      "id": 4,
+      "title": "Optimización & Evaluación de Código Automatizado",
+      "description": "Auditoría de seguridad, refactorización y pruebas unitarias de código existente.",
+      "price_usd": 250,
+      "time_days": "2 días",
+      "icon": "fa-shield-halved",
+      "selected": 0,
+      "created_at": "2026-07-31 22:50:52"
+    }
+  ],
+  "skills": [],
+  "blocked_words": [
+    {
+      "id": 1,
+      "word": "delincuente"
+    },
+    {
+      "id": 2,
+      "word": "delincuencia"
+    },
+    {
+      "id": 3,
+      "word": "robo"
+    },
+    {
+      "id": 4,
+      "word": "ladron"
+    },
+    {
+      "id": 5,
+      "word": "ladrón"
+    },
+    {
+      "id": 6,
+      "word": "narcotrafico"
+    },
+    {
+      "id": 7,
+      "word": "narcotráfico"
+    },
+    {
+      "id": 8,
+      "word": "droga"
+    },
+    {
+      "id": 9,
+      "word": "drogas"
+    },
+    {
+      "id": 10,
+      "word": "arma"
+    },
+    {
+      "id": 11,
+      "word": "armas"
+    },
+    {
+      "id": 12,
+      "word": "sicario"
+    },
+    {
+      "id": 13,
+      "word": "estafador"
+    },
+    {
+      "id": 14,
+      "word": "estafa"
+    },
+    {
+      "id": 15,
+      "word": "hack"
+    },
+    {
+      "id": 16,
+      "word": "hacker"
+    },
+    {
+      "id": 17,
+      "word": "ilegal"
+    },
+    {
+      "id": 18,
+      "word": "ilícito"
+    },
+    {
+      "id": 19,
+      "word": "ilicito"
+    },
+    {
+      "id": 20,
+      "word": "matar"
+    },
+    {
+      "id": 21,
+      "word": "asesinato"
+    },
+    {
+      "id": 22,
+      "word": "prostitucion"
+    },
+    {
+      "id": 23,
+      "word": "prostitución"
+    },
+    {
+      "id": 24,
+      "word": "puta"
+    },
+    {
+      "id": 25,
+      "word": "mierda"
+    },
+    {
+      "id": 26,
+      "word": "basura"
+    },
+    {
+      "id": 27,
+      "word": "asdf"
+    },
+    {
+      "id": 28,
+      "word": "qwerty"
+    },
+    {
+      "id": 29,
+      "word": "1234"
+    },
+    {
+      "id": 30,
+      "word": "test"
+    },
+    {
+      "id": 31,
+      "word": "xxx"
+    },
+    {
+      "id": 32,
+      "word": "porno"
+    },
+    {
+      "id": 33,
+      "word": "sexo"
+    }
+  ],
+  "system_config": [
+    {
+      "config_key": "status_pill",
+      "config_value": "{\"text\": \"Disponible para Proyectos\", \"theme\": \"emerald\", \"visible\": true}",
+      "updated_at": "2026-07-31 22:50:52"
+    }
+  ],
+  "meeting_rooms": [],
+  "signature_audit_logs": []
+}

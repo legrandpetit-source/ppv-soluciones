@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PPV Soluciones | Panel de Administración</title>
+  
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    /* Estilos específicos para la consola de administración en /admin */
+    body {
+      background-color: #07090e;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .admin-navbar {
+      background: rgba(13, 17, 26, 0.95);
+      border-bottom: 1px solid var(--border-glow);
+      padding: 0.8rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-dashboard-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      flex-grow: 1;
+      min-height: calc(100vh - 65px);
+    }
+
+    .admin-sidebar {
+      background: rgba(10, 13, 20, 0.9);
+      border-right: 1px solid var(--border-glass);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .sidebar-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: var(--font-heading);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: var(--transition);
+      width: 100%;
+    }
+
+    .sidebar-btn:hover, .sidebar-btn.active {
+      background: rgba(0, 243, 255, 0.1);
+      border-color: rgba(0, 243, 255, 0.3);
+      color: var(--neon-cyan);
+    }
+
+    .admin-main-content {
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .stat-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .admin-stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .admin-stat-val {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--neon-cyan);
+    }
+
+    .admin-panel-view {
+      display: none;
+    }
+
+    .admin-panel-view.active {
+      display: block;
+    }
+
+    /* Screen Overlay de Login si no hay sesión */
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(5, 7, 12, 0.95);
+      backdrop-filter: blur(12px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 992px) {
+      .admin-dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+      .admin-sidebar {
+        flex-direction: row;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-glass);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Login (se oculta tras autenticación exitosa) -->
+  <div class="login-overlay" id="admin-login-screen">
+    <div class="login-box">
+      <div class="login-header">
+        <i class="fa-solid fa-shield-halved text-cyan"></i>
+        <h3 style="font-size: 1.5rem; color: #fff;">Consola de Administración</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Ingresa tus credenciales para acceder a /admin</p>
+      </div>
+
+      <div class="login-error-alert" id="admin-login-error">
+        <i class="fa-solid fa-triangle-exclamation"></i> <span>Credenciales incorrectas.</span>
+      </div>
+
+      <form id="form-admin-portal-login">
+        <div class="form-group">
+          <label for="portal-email">Correo Administrativo</label>
+          <input type="email" id="portal-email" class="form-control" placeholder="admin@legrandpetit.cl" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="portal-password">Contraseña</label>
+          <div class="pass-wrapper">
+            <input type="password" id="portal-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" class="btn-toggle-pass" id="btn-toggle-portal-pass" title="Mostrar/ocultar contraseña">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.8rem;">
+          <i class="fa-solid fa-key"></i> Acceder a /admin
+        </button>
+      </form>
+
+      <div style="margin-top: 1.2rem; background: rgba(0, 243, 255, 0.05); border: 1px solid rgba(0, 243, 255, 0.2); padding: 0.8rem; border-radius: 8px; font-size: 0.75rem; color: var(--text-muted); text-align: center;">
+        <strong style="color: var(--neon-cyan);">Credenciales de Acceso:</strong><br>
+        Usuario: <code style="color: #fff;">admin@legrandpetit.cl</code><br>
+        Clave: <code style="color: var(--neon-emerald);">LegrandAdmin2026!</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header Superior de la Consola Admin -->
+  <nav class="admin-navbar">
+    <a href="../" class="logo">
+      <span class="text-cyan">PPV</span>
+      <span style="font-size: 0.95rem; color: var(--text-muted); font-weight: 600;">Soluciones</span>
+      <span class="logo-badge" style="background: var(--neon-violet); color: #fff;">ADMIN PORTAL</span>
+    </a>
+
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <a href="../" target="_blank" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Sitio Web Público
+      </a>
+      <span style="font-size: 0.85rem; color: var(--text-muted);">
+        <i class="fa-solid fa-user-gear text-cyan"></i> <span id="admin-user-display">admin@legrandpetit.cl</span>
+      </span>
+      <button class="btn btn-outline" id="btn-portal-logout" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; border-color: var(--neon-pink); color: var(--neon-pink);">
+        <i class="fa-solid fa-right-from-bracket"></i> Salir
+      </button>
+    </div>
+  </nav>
+
+  <!-- Layout del Dashboard -->
+  <div class="admin-dashboard-layout">
+    <!-- Sidebar de Navegación del Mantenedor -->
+    <aside class="admin-sidebar">
+      <button class="sidebar-btn active" data-view="view-messages">
+        <i class="fa-solid fa-envelope text-cyan"></i> Mensajes Recibidos
+      </button>
+      <button class="sidebar-btn" data-view="view-status-pill">
+        <i class="fa-solid fa-circle-dot text-emerald"></i> Estado & Disponibilidad
+      </button>
+      <button class="sidebar-btn" data-view="view-services">
+        <i class="fa-solid fa-tags text-violet"></i> Servicios & Precios
+      </button>
+      <button class="sidebar-btn" data-view="view-skills">
+        <i class="fa-solid fa-list-check text-emerald"></i> Habilidades Técnicas
+      </button>
+      <button class="sidebar-btn" data-view="view-blocked">
+        <i class="fa-solid fa-ban text-pink"></i> Rubros Bloqueados
+      </button>
+      <button class="sidebar-btn" data-view="view-meetings">
+        <i class="fa-solid fa-video text-amber"></i> Salas & Links de Invitación
+      </button>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="admin-main-content">
+      <!-- Tarjetas de Estadísticas Rápida -->
+      <div class="stat-card-grid">
+        <div class="admin-stat-card">
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Mensajes de Contacto</div>
+            <div class="admin-stat-val" id="stat-count-messages">0</div>
+          </div>
+          <i class="fa-solid fa-envelope text-cyan" style="font-size: 1.8rem; opacity: 0.5;"></i>
+        </div>
+
+        <div class="admin-stat-card">
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Servicios en Calculadora</div>
+            <div class="admin-stat-val" id="stat-count-services" style="color: var(--neon-violet);">0</div>
+          </div>
+          <i class="fa-solid fa-calculator text-violet" style="font-size: 1.8rem; opacity: 0.5;"></i>
+        </div>
+
+        <div class="admin-stat-card">
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Habilidades Registradas</div>
+            <div class="admin-stat-val" id="stat-count-skills" style="color: var(--neon-emerald);">0</div>
+          </div>
+          <i class="fa-solid fa-list-check text-emerald" style="font-size: 1.8rem; opacity: 0.5;"></i>
+        </div>
+
+        <div class="admin-stat-card">
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Términos Bloqueados</div>
+            <div class="admin-stat-val" id="stat-count-blocked" style="color: var(--neon-pink);">0</div>
+          </div>
+          <i class="fa-solid fa-ban text-pink" style="font-size: 1.8rem; opacity: 0.5;"></i>
+        </div>
+      </div>
+
+      <!-- Vista 1.5: Configuración de Estado & Disponibilidad (Pill) -->
+      <div class="admin-panel-view" id="view-status-pill">
+        <h3 style="color: var(--neon-emerald); font-size: 1.2rem; margin-bottom: 1rem;">
+          <i class="fa-solid fa-circle-dot"></i> Configuración de Estado & Disponibilidad en Cabecera
+        </h3>
+
+        <!-- Card de Vista Previa en Vivo -->
+        <div class="glass-card" style="margin-bottom: 1.5rem; background: rgba(13, 17, 26, 0.9); border-color: rgba(0, 255, 136, 0.3);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong style="color: var(--text-main); font-size: 0.95rem; display: block;">Vista Previa en Tiempo Real en la Web:</strong>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Así es como lo verán los visitantes en el menú principal del sitio público:</span>
+            </div>
+            <!-- Pill Dinámico -->
+            <div id="preview-status-pill" class="status-pill">
+              <span class="pulse-dot"></span>
+              <span id="preview-status-text">Disponible para Proyectos</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="maintainer-form-box">
+          <h4 style="color: var(--neon-cyan); font-size: 0.95rem; margin-bottom: 1rem;">
+            <i class="fa-solid fa-sliders"></i> Personalizar Texto, Tema & Visibilidad
+          </h4>
+
+          <!-- Presets Rápidos -->
+          <div style="margin-bottom: 1.2rem;">
+            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Plantillas de Estado Rápidas:</label>
+            <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+              <button type="button" class="btn btn-outline status-preset-btn" data-text="Disponible para Proyectos" data-theme="emerald" style="font-size: 0.78rem; padding: 4px 10px; border-color: rgba(0, 255, 136, 0.4); color: var(--neon-emerald);">
+                🟢 Disponible para Proyectos
+              </button>
+              <button type="button" class="btn btn-outline status-preset-btn" data-text="¡Pocos Cupos Disponibles!" data-theme="amber" style="font-size: 0.78rem; padding: 4px 10px; border-color: rgba(255, 183, 3, 0.4); color: var(--neon-amber);">
+                🟡 ¡Pocos Cupos Disponibles!
+              </button>
+              <button type="button" class="btn btn-outline status-preset-btn" data-text="Agenda Llena / No Disponible" data-theme="pink" style="font-size: 0.78rem; padding: 4px 10px; border-color: rgba(255, 0, 127, 0.4); color: var(--neon-pink);">
+                🔴 Agenda Llena / No Disponible
+              </button>
+              <button type="button" class="btn btn-outline status-preset-btn" data-text="Atendiendo Prototipos 24/7" data-theme="cyan" style="font-size: 0.78rem; padding: 4px 10px; border-color: rgba(0, 243, 255, 0.4); color: var(--neon-cyan);">
+                🔵 Atendiendo Prototipos 24/7
+              </button>
+            </div>
+          </div>
+
+          <form id="form-status-pill-config">
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+              <div>
+                <label style="font-size: 0.78rem; color: var(--text-muted);">Texto Personalizado del Estado</label>
+                <input type="text" id="cfg-status-text" class="form-control" placeholder="Ej. Pocos cupos para Agosto" required style="padding: 0.5rem;">
+              </div>
+              <div>
+                <label style="font-size: 0.78rem; color: var(--text-muted);">Color / Tema Neón</label>
+                <select id="cfg-status-theme" class="form-control" style="padding: 0.5rem; font-size: 0.85rem;">
+                  <option value="emerald">🟢 Verde (Disponible)</option>
+                  <option value="amber">🟡 Ámbar (Pocos Cupos)</option>
+                  <option value="pink">🔴 Rojo (No Disponible)</option>
+                  <option value="cyan">🔵 Azul (En Proceso)</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 0.78rem; color: var(--text-muted);">Visibilidad en Cabecera</label>
+                <select id="cfg-status-visible" class="form-control" style="padding: 0.5rem; font-size: 0.85rem;">
+                  <option value="true">👁️ Mostrar Insignia</option>
+                  <option value="false">🙈 Ocultar en Cabecera</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end;">
+              <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1.4rem;">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar & Aplicar en la Web
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="admin-panel-view active" id="view-messages">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 style="color: var(--neon-cyan); font-size: 1.2rem;">
+            <i class="fa-solid fa-envelope"></i> Mantenedor de Mensajes de Contacto
+          </h3>
+          <button class="btn btn-outline" id="btn-portal-export-json" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+            <i class="fa-solid fa-download"></i> Exportar Mensajes (JSON)
+          </button>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="msg-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Presupuesto</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="portal-messages-tbody">
+              <!-- Carga dinámica -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Vista 2: Servicios & Precios -->
+      <div class="admin-panel-view" id="view-services">
+        <h3 style="color: var(--neon-violet); font-size: 1.2rem; margin-bottom: 1rem;">
+          <i class="fa-solid fa-tags"></i> Mantenedor de Servicios & Precios (Calculadora)
+        </h3>
+
+        <div class="maintainer-form-box">
+          <h4 style="color: var(--neon-violet); font-size: 0.95rem; margin-bottom: 0.8rem;" id="p-service-form-title">
+            <i class="fa-solid fa-plus"></i> Agregar / Editar Servicio
+          </h4>
+          <form id="form-portal-service">
+            <input type="hidden" id="p-service-id">
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Nombre del Servicio</label>
+                <input type="text" id="p-service-title" class="form-control" placeholder="Ej. Chatbot IA Avanzado" required style="padding: 0.5rem;">
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Precio ($ USD)</label>
+                <input type="number" id="p-service-price" class="form-control" placeholder="350" required style="padding: 0.5rem;">
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Tiempo Estimado</label>
+                <input type="text" id="p-service-time" class="form-control" placeholder="3 días" required style="padding: 0.5rem;">
+              </div>
+            </div>
+            <div style="margin-bottom: 0.8rem;">
+              <label style="font-size: 0.75rem; color: var(--text-muted);">Descripción Corta</label>
+              <input type="text" id="p-service-desc" class="form-control" placeholder="Detalle del servicio que ve el cliente..." required style="padding: 0.5rem;">
+            </div>
+            <div style="display: flex; gap: 0.8rem; justify-content: flex-end;">
+              <button type="button" class="btn btn-outline" id="btn-p-cancel-service" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Cancelar</button>
+              <button type="submit" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.8rem;">Guardar Servicio</button>
+            </div>
+          </form>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="msg-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Servicio</th>
+                <th>Precio (USD)</th>
+                <th>Tiempo</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="portal-services-tbody">
+              <!-- Carga dinámica -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Vista 3: Habilidades Técnicas -->
+      <div class="admin-panel-view" id="view-skills">
+        <h3 style="color: var(--neon-emerald); font-size: 1.2rem; margin-bottom: 1rem;">
+          <i class="fa-solid fa-list-check"></i> Mantenedor de Habilidades Técnicas
+        </h3>
+
+        <div class="maintainer-form-box">
+          <h4 style="color: var(--neon-emerald); font-size: 0.95rem; margin-bottom: 0.8rem;" id="p-skill-form-title">
+            <i class="fa-solid fa-plus"></i> Agregar / Editar Habilidad Técnica
+          </h4>
+          <form id="form-portal-skill">
+            <input type="hidden" id="p-skill-id">
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Habilidad / Tecnología</label>
+                <input type="text" id="p-skill-name" class="form-control" placeholder="Ej. Python & FastAPI" required style="padding: 0.5rem;">
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Categoría</label>
+                <select id="p-skill-category" class="form-control" style="padding: 0.5rem; font-size: 0.8rem;">
+                  <option value="ai">IA & LLMs</option>
+                  <option value="web">Full-Stack Web</option>
+                  <option value="auto">Automatizaciones</option>
+                  <option value="db">Bases de Datos</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">% Nivel</label>
+                <input type="text" id="p-skill-level" class="form-control" placeholder="90%" required style="padding: 0.5rem;">
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Etiqueta</label>
+                <input type="text" id="p-skill-text" class="form-control" placeholder="Avanzado" required style="padding: 0.5rem;">
+              </div>
+            </div>
+            <div style="margin-bottom: 0.8rem;">
+              <label style="font-size: 0.75rem; color: var(--text-muted);">Descripción</label>
+              <input type="text" id="p-skill-desc" class="form-control" placeholder="Breve detalle..." required style="padding: 0.5rem;">
+            </div>
+            <div style="display: flex; gap: 0.8rem; justify-content: flex-end;">
+              <button type="button" class="btn btn-outline" id="btn-p-cancel-skill" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Cancelar</button>
+              <button type="submit" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.8rem;">Guardar Habilidad</button>
+            </div>
+          </form>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="msg-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Nivel</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="portal-skills-tbody">
+              <!-- Carga dinámica -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Vista 4: Palabras Bloqueadas -->
+      <div class="admin-panel-view" id="view-blocked">
+        <h3 style="color: var(--neon-pink); font-size: 1.2rem; margin-bottom: 1rem;">
+          <i class="fa-solid fa-ban"></i> Mantenedor de Actividades / Palabras Bloqueadas
+        </h3>
+
+        <div class="maintainer-form-box">
+          <h4 style="color: var(--neon-pink); font-size: 0.95rem; margin-bottom: 0.8rem;">
+            <i class="fa-solid fa-plus"></i> Bloquear Nueva Actividad / Palabra Prohibida
+          </h4>
+          <form id="form-portal-blocked">
+            <div style="display: flex; gap: 0.8rem;">
+              <input type="text" id="p-blocked-word" class="form-control" placeholder="Ej. asesinato, prostitucion, robo, estafa..." required style="padding: 0.5rem; flex-grow: 1;">
+              <button type="submit" class="btn btn-primary" style="padding: 0.4rem 1.2rem; font-size: 0.8rem; background: linear-gradient(135deg, var(--neon-pink), #e11d48); color: #fff;">
+                <i class="fa-solid fa-ban"></i> Agregar a Lista Negra
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="msg-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Término Bloqueado</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+      <!-- Vista 5: Salas de Reunión & Links Directos de Invitación -->
+      <div class="admin-panel-view" id="view-meetings">
+        <h3 style="color: var(--neon-amber); font-size: 1.2rem; margin-bottom: 1rem;">
+          <i class="fa-solid fa-video"></i> Gestión de Salas Virtuales & Links Directos de Invitación
+        </h3>
+
+        <!-- Card de Autorización de Host -->
+        <div class="glass-card" style="margin-bottom: 1.5rem; background: rgba(13, 17, 26, 0.9); border-color: rgba(255, 183, 3, 0.3);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <strong style="color: #fff; font-size: 0.95rem; display: block;">Anfitrión Autoritativo (Host Principal):</strong>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Solo este usuario o los autorizados en la consola pueden crear e iniciar salas de videollamadas.</span>
+            </div>
+            <span class="status-pill" style="font-size: 0.8rem; background: rgba(0, 243, 255, 0.1); border-color: rgba(0, 243, 255, 0.4); color: var(--neon-cyan);">
+              <i class="fa-solid fa-crown text-amber"></i> Host Activo: Patricio Padilla (patricio@ppvsoluciones.cl)
+            </span>
+          </div>
+        </div>
+
+        <!-- Generador de Links Directos de Invitación para Clientes -->
+        <div class="maintainer-form-box">
+          <h4 style="color: var(--neon-cyan); font-size: 0.95rem; margin-bottom: 1rem;">
+            <i class="fa-solid fa-link"></i> Generar Enlace de Invitación Directo con Clave Incorporada
+          </h4>
+
+          <form id="form-admin-generate-meeting">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+              <div>
+                <label style="font-size: 0.78rem; color: var(--text-muted);">ID / Nombre de la Sala</label>
+                <input type="text" id="adm-room-name" class="form-control" placeholder="PPV-MEET-8942" value="PPV-MEET-8942" required style="padding: 0.5rem;">
+              </div>
+              <div>
+                <label style="font-size: 0.78rem; color: var(--text-muted);">Clave de Acceso Aleatoria Segura</label>
+                <div class="pass-wrapper">
+                  <input type="text" id="adm-room-key" class="form-control" placeholder="MEET-8942-X7K" required style="padding: 0.5rem; font-family: var(--font-code); color: var(--neon-emerald);">
+                  <button type="button" class="btn btn-outline" id="btn-adm-gen-key" style="font-size: 0.72rem; padding: 2px 8px; color: var(--neon-cyan);">
+                    <i class="fa-solid fa-dice"></i> Generar Clave
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1.4rem;">
+              <i class="fa-solid fa-link"></i> Crear Enlace Directo de Invitación
+            </button>
+          </form>
+
+          <!-- Resultado del Enlace Generado -->
+          <div id="adm-generated-link-box" style="display: none; margin-top: 1.2rem; background: rgba(0, 255, 136, 0.05); border: 1px solid var(--neon-emerald); padding: 1rem; border-radius: 8px;">
+            <label style="font-size: 0.8rem; color: var(--neon-emerald); font-weight: 700; display: block; margin-bottom: 4px;">
+              <i class="fa-solid fa-circle-check"></i> ¡Enlace Directo de Invitación Generado con Éxito!
+            </label>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.6rem;">
+              Copia y envía este enlace a tu cliente. Al abrirlo en su navegador, validará la clave automáticamente y le pedirá su Nombre y Correo para unirse.
+            </p>
+            <div class="pass-wrapper">
+              <input type="text" id="adm-direct-invite-url" class="form-control" readonly style="font-family: var(--font-code); color: var(--neon-cyan); font-size: 0.85rem;" value="http://localhost:3000/#join-room?room=PPV-MEET-8942&key=MEET-8942-X7K">
+              <button type="button" class="btn btn-primary" id="btn-copy-direct-invite-url" style="padding: 4px 12px; font-size: 0.78rem;">
+                <i class="fa-solid fa-copy"></i> Copiar Enlace
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="global-toast">
+    <i class="fa-solid fa-circle-check text-emerald" style="font-size: 1.1rem;"></i>
+    <span id="toast-message">Notificación</span>
+  </div>
+
+  <!-- Scripts compartidos -->
+  <script src="../db.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
