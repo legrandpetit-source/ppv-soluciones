@@ -47,34 +47,85 @@
 
         <!-- Botón Menú Móvil (Hamburguesa) -->
         <button type="button" class="mobile-menu-toggle" id="btn-mobile-toggle" aria-label="Abrir Menú de Navegación">
-          <i class="fa-solid fa-bars"></i>
+          <i class="fa-solid fa-bars"></i> Menú
         </button>
       </div>
-    </div>
-
-    <!-- Menú Desplegable Móvil (Drawer Responsive) -->
-    <div class="mobile-nav-drawer" id="mobile-nav-drawer">
-      <div class="mobile-drawer-header">
-        <a href="#" class="logo">
-          <span class="text-cyan">PPV</span> <span style="font-size: 0.9rem; color: #fff;">Soluciones</span>
-        </a>
-        <button type="button" class="mobile-drawer-close" id="btn-mobile-close" aria-label="Cerrar Menú">
-          &times;
-        </button>
-      </div>
-
-      <ul class="mobile-nav-list">
-        <li><a href="#soluciones-rubro" class="mobile-nav-item"><i class="fa-solid fa-briefcase text-cyan"></i> Soluciones por Rubro</a></li>
-        <li><a href="#posicionamiento-web" class="mobile-nav-item"><i class="fa-solid fa-chart-line text-emerald"></i> Posicionamiento Web</a></li>
-        <li><a href="#sobre-mi" class="mobile-nav-item"><i class="fa-solid fa-user-gear text-violet"></i> Expertise</a></li>
-        <li><a href="#habilidades" class="mobile-nav-item"><i class="fa-solid fa-list-check text-cyan"></i> Matriz Técnica</a></li>
-        <li><a href="#demos-auto" class="mobile-nav-item"><i class="fa-solid fa-robot text-emerald"></i> Demos de Automatización</a></li>
-        <li><a href="#servicios" class="mobile-nav-item"><i class="fa-solid fa-calculator text-violet"></i> Calculadora de Cotización</a></li>
-        <li><a href="#kit-freelance" class="mobile-nav-item"><i class="fa-solid fa-folder-open text-cyan"></i> Kit Freelance</a></li>
-        <li><a href="#contacto" class="mobile-nav-item"><i class="fa-solid fa-envelope text-emerald"></i> Contacto Directo</a></li>
-      </ul>
     </div>
   </header>
+
+  <!-- Menú Desplegable Móvil Overlay (Full Screen Cyberpunk Drawer) -->
+  <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+    <div class="mobile-drawer-header">
+      <a href="#" class="logo" style="margin: 0;">
+        <span class="text-cyan" style="font-size: 1.3rem;">PPV</span>
+        <span style="font-size: 1.05rem; color: #fff; font-weight: 700;">Soluciones</span>
+      </a>
+      <button type="button" class="mobile-drawer-close" id="btn-mobile-close" aria-label="Cerrar Menú">
+        <i class="fa-solid fa-xmark"></i> Cerrar
+      </button>
+    </div>
+
+    <div class="mobile-drawer-body">
+      <ul class="mobile-nav-list">
+        <li>
+          <a href="#soluciones-rubro" class="mobile-nav-item">
+            <div class="nav-icon-box cyan"><i class="fa-solid fa-briefcase"></i></div>
+            <span>Soluciones por Rubro</span>
+            <i class="fa-solid fa-chevron-right arrow-icon"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#posicionamiento-web" class="mobile-nav-item">
+            <div class="nav-icon-box emerald"><i class="fa-solid fa-chart-line"></i></div>
+            <span>Posicionamiento Web & SEO</span>
+            <i class="fa-solid fa-chevron-right arrow-icon"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#sobre-mi" class="mobile-nav-item">
+            <div class="nav-icon-box violet"><i class="fa-solid fa-user-gear"></i></div>
+            <span>Expertise & Perfil</span>
+            <i class="fa-solid fa-chevron-right arrow-icon"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#habilidades" class="mobile-nav-item">
+            <div class="nav-icon-box cyan"><i class="fa-solid fa-list-check"></i></div>
+            <span>Matriz de Habilidades</span>
+            <i class="fa-solid fa-chevron-right arrow-icon"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#demos-auto" class="mobile-nav-item">
+            <div class="nav-icon-box emerald"><i class="fa-solid fa-robot"></i></div>
+            <span>Demos de Automatización</span>
+            <i class="fa-solid fa-chevron-right arrow-icon"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#servicios" class="mobile-nav-item">
+            <div class="nav-icon-box violet"><i class="fa-solid fa-calculator"></i></div>
+            <span>Calculadora de Cotización</span>
+            <i class="fa-solid fa-chevron-right arrow-icon"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#kit-freelance" class="mobile-nav-item">
+            <div class="nav-icon-box cyan"><i class="fa-solid fa-folder-open"></i></div>
+            <span>Kit Freelance</span>
+            <i class="fa-solid fa-chevron-right arrow-icon"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#contacto" class="mobile-nav-item active-cta">
+            <div class="nav-icon-box emerald"><i class="fa-solid fa-paper-plane"></i></div>
+            <span>Contactar Directamente</span>
+            <i class="fa-solid fa-chevron-right arrow-icon"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 
   <!-- Hero Section -->
   <section class="hero" id="hero">
