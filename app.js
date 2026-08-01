@@ -37,13 +37,18 @@ function initMobileMenuNav() {
 
   if (!btnToggle || !drawer) return;
 
+  // Asegurar que el drawer esté oculto al cargar
+  drawer.style.display = 'none';
+
   function openDrawer() {
+    drawer.style.display = 'flex';
     drawer.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
 
   function closeDrawer() {
     drawer.classList.remove('active');
+    drawer.style.display = 'none';
     document.body.style.overflow = '';
   }
 
