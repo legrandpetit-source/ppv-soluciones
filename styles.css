@@ -1823,10 +1823,115 @@ textarea.form-control {
   .calc-grid, .contact-grid, .code-eval-grid { grid-template-columns: 1fr; gap: 1.2rem; }
 }
 
+/* Botón Hamburguesa & Menú Móvil Desplegable (Mobile Drawer) */
+.mobile-menu-toggle {
+  display: none;
+  background: rgba(0, 243, 255, 0.1);
+  border: 1px solid var(--border-glow);
+  color: var(--neon-cyan);
+  font-size: 1.2rem;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.mobile-menu-toggle:hover {
+  background: rgba(0, 243, 255, 0.2);
+  box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
+}
+
+.mobile-nav-drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 280px;
+  height: 100vh;
+  background: rgba(7, 9, 14, 0.98);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-left: 1px solid var(--border-glow);
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.8);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  padding: 1.2rem;
+  transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-nav-drawer.active {
+  right: 0;
+}
+
+.mobile-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
+}
+
+.mobile-drawer-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.8rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: var(--transition);
+}
+
+.mobile-drawer-close:hover {
+  color: var(--neon-pink);
+}
+
+.mobile-nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+}
+
+.mobile-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+
+.mobile-nav-item:hover {
+  background: rgba(0, 243, 255, 0.1);
+  border-color: rgba(0, 243, 255, 0.3);
+  color: var(--neon-cyan);
+  transform: translateX(4px);
+}
+
+/* Responsiveness & Mobile Adjustments */
 @media (max-width: 992px) {
   .nav-links { display: none; }
+  .mobile-menu-toggle { display: inline-flex; align-items: center; justify-content: center; }
   .hero h1 { font-size: 2.2rem; }
   .section-header h2 { font-size: 1.6rem; }
   .industry-search-box { flex-direction: column; }
 }
+
+@media (max-width: 576px) {
+  .status-pill span:not(.pulse-dot) { font-size: 0.72rem; }
+  .status-pill { padding: 3px 8px; }
+  .hero-tag { font-size: 0.75rem; }
+  .hero h1 { font-size: 1.85rem; }
+  .logo { font-size: 1rem; margin-right: 0.5rem; }
+  .logo-badge { display: none; }
+}
+
 

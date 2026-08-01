@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await window.portfolioDB.init();
   }
 
+  initMobileMenuNav();
   await loadDynamicStatusPill();
   await loadSkillsMatrix();
   await loadServicesCalculator();
@@ -24,6 +25,51 @@ document.addEventListener('DOMContentLoaded', async () => {
   initMaintainerBlockedCRUD();
   initCopyButtons();
 });
+
+/* --------------------------------------------------------------------------
+   0. MENÚ MÓVIL RESPONSIVE (MOBILE DRAWER)
+   -------------------------------------------------------------------------- */
+function initMobileMenuNav() {
+  const btnToggle = document.getElementById('btn-mobile-toggle');
+  const btnClose = document.getElementById('btn-mobile-close');
+  const drawer = document.getElementById('mobile-nav-drawer');
+  const navItems = document.querySelectorAll('.mobile-nav-item');
+
+  if (!btnToggle || !drawer) return;
+
+  function openDrawer() {
+    drawer.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  btnToggle.onclick = (e) => {
+    e.stopPropagation();
+    if (drawer.classList.contains('active')) {
+      closeDrawer();
+    } else {
+      openDrawer();
+    }
+  };
+
+  if (btnClose) btnClose.onclick = () => closeDrawer();
+
+  navItems.forEach(item => {
+    item.onclick = () => {
+      closeDrawer();
+    };
+  });
+
+  document.addEventListener('click', (e) => {
+    if (drawer.classList.contains('active') && !drawer.contains(e.target) && e.target !== btnToggle) {
+      closeDrawer();
+    }
+  });
+}
 
 /* --------------------------------------------------------------------------
    0.5. Cargar Estado Dinámico de la Insignia (Status Pill)

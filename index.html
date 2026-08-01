@@ -27,6 +27,7 @@
         <span class="logo-badge">AUTOMATIZACIÓN</span>
       </a>
       
+      <!-- Menú Desktop -->
       <ul class="nav-links">
         <li><a href="#soluciones-rubro">Soluciones por Rubro</a></li>
         <li><a href="#posicionamiento-web">Posicionamiento Web</a></li>
@@ -43,7 +44,38 @@
           <span class="pulse-dot"></span>
           <span>Disponible para Proyectos</span>
         </div>
+
+        <!-- Botón Menú Móvil (Hamburguesa) -->
+        <button type="button" class="mobile-menu-toggle" id="btn-mobile-toggle" aria-label="Abrir Menú de Navegación">
+          <i class="fa-solid fa-bars"></i>
+        </button>
       </div>
+    </div>
+
+    <!-- Menú Desplegable Móvil (Drawer Responsive) -->
+    <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+      <div class="mobile-drawer-header">
+        <a href="#" class="logo">
+          <span class="text-cyan">PPV</span> <span style="font-size: 0.9rem; color: #fff;">Soluciones</span>
+        </a>
+        <button type="button" class="mobile-drawer-close" id="btn-mobile-close" aria-label="Cerrar Menú">
+          &times;
+        </button>
+      </div>
+
+      <ul class="mobile-nav-list">
+        <li><a href="#soluciones-rubro" class="mobile-nav-item"><i class="fa-solid fa-briefcase text-cyan"></i> Soluciones por Rubro</a></li>
+        <li><a href="#posicionamiento-web" class="mobile-nav-item"><i class="fa-solid fa-chart-line text-emerald"></i> Posicionamiento Web</a></li>
+        <li><a href="#sobre-mi" class="mobile-nav-item"><i class="fa-solid fa-user-gear text-violet"></i> Expertise</a></li>
+        <li><a href="#habilidades" class="mobile-nav-item"><i class="fa-solid fa-list-check text-cyan"></i> Matriz Técnica</a></li>
+        <li><a href="#demos-auto" class="mobile-nav-item"><i class="fa-solid fa-robot text-emerald"></i> Demos de Automatización</a></li>
+        <li><a href="#servicios" class="mobile-nav-item"><i class="fa-solid fa-calculator text-violet"></i> Calculadora de Cotización</a></li>
+        <li><a href="#kit-freelance" class="mobile-nav-item"><i class="fa-solid fa-folder-open text-cyan"></i> Kit Freelance</a></li>
+        <li><a href="#contacto" class="mobile-nav-item"><i class="fa-solid fa-envelope text-emerald"></i> Contacto Directo</a></li>
+        <li style="margin-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.8rem;">
+          <a href="admin/" target="_blank" class="mobile-nav-item" style="color: var(--neon-cyan);"><i class="fa-solid fa-shield-halved"></i> Consola /admin</a>
+        </li>
+      </ul>
     </div>
   </header>
 
