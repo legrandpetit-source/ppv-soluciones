@@ -1825,7 +1825,7 @@ textarea.form-control {
 
 /* Botón Hamburguesa & Menú Móvil Desplegable Premium (Mobile Drawer) */
 .mobile-menu-toggle {
-  display: none;
+  display: none !important;
   background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(112, 0, 255, 0.2));
   border: 1.5px solid var(--neon-cyan);
   color: #ffffff;
@@ -1847,7 +1847,9 @@ textarea.form-control {
   box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
 }
 
+/* Ocultar Menú Móvil por defecto en PC/Escritorio */
 .mobile-nav-drawer {
+  display: none !important;
   position: fixed;
   top: 0;
   left: 0;
@@ -1857,7 +1859,6 @@ textarea.form-control {
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   z-index: 999999;
-  display: flex;
   flex-direction: column;
   padding: 1.2rem;
   opacity: 0;
@@ -1867,9 +1868,10 @@ textarea.form-control {
 }
 
 .mobile-nav-drawer.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
 }
 
 .mobile-drawer-header {
@@ -1923,7 +1925,7 @@ textarea.form-control {
   align-items: center;
   justify-content: space-between;
   padding: 0.9rem 1.1rem;
-  background: rgba(13, 17, 26, 0.9);
+  background: rgba(13, 17, 26, 0.95);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
   color: #ffffff !important;
@@ -1937,13 +1939,13 @@ textarea.form-control {
 
 .mobile-nav-item:hover, .mobile-nav-item:active {
   border-color: var(--neon-cyan);
-  background: rgba(0, 243, 255, 0.1);
+  background: rgba(0, 243, 255, 0.15);
   box-shadow: 0 0 20px rgba(0, 243, 255, 0.25);
   transform: translateX(4px);
 }
 
 .mobile-nav-item.active-cta {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 243, 255, 0.15));
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 243, 255, 0.2));
   border-color: var(--neon-emerald);
 }
 
