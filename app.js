@@ -107,7 +107,7 @@ async function loadDynamicStatusPill() {
       bannerEl.style.display = 'none';
     } else {
       bannerEl.style.display = 'flex';
-      const textSpan = bannerEl.querySelector('.banner-status-text');
+      const textSpan = bannerEl.querySelector('.neon-text-80s');
       if (textSpan) {
         textSpan.textContent = cfg.text ? cfg.text.toUpperCase() : 'DISPONIBLE PARA PROYECTOS';
       }
