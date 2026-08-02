@@ -1922,92 +1922,64 @@ textarea.form-control {
   padding-right: 2px;
 }
 
-/* Tarjeta Cyberpunk Neón de Disponibilidad al Final del Menú Móvil */
-.mobile-availability-card {
+/* Tarjeta Cyberpunk de Disponibilidad al Final del Menú Móvil */
+.mobile-nav-item.status-cta {
   display: flex !important;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  margin-top: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.2rem;
   margin-bottom: 2.5rem;
-  padding: 1.2rem 1.4rem;
-  background: linear-gradient(135deg, rgba(0, 243, 255, 0.15), rgba(0, 255, 136, 0.12), rgba(112, 0, 255, 0.15));
+  padding: 1.05rem 1.2rem;
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.14), rgba(0, 243, 255, 0.12));
   border: 1.5px solid var(--neon-emerald);
   border-radius: var(--radius-md);
-  box-shadow: 0 0 25px rgba(0, 255, 136, 0.35), inset 0 0 15px rgba(0, 255, 136, 0.15);
-  animation: cyberpunkCardGlow 3s ease-in-out infinite alternate;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), inset 0 0 12px rgba(0, 255, 136, 0.12);
+  animation: statusCtaGlow 3s ease-in-out infinite alternate;
 }
 
-@keyframes cyberpunkCardGlow {
+@keyframes statusCtaGlow {
   0% {
     border-color: var(--neon-emerald);
-    box-shadow: 0 0 25px rgba(0, 255, 136, 0.35), inset 0 0 15px rgba(0, 255, 136, 0.15);
-  }
-  50% {
-    border-color: var(--neon-cyan);
-    box-shadow: 0 0 35px rgba(0, 243, 255, 0.5), inset 0 0 20px rgba(0, 243, 255, 0.25);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), inset 0 0 12px rgba(0, 255, 136, 0.12);
   }
   100% {
-    border-color: var(--neon-violet);
-    box-shadow: 0 0 30px rgba(112, 0, 255, 0.4), inset 0 0 18px rgba(112, 0, 255, 0.2);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 28px rgba(0, 243, 255, 0.45), inset 0 0 16px rgba(0, 243, 255, 0.2);
   }
 }
 
-.mobile-availability-card .card-body {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  position: relative;
-  z-index: 2;
-  width: 100%;
-}
-
-.neon-pulse-ring {
-  position: relative;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: rgba(0, 255, 136, 0.18);
-  border: 1.5px solid var(--neon-emerald);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  flex-shrink: 0;
-  box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
-}
-
-.ring-dot {
+.pulse-dot-inner {
   position: absolute;
-  top: -3px;
-  right: -3px;
-  width: 10px;
-  height: 10px;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
   background: var(--neon-emerald);
   border-radius: 50%;
-  box-shadow: 0 0 12px var(--neon-emerald);
+  box-shadow: 0 0 10px var(--neon-emerald);
   animation: pulseDotGlow 1.5s infinite;
 }
 
-.card-text-group {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.card-title {
+.status-title-text {
   font-family: var(--font-heading);
-  font-size: 0.92rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
+  font-size: 0.96rem;
+  font-weight: 700;
   color: #ffffff !important;
-  text-shadow: 0 0 10px rgba(0, 255, 136, 0.7);
+  flex-grow: 1;
+  margin-left: 4px;
 }
 
-.card-subtitle {
-  font-size: 0.76rem;
-  color: rgba(255, 255, 255, 0.8) !important;
-  font-weight: 600;
+.cyber-badge {
+  background: rgba(0, 255, 136, 0.2);
+  color: var(--neon-emerald);
+  border: 1px solid var(--neon-emerald);
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
 }
 
 .mobile-nav-list {

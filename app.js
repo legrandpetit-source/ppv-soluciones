@@ -96,20 +96,20 @@ function initMobileMenuNav() {
    -------------------------------------------------------------------------- */
 async function loadDynamicStatusPill() {
   const pillEls = document.querySelectorAll('.status-pill');
-  const cardEl = document.querySelector('.mobile-availability-card');
+  const statusCtaEl = document.getElementById('mobile-status-cta');
   if (!window.portfolioDB) return;
 
   const cfg = await window.portfolioDB.getConfig('status_pill');
   if (!cfg) return;
 
-  if (cardEl) {
+  if (statusCtaEl) {
     if (cfg.visible === false) {
-      cardEl.style.display = 'none';
+      statusCtaEl.style.display = 'none';
     } else {
-      cardEl.style.display = 'flex';
-      const textSpan = cardEl.querySelector('.card-title');
+      statusCtaEl.style.display = 'flex';
+      const textSpan = statusCtaEl.querySelector('.status-title-text');
       if (textSpan) {
-        textSpan.textContent = cfg.text ? cfg.text.toUpperCase() : 'DISPONIBLE PARA PROYECTOS';
+        textSpan.textContent = cfg.text || 'Disponible para proyectos';
       }
     }
   }
