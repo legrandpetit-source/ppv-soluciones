@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   initMobileMenuNav();
   await loadDynamicStatusPill();
+  initNeonSign();
   await loadSkillsMatrix();
   await loadServicesCalculator();
   initIndustrySolutions();
@@ -89,6 +90,77 @@ function initMobileMenuNav() {
       closeDrawer();
     }
   });
+}
+/* --------------------------------------------------------------------------
+   0.3. LETRERO NEÓN ANIMADO (CADA LETRA SE ILUMINA SECUENCIALMENTE)
+   -------------------------------------------------------------------------- */
+function initNeonSign() {
+  const container = document.getElementById('neon-sign-text');
+  if (!container) return;
+
+  const text = 'Disponible para proyectos';
+  const neonColors = [
+    { color: '#00f3ff', shadow: '0 0 7px #00f3ff, 0 0 14px #00f3ff, 0 0 28px #00f3ff, 0 0 42px #00829e' },
+    { color: '#00ff88', shadow: '0 0 7px #00ff88, 0 0 14px #00ff88, 0 0 28px #00ff88, 0 0 42px #00664c' },
+    { color: '#ff007f', shadow: '0 0 7px #ff007f, 0 0 14px #ff007f, 0 0 28px #ff007f, 0 0 42px #99004d' },
+    { color: '#7000ff', shadow: '0 0 7px #7000ff, 0 0 14px #7000ff, 0 0 28px #7000ff, 0 0 42px #3d0080' },
+    { color: '#ffcc00', shadow: '0 0 7px #ffcc00, 0 0 14px #ffcc00, 0 0 28px #ffcc00, 0 0 42px #997a00' }
+  ];
+
+  container.innerHTML = '';
+  const letters = [];
+  for (let i = 0; i < text.length; i++) {
+    const span = document.createElement('span');
+    span.textContent = text[i] === ' ' ? '\u00A0' : text[i];
+    span.style.cssText = 'color: rgba(255,255,255,0.15); transition: all 0.15s ease; display: inline-block;';
+    if (text[i] === ' ') span.style.width = '0.35em';
+    container.appendChild(span);
+    letters.push(span);
+  }
+
+  let currentIndex = 0;
+  let colorIndex = 0;
+
+  function lightUpLetter() {
+    const prevIdx = (currentIndex - 1 + letters.length) % letters.length;
+    letters[prevIdx].style.color = 'rgba(255,255,255,0.2)';
+    letters[prevIdx].style.textShadow = 'none';
+    letters[prevIdx].style.transform = 'scale(1)';
+
+    const letter = letters[currentIndex];
+    const neon = neonColors[colorIndex % neonColors.length];
+    letter.style.color = neon.color;
+    letter.style.textShadow = neon.shadow;
+    letter.style.transform = 'scale(1.1)';
+
+    currentIndex++;
+    if (currentIndex >= letters.length) {
+      currentIndex = 0;
+      colorIndex++;
+      setTimeout(() => {
+        const fullNeon = neonColors[colorIndex % neonColors.length];
+        letters.forEach(l => {
+          if (l.textContent !== '\u00A0') {
+            l.style.color = fullNeon.color;
+            l.style.textShadow = fullNeon.shadow;
+            l.style.transform = 'scale(1)';
+          }
+        });
+        setTimeout(() => {
+          letters.forEach(l => {
+            l.style.color = 'rgba(255,255,255,0.15)';
+            l.style.textShadow = 'none';
+            l.style.transform = 'scale(1)';
+          });
+          setTimeout(lightUpLetter, 400);
+        }, 1500);
+      }, 100);
+      return;
+    }
+    setTimeout(lightUpLetter, 80);
+  }
+
+  setTimeout(lightUpLetter, 600);
 }
 
 /* --------------------------------------------------------------------------
