@@ -95,22 +95,27 @@ function initMobileMenuNav() {
    0.5. Cargar Estado Dinámico de la Insignia (Status Pill)
    -------------------------------------------------------------------------- */
 async function loadDynamicStatusPill() {
-  const pillEl = document.querySelector('.status-pill');
-  if (!pillEl || !window.portfolioDB) return;
+  const pillEls = document.querySelectorAll('.status-pill');
+  if (!pillEls || pillEls.length === 0 || !window.portfolioDB) return;
 
   const cfg = await window.portfolioDB.getConfig('status_pill');
   if (!cfg) return;
 
-  if (cfg.visible === false) {
-    pillEl.style.display = 'none';
-  } else {
-    pillEl.style.display = 'inline-flex';
-    const textSpan = pillEl.querySelector('span:not(.pulse-dot)');
-    if (textSpan) {
-      textSpan.textContent = cfg.text || 'Disponible para Proyectos';
+  pillEls.forEach(pillEl => {
+    if (cfg.visible === false) {
+      pillEl.style.display = 'none';
+    } else {
+      if (pillEl.classList.contains('mobile-status-pill')) {
+        pillEl.style.display = 'flex';
+      } else {
+        pillEl.style.display = 'inline-flex';
+      }
+      const textSpan = pillEl.querySelector('span:not(.pulse-dot)');
+      if (textSpan) {
+        textSpan.textContent = cfg.text || 'Disponible para Proyectos';
+      }
     }
-    pillEl.className = `status-pill ${cfg.theme && cfg.theme !== 'emerald' ? 'theme-' + cfg.theme : ''}`;
-  }
+  });
 }
 
 /* --------------------------------------------------------------------------
