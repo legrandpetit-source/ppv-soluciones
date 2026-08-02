@@ -1359,6 +1359,35 @@ function initSignaturePadDemo() {
 /* --------------------------------------------------------------------------
    6. FORMULARIO DE CONTACTO E INDEXEDDB
    -------------------------------------------------------------------------- */
+async function sendTelegramNotification(data) {
+  const TELEGRAM_BOT_TOKEN = '8623970624:AAEA5GQPNOJE53751yIir5PDCJglBbfFCMM';
+  const TELEGRAM_CHAT_ID = '1468481915';
+
+  const dateStr = new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' });
+  const text = `🚀 <b>NUEVO MENSAJE DE CONTACTO - PPV SOLUCIONES</b>\n\n` +
+    `👤 <b>Nombre:</b> ${escapeHtml(data.name)}\n` +
+    `📧 <b>Email:</b> ${escapeHtml(data.email)}\n` +
+    `📌 <b>Asunto:</b> ${escapeHtml(data.subject || 'Consulta General')}\n` +
+    `💰 <b>Presupuesto:</b> ${escapeHtml(data.budget || 'Por definir')}\n\n` +
+    `💬 <b>Mensaje:</b>\n<i>"${escapeHtml(data.message)}"</i>\n\n` +
+    `📅 <i>${dateStr}</i>\n` +
+    `🌐 <i>Origen: ppvsoluciones.cl</i>`;
+
+  try {
+    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: text,
+        parse_mode: 'HTML'
+      })
+    });
+  } catch (err) {
+    console.error('Error enviando notificación a Telegram:', err);
+  }
+}
+
 function initContactAndDB() {
   const contactForm = document.getElementById('contact-form');
   if (!contactForm) return;
@@ -1377,7 +1406,9 @@ function initContactAndDB() {
     try {
       if (window.portfolioDB) {
         await window.portfolioDB.saveMessage(data);
-        showToast('¡Mensaje guardado con éxito en la Base de Datos!');
+        // Notificar en tiempo real a Telegram con el Bot Legrandpetit_noti_bot
+        sendTelegramNotification(data);
+        showToast('¡Mensaje guardado y notificación enviada por Telegram con éxito!');
         contactForm.reset();
       }
     } catch (err) {
