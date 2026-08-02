@@ -96,26 +96,37 @@ function initMobileMenuNav() {
    -------------------------------------------------------------------------- */
 async function loadDynamicStatusPill() {
   const pillEls = document.querySelectorAll('.status-pill');
-  if (!pillEls || pillEls.length === 0 || !window.portfolioDB) return;
+  const bannerEl = document.querySelector('.mobile-availability-banner');
+  if (!window.portfolioDB) return;
 
   const cfg = await window.portfolioDB.getConfig('status_pill');
   if (!cfg) return;
 
-  pillEls.forEach(pillEl => {
+  if (bannerEl) {
     if (cfg.visible === false) {
-      pillEl.style.display = 'none';
+      bannerEl.style.display = 'none';
     } else {
-      if (pillEl.classList.contains('mobile-status-pill')) {
-        pillEl.style.display = 'flex';
-      } else {
-        pillEl.style.display = 'inline-flex';
-      }
-      const textSpan = pillEl.querySelector('span:not(.pulse-dot)');
+      bannerEl.style.display = 'flex';
+      const textSpan = bannerEl.querySelector('.banner-status-text');
       if (textSpan) {
-        textSpan.textContent = cfg.text || 'Disponible para Proyectos';
+        textSpan.textContent = cfg.text ? cfg.text.toUpperCase() : 'DISPONIBLE PARA PROYECTOS';
       }
     }
-  });
+  }
+
+  if (pillEls && pillEls.length > 0) {
+    pillEls.forEach(pillEl => {
+      if (cfg.visible === false) {
+        pillEl.style.display = 'none';
+      } else {
+        pillEl.style.display = 'inline-flex';
+        const textSpan = pillEl.querySelector('span:not(.pulse-dot)');
+        if (textSpan) {
+          textSpan.textContent = cfg.text || 'Disponible para Proyectos';
+        }
+      }
+    });
+  }
 }
 
 /* --------------------------------------------------------------------------
