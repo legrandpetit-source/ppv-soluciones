@@ -1922,44 +1922,33 @@ textarea.form-control {
   padding-right: 2px;
 }
 
-/* Insignia Cyberpunk Informativa de Disponibilidad (No Clickeable, Texto Centrado) */
-.mobile-status-banner-centered {
+/* Tarjeta Cyberpunk Centrada de Disponibilidad (Idéntica al Pantallazo: Sin ícono, Sin badge ACTIVO) */
+.mobile-status-card-centered {
   display: flex !important;
   align-items: center;
   justify-content: center;
   text-align: center;
+  width: 100%;
   margin-top: 1.2rem;
   margin-bottom: 2.5rem;
   padding: 1.05rem 1.2rem;
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.14), rgba(0, 243, 255, 0.12));
-  border: 1.5px solid var(--neon-emerald);
+  background: #0e131f;
+  border: 1.5px solid var(--neon-cyan);
   border-radius: var(--radius-md);
-  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), inset 0 0 12px rgba(0, 255, 136, 0.12);
-  animation: statusCtaGlow 3s ease-in-out infinite alternate;
+  box-shadow: 0 0 18px rgba(0, 243, 255, 0.35);
   cursor: default !important;
   user-select: none;
+  transition: var(--transition);
 }
 
-@keyframes statusCtaGlow {
-  0% {
-    border-color: var(--neon-emerald);
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), inset 0 0 12px rgba(0, 255, 136, 0.12);
-  }
-  100% {
-    border-color: var(--neon-cyan);
-    box-shadow: 0 0 28px rgba(0, 243, 255, 0.45), inset 0 0 16px rgba(0, 243, 255, 0.2);
-  }
-}
-
-.mobile-status-banner-centered .status-title-text {
+.mobile-status-card-centered .status-title-text {
   font-family: var(--font-heading);
   font-size: 0.98rem;
   font-weight: 700;
   color: #ffffff !important;
   text-align: center;
-  letter-spacing: 0.02em;
-  text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
   margin: 0;
+  letter-spacing: 0.02em;
 }
 
 .mobile-nav-list {
