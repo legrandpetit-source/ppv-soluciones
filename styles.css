@@ -2022,9 +2022,9 @@ textarea.form-control {
   header { height: 60px; }
   .nav-content { height: 60px; padding: 0 0.5rem; }
   .logo { font-size: 1.05rem; margin-right: 0; }
-  .logo-subtext { font-size: 0.85rem; }
   .logo-badge { display: none !important; }
-  .status-pill { display: none !important; } /* Ocultar en celular para espacio perfecto */
+  header .status-pill { display: none !important; } /* Ocultar solo en la cabecera fija de celular */
+  .mobile-status-pill { display: flex !important; }
   
   section { padding: 2.2rem 0; }
   .hero { padding-top: 5.2rem; padding-bottom: 2rem; }
