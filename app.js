@@ -96,18 +96,18 @@ function initMobileMenuNav() {
    -------------------------------------------------------------------------- */
 async function loadDynamicStatusPill() {
   const pillEls = document.querySelectorAll('.status-pill');
-  const bannerEl = document.querySelector('.mobile-availability-banner');
+  const cardEl = document.querySelector('.mobile-availability-card');
   if (!window.portfolioDB) return;
 
   const cfg = await window.portfolioDB.getConfig('status_pill');
   if (!cfg) return;
 
-  if (bannerEl) {
+  if (cardEl) {
     if (cfg.visible === false) {
-      bannerEl.style.display = 'none';
+      cardEl.style.display = 'none';
     } else {
-      bannerEl.style.display = 'flex';
-      const textSpan = bannerEl.querySelector('.neon-text-80s');
+      cardEl.style.display = 'flex';
+      const textSpan = cardEl.querySelector('.card-title');
       if (textSpan) {
         textSpan.textContent = cfg.text ? cfg.text.toUpperCase() : 'DISPONIBLE PARA PROYECTOS';
       }
