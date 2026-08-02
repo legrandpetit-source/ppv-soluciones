@@ -69,8 +69,23 @@ function initMobileMenuNav() {
     };
   });
 
+  // Cerrar al hacer clic fuera del menú
   document.addEventListener('click', (e) => {
-    if (drawer.classList.contains('active') && !drawer.contains(e.target) && e.target !== btnToggle) {
+    if (drawer.classList.contains('active') && !drawer.contains(e.target) && e.target !== btnToggle && !btnToggle.contains(e.target)) {
+      closeDrawer();
+    }
+  });
+
+  // Cerrar al presionar la tecla Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('active')) {
+      closeDrawer();
+    }
+  });
+
+  // Cerrar automáticamente al cambiar de tamaño a PC (> 992px)
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 992 && drawer.classList.contains('active')) {
       closeDrawer();
     }
   });

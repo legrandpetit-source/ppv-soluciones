@@ -1824,17 +1824,24 @@ textarea.form-control {
 }
 
 /* ==========================================================================
-   OPTIMIZACIÓN MÓVIL RESPONSIVE (SMARTPHONES Y TABLETS)
+   SISTEMA DE DISEÑO MÓVIL Y TABLET RESPONSIVE (PC, TABLET, SMARTPHONE)
    ========================================================================== */
 
-/* Botón Hamburguesa */
+.logo-subtext {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* Ocultar elementos móviles por defecto en PC/Escritorio */
 .mobile-menu-toggle {
   display: none !important;
   background: rgba(0, 243, 255, 0.12);
   border: 1.5px solid var(--neon-cyan);
   color: #ffffff;
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   padding: 8px 14px;
   border-radius: var(--radius-sm);
@@ -1852,12 +1859,13 @@ textarea.form-control {
   box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
 }
 
-/* Ocultar Menú Móvil por defecto en PC/Escritorio */
 .mobile-nav-drawer {
   display: none !important;
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   width: 100vw;
   height: 100vh;
   background: #07090e;
@@ -1867,7 +1875,7 @@ textarea.form-control {
   overflow-y: auto;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
 .mobile-nav-drawer.active {
@@ -1973,23 +1981,34 @@ textarea.form-control {
   color: var(--neon-cyan);
 }
 
-/* Reglas de Adaptación en Pantallas Médias y Celulares (< 992px) */
+/* ==========================================================================
+   BREAKPOINTS: TABLETS Y PANTALLAS MEDIAS (769px - 1024px)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .container { width: 95%; padding: 0 0.5rem; }
+  .hero h1 { font-size: 2.2rem; }
+  .calc-grid, .contact-grid, .code-eval-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+
 @media (max-width: 992px) {
   .nav-links { display: none !important; }
   .mobile-menu-toggle { display: inline-flex !important; }
   .hero-grid { grid-template-columns: 1fr; gap: 1.8rem; }
-  .calc-grid, .contact-grid, .code-eval-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .hero-terminal { max-width: 100%; margin: 0 auto; }
 }
 
-/* Optimización específica para Celulares (< 768px) */
+/* ==========================================================================
+   BREAKPOINTS: SMARTPHONES Y MÓVILES (< 768px y < 480px)
+   ========================================================================== */
 @media (max-width: 768px) {
-  html, body { overflow-x: hidden; }
+  html, body { overflow-x: hidden !important; width: 100vw; }
   
   header { height: 60px; }
   .nav-content { height: 60px; padding: 0 0.5rem; }
   .logo { font-size: 1.05rem; margin-right: 0; }
-  .logo-badge { display: none !original; }
-  .status-pill { display: none !important; } /* Ocultar píldora en celular para dar espacio al menú */
+  .logo-subtext { font-size: 0.85rem; }
+  .logo-badge { display: none !important; }
+  .status-pill { display: none !important; } /* Ocultar en celular para espacio perfecto */
   
   section { padding: 2.2rem 0; }
   .hero { padding-top: 5.2rem; padding-bottom: 2rem; }
@@ -2020,6 +2039,7 @@ textarea.form-control {
   .stat-number { font-size: 1.1rem; }
   .stat-label { font-size: 0.68rem; }
 }
+
 
 
 
