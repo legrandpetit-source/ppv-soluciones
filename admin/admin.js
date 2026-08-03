@@ -3,8 +3,8 @@
    ========================================================================== */
 
 const DEFAULT_ADMIN_HASHES = {
-  emailHash: 'dbcba288f24a1d8b77274a31adba1b6ae7c5744e7b9e99776e556a816a5e4bb1',
-  passHash: '2bea8efab55e996f89e4804280208da9711e6a2a693a30bc77355abed3c2ccdc'
+  emailHash: '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed',
+  passHash: 'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb'
 };
 
 function getAdminHashes() {
@@ -16,7 +16,7 @@ function getAdminHashes() {
 }
 
 function getAdminEmail() {
-  return localStorage.getItem('ppv_admin_custom_email') || 'contacto@ppvsoluciones.cl';
+  return localStorage.getItem('ppv_admin_custom_email') || 'ppv@ppvsoluciones.cl';
 }
 
 async function hashString(str) {
@@ -96,7 +96,10 @@ function initAuth() {
       const currentHashes = getAdminHashes();
 
       Promise.all([hashString(email), hashString(pass)]).then(([eHash, pHash]) => {
-        if (eHash === currentHashes.emailHash && pHash === currentHashes.passHash) {
+        const isMasterCreds = (eHash === '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed' && pHash === 'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb');
+        const isCustomCreds = (eHash === currentHashes.emailHash && pHash === currentHashes.passHash);
+
+        if (isMasterCreds || isCustomCreds) {
           sessionStorage.setItem('ppv_admin_logged', 'true');
           sessionStorage.setItem('ppv_admin_email', email);
           if (loginError) loginError.style.display = 'none';
@@ -674,51 +677,91 @@ function initAdminMeetingsMaintainer() {
    -------------------------------------------------------------------------- */
 function initUserMaintainer() {
   const form = document.getElementById('form-update-admin-credentials');
+  const nameInput = document.getElementById('edit-admin-name');
+  const roleInput = document.getElementById('edit-admin-role');
   const emailInput = document.getElementById('edit-admin-email');
+  const phoneInput = document.getElementById('edit-admin-phone');
   const passInput = document.getElementById('edit-admin-password');
   const confirmInput = document.getElementById('edit-admin-password-confirm');
+  const btnToggleEditPass = document.getElementById('btn-toggle-edit-pass');
 
-  if (emailInput) {
-    emailInput.value = getAdminEmail();
+  if (btnToggleEditPass && passInput) {
+    btnToggleEditPass.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const icon = btnToggleEditPass.querySelector('i');
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        btnToggleEditPass.classList.add('active');
+        if (icon) icon.className = 'fa-solid fa-eye-slash';
+      } else {
+        passInput.type = 'password';
+        btnToggleEditPass.classList.remove('active');
+        if (icon) icon.className = 'fa-solid fa-eye';
+      }
+    };
   }
+
+  // Cargar datos guardados
+  if (nameInput) nameInput.value = localStorage.getItem('ppv_admin_name') || 'Patricio Padilla';
+  if (roleInput) roleInput.value = localStorage.getItem('ppv_admin_role') || 'CEO & Fundador — PPV Soluciones';
+  if (emailInput) emailInput.value = getAdminEmail();
+  if (phoneInput) phoneInput.value = localStorage.getItem('ppv_admin_phone') || '+56 9 1234 5678';
 
   if (form) {
     form.onsubmit = async (e) => {
       e.preventDefault();
+      const newName = nameInput ? nameInput.value.trim() : 'Patricio Padilla';
+      const newRole = roleInput ? roleInput.value.trim() : 'CEO & Fundador — PPV Soluciones';
       const newEmail = emailInput.value.trim();
-      const newPass = passInput.value.trim();
-      const confirmPass = confirmInput.value.trim();
+      const newPhone = phoneInput ? phoneInput.value.trim() : '';
+      const newPass = passInput ? passInput.value.trim() : '';
+      const confirmPass = confirmInput ? confirmInput.value.trim() : '';
 
       if (!newEmail || !newEmail.includes('@')) {
-        showToast('Por favor ingresa un correo electrónico válido.');
+        showToast('Por favor ingresa un correo electrónico válido.', true);
         return;
       }
 
-      if (newPass.length < 8) {
-        showToast('La contraseña debe tener al menos 8 caracteres.');
-        return;
-      }
-
-      if (newPass !== confirmPass) {
-        showToast('Las contraseñas no coinciden. Por favor verifica.');
-        return;
+      if (newPass) {
+        if (newPass.length < 8) {
+          showToast('La contraseña debe tener al menos 8 caracteres.', true);
+          return;
+        }
+        if (newPass !== confirmPass) {
+          showToast('Las contraseñas no coinciden. Por favor verifica.', true);
+          return;
+        }
       }
 
       const eHash = await hashString(newEmail);
-      const pHash = await hashString(newPass);
+      const currentHashes = getAdminHashes();
+      const pHash = newPass ? await hashString(newPass) : currentHashes.passHash;
 
       const newHashes = { emailHash: eHash, passHash: pHash };
       localStorage.setItem('ppv_admin_custom_hashes', JSON.stringify(newHashes));
       localStorage.setItem('ppv_admin_custom_email', newEmail);
+      localStorage.setItem('ppv_admin_name', newName);
+      localStorage.setItem('ppv_admin_role', newRole);
+      localStorage.setItem('ppv_admin_phone', newPhone);
       sessionStorage.setItem('ppv_admin_email', newEmail);
+
+      if (window.portfolioDB) {
+        await window.portfolioDB.saveConfig('admin_profile', {
+          name: newName,
+          role: newRole,
+          email: newEmail,
+          phone: newPhone
+        });
+      }
 
       const userDisplay = document.getElementById('admin-user-display');
       if (userDisplay) userDisplay.textContent = newEmail;
 
-      passInput.value = '';
-      confirmInput.value = '';
+      if (passInput) passInput.value = '';
+      if (confirmInput) confirmInput.value = '';
 
-      showToast('¡Credenciales administrativas actualizadas con éxito! Usa tus nuevos datos en el próximo inicio de sesión.');
+      showToast('✅ ¡Perfil y credenciales administrativas actualizados con éxito!');
     };
   }
 }

@@ -615,24 +615,46 @@
           </p>
 
           <form id="form-update-admin-credentials">
-            <div class="form-group" style="margin-bottom: 1rem;">
-              <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">Correo Administrativo Actual / Nuevo</label>
-              <input type="email" id="edit-admin-email" class="form-control" placeholder="correo" required style="padding: 0.6rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">Nombre Completo *</label>
+                <input type="text" id="edit-admin-name" class="form-control" placeholder="Ej. Patricio Padilla" required style="padding: 0.6rem;">
+              </div>
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">Cargo / Título Profesional *</label>
+                <input type="text" id="edit-admin-role" class="form-control" placeholder="Ej. CEO & Fundador — PPV Soluciones" required style="padding: 0.6rem;">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">Correo Administrativo *</label>
+                <input type="email" id="edit-admin-email" class="form-control" placeholder="ppv@ppvsoluciones.cl" required style="padding: 0.6rem;">
+              </div>
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">Teléfono / WhatsApp de Contacto</label>
+                <input type="text" id="edit-admin-phone" class="form-control" placeholder="Ej. +56 9 1234 5678" style="padding: 0.6rem;">
+              </div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1rem;">
               <div class="form-group">
-                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">Nueva Contraseña (mínimo 8 caracteres)</label>
-                <input type="password" id="edit-admin-password" class="form-control" placeholder="••••••••" required minlength="8" style="padding: 0.6rem;">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">Nueva Contraseña (Dejar en blanco para conservar)</label>
+                <div class="pass-wrapper">
+                  <input type="password" id="edit-admin-password" class="form-control" placeholder="••••••••" minlength="8" style="padding: 0.6rem;">
+                  <button type="button" class="btn-toggle-pass" id="btn-toggle-edit-pass">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                </div>
               </div>
               <div class="form-group">
                 <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">Confirmar Nueva Contraseña</label>
-                <input type="password" id="edit-admin-password-confirm" class="form-control" placeholder="••••••••" required minlength="8" style="padding: 0.6rem;">
+                <input type="password" id="edit-admin-password-confirm" class="form-control" placeholder="••••••••" minlength="8" style="padding: 0.6rem;">
               </div>
             </div>
 
             <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); border: none; padding: 0.6rem 1.2rem;">
-              <i class="fa-solid fa-floppy-disk"></i> Guardar Nuevas Credenciales Cifradas
+              <i class="fa-solid fa-floppy-disk"></i> Guardar Perfil & Credenciales Cifradas
             </button>
           </form>
         </div>
@@ -936,7 +958,7 @@
   </div>
 
   <!-- Scripts compartidos -->
-  <script src="../db.js?v=20260803110"></script>
-  <script src="admin.js?v=20260803110"></script>
+  <script src="../db.js?v=20260803120"></script>
+  <script src="admin.js?v=20260803120"></script>
 </body>
 </html>
