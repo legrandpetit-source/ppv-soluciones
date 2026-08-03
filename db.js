@@ -76,7 +76,8 @@ class MessageDB {
         { title: 'Sistema de Automatización & Bot Básico', desc: 'Asistente web inteligente conectado a tus datos y servicios.', priceUSD: 350, timeDays: '3 días', icon: 'fa-robot', selected: true },
         { title: 'Flujo de Automatización n8n / Make', desc: 'Conexión de CRM, Email, Bases de datos y procesos en segundo plano.', priceUSD: 450, timeDays: '4 días', icon: 'fa-network-wired', selected: false },
         { title: 'Desarrollo Web App Completo', desc: 'Aplicación Frontend + Backend responsiva con diseño Cyberpunk/Glassmorphism.', priceUSD: 600, timeDays: '5 días', icon: 'fa-laptop-code', selected: false },
-        { title: 'Optimización & Evaluación de Código Automatizado', desc: 'Auditoría de seguridad, refactorización y pruebas unitarias de código existente.', priceUSD: 250, timeDays: '2 días', icon: 'fa-shield-halved', selected: false }
+        { title: 'Auditoría de Seguridad, Hardening & Ciberprotección Web', desc: 'Análisis de vulnerabilidades, proxy backend seguro para APIs, hashes SHA-256 y headers HTTP.', priceUSD: 350, timeDays: '3 días', icon: 'fa-shield-halved', selected: false },
+        { title: 'Optimización & Evaluación de Código Automatizado', desc: 'Auditoría de rendimiento, refactorización y pruebas unitarias de código existente.', priceUSD: 250, timeDays: '2 días', icon: 'fa-code-compare', selected: false }
       ];
       for (const s of defaultServices) {
         await this.add('services', s);

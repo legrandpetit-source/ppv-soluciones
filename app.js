@@ -477,6 +477,18 @@ const INDUSTRY_SOLUTIONS = {
       { icon: 'fa-user-shield', title: 'Portal Privado de Clientes', desc: 'Espacio seguro para que los clientes revisen el avance de su caso.' },
       { icon: 'fa-file-signature', title: 'Generador de Borradores', desc: 'Automatización de contratos tipo y poderes de representación.' }
     ]
+  },
+  seguridad: {
+    tag: 'Ciberseguridad & Auditoría Web',
+    title: 'Servicio de Auditoría de Seguridad Web, Hardening & Ciberprotección',
+    time: '2 a 4 días',
+    impact: 'Identifica vulnerabilidades críticas en tu sitio web, blinda servidores y previene filtraciones de datos.',
+    features: [
+      { icon: 'fa-shield-halved', title: 'Auditoría de Vulnerabilidades', desc: 'Análisis de credenciales expuestas, tokens, CORS y headers de seguridad.' },
+      { icon: 'fa-user-shield', title: 'Hardening & Parcheo de Código', desc: 'Protección de rutas de administración, proxies seguros para APIs y hashes SHA-256.' },
+      { icon: 'fa-lock', title: 'Configuración HTTP Security Headers', desc: 'Implementación de CSP, HSTS, X-Frame-Options y protección anti-clickjacking.' },
+      { icon: 'fa-file-shield', title: 'Reporte Ejecutivo & Certificado', desc: 'Informe detallado de hallazgos, mitigación y soporte continuo.' }
+    ]
   }
 };
 

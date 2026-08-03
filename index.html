@@ -153,6 +153,9 @@
         <button class="industry-chip" data-industry="abogado">
           <i class="fa-solid fa-scale-balanced text-cyan"></i> Estudio Jurídico / Abogados
         </button>
+        <button class="industry-chip" data-industry="seguridad">
+          <i class="fa-solid fa-shield-halved text-pink"></i> Ciberseguridad & Auditoría Web
+        </button>
       </div>
 
       <!-- Buscador de Rubro Libre -->
@@ -662,10 +665,18 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
             <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: 0.3;"></i>
           </div>
 
+          <div class="option-card" data-price="350" data-time="3 días">
+            <div>
+              <strong style="display: block; font-size: 1rem;">Auditoría de Seguridad, Hardening & Ciberprotección Web</strong>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Auditoría de vulnerabilidades, proxy seguro para APIs, hashes SHA-256 y headers HTTP de protección.</span>
+            </div>
+            <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: 0.3;"></i>
+          </div>
+
           <div class="option-card" data-price="250" data-time="2 días">
             <div>
               <strong style="display: block; font-size: 1rem;">Optimización & Evaluación de Código Automatizado</strong>
-              <span style="font-size: 0.8rem; color: var(--text-muted);">Auditoría de seguridad, refactorización y pruebas unitarias de código existente.</span>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Auditoría de rendimiento, refactorización y pruebas unitarias de código existente.</span>
             </div>
             <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: 0.3;"></i>
           </div>
@@ -1164,7 +1175,7 @@ PPV Soluciones
   </div>
 
   <!-- Scripts -->
-  <script src="db.js?v=20260803002"></script>
-  <script src="app.js?v=20260803002"></script>
+  <script src="db.js?v=20260803003"></script>
+  <script src="app.js?v=20260803003"></script>
 </body>
 </html>
