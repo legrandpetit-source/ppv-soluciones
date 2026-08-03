@@ -187,15 +187,37 @@ async function refreshAllData() {
 
 async function updateCounters() {
   if (!window.portfolioDB) return;
-  const messages = await window.portfolioDB.getAllMessages();
-  const services = await window.portfolioDB.getAll('services');
-  const skills = await window.portfolioDB.getAll('skills');
-  const blocked = await window.portfolioDB.getAll('blocked');
+  try {
+    let msgCount = 0;
+    try {
+      const res = await fetch('/tg-messages');
+      const data = await res.json();
+      if (data.ok && Array.isArray(data.messages)) {
+        msgCount = data.messages.length;
+      }
+    } catch(e) {}
 
-  document.getElementById('stat-count-messages').textContent = messages.length;
-  document.getElementById('stat-count-services').textContent = services.length;
-  document.getElementById('stat-count-skills').textContent = skills.length;
-  document.getElementById('stat-count-blocked').textContent = blocked.length;
+    const localMessages = await window.portfolioDB.getAllMessages();
+    if (msgCount === 0 && localMessages) {
+      msgCount = localMessages.length;
+    }
+
+    const services = await window.portfolioDB.getAll('services');
+    const skills = await window.portfolioDB.getAll('skills');
+    const blocked = await window.portfolioDB.getAll('blocked');
+
+    const elMsgs = document.getElementById('stat-count-messages');
+    const elServ = document.getElementById('stat-count-services');
+    const elSkil = document.getElementById('stat-count-skills');
+    const elBloc = document.getElementById('stat-count-blocked');
+
+    if (elMsgs) elMsgs.textContent = msgCount;
+    if (elServ) elServ.textContent = services ? services.length : 0;
+    if (elSkil) elSkil.textContent = skills ? skills.length : 0;
+    if (elBloc) elBloc.textContent = blocked ? blocked.length : 0;
+  } catch(err) {
+    console.error('Error actualizando contadores:', err);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -257,7 +279,14 @@ async function loadMessagesTable() {
   }
 
   if (!messages.length && window.portfolioDB) {
-    messages = await window.portfolioDB.getAllMessages();
+    try {
+      const localMsgs = await window.portfolioDB.getAllMessages();
+      if (localMsgs && localMsgs.length > 0) {
+        messages = localMsgs;
+      }
+    } catch(e) {
+      console.warn('Error leyendo mensajes locales:', e);
+    }
   }
 
   const statCounter = document.getElementById('stat-count-messages');
