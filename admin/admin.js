@@ -25,23 +25,33 @@ async function hashString(str) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  if (window.portfolioDB) {
-    await window.portfolioDB.init();
+  // Inicializar autenticación y event listeners del login de inmediato
+  try {
+    initAuth();
+  } catch (e) {
+    console.error('[ADMIN] Error iniciando Auth:', e);
   }
 
-  initAuth();
-  initSidebar();
-  initStatusPillCRUD();
-  initServicesCRUD();
-  initSkillsCRUD();
-  initBlockedCRUD();
-  initAdminMeetingsMaintainer();
-  initUserMaintainer();
-  initPdfGeneratorMaintainer();
-  initSecAuditWorkflowMaintainer();
-  initClientsCRUD();
-  initUFHistoryMaintainer();
-  initVCardEditorMaintainer();
+  if (window.portfolioDB) {
+    try {
+      await window.portfolioDB.init();
+    } catch (e) {
+      console.error('[ADMIN] Error iniciando portfolioDB:', e);
+    }
+  }
+
+  try { initSidebar(); } catch(e){ console.error(e); }
+  try { initStatusPillCRUD(); } catch(e){ console.error(e); }
+  try { initServicesCRUD(); } catch(e){ console.error(e); }
+  try { initSkillsCRUD(); } catch(e){ console.error(e); }
+  try { initBlockedCRUD(); } catch(e){ console.error(e); }
+  try { initAdminMeetingsMaintainer(); } catch(e){ console.error(e); }
+  try { initUserMaintainer(); } catch(e){ console.error(e); }
+  try { initPdfGeneratorMaintainer(); } catch(e){ console.error(e); }
+  try { initSecAuditWorkflowMaintainer(); } catch(e){ console.error(e); }
+  try { initClientsCRUD(); } catch(e){ console.error(e); }
+  try { initUFHistoryMaintainer(); } catch(e){ console.error(e); }
+  try { initVCardEditorMaintainer(); } catch(e){ console.error(e); }
 });
 
 /* --------------------------------------------------------------------------
