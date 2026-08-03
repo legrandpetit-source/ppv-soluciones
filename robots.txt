@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /tg-notify
+
+Sitemap: https://ppvsoluciones.cl/sitemap.xml

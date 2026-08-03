@@ -2,10 +2,22 @@
    CONSOLA DE ADMINISTRACIÓN /ADMIN - LÓGICA DE MANTENEDORES
    ========================================================================== */
 
-const ADMIN_HASHES = {
+const DEFAULT_ADMIN_HASHES = {
   emailHash: 'dbcba288f24a1d8b77274a31adba1b6ae7c5744e7b9e99776e556a816a5e4bb1',
   passHash: '2bea8efab55e996f89e4804280208da9711e6a2a693a30bc77355abed3c2ccdc'
 };
+
+function getAdminHashes() {
+  const custom = localStorage.getItem('ppv_admin_custom_hashes');
+  if (custom) {
+    try { return JSON.parse(custom); } catch(e){}
+  }
+  return DEFAULT_ADMIN_HASHES;
+}
+
+function getAdminEmail() {
+  return localStorage.getItem('ppv_admin_custom_email') || 'admin@ppvsoluciones.cl';
+}
 
 async function hashString(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
@@ -24,6 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initSkillsCRUD();
   initBlockedCRUD();
   initAdminMeetingsMaintainer();
+  initUserMaintainer();
 });
 
 /* --------------------------------------------------------------------------
@@ -59,7 +72,7 @@ function initAuth() {
     if (isAuthorized()) {
       loginOverlay.style.display = 'none';
       if (userDisplay) {
-        userDisplay.textContent = sessionStorage.getItem('ppv_admin_email') || 'admin@ppvsoluciones.cl';
+        userDisplay.textContent = sessionStorage.getItem('ppv_admin_email') || getAdminEmail();
       }
       refreshAllData();
     } else {
@@ -72,9 +85,10 @@ function initAuth() {
       e.preventDefault();
       const email = document.getElementById('portal-email').value.trim();
       const pass = document.getElementById('portal-password').value.trim();
+      const currentHashes = getAdminHashes();
 
       Promise.all([hashString(email), hashString(pass)]).then(([eHash, pHash]) => {
-        if (eHash === ADMIN_HASHES.emailHash && pHash === ADMIN_HASHES.passHash) {
+        if (eHash === currentHashes.emailHash && pHash === currentHashes.passHash) {
           sessionStorage.setItem('ppv_admin_logged', 'true');
           sessionStorage.setItem('ppv_admin_email', email);
           if (loginError) loginError.style.display = 'none';
@@ -603,6 +617,60 @@ function initAdminMeetingsMaintainer() {
         navigator.clipboard.writeText(inviteUrlInput.value);
         showToast('📋 Enlace de invitación copiado al portapapeles.');
       }
+    };
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. MANTENEDOR DE USUARIOS & CREDENCIALES ADMINISTRATIVAS
+   -------------------------------------------------------------------------- */
+function initUserMaintainer() {
+  const form = document.getElementById('form-update-admin-credentials');
+  const emailInput = document.getElementById('edit-admin-email');
+  const passInput = document.getElementById('edit-admin-password');
+  const confirmInput = document.getElementById('edit-admin-password-confirm');
+
+  if (emailInput) {
+    emailInput.value = getAdminEmail();
+  }
+
+  if (form) {
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const newEmail = emailInput.value.trim();
+      const newPass = passInput.value.trim();
+      const confirmPass = confirmInput.value.trim();
+
+      if (!newEmail || !newEmail.includes('@')) {
+        showToast('Por favor ingresa un correo electrónico válido.');
+        return;
+      }
+
+      if (newPass.length < 8) {
+        showToast('La contraseña debe tener al menos 8 caracteres.');
+        return;
+      }
+
+      if (newPass !== confirmPass) {
+        showToast('Las contraseñas no coinciden. Por favor verifica.');
+        return;
+      }
+
+      const eHash = await hashString(newEmail);
+      const pHash = await hashString(newPass);
+
+      const newHashes = { emailHash: eHash, passHash: pHash };
+      localStorage.setItem('ppv_admin_custom_hashes', JSON.stringify(newHashes));
+      localStorage.setItem('ppv_admin_custom_email', newEmail);
+      sessionStorage.setItem('ppv_admin_email', newEmail);
+
+      const userDisplay = document.getElementById('admin-user-display');
+      if (userDisplay) userDisplay.textContent = newEmail;
+
+      passInput.value = '';
+      confirmInput.value = '';
+
+      showToast('¡Credenciales administrativas actualizadas con éxito! Usa tus nuevos datos en el próximo inicio de sesión.');
     };
   }
 }
