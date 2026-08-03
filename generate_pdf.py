@@ -202,17 +202,24 @@ def markdown_to_html(md_content, title="Informe PPV Soluciones"):
 </html>"""
     return html_document
 
-def save_pdf(md_content, filename_base, title="Documento PPV"):
+def save_pdf(md_content, filename_base, title="Documento PPV", domain=None):
     html_content = markdown_to_html(md_content, title)
     tmp_html = f"/tmp/{filename_base}.html"
     
     with open(tmp_html, 'w', encoding='utf-8') as f:
         f.write(html_content)
 
+    output_base_dirs = [
+        '/home/patricio/Escritorio/Auditoría',
+        '/home/patricio/Desktop/Auditoría',
+        '/home/patricio/Documentos/informes_ppv'
+    ]
+
     created_pdfs = []
-    for out_dir in OUTPUT_DIRS:
-        os.makedirs(out_dir, exist_ok=True)
-        pdf_path = os.path.join(out_dir, f"{filename_base}.pdf")
+    for base_dir in output_base_dirs:
+        target_dir = os.path.join(base_dir, domain) if domain else base_dir
+        os.makedirs(target_dir, exist_ok=True)
+        pdf_path = os.path.join(target_dir, f"{filename_base}.pdf")
         
         # Convert to PDF via headless Google Chrome
         cmd = [
