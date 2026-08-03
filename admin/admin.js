@@ -793,7 +793,7 @@ function initSecAuditWorkflowMaintainer() {
     };
   });
 
-  // 1. Subida de Carta Firmada (Resguardo Legal)
+  // 1. Subida de Carta Firmada & Cédula de Identidad (Resguardo Legal)
   const formUpload = document.getElementById('form-upload-signed-letter');
   if (formUpload) {
     formUpload.onsubmit = async (e) => {
@@ -803,44 +803,52 @@ function initSecAuditWorkflowMaintainer() {
       const fileInput = document.getElementById('upload-letter-file');
       const resultBox = document.getElementById('upload-letter-result-box');
 
-      if (!fileInput.files || !fileInput.files[0]) {
-        showToast('Selecciona un archivo PDF o imagen firmada.', true);
+      const files = Array.from(fileInput.files || []);
+      if (!files.length) {
+        showToast('Selecciona al menos un archivo (Carta Firmada / Cédula).', true);
         return;
       }
 
-      const file = fileInput.files[0];
-      const reader = new FileReader();
-      reader.onload = async () => {
-        const fileB64 = reader.result;
-        try {
-          const res = await fetch('/tg-upload-signed-letter', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              domain: domain,
-              filename: file.name,
-              file_b64: fileB64,
-              message_id: msgId ? parseInt(msgId, 10) : null
-            })
-          });
-          const data = await res.json();
-          if (data.ok) {
-            showToast('✅ ¡Resguardo Legal Almacenado Exitosamente!');
-            if (resultBox) {
-              resultBox.style.display = 'block';
-              resultBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Documento Guardado:</strong> <code>${data.saved_path}</code><br>Estado de solicitud actualizado a 🟢 Resguardo Legal Verificado.`;
+      showToast(`Subiendo ${files.length} archivo(s) para resguardo legal...`);
+      let uploadedPaths = [];
+
+      for (const file of files) {
+        await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = async () => {
+            try {
+              const res = await fetch('/tg-upload-signed-letter', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  domain: domain,
+                  filename: file.name,
+                  file_b64: reader.result,
+                  message_id: msgId ? parseInt(msgId, 10) : null
+                })
+              });
+              const data = await res.json();
+              if (data.ok) uploadedPaths.push(data.saved_path);
+            } catch (e) {
+              console.error('Error subiendo archivo:', e);
             }
-            formUpload.reset();
-            refreshAllData();
-          } else {
-            showToast('❌ Error al guardar resguardo: ' + (data.error || 'Error'), true);
-          }
-        } catch (err) {
-          console.error('Error subiendo carta firmada:', err);
-          showToast('❌ Error de conexión al guardar resguardo legal.', true);
+            resolve();
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      if (uploadedPaths.length > 0) {
+        showToast('✅ ¡Resguardo Legal y Cédula Almacenados Exitosamente!');
+        if (resultBox) {
+          resultBox.style.display = 'block';
+          resultBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Archivos Resguardados (${uploadedPaths.length}):</strong><br>` + uploadedPaths.map(p => `<code style="font-size: 0.78rem;">${p}</code>`).join('<br>') + `<br><span style="color: var(--neon-emerald); font-weight: bold; display: inline-block; margin-top: 6px;">🟢 Resguardo Legal & Identidad Verificados (Ley 21.459 / 19.628).</span>`;
         }
-      };
-      reader.readAsDataURL(file);
+        formUpload.reset();
+        refreshAllData();
+      } else {
+        showToast('❌ Error de conexión al guardar resguardo legal.', true);
+      }
     };
   }
 

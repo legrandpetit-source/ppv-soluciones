@@ -725,14 +725,14 @@
           </button>
         </div>
 
-        <!-- Tab 1: Resguardo Legal / Carta Firmada -->
+        <!-- Tab 1: Resguardo Legal / Carta Firmada & Cédula de Identidad -->
         <div id="sec-tab-vault" class="sec-flow-tab-content">
           <div class="glass-card" style="background: rgba(13, 17, 26, 0.9); border-color: rgba(0, 243, 255, 0.3); max-width: 800px; margin-bottom: 1.5rem;">
             <h4 style="color: var(--neon-cyan); font-size: 0.95rem; margin-bottom: 0.8rem;">
-              <i class="fa-solid fa-upload"></i> Subir & Resguardar Carta de Autorización Firmada (Ley N° 21.459)
+              <i class="fa-solid fa-id-card"></i> 1. Resguardo Legal: Carta Firmada + Cédula de Identidad / Pasaporte
             </h4>
             <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.2rem;">
-              Una vez que el cliente firme el documento de autorización legal emitido, súbelo aquí. El sistema lo almacenará automáticamente en <code>Escritorio/Auditoría/&lt;dominio&gt;/resguardo_legal/</code> para el respaldo jurídico de PPV Soluciones.
+              Una vez que el cliente firme el documento de autorización legal emitido, súbelo junto a la copia de su <strong>Cédula de Identidad (ambos lados) o Pasaporte</strong> (Leyes N° 21.459 y N° 19.628). El sistema lo almacenará de forma cifrada en <code>Escritorio/Auditoría/&lt;dominio&gt;/resguardo_legal/</code> para el blindaje jurídico de PPV Soluciones.
             </p>
 
             <form id="form-upload-signed-letter">
@@ -748,12 +748,15 @@
               </div>
 
               <div class="form-group" style="margin-bottom: 1rem;">
-                <label style="font-size: 0.8rem; color: #fff;">Seleccionar Documento PDF o Imagen Firmada *</label>
-                <input type="file" id="upload-letter-file" class="form-control" accept=".pdf,image/*" required style="padding: 0.4rem; background: rgba(0,0,0,0.3);">
+                <label style="font-size: 0.8rem; color: #fff;">Seleccionar Archivos (Carta Firmada y/o Cédula de Identidad) *</label>
+                <input type="file" id="upload-letter-file" class="form-control" accept=".pdf,image/*" multiple required style="padding: 0.4rem; background: rgba(0,0,0,0.3);">
+                <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.3rem;">
+                  <i class="fa-solid fa-circle-info"></i> Puedes seleccionar varios archivos a la vez (Carta en PDF + Fotocopia de Cédula/Pasaporte).
+                </span>
               </div>
 
               <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); border: none; padding: 0.6rem 1.4rem;">
-                <i class="fa-solid fa-lock"></i> Almacenar & Confirmar Resguardo Legal
+                <i class="fa-solid fa-lock"></i> Almacenar & Confirmar Resguardo Legal (Ley 21.459)
               </button>
             </form>
 

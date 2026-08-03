@@ -304,6 +304,9 @@ El Solicitante declara formalmente ser el propietario legítimo del dominio o po
 ### Cuarta: Confidencialidad de la Información
 Toda la información obtenida durante la auditoría, incluidos los hallazgos técnicos, vectores de vulnerabilidad y datos de credenciales, será tratada con estricta reserva bajo secreto profesional y entregada únicamente al contacto autorizado designado en este documento.
 
+### Quinta: Documentación Anexa Requerida (Cédula de Identidad / Pasaporte)
+Para la plena efectividad jurídica de este resguardo en conformidad con la **Ley N° 21.459 (Delitos Informáticos)** y la **Ley N° 19.628 (Protección de Datos Personales)**, el Solicitante adjunta a este documento copia legible por ambos lados de la **Cédula de Identidad o Pasaporte vigente** del otorgante. Dicho respaldo se resguardará de forma encriptada y confidencial exclusivamente para verificación fehaciente de identidad y personería.
+
 ---
 
 ## ✍️ FIRMAS Y CONFORMIDAD DE LAS PARTES
@@ -313,7 +316,8 @@ Toda la información obtenida durante la auditoría, incluidos los hallazgos té
 | **{client_name}** | **Patricio Padilla** |
 | **Firma Representante Autorizado:** {contact_person} | **CEO & Fundador — PPV Soluciones** |
 | **RUT:** {rut} | **Correo:** contacto@ppvsoluciones.cl |
-| **Dominio Autorizado:** {clean_domain} | **Web:** https://ppvsoluciones.cl |
+| **Adjunto:** Cédula de Identidad / Pasaporte Verificado | **Web:** https://ppvsoluciones.cl |
+| **Dominio Autorizado:** {clean_domain} | **Fecha:** {date_str} |
 """
     return save_pdf(md_content, 'carta_autorizacion_seguridad', f'Carta de Autorización Legal - {clean_domain}', domain=clean_domain)
 
