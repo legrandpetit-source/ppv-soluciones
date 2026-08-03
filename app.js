@@ -1528,14 +1528,30 @@ function initModals() {
   const formSec = document.getElementById('form-security-audit-modal');
   const formReq = document.getElementById('form-service-request-modal');
 
-  // Abrir Modal de Ciberseguridad
-  const openSecModal = () => {
-    if (modalSec) modalSec.classList.add('active');
+  // Abrir Modal de Ciberseguridad con nivel seleccionado
+  window.openSecurityAuditModal = (tier = '450') => {
+    if (!modalSec) return;
+    const radio200 = document.getElementById('radio-tier-200');
+    const radio450 = document.getElementById('radio-tier-450');
+
+    if (tier === '200' && radio200) radio200.checked = true;
+    else if (radio450) radio450.checked = true;
+
+    modalSec.classList.add('active');
   };
 
-  if (btnHeroSec) btnHeroSec.onclick = openSecModal;
-  if (btnSecSection) btnSecSection.onclick = openSecModal;
+  if (btnHeroSec) btnHeroSec.onclick = () => window.openSecurityAuditModal('450');
+  if (btnSecSection) btnSecSection.onclick = () => window.openSecurityAuditModal('450');
   if (btnCloseSec) btnCloseSec.onclick = () => modalSec.classList.remove('active');
+
+  // Botones de niveles en la sección
+  document.querySelectorAll('.btn-sec-tier').forEach(btn => {
+    btn.onclick = (e) => {
+      e.preventDefault();
+      const tier = btn.dataset.tier || '450';
+      window.openSecurityAuditModal(tier);
+    };
+  });
 
   // Abrir Modal de Solicitud Rápida de Servicio
   window.openServiceRequestModal = (serviceTitle, serviceSubtitle = 'Diagnóstico & Cotización Directa') => {
@@ -1584,12 +1600,15 @@ function initModals() {
   if (formSec) {
     formSec.onsubmit = async (e) => {
       e.preventDefault();
+      const selectedTier = document.querySelector('input[name="sec_tier"]:checked')?.value || '450';
+      const isTier200 = selectedTier === '200';
+
       const data = {
         name: document.getElementById('sec-modal-name').value.trim(),
         email: document.getElementById('sec-modal-email').value.trim(),
-        subject: '🛡️ AUDITORÍA DE CIBERSEGURIDAD ($450 USD)',
+        subject: isTier200 ? '🛡️ DIAGNÓSTICO DE CIBERSEGURIDAD (NIVEL 1 - $200 USD)' : '🛡️ AUDITORÍA + HARDENING TOTAL (NIVEL 2 - $450 USD)',
         website: document.getElementById('sec-modal-website').value.trim(),
-        budgetText: '$450 USD (Plazo 4 días)',
+        budgetText: isTier200 ? '$200 USD (Plazo 2 días)' : '$450 USD (Plazo 4 días)',
         message: document.getElementById('sec-modal-message').value.trim()
       };
 

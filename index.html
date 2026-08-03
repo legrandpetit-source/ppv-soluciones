@@ -229,14 +229,65 @@
         </div>
       </div>
 
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.2rem; align-items: center; background: rgba(255, 0, 127, 0.06); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid rgba(255, 0, 127, 0.3);">
-        <div style="flex: 1; min-width: 280px;">
-          <h3 style="font-size: 1.2rem; color: #fff; margin-bottom: 0.4rem;">Inversión: $450 USD — Plazo de Entrega: 4 días</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Incluye diagnóstico pasivo/activo, parcheo de código, headers de seguridad HTTP y entrega de informe PDF con certificado legal.</p>
+      <!-- Niveles de Servicio -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+        
+        <!-- Nivel 1: Solo Diagnóstico -->
+        <div class="glass-card" style="border-color: rgba(0, 243, 255, 0.4); background: rgba(13,17,26,0.85); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+              <span class="status-pill" style="border-color: var(--neon-cyan); color: var(--neon-cyan); font-size: 0.75rem;">
+                NIVEL 1 — EVALUACIÓN
+              </span>
+              <span style="color: var(--neon-cyan); font-weight: 700; font-size: 1.4rem;">$200 USD</span>
+            </div>
+            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.6rem;">Diagnóstico & Reporte Ejecutivo PDF</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+              Ideal para evaluar el estado actual de tu sitio sin intervenir tu código ni servidor.
+            </p>
+            <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0; font-size: 0.85rem; color: #d0d5e2;">
+              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-cyan"></i> Análisis pasivo/activo de vulnerabilidades</li>
+              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-cyan"></i> Chequeo de credenciales expuestas & CORS</li>
+              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-cyan"></i> Verificación de HTTP Security Headers</li>
+              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-cyan"></i> <strong>Entrega de Informe PDF</strong> con hallazgos</li>
+              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-clock text-emerald"></i> Plazo de entrega: <strong>2 días hábiles</strong></li>
+            </ul>
+          </div>
+          <button class="btn btn-outline btn-sec-tier" data-tier="200" style="width: 100%; border-color: var(--neon-cyan); color: var(--neon-cyan);">
+            <i class="fa-solid fa-file-pdf"></i> Solicitar Solo Diagnóstico ($200 USD)
+          </button>
         </div>
-        <button class="btn btn-primary" id="btn-open-sec-section-modal" style="background: linear-gradient(135deg, var(--neon-pink), var(--neon-violet)); border: none; padding: 0.8rem 1.6rem; font-size: 1rem;">
-          <i class="fa-solid fa-shield-halved"></i> Solicitar Auditoría de Ciberseguridad ($450 USD)
-        </button>
+
+        <!-- Nivel 2: Auditoría + Hardening Total (Recomendado) -->
+        <div class="glass-card" style="border-color: var(--neon-pink); background: linear-gradient(145deg, rgba(255,0,127,0.1), rgba(13,17,26,0.9)); display: flex; flex-direction: column; justify-content: space-between; position: relative;">
+          <div style="position: absolute; top: -12px; right: 20px; background: var(--neon-pink); color: #fff; font-size: 0.7rem; font-weight: 800; padding: 2px 10px; border-radius: 10px; text-transform: uppercase;">
+            MÁS POPULAR
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+              <span class="status-pill" style="border-color: var(--neon-pink); color: var(--neon-pink); font-size: 0.75rem;">
+                NIVEL 2 — LLAVE EN MANO
+              </span>
+              <span style="color: var(--neon-pink); font-weight: 800; font-size: 1.4rem;">$450 USD</span>
+            </div>
+            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.6rem;">Auditoría + Hardening & Parcheo Total</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+              Diagnóstico completo + Corrección de código y blindaje en tu servidor de principio a fin.
+            </p>
+            <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0; font-size: 0.85rem; color: #fff;">
+              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-pink"></i> <strong>Todo lo incluido en Nivel 1</strong></li>
+              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-pink"></i> Parcheo de credenciales & hashes SHA-256</li>
+              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-pink"></i> Creación de <strong>Proxy Backend</strong> para ocultar tokens</li>
+              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-pink"></i> Configuración de <strong>Security Headers en Servidor</strong></li>
+              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-pink"></i> <strong>Carta de Resguardo Legal</strong> (Ley N° 21.459)</li>
+              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-clock text-emerald"></i> Plazo de entrega: <strong>4 días hábiles</strong></li>
+            </ul>
+          </div>
+          <button class="btn btn-primary btn-sec-tier" data-tier="450" style="width: 100%; background: linear-gradient(135deg, var(--neon-pink), var(--neon-violet)); border: none;">
+            <i class="fa-solid fa-shield-halved"></i> Solicitar Auditoría + Solución ($450 USD)
+          </button>
+        </div>
+
       </div>
     </div>
   </section>
@@ -711,10 +762,18 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
             <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: 0.3;"></i>
           </div>
 
+          <div class="option-card" data-price="200" data-time="2 días">
+            <div>
+              <strong style="display: block; font-size: 1rem;">Diagnóstico de Ciberseguridad & Reporte PDF (Nivel 1)</strong>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Auditoría de vulnerabilidades, chequeo de credenciales expuestas y entrega de informe PDF.</span>
+            </div>
+            <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: 0.3;"></i>
+          </div>
+
           <div class="option-card" data-price="450" data-time="4 días">
             <div>
-              <strong style="display: block; font-size: 1rem;">Auditoría de Seguridad, Hardening & Ciberprotección Web</strong>
-              <span style="font-size: 0.8rem; color: var(--text-muted);">Auditoría de vulnerabilidades, proxy seguro para APIs, hashes SHA-256 y headers HTTP de protección.</span>
+              <strong style="display: block; font-size: 1rem;">Auditoría + Hardening & Parcheo Total (Nivel 2 Llave en Mano)</strong>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Diagnóstico + Proxy backend seguro, hashes SHA-256, headers HTTP y carta legal Ley 21.459.</span>
             </div>
             <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: 0.3;"></i>
           </div>
@@ -1243,6 +1302,20 @@ PPV Soluciones
           </div>
         </div>
 
+        <div class="form-group" style="margin-bottom: 0.8rem;">
+          <label style="color: #fff; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.4rem; display: block;">Nivel de Servicio Requerido:</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; background: rgba(0,243,255,0.06); padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(0,243,255,0.3); cursor: pointer; font-size: 0.78rem; color: #fff;">
+              <input type="radio" name="sec_tier" id="radio-tier-200" value="200" style="accent-color: var(--neon-cyan);">
+              <span><strong>Nivel 1:</strong> Solo Diagnóstico PDF ($200 USD)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,0,127,0.06); padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,0,127,0.3); cursor: pointer; font-size: 0.78rem; color: #fff;">
+              <input type="radio" name="sec_tier" id="radio-tier-450" value="450" checked style="accent-color: var(--neon-pink);">
+              <span><strong>Nivel 2:</strong> Hardening Total ($450 USD)</span>
+            </label>
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="sec-modal-website"><i class="fa-solid fa-globe" style="color: var(--neon-pink);"></i> Sitio Web / URL a Auditar *</label>
           <input type="text" id="sec-modal-website" class="form-control" placeholder="Ej. https://miempresa.cl o proyectovertical.cl" maxlength="150" required>
@@ -1320,7 +1393,7 @@ PPV Soluciones
   </div>
 
   <!-- Scripts -->
-  <script src="db.js?v=20260803005"></script>
-  <script src="app.js?v=20260803005"></script>
+  <script src="db.js?v=20260803006"></script>
+  <script src="app.js?v=20260803006"></script>
 </body>
 </html>
