@@ -1368,23 +1368,28 @@ async function sendTelegramNotification(data) {
     `👤 <b>Nombre:</b> ${escapeHtml(data.name)}\n` +
     `📧 <b>Email:</b> ${escapeHtml(data.email)}\n` +
     `📌 <b>Asunto:</b> ${escapeHtml(data.subject || 'Consulta General')}\n` +
-    `💰 <b>Presupuesto:</b> ${escapeHtml(data.budget || 'Por definir')}\n\n` +
+    `💰 <b>Presupuesto:</b> ${escapeHtml(data.budgetText || data.budget || 'Por definir')}\n\n` +
     `💬 <b>Mensaje:</b>\n<i>"${escapeHtml(data.message)}"</i>\n\n` +
     `📅 <i>${dateStr}</i>\n` +
     `🌐 <i>Origen: ppvsoluciones.cl</i>`;
 
   try {
-    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      keepalive: true,
       body: JSON.stringify({
         chat_id: TELEGRAM_CHAT_ID,
         text: text,
         parse_mode: 'HTML'
       })
     });
+    const resData = await response.json();
+    console.log('Respuesta Telegram API:', resData);
+    return resData.ok;
   } catch (err) {
     console.error('Error enviando notificación a Telegram:', err);
+    return false;
   }
 }
 
@@ -1395,11 +1400,15 @@ function initContactAndDB() {
   contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    const budgetSelect = document.getElementById('contact-budget');
+    const budgetText = (budgetSelect && budgetSelect.selectedIndex >= 0) ? budgetSelect.options[budgetSelect.selectedIndex].text : '';
+
     const data = {
       name: document.getElementById('contact-name').value.trim(),
       email: document.getElementById('contact-email').value.trim(),
       subject: document.getElementById('contact-subject').value.trim(),
       budget: document.getElementById('contact-budget').value,
+      budgetText: budgetText,
       message: document.getElementById('contact-message').value.trim()
     };
 
@@ -1407,7 +1416,7 @@ function initContactAndDB() {
       if (window.portfolioDB) {
         await window.portfolioDB.saveMessage(data);
         // Notificar en tiempo real a Telegram con el Bot Legrandpetit_noti_bot
-        sendTelegramNotification(data);
+        await sendTelegramNotification(data);
         showToast('¡Mensaje enviado con éxito!');
         contactForm.reset();
       }
