@@ -10,12 +10,25 @@ import urllib.request
 import os
 import sqlite3
 from datetime import datetime
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    ZoneInfo = None
 
 # ── Configuración segura (solo en el servidor) ────────────────────────────────
 TELEGRAM_BOT_TOKEN = '8623970624:AAEA5GQPNOJE53751yIir5PDCJglBbfFCMM'
 TELEGRAM_CHAT_ID   = '1468481915'
 PORT               = 9001
 DB_PATH            = '/var/www/ppvsoluciones/ppv_database.sqlite'
+
+def get_chile_now_str():
+    """Retorna fecha y hora exacta en zona horaria de Chile (America/Santiago)."""
+    try:
+        if ZoneInfo:
+            return datetime.now(ZoneInfo('America/Santiago')).strftime('%d-%m-%Y %H:%M hrs')
+    except Exception as e:
+        print(f"[TG-PROXY] ZoneInfo error: {e}")
+    return datetime.now().strftime('%d-%m-%Y %H:%M hrs')
 
 def escape_html(text):
     if not text:
@@ -37,7 +50,7 @@ def save_to_db(name, email, subject, website, budget, message):
                 budget TEXT DEFAULT 'Por definir',
                 message TEXT NOT NULL,
                 status TEXT DEFAULT 'Nuevo',
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                created_at TEXT
             )
         ''')
         try:
@@ -45,13 +58,14 @@ def save_to_db(name, email, subject, website, budget, message):
         except Exception:
             pass
 
+        now_chile = get_chile_now_str()
         cursor.execute('''
-            INSERT INTO contact_messages (name, email, subject, website, budget, message)
-            VALUES (?, ?, ?, ?, ?, ?)
-        ''', (name, email, subject or 'Consulta General', website or '', budget or 'Por definir', message))
+            INSERT INTO contact_messages (name, email, subject, website, budget, message, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (name, email, subject or 'Consulta General', website or '', budget or 'Por definir', message, now_chile))
         conn.commit()
         conn.close()
-        print(f"[TG-PROXY] ✅ Mensaje guardado exitosamente en SQLite DB ({email})")
+        print(f"[TG-PROXY] ✅ Mensaje guardado exitosamente en SQLite DB ({email}) a las {now_chile}")
     except Exception as e:
         print(f"[TG-PROXY] ❌ Error guardando en DB: {e}")
 
@@ -72,7 +86,7 @@ def get_all_messages_from_db():
         return []
 
 def send_telegram(name, email, subject, website, budget_text, message):
-    now = datetime.now().strftime('%d-%m-%Y %H:%M')
+    now = get_chile_now_str()
     site_info = f"🌐 <b>Sitio Web / URL:</b> {escape_html(website)}\n" if website else ""
     text = (
         f"🚀 <b>NUEVO MENSAJE - PPV SOLUCIONES</b>\n\n"
@@ -83,7 +97,7 @@ def send_telegram(name, email, subject, website, budget_text, message):
         f"💰 <b>Presupuesto/Plan:</b> {escape_html(budget_text or 'Por definir')}\n"
         f"⚖️ <b>Autorización Legal:</b> Aceptada (Ley 21.459)\n\n"
         f"💬 <b>Mensaje:</b>\n<i>\"{escape_html(message)}\"</i>\n\n"
-        f"📅 <i>{now}</i>\n"
+        f"📅 <b>Fecha & Hora (Chile):</b> <i>{now}</i>\n"
         f"🔒 <i>Origen: ppvsoluciones.cl</i>"
     )
     payload = json.dumps({
