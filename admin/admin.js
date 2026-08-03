@@ -162,13 +162,40 @@ function initSidebar() {
 async function loadMessagesTable() {
   const tbody = document.getElementById('portal-messages-tbody');
   const btnExport = document.getElementById('btn-portal-export-json');
-  if (!tbody || !window.portfolioDB) return;
+  if (!tbody) return;
 
   tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color: var(--text-muted);">Cargando mensajes...</td></tr>';
-  const messages = await window.portfolioDB.getAllMessages();
+  
+  let messages = [];
+  try {
+    const res = await fetch('/tg-messages');
+    const data = await res.json();
+    if (data.ok && Array.isArray(data.messages)) {
+      messages = data.messages.map(m => ({
+        id: m.id,
+        name: m.name,
+        email: m.email,
+        subject: m.subject,
+        website: m.website,
+        budget: m.budget,
+        message: m.message,
+        status: m.status || 'Nuevo',
+        timestampFormatted: m.created_at || 'Reciente'
+      }));
+    }
+  } catch(err) {
+    console.warn('Backend API /tg-messages no accesible, usando fallback local:', err);
+  }
+
+  if (!messages.length && window.portfolioDB) {
+    messages = await window.portfolioDB.getAllMessages();
+  }
+
+  const statCounter = document.getElementById('stat-count-messages');
+  if (statCounter) statCounter.textContent = messages.length;
 
   if (!messages.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color: var(--text-muted);">No hay mensajes registrados.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color: var(--text-muted);">No hay mensajes registrados aún.</td></tr>';
     return;
   }
 
@@ -176,13 +203,14 @@ async function loadMessagesTable() {
   messages.forEach(msg => {
     const tr = document.createElement('tr');
     const badgeClass = msg.status === 'Nuevo' ? 'badge-new' : (msg.status === 'Leído' ? 'badge-read' : 'badge-replied');
-    
+    const websiteInfo = msg.website ? `<br><small style="color: var(--neon-pink);"><i class="fa-solid fa-globe"></i> ${escapeHtml(msg.website)}</small>` : '';
+
     tr.innerHTML = `
       <td style="font-family: var(--font-code); color: var(--neon-cyan);">#${msg.id}</td>
       <td style="color: var(--text-muted); font-size: 0.8rem;">${msg.timestampFormatted}</td>
-      <td><strong>${escapeHtml(msg.name)}</strong></td>
+      <td><strong>${escapeHtml(msg.name)}</strong>${websiteInfo}</td>
       <td style="color: var(--neon-violet);">${escapeHtml(msg.email)}</td>
-      <td style="color: var(--neon-emerald); font-weight: 600;">${escapeHtml(msg.budget)}</td>
+      <td style="color: var(--neon-emerald); font-weight: 600;">${escapeHtml(msg.budget || msg.subject)}</td>
       <td><span class="badge-status ${badgeClass}">${msg.status}</span></td>
       <td>
         <button class="btn btn-outline btn-msg-read" data-id="${msg.id}" style="padding: 2px 6px; font-size: 0.75rem;">
