@@ -5,14 +5,15 @@
 class MessageDB {
   constructor() {
     this.dbName = 'PPVSolutionsDB';
-    this.dbVersion = 3;
+    this.dbVersion = 4;
     this.stores = {
       messages: 'contact_messages',
       services: 'services',
       skills: 'skills',
       config: 'config',
       blocked: 'blocked_words',
-      clients: 'clients'
+      clients: 'clients',
+      admin_users: 'admin_users'
     };
     this.db = null;
     this.init();
@@ -56,6 +57,12 @@ class MessageDB {
         if (!db.objectStoreNames.contains(this.stores.clients)) {
           const cStore = db.createObjectStore(this.stores.clients, { keyPath: 'id', autoIncrement: true });
           cStore.createIndex('name', 'name', { unique: false });
+        }
+
+        // Store: Usuarios Administradores
+        if (!db.objectStoreNames.contains(this.stores.admin_users)) {
+          const uStore = db.createObjectStore(this.stores.admin_users, { keyPath: 'id', autoIncrement: true });
+          uStore.createIndex('email', 'email', { unique: true });
         }
 
         // Store: Configuración General
@@ -170,6 +177,38 @@ class MessageDB {
         await this.add('clients', c);
       }
     }
+
+    const adminUsers = await this.getAll('admin_users');
+    if (!adminUsers || adminUsers.length === 0) {
+      const defaultUser = {
+        name: 'Patricio Padilla',
+        role: 'CEO & Fundador — PPV Soluciones',
+        email: 'ppv@ppvsoluciones.cl',
+        emailHash: '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed',
+        passHash: 'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb',
+        phone: '+56 9 1234 5678',
+        userLevel: 'Administrador Principal',
+        createdAt: '03/08/2026'
+      };
+      await this.add('admin_users', defaultUser);
+    }
+  }
+
+  // --- Métodos de Usuarios Administradores (Multi-Usuario) ---
+  async saveAdminUser(userData) {
+    if (userData.id) {
+      return await this.update('admin_users', userData);
+    } else {
+      return await this.add('admin_users', userData);
+    }
+  }
+
+  async getAllAdminUsers() {
+    return await this.getAll('admin_users');
+  }
+
+  async deleteAdminUser(id) {
+    return await this.delete('admin_users', id);
   }
 
   // --- Métodos de Clientes & Casos de Éxito ---

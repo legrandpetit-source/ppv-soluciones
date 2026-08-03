@@ -95,15 +95,22 @@ function initAuth() {
       const pass = document.getElementById('portal-password').value.trim();
       const currentHashes = getAdminHashes();
 
-      Promise.all([hashString(email), hashString(pass)]).then(([eHash, pHash]) => {
+      Promise.all([hashString(email), hashString(pass)]).then(async ([eHash, pHash]) => {
         const isMasterCreds = (eHash === '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed' && pHash === 'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb');
         const isCustomCreds = (eHash === currentHashes.emailHash && pHash === currentHashes.passHash);
 
-        if (isMasterCreds || isCustomCreds) {
+        let isDbUser = false;
+        if (window.portfolioDB) {
+          const dbUsers = await window.portfolioDB.getAllAdminUsers();
+          const found = dbUsers.find(u => u.emailHash === eHash && u.passHash === pHash);
+          if (found) isDbUser = true;
+        }
+
+        if (isMasterCreds || isCustomCreds || isDbUser) {
           sessionStorage.setItem('ppv_admin_logged', 'true');
           sessionStorage.setItem('ppv_admin_email', email);
           if (loginError) loginError.style.display = 'none';
-          showToast('¡Bienvenido al Panel de Administración!');
+          showToast(`¡Bienvenido al Panel de Administración!`);
           checkSession();
         } else {
           if (loginError) loginError.style.display = 'flex';
@@ -673,17 +680,24 @@ function initAdminMeetingsMaintainer() {
 }
 
 /* --------------------------------------------------------------------------
-   8. MANTENEDOR DE USUARIOS & CREDENCIALES ADMINISTRATIVAS
+   8. MANTENEDOR DE USUARIOS ADMINISTRADORES (MULTI-USUARIO CRUD)
    -------------------------------------------------------------------------- */
 function initUserMaintainer() {
   const form = document.getElementById('form-update-admin-credentials');
+  const userIdInput = document.getElementById('edit-admin-user-id');
   const nameInput = document.getElementById('edit-admin-name');
   const roleInput = document.getElementById('edit-admin-role');
+  const levelSelect = document.getElementById('edit-admin-user-level');
   const emailInput = document.getElementById('edit-admin-email');
   const phoneInput = document.getElementById('edit-admin-phone');
   const passInput = document.getElementById('edit-admin-password');
   const confirmInput = document.getElementById('edit-admin-password-confirm');
   const btnToggleEditPass = document.getElementById('btn-toggle-edit-pass');
+  const btnCancel = document.getElementById('btn-cancel-edit-admin-user');
+  const titleEl = document.getElementById('admin-user-form-title');
+  const tbody = document.getElementById('admin-users-tbody');
+
+  loadAdminUsersTable();
 
   if (btnToggleEditPass && passInput) {
     btnToggleEditPass.onclick = (e) => {
@@ -702,67 +716,152 @@ function initUserMaintainer() {
     };
   }
 
-  // Cargar datos guardados
-  if (nameInput) nameInput.value = localStorage.getItem('ppv_admin_name') || 'Patricio Padilla';
-  if (roleInput) roleInput.value = localStorage.getItem('ppv_admin_role') || 'CEO & Fundador — PPV Soluciones';
-  if (emailInput) emailInput.value = getAdminEmail();
-  if (phoneInput) phoneInput.value = localStorage.getItem('ppv_admin_phone') || '+56 9 1234 5678';
-
   if (form) {
     form.onsubmit = async (e) => {
       e.preventDefault();
-      const newName = nameInput ? nameInput.value.trim() : 'Patricio Padilla';
-      const newRole = roleInput ? roleInput.value.trim() : 'CEO & Fundador — PPV Soluciones';
-      const newEmail = emailInput.value.trim();
-      const newPhone = phoneInput ? phoneInput.value.trim() : '';
-      const newPass = passInput ? passInput.value.trim() : '';
+      const id = userIdInput ? userIdInput.value : '';
+      const name = nameInput ? nameInput.value.trim() : '';
+      const role = roleInput ? roleInput.value.trim() : '';
+      const userLevel = levelSelect ? levelSelect.value : 'Administrador Principal';
+      const email = emailInput.value.trim();
+      const phone = phoneInput ? phoneInput.value.trim() : '';
+      const pass = passInput ? passInput.value.trim() : '';
       const confirmPass = confirmInput ? confirmInput.value.trim() : '';
 
-      if (!newEmail || !newEmail.includes('@')) {
+      if (!email || !email.includes('@')) {
         showToast('Por favor ingresa un correo electrónico válido.', true);
         return;
       }
 
-      if (newPass) {
-        if (newPass.length < 8) {
+      if (!id && !pass) {
+        showToast('Para un nuevo usuario debes asignar una contraseña.', true);
+        return;
+      }
+
+      if (pass) {
+        if (pass.length < 8) {
           showToast('La contraseña debe tener al menos 8 caracteres.', true);
           return;
         }
-        if (newPass !== confirmPass) {
+        if (pass !== confirmPass) {
           showToast('Las contraseñas no coinciden. Por favor verifica.', true);
           return;
         }
       }
 
-      const eHash = await hashString(newEmail);
-      const currentHashes = getAdminHashes();
-      const pHash = newPass ? await hashString(newPass) : currentHashes.passHash;
+      const eHash = await hashString(email);
+      let userData = {
+        name: name || 'Usuario Administrador',
+        role: role || 'Operador',
+        userLevel: userLevel,
+        email: email,
+        emailHash: eHash,
+        phone: phone,
+        createdAt: new Date().toLocaleDateString('es-CL')
+      };
 
-      const newHashes = { emailHash: eHash, passHash: pHash };
-      localStorage.setItem('ppv_admin_custom_hashes', JSON.stringify(newHashes));
-      localStorage.setItem('ppv_admin_custom_email', newEmail);
-      localStorage.setItem('ppv_admin_name', newName);
-      localStorage.setItem('ppv_admin_role', newRole);
-      localStorage.setItem('ppv_admin_phone', newPhone);
-      sessionStorage.setItem('ppv_admin_email', newEmail);
-
-      if (window.portfolioDB) {
-        await window.portfolioDB.saveConfig('admin_profile', {
-          name: newName,
-          role: newRole,
-          email: newEmail,
-          phone: newPhone
-        });
+      if (id) {
+        userData.id = parseInt(id, 10);
+        const existingUsers = await window.portfolioDB.getAllAdminUsers();
+        const existing = existingUsers.find(u => u.id === userData.id);
+        userData.passHash = pass ? await hashString(pass) : (existing ? existing.passHash : await hashString('axeappv3878'));
+      } else {
+        userData.passHash = await hashString(pass);
       }
 
-      const userDisplay = document.getElementById('admin-user-display');
-      if (userDisplay) userDisplay.textContent = newEmail;
+      await window.portfolioDB.saveAdminUser(userData);
 
-      if (passInput) passInput.value = '';
-      if (confirmInput) confirmInput.value = '';
+      // Si es el usuario actual, actualizar localStorage
+      if (email === sessionStorage.getItem('ppv_admin_email') || email === 'ppv@ppvsoluciones.cl') {
+        localStorage.setItem('ppv_admin_custom_email', email);
+        localStorage.setItem('ppv_admin_name', userData.name);
+        localStorage.setItem('ppv_admin_role', userData.role);
+        localStorage.setItem('ppv_admin_phone', userData.phone);
+        if (pass) {
+          localStorage.setItem('ppv_admin_custom_hashes', JSON.stringify({ emailHash: eHash, passHash: userData.passHash }));
+        }
+      }
 
-      showToast('✅ ¡Perfil y credenciales administrativas actualizados con éxito!');
+      showToast(id ? '✅ Usuario administrador actualizado' : '✅ Nuevo usuario administrador registrado');
+      resetForm();
+      await loadAdminUsersTable();
     };
+  }
+
+  if (btnCancel) {
+    btnCancel.onclick = () => resetForm();
+  }
+
+  function resetForm() {
+    if (form) form.reset();
+    if (userIdInput) userIdInput.value = '';
+    if (titleEl) titleEl.innerHTML = '<i class="fa-solid fa-user-plus"></i> Crear / Editar Usuario Administrador';
+    if (btnCancel) btnCancel.style.display = 'none';
+  }
+
+  async function loadAdminUsersTable() {
+    if (!tbody || !window.portfolioDB) return;
+    const users = await window.portfolioDB.getAllAdminUsers();
+    tbody.innerHTML = '';
+
+    if (!users || users.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">No hay usuarios registrados.</td></tr>';
+      return;
+    }
+
+    users.forEach(u => {
+      const tr = document.createElement('tr');
+      const levelBadgeClass = u.userLevel.includes('Principal') ? 'badge-new' : (u.userLevel.includes('Ciberseguridad') ? 'badge-read' : 'badge-replied');
+      tr.innerHTML = `
+        <td>#${u.id}</td>
+        <td><strong style="color: #fff;">${escapeHtml(u.name)}</strong></td>
+        <td><span style="font-size: 0.8rem; color: var(--neon-cyan);">${escapeHtml(u.role)}</span></td>
+        <td style="font-size: 0.8rem;">${escapeHtml(u.email)}</td>
+        <td style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(u.phone || 'N/A')}</td>
+        <td><span class="badge-status ${levelBadgeClass}">${escapeHtml(u.userLevel || 'Administrador')}</span></td>
+        <td>
+          <div style="display: flex; gap: 0.4rem;">
+            <button class="btn btn-outline btn-edit-admin-user" data-id="${u.id}" style="padding: 2px 6px; font-size: 0.75rem; border-color: var(--neon-cyan); color: var(--neon-cyan);">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            ${u.email === 'ppv@ppvsoluciones.cl' ? '' : `
+            <button class="btn btn-outline btn-delete-admin-user" data-id="${u.id}" style="padding: 2px 6px; font-size: 0.75rem; border-color: var(--neon-pink); color: var(--neon-pink);">
+              <i class="fa-solid fa-trash"></i>
+            </button>`}
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    tbody.querySelectorAll('.btn-edit-admin-user').forEach(btn => {
+      btn.onclick = () => {
+        const id = parseInt(btn.dataset.id, 10);
+        const user = users.find(u => u.id === id);
+        if (user) {
+          if (userIdInput) userIdInput.value = user.id;
+          if (nameInput) nameInput.value = user.name || '';
+          if (roleInput) roleInput.value = user.role || '';
+          if (levelSelect) levelSelect.value = user.userLevel || 'Administrador Principal';
+          if (emailInput) emailInput.value = user.email || '';
+          if (phoneInput) phoneInput.value = user.phone || '';
+
+          if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Editando Usuario #${user.id}: ${escapeHtml(user.name)}`;
+          if (btnCancel) btnCancel.style.display = 'inline-block';
+          window.scrollTo({ top: document.querySelector('.maintainer-form-box').offsetTop - 80, behavior: 'smooth' });
+        }
+      };
+    });
+
+    tbody.querySelectorAll('.btn-delete-admin-user').forEach(btn => {
+      btn.onclick = async () => {
+        if (confirm('¿Eliminar este usuario administrador de la consola?')) {
+          await window.portfolioDB.deleteAdminUser(parseInt(btn.dataset.id, 10));
+          await loadAdminUsersTable();
+          showToast('Usuario eliminado del sistema.');
+        }
+      };
+    });
   }
 }
 
