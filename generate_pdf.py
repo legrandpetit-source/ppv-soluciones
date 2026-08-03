@@ -189,14 +189,20 @@ def markdown_to_html(md_content, title="Informe PPV Soluciones"):
 </head>
 <body>
     <div class="header-bar">
-        <div class="header-title">PPV SOLUCIONES</div>
-        <div class="header-subtitle">Automatización & Ciberseguridad Web<br>https://ppvsoluciones.cl</div>
+        <div>
+            <div class="header-title">PPV SOLUCIONES</div>
+            <div style="font-size: 11px; color: #555; font-weight: 600;">Patricio Padilla — CEO & Fundador</div>
+        </div>
+        <div class="header-subtitle">
+            <strong>Contacto:</strong> contacto@ppvsoluciones.cl<br>
+            <strong>Web:</strong> https://ppvsoluciones.cl
+        </div>
     </div>
 
     {body_content}
 
     <div class="footer-bar">
-        Documento generado automáticamente por PPV Soluciones — Certificación & Seguridad Digital
+        PPV Soluciones — Automatización, Ciberseguridad & Resguardo Digital | Patricio Padilla (CEO & Fundador)
     </div>
 </body>
 </html>"""
