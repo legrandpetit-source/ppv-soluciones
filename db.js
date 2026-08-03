@@ -17,8 +17,10 @@ class MessageDB {
     this.init();
   }
 
-  async init() {
-    return new Promise((resolve, reject) => {
+  init() {
+    if (this.initPromise) return this.initPromise;
+
+    this.initPromise = new Promise((resolve, reject) => {
       const request = indexedDB.open(this.dbName, this.dbVersion);
 
       request.onupgradeneeded = (e) => {
@@ -49,23 +51,24 @@ class MessageDB {
           bStore.createIndex('word', 'word', { unique: true });
         }
 
-        // Store: Configuración
+        // Store: Configuración General
         if (!db.objectStoreNames.contains(this.stores.config)) {
           db.createObjectStore(this.stores.config, { keyPath: 'key' });
         }
       };
 
-      request.onsuccess = async (e) => {
+      request.onsuccess = (e) => {
         this.db = e.target.result;
-        await this.seedDefaultsIfEmpty();
-        resolve(this.db);
+        this.seedDefaultsIfEmpty().then(() => resolve(this.db));
       };
 
       request.onerror = (e) => {
-        console.error('Error al abrir IndexedDB:', e.target.error);
+        console.error('IndexedDB Error:', e.target.error);
         reject(e.target.error);
       };
     });
+
+    return this.initPromise;
   }
 
   // Datos semilla por defecto si la base de datos está vacía

@@ -118,11 +118,14 @@ function initAuth() {
    2. REFRESCAR DATOS Y CONTADORES
    -------------------------------------------------------------------------- */
 async function refreshAllData() {
-  await loadMessagesTable();
-  await loadServicesTable();
-  await loadSkillsTable();
-  await loadBlockedTable();
-  await updateCounters();
+  if (window.portfolioDB) {
+    try { await window.portfolioDB.init(); } catch(e) {}
+  }
+  try { await loadMessagesTable(); } catch(e) { console.error('Error cargando mensajes:', e); }
+  try { await loadServicesTable(); } catch(e) { console.error('Error cargando servicios:', e); }
+  try { await loadSkillsTable(); } catch(e) { console.error('Error cargando habilidades:', e); }
+  try { await loadBlockedTable(); } catch(e) { console.error('Error cargando bloqueados:', e); }
+  try { await updateCounters(); } catch(e) { console.error('Error actualizando contadores:', e); }
 }
 
 async function updateCounters() {
@@ -156,6 +159,7 @@ function initSidebar() {
         const targetView = document.getElementById(viewId);
         if (targetView) {
           targetView.classList.add('active');
+          refreshAllData();
         }
       }
     };
