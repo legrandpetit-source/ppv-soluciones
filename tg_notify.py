@@ -110,8 +110,8 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
 
 def run():
-    server = HTTPServer(('127.0.0.1', PORT), TelegramProxyHandler)
-    print(f"🔐 Telegram Proxy escuchando en puerto {PORT}...")
+    server = HTTPServer(('0.0.0.0', PORT), TelegramProxyHandler)
+    print(f"🔐 Telegram Proxy escuchando en 0.0.0.0:{PORT}...")
     server.serve_forever()
 
 if __name__ == '__main__':
