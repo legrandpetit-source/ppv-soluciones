@@ -1516,6 +1516,115 @@ function initModals() {
     };
   }
 
+  // Modales de Ciberseguridad y Solicitud Rápida
+  const modalSec = document.getElementById('modal-security-audit');
+  const modalReq = document.getElementById('modal-service-request');
+
+  const btnHeroSec = document.getElementById('btn-hero-sec-audit');
+  const btnSecSection = document.getElementById('btn-open-sec-section-modal');
+  const btnCloseSec = document.getElementById('btn-close-sec-modal');
+  const btnCloseReq = document.getElementById('btn-close-service-modal');
+
+  const formSec = document.getElementById('form-security-audit-modal');
+  const formReq = document.getElementById('form-service-request-modal');
+
+  // Abrir Modal de Ciberseguridad
+  const openSecModal = () => {
+    if (modalSec) modalSec.classList.add('active');
+  };
+
+  if (btnHeroSec) btnHeroSec.onclick = openSecModal;
+  if (btnSecSection) btnSecSection.onclick = openSecModal;
+  if (btnCloseSec) btnCloseSec.onclick = () => modalSec.classList.remove('active');
+
+  // Abrir Modal de Solicitud Rápida de Servicio
+  window.openServiceRequestModal = (serviceTitle, serviceSubtitle = 'Diagnóstico & Cotización Directa') => {
+    if (!modalReq) return;
+    const titleEl = document.getElementById('modal-req-title');
+    const subEl = document.getElementById('modal-req-subtitle');
+    const subjInput = document.getElementById('req-modal-subject');
+
+    if (titleEl) titleEl.textContent = 'Solicitud de Servicio';
+    if (subEl) subEl.textContent = serviceSubtitle;
+    if (subjInput) subjInput.value = serviceTitle;
+
+    modalReq.classList.add('active');
+  };
+
+  if (btnCloseReq) btnCloseReq.onclick = () => modalReq.classList.remove('active');
+
+  // Evento Solución por Rubro
+  const btnReqIndustry = document.getElementById('btn-request-industry-solution');
+  if (btnReqIndustry) {
+    btnReqIndustry.onclick = (e) => {
+      e.preventDefault();
+      const title = document.getElementById('res-industry-title').textContent;
+      const tag = document.getElementById('res-industry-tag').textContent;
+      window.openServiceRequestModal(title, tag);
+    };
+  }
+
+  // Evento Calculadora de Presupuesto
+  const btnCalcReq = document.getElementById('btn-calc-request-modal');
+  if (btnCalcReq) {
+    btnCalcReq.onclick = (e) => {
+      e.preventDefault();
+      const totalUSD = document.getElementById('calc-total-usd')?.textContent || '$350 USD';
+      const totalTime = document.getElementById('calc-total-time')?.textContent || '3 días';
+      const selectedCards = document.querySelectorAll('.calc-options .option-card.selected strong');
+      const modules = Array.from(selectedCards).map(el => el.textContent.trim()).join(', ');
+      
+      const title = `Proyecto Calculado: ${modules || 'Módulos Seleccionados'}`;
+      const subtitle = `Presupuesto: ${totalUSD} | Plazo: ${totalTime}`;
+      window.openServiceRequestModal(title, subtitle);
+    };
+  }
+
+  // Submit Formulario Auditoría Ciberseguridad
+  if (formSec) {
+    formSec.onsubmit = async (e) => {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('sec-modal-name').value.trim(),
+        email: document.getElementById('sec-modal-email').value.trim(),
+        subject: '🛡️ AUDITORÍA DE CIBERSEGURIDAD ($450 USD)',
+        website: document.getElementById('sec-modal-website').value.trim(),
+        budgetText: '$450 USD (Plazo 4 días)',
+        message: document.getElementById('sec-modal-message').value.trim()
+      };
+
+      await sendTelegramNotification(data);
+      if (window.portfolioDB) {
+        await window.portfolioDB.add('messages', { ...data, timestamp: new Date().toISOString() });
+      }
+      showToast('¡Solicitud de Auditoría enviada con éxito! Revisa tu correo o Telegram.');
+      formSec.reset();
+      modalSec.classList.remove('active');
+    };
+  }
+
+  // Submit Formulario Solicitud Rápida
+  if (formReq) {
+    formReq.onsubmit = async (e) => {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('req-modal-name').value.trim(),
+        email: document.getElementById('req-modal-email').value.trim(),
+        subject: document.getElementById('req-modal-subject').value.trim(),
+        budgetText: 'Por definir',
+        message: document.getElementById('req-modal-message').value.trim()
+      };
+
+      await sendTelegramNotification(data);
+      if (window.portfolioDB) {
+        await window.portfolioDB.add('messages', { ...data, timestamp: new Date().toISOString() });
+      }
+      showToast('¡Solicitud enviada con éxito! Te contactaremos a la brevedad.');
+      formReq.reset();
+      modalReq.classList.remove('active');
+    };
+  }
+
   // Abrir panel o solicitar login
   if (btnOpenDB) btnOpenDB.onclick = () => requestAdminAccess();
   if (btnOpenDBDrawer) btnOpenDBDrawer.onclick = () => requestAdminAccess();
