@@ -143,16 +143,21 @@ async function updateCounters() {
    -------------------------------------------------------------------------- */
 function initSidebar() {
   const sidebarBtns = document.querySelectorAll('.sidebar-btn');
-  const views = document.querySelectorAll('.admin-panel-view');
 
   sidebarBtns.forEach(btn => {
-    btn.onclick = () => {
+    btn.onclick = (e) => {
+      if (e) e.preventDefault();
       sidebarBtns.forEach(b => b.classList.remove('active'));
-      views.forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.admin-panel-view').forEach(v => v.classList.remove('active'));
 
       btn.classList.add('active');
-      const targetView = document.getElementById(btn.dataset.view);
-      if (targetView) targetView.classList.add('active');
+      const viewId = btn.getAttribute('data-view') || (btn.dataset ? btn.dataset.view : null);
+      if (viewId) {
+        const targetView = document.getElementById(viewId);
+        if (targetView) {
+          targetView.classList.add('active');
+        }
+      }
     };
   });
 }
