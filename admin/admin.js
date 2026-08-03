@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initAdminMeetingsMaintainer();
   initUserMaintainer();
   initPdfGeneratorMaintainer();
+  initSecAuditWorkflowMaintainer();
 });
 
 /* --------------------------------------------------------------------------
@@ -758,6 +759,194 @@ function initPdfGeneratorMaintainer() {
       } catch (err) {
         console.error('Error enviando petición /tg-generate-docs:', err);
         showToast('❌ Error de conexión al generar documentos PDF.', true);
+      }
+    };
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. CENTRO DE CIBERSEGURIDAD, RESGUARDO LEGAL & HARDENING WORKFLOW
+   -------------------------------------------------------------------------- */
+function initSecAuditWorkflowMaintainer() {
+  // Pestañas internas
+  const tabBtns = document.querySelectorAll('.sec-flow-tab-btn');
+  const tabContents = document.querySelectorAll('.sec-flow-tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.onclick = (e) => {
+      e.preventDefault();
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.style.borderColor = 'rgba(255,255,255,0.2)';
+        b.style.color = 'var(--text-muted)';
+      });
+      tabContents.forEach(c => c.style.display = 'none');
+
+      btn.classList.add('active');
+      btn.style.borderColor = 'var(--neon-cyan)';
+      btn.style.color = 'var(--neon-cyan)';
+
+      const targetId = btn.getAttribute('data-tab');
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) targetEl.style.display = 'block';
+    };
+  });
+
+  // 1. Subida de Carta Firmada (Resguardo Legal)
+  const formUpload = document.getElementById('form-upload-signed-letter');
+  if (formUpload) {
+    formUpload.onsubmit = async (e) => {
+      e.preventDefault();
+      const domain = document.getElementById('upload-letter-domain').value.trim();
+      const msgId = document.getElementById('upload-letter-msg-id').value.trim();
+      const fileInput = document.getElementById('upload-letter-file');
+      const resultBox = document.getElementById('upload-letter-result-box');
+
+      if (!fileInput.files || !fileInput.files[0]) {
+        showToast('Selecciona un archivo PDF o imagen firmada.', true);
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const fileB64 = reader.result;
+        try {
+          const res = await fetch('/tg-upload-signed-letter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              domain: domain,
+              filename: file.name,
+              file_b64: fileB64,
+              message_id: msgId ? parseInt(msgId, 10) : null
+            })
+          });
+          const data = await res.json();
+          if (data.ok) {
+            showToast('✅ ¡Resguardo Legal Almacenado Exitosamente!');
+            if (resultBox) {
+              resultBox.style.display = 'block';
+              resultBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Documento Guardado:</strong> <code>${data.saved_path}</code><br>Estado de solicitud actualizado a 🟢 Resguardo Legal Verificado.`;
+            }
+            formUpload.reset();
+            refreshAllData();
+          } else {
+            showToast('❌ Error al guardar resguardo: ' + (data.error || 'Error'), true);
+          }
+        } catch (err) {
+          console.error('Error subiendo carta firmada:', err);
+          showToast('❌ Error de conexión al guardar resguardo legal.', true);
+        }
+      };
+      reader.readAsDataURL(file);
+    };
+  }
+
+  // 2. Escáner de Ciberseguridad Nivel 1
+  const formScan = document.getElementById('form-run-security-scan');
+  if (formScan) {
+    formScan.onsubmit = async (e) => {
+      e.preventDefault();
+      const targetUrl = document.getElementById('scan-target-url').value.trim();
+      const resBox = document.getElementById('scan-results-box');
+      const domainEl = document.getElementById('scan-res-domain');
+      const dateEl = document.getElementById('scan-res-date');
+      const scoreEl = document.getElementById('scan-res-score');
+      const ratingEl = document.getElementById('scan-res-rating');
+      const findingsList = document.getElementById('scan-findings-list');
+      const passedList = document.getElementById('scan-passed-list');
+
+      showToast('🔍 Ejecutando análisis técnico en tiempo real...');
+
+      try {
+        const res = await fetch('/tg-run-security-scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: targetUrl })
+        });
+        const data = await res.json();
+        if (data.ok && data.scan) {
+          const s = data.scan;
+          showToast(`Análisis completado. Puntaje: ${s.score}%`);
+          if (resBox) resBox.style.display = 'block';
+          if (domainEl) domainEl.textContent = s.domain;
+          if (dateEl) dateEl.textContent = s.scan_date;
+          if (scoreEl) {
+            scoreEl.textContent = `${s.score}%`;
+            scoreEl.style.color = s.score >= 85 ? 'var(--neon-emerald)' : (s.score >= 60 ? 'var(--neon-amber)' : 'var(--neon-pink)');
+          }
+          if (ratingEl) {
+            ratingEl.textContent = s.status_rating;
+            ratingEl.className = `badge-status ${s.score >= 85 ? 'badge-read' : (s.score >= 60 ? 'badge-new' : 'badge-replied')}`;
+          }
+
+          // Renderizar hallazgos
+          if (findingsList) {
+            findingsList.innerHTML = '';
+            if (s.findings.length === 0) {
+              findingsList.innerHTML = '<div style="font-size: 0.8rem; color: var(--neon-emerald);"><i class="fa-solid fa-check"></i> No se encontraron hallazgos críticos de gravedad.</div>';
+            } else {
+              s.findings.forEach(f => {
+                const item = document.createElement('div');
+                item.style.cssText = 'background: rgba(255,0,127,0.06); border: 1px solid rgba(255,0,127,0.3); padding: 0.6rem; border-radius: 6px; font-size: 0.8rem;';
+                item.innerHTML = `<strong style="color: var(--neon-pink);">[${f.severity}] ${escapeHtml(f.item)}</strong><br><span style="color: var(--text-muted);">${escapeHtml(f.detail)}</span><br><em style="color: var(--neon-cyan);">💡 Recomendación: ${escapeHtml(f.recommendation)}</em>`;
+                findingsList.appendChild(item);
+              });
+            }
+          }
+
+          // Renderizar pruebas superadas
+          if (passedList) {
+            passedList.innerHTML = '';
+            s.passed.forEach(p => {
+              const pItem = document.createElement('div');
+              pItem.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> <strong>${escapeHtml(p.item)}:</strong> ${escapeHtml(p.detail)}`;
+              passedList.appendChild(pItem);
+            });
+          }
+        } else {
+          showToast('❌ Error en escaneo: ' + (data.error || 'Desconocido'), true);
+        }
+      } catch (err) {
+        console.error('Error ejecutando escaneo:', err);
+        showToast('❌ Error de conexión al escanear sitio.', true);
+      }
+    };
+  }
+
+  // 3. Formulario Hardening Nivel 2
+  const formHard = document.getElementById('form-hardening-log');
+  if (formHard) {
+    formHard.onsubmit = async (e) => {
+      e.preventDefault();
+      const domain = document.getElementById('hard-domain').value.trim();
+      const serverType = document.getElementById('hard-server-type').value.trim();
+
+      const payload = {
+        client_name: domain,
+        rut: 'Resguardo N° 21.459',
+        domain: domain,
+        contact_person: 'Cliente',
+        email: 'contacto@ppvsoluciones.cl',
+        plan_tier: `Hardening Completado (${serverType || 'Nginx/Ubuntu'})`
+      };
+
+      try {
+        const res = await fetch('/tg-generate-docs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.ok) {
+          showToast('✅ ¡Certificado de Hardening y Reporte Final emitidos con éxito!');
+        } else {
+          showToast('❌ Error al emitir certificado: ' + (data.error || 'Error'), true);
+        }
+      } catch (err) {
+        console.error('Error emitir certificado hardening:', err);
+        showToast('❌ Error de conexión al generar certificado.', true);
       }
     };
   }

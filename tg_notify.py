@@ -201,6 +201,81 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
                 return
 
+        if self.path in ['/tg-run-security-scan', '/api/run-security-scan']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                url_to_scan = data.get('url', '').strip()
+                if not url_to_scan:
+                    self.send_response(400)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': False, 'error': 'URL requerida'}).encode())
+                    return
+
+                scan_result = run_defensive_security_scan(url_to_scan)
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True, 'scan': scan_result}).encode('utf-8'))
+                return
+            except Exception as e:
+                self.send_response(500)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+                return
+
+        if self.path in ['/tg-upload-signed-letter', '/api/upload-signed-letter']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                
+                domain = data.get('domain', 'cliente').replace('https://', '').replace('http://', '').strip('/')
+                filename = data.get('filename', 'carta_firmada.pdf')
+                base64_data = data.get('file_b64', '')
+                msg_id = data.get('message_id')
+
+                if not base64_data:
+                    self.send_response(400)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': False, 'error': 'Contenido del archivo no recibido'}).encode())
+                    return
+
+                clean_b64 = base64_data.split(',')[-1]
+                file_bytes = base64.b64decode(clean_b64)
+                
+                out_dir = f"/home/patricio/Escritorio/Auditoría/{domain}/resguardo_legal/"
+                os.makedirs(out_dir, exist_ok=True)
+                save_file_path = os.path.join(out_dir, filename)
+
+                with open(save_file_path, 'wb') as f:
+                    f.write(file_bytes)
+
+                if msg_id:
+                    update_message_field(msg_id, 'status', 'Resguardo Legal Verificado 🟢')
+
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True, 'saved_path': save_file_path}).encode('utf-8'))
+                return
+            except Exception as e:
+                self.send_response(500)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+                return
+
         if self.path not in ['/tg-notify', '/api/notify']:
             self.send_response(404)
             self.end_headers()
@@ -252,6 +327,157 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+
+import ssl
+import socket
+import urllib.parse
+import base64
+
+def run_defensive_security_scan(url_str):
+    if not url_str.startswith(('http://', 'https://')):
+        url_str = 'https://' + url_str
+    
+    try:
+        parsed = urllib.parse.urlparse(url_str)
+        domain = parsed.netloc or parsed.path
+        domain = domain.split(':')[0]
+    except Exception:
+        domain = url_str
+
+    findings = []
+    passed = []
+    score = 100
+
+    # 1. SSL/TLS Certificate Check
+    try:
+        context = ssl.create_default_context()
+        with socket.create_connection((domain, 443), timeout=5) as sock:
+            with context.wrap_socket(sock, server_hostname=domain) as ssock:
+                cert = ssock.getpeercert()
+                ssl_version = ssock.version()
+                passed.append({
+                    'item': 'Certificado SSL/TLS Válido',
+                    'detail': f'Conexión segura activa ({ssl_version})'
+                })
+    except Exception as e:
+        score -= 25
+        findings.append({
+            'severity': 'ALTA',
+            'item': 'Error o Certificado SSL/TLS No Encontrado',
+            'detail': f'No se pudo verificar SSL en puerto 443: {str(e)}',
+            'recommendation': 'Instalar certificado TLS/SSL e implementar HTTPS forzoso.'
+        })
+
+    # 2. HTTP Security Headers Check
+    try:
+        req = urllib.request.Request(url_str, headers={'User-Agent': 'PPV-Security-Audit-Bot/1.0'})
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            headers = {k.lower(): v for k, v in resp.headers.items()}
+            
+            # HSTS
+            if 'strict-transport-security' in headers:
+                passed.append({'item': 'Header HSTS Presente', 'detail': headers['strict-transport-security']})
+            else:
+                score -= 15
+                findings.append({
+                    'severity': 'MEDIO',
+                    'item': 'Falta Header Strict-Transport-Security (HSTS)',
+                    'detail': 'El sitio no envía la cabecera HSTS.',
+                    'recommendation': 'Agregar "Strict-Transport-Security: max-age=31536000; includeSubDomains" en la configuración del servidor web.'
+                })
+            
+            # X-Frame-Options
+            if 'x-frame-options' in headers:
+                passed.append({'item': 'Protección Clickjacking (X-Frame-Options)', 'detail': headers['x-frame-options']})
+            else:
+                score -= 10
+                findings.append({
+                    'severity': 'MEDIO',
+                    'item': 'Falta Header X-Frame-Options',
+                    'detail': 'Riesgo de incrustación de la web en iFrames de terceros (Clickjacking).',
+                    'recommendation': 'Configurar "X-Frame-Options: SAMEORIGIN" o DENY en Nginx/Apache.'
+                })
+
+            # X-Content-Type-Options
+            if 'x-content-type-options' in headers:
+                passed.append({'item': 'Protección MIME Sniffing', 'detail': headers['x-content-type-options']})
+            else:
+                score -= 10
+                findings.append({
+                    'severity': 'BAJO',
+                    'item': 'Falta Header X-Content-Type-Options',
+                    'detail': 'Los navegadores pueden intentar inferir tipos MIME no declarados.',
+                    'recommendation': 'Agregar "X-Content-Type-Options: nosniff".'
+                })
+
+            # CSP
+            if 'content-security-policy' in headers:
+                passed.append({'item': 'Content-Security-Policy (CSP)', 'detail': 'Directiva CSP activa'})
+            else:
+                score -= 15
+                findings.append({
+                    'severity': 'MEDIO',
+                    'item': 'Falta Content-Security-Policy (CSP)',
+                    'detail': 'No hay política declarada para mitigar inyecciones XSS y scripts no autorizados.',
+                    'recommendation': 'Definir una cabecera CSP restrictiva alineada a las fuentes de recursos permitidas.'
+                })
+
+            # Server Version Exposure
+            server_hdr = headers.get('server', '')
+            if any(char.isdigit() for char in server_hdr):
+                score -= 10
+                findings.append({
+                    'severity': 'MEDIO',
+                    'item': 'Exposición de Versión del Servidor Web',
+                    'detail': f'Cabecera Server expone información detallada: "{server_hdr}"',
+                    'recommendation': 'Deshabilitar firmas de versión en el servidor (ej. "server_tokens off;" en Nginx).'
+                })
+            else:
+                passed.append({'item': 'Servidor Oculta Versión', 'detail': server_hdr or 'Sin versión expuesta'})
+
+            # X-Powered-By
+            if 'x-powered-by' in headers:
+                score -= 10
+                findings.append({
+                    'severity': 'BAJO',
+                    'item': 'Exposición de Lenguaje/Framework (X-Powered-By)',
+                    'detail': f'Cabecera expone la tecnología: "{headers["x-powered-by"]}"',
+                    'recommendation': 'Eliminar la cabecera X-Powered-By para mitigar fingerprinting de atacantes.'
+                })
+            else:
+                passed.append({'item': 'Tecnología Oculta (No X-Powered-By)', 'detail': 'Limpio'})
+
+    except Exception as e:
+        score -= 20
+        findings.append({
+            'severity': 'ALTA',
+            'item': 'Error en Verificación de Cabeceras HTTP',
+            'detail': str(e),
+            'recommendation': 'Verificar la accesibilidad pública de la URL y configuración DNS.'
+        })
+
+    score = max(0, min(100, score))
+    return {
+        'url': url_str,
+        'domain': domain,
+        'score': score,
+        'status_rating': 'EXCELENTE' if score >= 85 else ('REGULAR' if score >= 60 else 'CRÍTICO'),
+        'findings': findings,
+        'passed': passed,
+        'scan_date': get_chile_now_str()
+    }
+
+def update_message_field(msg_id, field_name, value):
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE contact_messages SET {field_name} = ? WHERE id = ?", (value, msg_id))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print(f"[TG-PROXY] Error actualizando {field_name}: {e}")
+        return False
 
 def run():
     server = HTTPServer(('0.0.0.0', PORT), TelegramProxyHandler)
