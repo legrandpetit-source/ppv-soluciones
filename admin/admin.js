@@ -2,10 +2,15 @@
    CONSOLA DE ADMINISTRACIÓN /ADMIN - LÓGICA DE MANTENEDORES
    ========================================================================== */
 
-const ADMIN_CREDENTIALS = {
-  email: 'admin@legrandpetit.cl',
-  password: 'LegrandAdmin2026!'
+const ADMIN_HASHES = {
+  emailHash: 'dbcba288f24a1d8b77274a31adba1b6ae7c5744e7b9e99776e556a816a5e4bb1',
+  passHash: '2bea8efab55e996f89e4804280208da9711e6a2a693a30bc77355abed3c2ccdc'
 };
+
+async function hashString(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (window.portfolioDB) {
@@ -54,7 +59,7 @@ function initAuth() {
     if (isAuthorized()) {
       loginOverlay.style.display = 'none';
       if (userDisplay) {
-        userDisplay.textContent = sessionStorage.getItem('ppv_admin_email') || ADMIN_CREDENTIALS.email;
+        userDisplay.textContent = sessionStorage.getItem('ppv_admin_email') || 'admin@ppvsoluciones.cl';
       }
       refreshAllData();
     } else {
@@ -68,15 +73,17 @@ function initAuth() {
       const email = document.getElementById('portal-email').value.trim();
       const pass = document.getElementById('portal-password').value.trim();
 
-      if (email === ADMIN_CREDENTIALS.email && pass === ADMIN_CREDENTIALS.password) {
-        sessionStorage.setItem('ppv_admin_logged', 'true');
-        sessionStorage.setItem('ppv_admin_email', email);
-        if (loginError) loginError.style.display = 'none';
-        showToast('¡Bienvenido al Panel de Administración!');
-        checkSession();
-      } else {
-        if (loginError) loginError.style.display = 'flex';
-      }
+      Promise.all([hashString(email), hashString(pass)]).then(([eHash, pHash]) => {
+        if (eHash === ADMIN_HASHES.emailHash && pHash === ADMIN_HASHES.passHash) {
+          sessionStorage.setItem('ppv_admin_logged', 'true');
+          sessionStorage.setItem('ppv_admin_email', email);
+          if (loginError) loginError.style.display = 'none';
+          showToast('¡Bienvenido al Panel de Administración!');
+          checkSession();
+        } else {
+          if (loginError) loginError.style.display = 'flex';
+        }
+      });
     };
   }
 
