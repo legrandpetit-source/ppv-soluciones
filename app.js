@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initMaintainerBlockedCRUD();
   await loadClientsSection();
   initCopyButtons();
+  initVCardLogic();
 });
 
 /* --------------------------------------------------------------------------
@@ -2206,6 +2207,70 @@ async function loadClientsSection() {
       `;
       grid.appendChild(card);
     });
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16. TARJETA DIGITAL EJECUTIVA & CÓDIGO QR (VCARD)
+   -------------------------------------------------------------------------- */
+function initVCardLogic() {
+  const btnDownloadVCard = document.querySelectorAll('.btn-download-vcard');
+  const btnCopyVCardLink = document.querySelectorAll('.btn-copy-vcard-link');
+  const btnOpenModal = document.querySelectorAll('.btn-open-vcard-modal');
+  const modalVCard = document.getElementById('modal-vcard');
+  const btnCloseModal = document.getElementById('btn-close-vcard-modal');
+
+  const vcardData = `BEGIN:VCARD
+VERSION:3.0
+N:Padilla;Patricio;;;
+FN:Patricio Padilla
+ORG:PPV Soluciones
+TITLE:CEO & Fundador
+TEL;TYPE=CELL,VOICE:+56912345678
+EMAIL;TYPE=INTERNET,PREF:ppv@ppvsoluciones.cl
+URL:https://ppvsoluciones.cl
+NOTE:Ciberseguridad Web, Hardening de Servidores, Automatización de Procesos con IA y Desarrollo de Software en Chile.
+END:VCARD`;
+
+  btnDownloadVCard.forEach(btn => {
+    btn.onclick = (e) => {
+      e.preventDefault();
+      const blob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'Patricio_Padilla_PPV.vcf');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast('🎴 Contacto descargado (Patricio_Padilla_PPV.vcf). ¡Guárdalo en tu celular!');
+    };
+  });
+
+  btnCopyVCardLink.forEach(btn => {
+    btn.onclick = (e) => {
+      e.preventDefault();
+      navigator.clipboard.writeText('https://ppvsoluciones.cl/#vcard');
+      showToast('📋 Enlace de Tarjeta Digital copiado al portapapeles.');
+    };
+  });
+
+  btnOpenModal.forEach(btn => {
+    btn.onclick = (e) => {
+      e.preventDefault();
+      if (modalVCard) modalVCard.style.display = 'flex';
+    };
+  });
+
+  if (btnCloseModal && modalVCard) {
+    btnCloseModal.onclick = () => modalVCard.style.display = 'none';
+  }
+
+  if (modalVCard) {
+    modalVCard.onclick = (e) => {
+      if (e.target === modalVCard) modalVCard.style.display = 'none';
+    };
   }
 }
 

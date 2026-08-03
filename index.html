@@ -102,6 +102,7 @@
         <li><a href="#auditoria-ciberseguridad" style="color: var(--neon-pink); font-weight: 700;"><i class="fa-solid fa-shield-halved"></i> Ciberseguridad</a></li>
         <li><a href="#posicionamiento-web">Posicionamiento Web</a></li>
         <li><a href="#clientes" style="color: var(--neon-cyan); font-weight: 600;"><i class="fa-solid fa-users"></i> Clientes</a></li>
+        <li><a href="#vcard" style="color: #ffb703; font-weight: 600;"><i class="fa-solid fa-qrcode"></i> Tarjeta Digital</a></li>
         <li><a href="#sobre-mi">Expertise</a></li>
         <li><a href="#habilidades">Matriz Técnica</a></li>
         <li><a href="#demos-auto">Demos</a></li>
@@ -139,6 +140,9 @@
         <div class="hero-ctas">
           <button class="btn btn-primary" id="btn-hero-sec-audit" style="background: linear-gradient(135deg, var(--neon-pink), var(--neon-violet)); border: none;">
             <i class="fa-solid fa-shield-halved"></i> Auditoría de Ciberseguridad
+          </button>
+          <button class="btn btn-secondary btn-open-vcard-modal" style="border-color: rgba(255, 183, 3, 0.6); color: #fff;">
+            <i class="fa-solid fa-qrcode" style="color: #ffb703;"></i> Tarjeta Digital QR
           </button>
           <a href="#demos-auto" class="btn btn-secondary">
             <i class="fa-solid fa-rocket"></i> Ver Demos de Automatización
@@ -936,6 +940,84 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
       <div id="clients-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
         <!-- Se renderiza dinámicamente desde db.js -->
       </div>
+  <!-- Sección: Tarjeta Digital Ejecutiva & Código QR -->
+  <section id="vcard" class="vcard-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-subtitle" style="color: #ffb703;">
+          <i class="fa-solid fa-address-card"></i> Contacto Inteligente Instantáneo
+        </div>
+        <h2>Tarjeta Digital Ejecutiva & Código QR</h2>
+        <p>Apunta la cámara de tu smartphone al código QR para agregar directamente los datos de contacto oficiales de Patricio Padilla a tu agenda telefónica.</p>
+      </div>
+
+      <div class="vcard-grid">
+        <!-- Tarjeta Física Ejecutiva (Diseño Cyberpunk Glassmorphism) -->
+        <div class="vcard-card">
+          <div class="vcard-header">
+            <div class="vcard-avatar">PP</div>
+            <div class="vcard-info">
+              <h3>Patricio Padilla</h3>
+              <p>CEO & Fundador — PPV Soluciones</p>
+              <div class="vcard-badge">
+                <i class="fa-solid fa-circle-check"></i> VERIFICADO OFICIAL
+              </div>
+            </div>
+          </div>
+
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.2rem;">
+            Especialista en Ciberseguridad Web, Hardening de Servidores Linux/Docker, Automatización de Procesos con IA (n8n) y Desarrollo de Software en Chile.
+          </p>
+
+          <ul class="vcard-details-list">
+            <li>
+              <i class="fa-solid fa-envelope text-cyan"></i>
+              <span><strong>Correo Oficial:</strong> ppv@ppvsoluciones.cl</span>
+            </li>
+            <li>
+              <i class="fa-brands fa-whatsapp text-emerald"></i>
+              <span><strong>WhatsApp Directo:</strong> +56 9 1234 5678</span>
+            </li>
+            <li>
+              <i class="fa-solid fa-globe text-violet"></i>
+              <span><strong>Sitio Web:</strong> https://ppvsoluciones.cl</span>
+            </li>
+            <li>
+              <i class="fa-solid fa-location-dot text-pink"></i>
+              <span><strong>Ubicación:</strong> Santiago, Chile</span>
+            </li>
+          </ul>
+
+          <div class="vcard-actions">
+            <button class="btn btn-primary btn-download-vcard" style="background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); border: none;">
+              <i class="fa-solid fa-file-arrow-down"></i> Guardar Contacto (.vcf)
+            </button>
+            <a href="https://wa.me/56912345678" target="_blank" class="btn btn-secondary" style="border-color: #10b981; color: #10b981;">
+              <i class="fa-brands fa-whatsapp"></i> Chat WhatsApp
+            </a>
+            <a href="mailto:ppv@ppvsoluciones.cl" class="btn btn-outline" style="border-color: rgba(255,255,255,0.2); color: #fff;">
+              <i class="fa-solid fa-paper-plane"></i> Enviar Email
+            </a>
+          </div>
+        </div>
+
+        <!-- Caja con Código QR -->
+        <div class="vcard-qr-box">
+          <div style="background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-cyan); border-radius: 50px; padding: 6px 16px; display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--neon-cyan); font-weight: 700; margin-bottom: 0.8rem;">
+            <i class="fa-solid fa-qrcode"></i> ESCANEAR CON CÁMARA
+          </div>
+          
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3APadilla%3BPatricio%0AFN%3APatricio+Padilla%0AORG%3APPV+Soluciones%0ATITLE%3ACEO+%26+Fundador%0ATEL%3BTYPE%3DCELL%2CVOICE%3A%2B56912345678%0AEMAIL%3Appv%40ppvsoluciones.cl%0AURL%3Ahttps%3A%2F%2Fppvsoluciones.cl%0ANOTE%3ACiberseguridad+Web%2C+Hardening+de+Servidores+y+Automatizacion+de+Software+en+Chile.%0AEND%3AVCARD" alt="Código QR de Contacto - Patricio Padilla PPV Soluciones" class="qr-code-img">
+
+          <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 320px; margin-bottom: 1.2rem;">
+            Escanea desde cualquier smartphone para añadir automáticamente a tu libreta de contactos.
+          </p>
+
+          <button class="btn btn-outline btn-copy-vcard-link" style="border-color: var(--neon-cyan); color: var(--neon-cyan); font-size: 0.82rem;">
+            <i class="fa-solid fa-link"></i> Copiar Link de la Tarjeta
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1574,6 +1656,37 @@ PPV Soluciones
     </div>
   </div>
 
+  <!-- Modal: Tarjeta Digital Ejecutiva & Código QR -->
+  <div class="modal-overlay" id="modal-vcard">
+    <div class="modal-content" style="max-width: 480px; border-color: var(--neon-cyan); text-align: center; padding: 2rem; border-radius: var(--radius-lg);">
+      <button class="modal-close" id="btn-close-vcard-modal"><i class="fa-solid fa-xmark"></i></button>
+
+      <div style="width: 65px; height: 65px; border-radius: 50%; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem auto; font-size: 1.6rem; font-weight: 800; color: #fff; box-shadow: 0 0 15px rgba(0,243,255,0.4); border: 2px solid var(--neon-cyan);">
+        PP
+      </div>
+
+      <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.2rem;">Patricio Padilla</h3>
+      <p style="font-size: 0.85rem; color: var(--neon-cyan); font-weight: 600; margin-bottom: 1rem;">CEO & Fundador — PPV Soluciones</p>
+
+      <div style="background: #ffffff; padding: 12px; border-radius: 12px; display: inline-block; box-shadow: 0 0 20px rgba(0,243,255,0.3); margin-bottom: 1rem;">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3APadilla%3BPatricio%0AFN%3APatricio+Padilla%0AORG%3APPV+Soluciones%0ATITLE%3ACEO+%26+Fundador%0ATEL%3BTYPE%3DCELL%2CVOICE%3A%2B56912345678%0AEMAIL%3Appv%40ppvsoluciones.cl%0AURL%3Ahttps%3A%2F%2Fppvsoluciones.cl%0ANOTE%3ACiberseguridad+Web%2C+Hardening+de+Servidores+y+Automatizacion+de+Software+en+Chile.%0AEND%3AVCARD" alt="QR Contacto Patricio Padilla" style="width: 200px; height: 200px; display: block;">
+      </div>
+
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+        Apunta la cámara de tu smartphone para añadir automáticamente a Patricio Padilla a tu agenda telefónica.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+        <button class="btn btn-primary btn-download-vcard" style="width: 100%; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); border: none;">
+          <i class="fa-solid fa-file-arrow-down"></i> Descargar Contacto Directo (.vcf)
+        </button>
+        <a href="https://wa.me/56912345678" target="_blank" class="btn btn-secondary" style="width: 100%; border-color: #10b981; color: #10b981;">
+          <i class="fa-brands fa-whatsapp"></i> Chat Directo en WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div class="toast" id="global-toast">
     <i class="fa-solid fa-circle-check text-emerald" style="font-size: 1.1rem;"></i>
@@ -1581,7 +1694,7 @@ PPV Soluciones
   </div>
 
   <!-- Scripts -->
-  <script src="db.js?v=20260803080"></script>
-  <script src="app.js?v=20260803080"></script>
+  <script src="db.js?v=20260803140"></script>
+  <script src="app.js?v=20260803140"></script>
 </body>
 </html>
