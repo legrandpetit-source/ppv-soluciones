@@ -234,6 +234,9 @@
       <button class="sidebar-btn" data-view="view-uf-history">
         <i class="fa-solid fa-chart-line text-amber"></i> Valor UF & Historial BD
       </button>
+      <button class="sidebar-btn" data-view="view-vcard-editor">
+        <i class="fa-solid fa-id-card text-cyan"></i> Configuración Tarjeta QR
+      </button>
     </aside>
 
     <!-- Contenido Principal -->
@@ -1020,6 +1023,80 @@
               <!-- Cargado dinámicamente -->
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- Vista 12: Editor de Tarjeta Digital Ejecutiva & Código QR -->
+      <div class="admin-panel-view" id="view-vcard-editor">
+        <h3 style="color: var(--neon-cyan); font-size: 1.2rem; margin-bottom: 1rem;">
+          <i class="fa-solid fa-id-card"></i> Configuración de Tarjeta Digital & Código QR vCard
+        </h3>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          <!-- Formulario de Edición -->
+          <div class="glass-card" style="background: rgba(13, 17, 26, 0.9); border-color: rgba(0, 243, 255, 0.3);">
+            <h4 style="color: var(--neon-cyan); font-size: 0.95rem; margin-bottom: 0.8rem;">
+              <i class="fa-solid fa-pen-to-square"></i> Editar Datos de Contacto de la vCard
+            </h4>
+
+            <form id="form-update-vcard-profile">
+              <div class="form-group" style="margin-bottom: 0.8rem;">
+                <label style="color: #fff; font-size: 0.8rem;">Nombre Completo del Ejecutivo *</label>
+                <input type="text" id="vcard-edit-name" class="form-control" placeholder="Patricio Padilla" required style="padding: 0.5rem;">
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0.8rem;">
+                <label style="color: #fff; font-size: 0.8rem;">Cargo / Título Profesional *</label>
+                <input type="text" id="vcard-edit-role" class="form-control" placeholder="CEO & Fundador — PPV Soluciones" required style="padding: 0.5rem;">
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+                <div class="form-group">
+                  <label style="color: #fff; font-size: 0.8rem;">Correo Oficial *</label>
+                  <input type="email" id="vcard-edit-email" class="form-control" placeholder="ppv@ppvsoluciones.cl" required style="padding: 0.5rem;">
+                </div>
+                <div class="form-group">
+                  <label style="color: #fff; font-size: 0.8rem;">Teléfono / WhatsApp *</label>
+                  <input type="text" id="vcard-edit-phone" class="form-control" placeholder="+56 9 1234 5678" required style="padding: 0.5rem;">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0.8rem;">
+                <label style="color: #fff; font-size: 0.8rem;">Ubicación / Ciudad</label>
+                <input type="text" id="vcard-edit-location" class="form-control" placeholder="Santiago, Chile" style="padding: 0.5rem;">
+              </div>
+
+              <div class="form-group" style="margin-bottom: 1rem;">
+                <label style="color: #fff; font-size: 0.8rem;">Especialidades / Descripción de Servicios</label>
+                <textarea id="vcard-edit-desc" class="form-control" style="min-height: 65px; padding: 0.5rem;" placeholder="Ciberseguridad Web, Hardening de Servidores Linux..."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); border: none; padding: 0.6rem;">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar y Actualizar Código QR en Vivo
+              </button>
+            </form>
+          </div>
+
+          <!-- Vista Previa de la Tarjeta QR -->
+          <div class="glass-card" style="background: rgba(13, 17, 26, 0.9); border-color: rgba(255, 183, 3, 0.4); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <span style="font-size: 0.75rem; color: #ffb703; font-weight: 700; text-transform: uppercase; margin-bottom: 0.8rem; letter-spacing: 0.5px;">
+              <i class="fa-solid fa-eye"></i> Vista Previa en Tiempo Real
+            </span>
+
+            <div style="width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;" id="prev-vcard-avatar">
+              PP
+            </div>
+
+            <h4 style="color: #fff; font-size: 1.1rem; margin-bottom: 0.2rem;" id="prev-vcard-name">Patricio Padilla</h4>
+            <p style="font-size: 0.8rem; color: var(--neon-cyan); font-weight: 600; margin-bottom: 0.8rem;" id="prev-vcard-role">CEO & Fundador — PPV Soluciones</p>
+
+            <div style="background: #ffffff; padding: 10px; border-radius: 10px; margin-bottom: 0.8rem;">
+              <img src="" id="prev-vcard-qr-img" alt="QR Preview" style="width: 160px; height: 160px; display: block;">
+            </div>
+
+            <span style="font-size: 0.75rem; color: var(--text-muted);" id="prev-vcard-phone">Teléfono: +56 9 1234 5678</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);" id="prev-vcard-email">Correo: ppv@ppvsoluciones.cl</span>
+          </div>
         </div>
       </div>
     </main>

@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initSecAuditWorkflowMaintainer();
   initClientsCRUD();
   initUFHistoryMaintainer();
+  initVCardEditorMaintainer();
 });
 
 /* --------------------------------------------------------------------------
@@ -1282,6 +1283,111 @@ function initUFHistoryMaintainer() {
       }
     } catch(e) {
       console.log('[ADMIN] Error cargando UF:', e);
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   12. MANTENEDOR DE TARJETA DIGITAL & CÓDIGO QR (VCARD)
+   -------------------------------------------------------------------------- */
+function initVCardEditorMaintainer() {
+  const form = document.getElementById('form-update-vcard-profile');
+  const nameInput = document.getElementById('vcard-edit-name');
+  const roleInput = document.getElementById('vcard-edit-role');
+  const emailInput = document.getElementById('vcard-edit-email');
+  const phoneInput = document.getElementById('vcard-edit-phone');
+  const locationInput = document.getElementById('vcard-edit-location');
+  const descInput = document.getElementById('vcard-edit-desc');
+
+  const prevAvatar = document.getElementById('prev-vcard-avatar');
+  const prevName = document.getElementById('prev-vcard-name');
+  const prevRole = document.getElementById('prev-vcard-role');
+  const prevPhone = document.getElementById('prev-vcard-phone');
+  const prevEmail = document.getElementById('prev-vcard-email');
+  const prevQRImg = document.getElementById('prev-vcard-qr-img');
+
+  loadVCardProfileData();
+
+  [nameInput, roleInput, emailInput, phoneInput, locationInput, descInput].forEach(input => {
+    if (input) {
+      input.addEventListener('input', () => updatePreview());
+    }
+  });
+
+  if (form) {
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const profile = {
+        name: nameInput.value.trim() || 'Patricio Padilla',
+        role: roleInput.value.trim() || 'CEO & Fundador — PPV Soluciones',
+        email: emailInput.value.trim() || 'ppv@ppvsoluciones.cl',
+        phone: phoneInput.value.trim() || '+56 9 1234 5678',
+        location: locationInput ? locationInput.value.trim() : 'Santiago, Chile',
+        desc: descInput ? descInput.value.trim() : 'Ciberseguridad Web, Hardening de Servidores Linux...'
+      };
+
+      if (window.portfolioDB) {
+        await window.portfolioDB.saveConfig('vcard_profile', profile);
+      }
+      localStorage.setItem('ppv_vcard_profile', JSON.stringify(profile));
+
+      showToast('✅ ¡Tarjeta Digital & Código QR actualizados exitosamente!');
+      updatePreview();
+    };
+  }
+
+  async function loadVCardProfileData() {
+    let profile = null;
+    if (window.portfolioDB) {
+      profile = await window.portfolioDB.getConfig('vcard_profile');
+    }
+    if (!profile) {
+      const local = localStorage.getItem('ppv_vcard_profile');
+      if (local) {
+        try { profile = JSON.parse(local); } catch(e){}
+      }
+    }
+
+    if (!profile) {
+      profile = {
+        name: 'Patricio Padilla',
+        role: 'CEO & Fundador — PPV Soluciones',
+        email: 'ppv@ppvsoluciones.cl',
+        phone: '+56 9 1234 5678',
+        location: 'Santiago, Chile',
+        desc: 'Especialista en Ciberseguridad Web, Hardening de Servidores Linux/Docker, Automatización de Procesos con IA (n8n) y Desarrollo de Software en Chile.'
+      };
+    }
+
+    if (nameInput) nameInput.value = profile.name;
+    if (roleInput) roleInput.value = profile.role;
+    if (emailInput) emailInput.value = profile.email;
+    if (phoneInput) phoneInput.value = profile.phone;
+    if (locationInput) locationInput.value = profile.location;
+    if (descInput) descInput.value = profile.desc;
+
+    updatePreview();
+  }
+
+  function updatePreview() {
+    const name = nameInput ? nameInput.value.trim() : 'Patricio Padilla';
+    const role = roleInput ? roleInput.value.trim() : 'CEO & Fundador — PPV Soluciones';
+    const email = emailInput ? emailInput.value.trim() : 'ppv@ppvsoluciones.cl';
+    const phone = phoneInput ? phoneInput.value.trim() : '+56 9 1234 5678';
+
+    if (prevName) prevName.textContent = name;
+    if (prevRole) prevRole.textContent = role;
+    if (prevPhone) prevPhone.textContent = `Teléfono: ${phone}`;
+    if (prevEmail) prevEmail.textContent = `Correo: ${email}`;
+
+    if (prevAvatar) {
+      const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      prevAvatar.textContent = initials || 'PP';
+    }
+
+    const vcardStr = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:PPV Soluciones\nTITLE:${role}\nTEL;TYPE=CELL,VOICE:${phone}\nEMAIL;TYPE=INTERNET,PREF:${email}\nURL:https://ppvsoluciones.cl\nEND:VCARD`;
+    if (prevQRImg) {
+      prevQRImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(vcardStr)}`;
     }
   }
 }

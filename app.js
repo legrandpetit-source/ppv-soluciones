@@ -2211,40 +2211,115 @@ async function loadClientsSection() {
 }
 
 /* --------------------------------------------------------------------------
-   16. TARJETA DIGITAL EJECUTIVA & CÓDIGO QR (VCARD)
+   16. TARJETA DIGITAL EJECUTIVA & CÓDIGO QR (VCARD DINÁMICO)
    -------------------------------------------------------------------------- */
-function initVCardLogic() {
+async function initVCardLogic() {
   const btnDownloadVCard = document.querySelectorAll('.btn-download-vcard');
   const btnCopyVCardLink = document.querySelectorAll('.btn-copy-vcard-link');
   const btnOpenModal = document.querySelectorAll('.btn-open-vcard-modal');
   const modalVCard = document.getElementById('modal-vcard');
   const btnCloseModal = document.getElementById('btn-close-vcard-modal');
 
-  const vcardData = `BEGIN:VCARD
-VERSION:3.0
-N:Padilla;Patricio;;;
-FN:Patricio Padilla
-ORG:PPV Soluciones
-TITLE:CEO & Fundador
-TEL;TYPE=CELL,VOICE:+56912345678
-EMAIL;TYPE=INTERNET,PREF:ppv@ppvsoluciones.cl
-URL:https://ppvsoluciones.cl
-NOTE:Ciberseguridad Web, Hardening de Servidores, Automatización de Procesos con IA y Desarrollo de Software en Chile.
-END:VCARD`;
+  let profile = null;
+  if (window.portfolioDB) {
+    profile = await window.portfolioDB.getConfig('vcard_profile');
+  }
+  if (!profile) {
+    const local = localStorage.getItem('ppv_vcard_profile');
+    if (local) {
+      try { profile = JSON.parse(local); } catch(e){}
+    }
+  }
+
+  if (!profile) {
+    profile = {
+      name: 'Patricio Padilla',
+      role: 'CEO & Fundador — PPV Soluciones',
+      email: 'ppv@ppvsoluciones.cl',
+      phone: '+56 9 1234 5678',
+      location: 'Santiago, Chile',
+      desc: 'Especialista en Ciberseguridad Web, Hardening de Servidores Linux/Docker, Automatización de Procesos con IA (n8n) y Desarrollo de Software en Chile.'
+    };
+  }
+
+  // Actualizar DOM en la tarjeta pública si existe
+  const vcardSection = document.getElementById('vcard');
+  if (vcardSection) {
+    const nameEl = vcardSection.querySelector('.vcard-info h3');
+    const roleEl = vcardSection.querySelector('.vcard-info p');
+    const descEl = vcardSection.querySelector('.vcard-card > p');
+    const emailEl = vcardSection.querySelector('.vcard-details-list li:nth-child(1) span');
+    const phoneEl = vcardSection.querySelector('.vcard-details-list li:nth-child(2) span');
+    const locEl = vcardSection.querySelector('.vcard-details-list li:nth-child(4) span');
+    const qrImg = vcardSection.querySelector('.qr-code-img');
+    const avatarEl = vcardSection.querySelector('.vcard-avatar');
+
+    if (nameEl) nameEl.textContent = profile.name;
+    if (roleEl) roleEl.textContent = profile.role;
+    if (descEl) descEl.textContent = profile.desc;
+    if (emailEl) emailEl.innerHTML = `<strong>Correo Oficial:</strong> ${escapeHtml(profile.email)}`;
+    if (phoneEl) phoneEl.innerHTML = `<strong>WhatsApp Directo:</strong> ${escapeHtml(profile.phone)}`;
+    if (locEl) locEl.innerHTML = `<strong>Ubicación:</strong> ${escapeHtml(profile.location)}`;
+
+    if (avatarEl) {
+      const initials = profile.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      avatarEl.textContent = initials || 'PP';
+    }
+
+    const cleanPhone = profile.phone.replace(/[^0-9]/g, '');
+    const waLink = vcardSection.querySelector('a[href*="wa.me"]');
+    if (waLink && cleanPhone) waLink.href = `https://wa.me/${cleanPhone}`;
+
+    const mailLink = vcardSection.querySelector('a[href*="mailto:"]');
+    if (mailLink) mailLink.href = `mailto:${profile.email}`;
+
+    const vcardStr = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:PPV Soluciones\nTITLE:${profile.role}\nTEL;TYPE=CELL,VOICE:${profile.phone}\nEMAIL;TYPE=INTERNET,PREF:${profile.email}\nURL:https://ppvsoluciones.cl\nEND:VCARD`;
+
+    if (qrImg) {
+      qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(vcardStr)}`;
+    }
+  }
+
+  // Actualizar Modal
+  if (modalVCard) {
+    const mName = modalVCard.querySelector('h3');
+    const mRole = modalVCard.querySelector('p');
+    const mQR = modalVCard.querySelector('img');
+    const mWa = modalVCard.querySelector('a[href*="wa.me"]');
+    const mAvatar = modalVCard.querySelector('div[style*="border-radius: 50%"]');
+
+    if (mName) mName.textContent = profile.name;
+    if (mRole) mRole.textContent = profile.role;
+    if (mAvatar) {
+      const initials = profile.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      mAvatar.textContent = initials || 'PP';
+    }
+
+    const cleanPhone = profile.phone.replace(/[^0-9]/g, '');
+    if (mWa && cleanPhone) mWa.href = `https://wa.me/${cleanPhone}`;
+
+    const vcardStr = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:PPV Soluciones\nTITLE:${profile.role}\nTEL;TYPE=CELL,VOICE:${profile.phone}\nEMAIL;TYPE=INTERNET,PREF:${profile.email}\nURL:https://ppvsoluciones.cl\nEND:VCARD`;
+
+    if (mQR) {
+      mQR.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(vcardStr)}`;
+    }
+  }
+
+  const currentVCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:PPV Soluciones\nTITLE:${profile.role}\nTEL;TYPE=CELL,VOICE:${profile.phone}\nEMAIL;TYPE=INTERNET,PREF:${profile.email}\nURL:https://ppvsoluciones.cl\nEND:VCARD`;
 
   btnDownloadVCard.forEach(btn => {
     btn.onclick = (e) => {
       e.preventDefault();
-      const blob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8' });
+      const blob = new Blob([currentVCardData], { type: 'text/vcard;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'Patricio_Padilla_PPV.vcf');
+      link.setAttribute('download', `${profile.name.replace(/\s+/g, '_')}_PPV.vcf`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-      showToast('🎴 Contacto descargado (Patricio_Padilla_PPV.vcf). ¡Guárdalo en tu celular!');
+      showToast(`🎴 Contacto descargado (${profile.name}_PPV.vcf). ¡Guárdalo en tu celular!`);
     };
   });
 
