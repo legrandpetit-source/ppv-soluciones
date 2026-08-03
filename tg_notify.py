@@ -40,13 +40,18 @@ def save_to_db(name, email, subject, website, budget, message):
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        try:
+            cursor.execute("ALTER TABLE contact_messages ADD COLUMN website TEXT DEFAULT '';")
+        except Exception:
+            pass
+
         cursor.execute('''
             INSERT INTO contact_messages (name, email, subject, website, budget, message)
             VALUES (?, ?, ?, ?, ?, ?)
         ''', (name, email, subject or 'Consulta General', website or '', budget or 'Por definir', message))
         conn.commit()
         conn.close()
-        print(f"[TG-PROXY] ✅ Mensaje guardado en SQLite DB ({email})")
+        print(f"[TG-PROXY] ✅ Mensaje guardado exitosamente en SQLite DB ({email})")
     except Exception as e:
         print(f"[TG-PROXY] ❌ Error guardando en DB: {e}")
 
