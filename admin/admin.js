@@ -16,7 +16,7 @@ function getAdminHashes() {
 }
 
 function getAdminEmail() {
-  return localStorage.getItem('ppv_admin_custom_email') || 'admin@ppvsoluciones.cl';
+  return localStorage.getItem('ppv_admin_custom_email') || 'contacto@ppvsoluciones.cl';
 }
 
 async function hashString(str) {
