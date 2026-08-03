@@ -1412,18 +1412,25 @@ function initContactAndDB() {
       message: document.getElementById('contact-message').value.trim()
     };
 
+    // 1. Enviar siempre a Telegram primero
+    try {
+      await sendTelegramNotification(data);
+    } catch (tErr) {
+      console.error('Error al notificar Telegram:', tErr);
+    }
+
+    // 2. Guardar en IndexedDB local
     try {
       if (window.portfolioDB) {
         await window.portfolioDB.saveMessage(data);
-        // Notificar en tiempo real a Telegram con el Bot Legrandpetit_noti_bot
-        await sendTelegramNotification(data);
-        showToast('¡Mensaje enviado con éxito!');
-        contactForm.reset();
       }
-    } catch (err) {
-      console.error('Error al guardar mensaje:', err);
-      showToast('Ocurrió un error al guardar el mensaje.', true);
+    } catch (dbErr) {
+      console.error('Error al guardar en base de datos local:', dbErr);
     }
+
+    // 3. Confirmación al usuario y limpiar formulario
+    showToast('¡Mensaje enviado con éxito!');
+    contactForm.reset();
   });
 }
 
