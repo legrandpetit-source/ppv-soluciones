@@ -25,6 +25,7 @@ async function hashString(str) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  console.log('[ADMIN-DIAG] DOMContentLoaded ejecutado');
   // Inicializar autenticación y event listeners del login de inmediato
   try {
     initAuth();
@@ -34,7 +35,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (window.portfolioDB) {
     try {
+      console.log('[ADMIN-DIAG] Inicializando portfolioDB...');
       await window.portfolioDB.init();
+      console.log('[ADMIN-DIAG] portfolioDB OK. Poblando semillas si está vacía...');
+      if (window.portfolioDB.seedDefaultsIfEmpty) {
+        await window.portfolioDB.seedDefaultsIfEmpty();
+      }
+      console.log('[ADMIN-DIAG] Refrescando datos del Dashboard...');
+      await refreshAllData();
     } catch (e) {
       console.error('[ADMIN] Error iniciando portfolioDB:', e);
     }
