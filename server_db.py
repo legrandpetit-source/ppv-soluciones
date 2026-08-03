@@ -129,7 +129,7 @@ def init_database():
                 ('Sistema de Automatización & Bot Básico', 'Asistente web inteligente conectado a tus datos y servicios.', 350, '3 días', 'fa-robot', 1),
                 ('Flujo de Automatización n8n / Make', 'Conexión de CRM, Email, Bases de datos y procesos en segundo plano.', 450, '4 días', 'fa-network-wired', 0),
                 ('Desarrollo Web App Completo', 'Aplicación Frontend + Backend responsiva con diseño Cyberpunk/Glassmorphism.', 600, '5 días', 'fa-laptop-code', 0),
-                ('Auditoría de Seguridad, Hardening & Ciberprotección Web', 'Análisis de vulnerabilidades, proxy backend seguro para APIs, hashes SHA-256 y headers HTTP.', 350, '3 días', 'fa-shield-halved', 0),
+                ('Auditoría de Seguridad, Hardening & Ciberprotección Web', 'Análisis de vulnerabilidades, proxy backend seguro para APIs, hashes SHA-256 y headers HTTP.', 450, '4 días', 'fa-shield-halved', 0),
                 ('Optimización & Evaluación de Código Automatizado', 'Auditoría de rendimiento, refactorización y pruebas unitarias de código existente.', 250, '2 días', 'fa-code-compare', 0)
             ]
             cursor.executemany("""

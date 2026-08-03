@@ -665,7 +665,7 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
             <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: 0.3;"></i>
           </div>
 
-          <div class="option-card" data-price="350" data-time="3 días">
+          <div class="option-card" data-price="450" data-time="4 días">
             <div>
               <strong style="display: block; font-size: 1rem;">Auditoría de Seguridad, Hardening & Ciberprotección Web</strong>
               <span style="font-size: 0.8rem; color: var(--text-muted);">Auditoría de vulnerabilidades, proxy seguro para APIs, hashes SHA-256 y headers HTTP de protección.</span>
@@ -735,8 +735,22 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
             </div>
 
             <div class="form-group">
+              <label for="contact-website"><i class="fa-solid fa-globe" style="color: var(--neon-cyan);"></i> Sitio Web / URL a Auditar o Desarrollar (Opcional)</label>
+              <input type="text" id="contact-website" class="form-control" placeholder="Ej. https://miempresa.cl" maxlength="150">
+            </div>
+
+            <div class="form-group">
               <label for="contact-message">Detalles del Proyecto o Consulta</label>
-              <textarea id="contact-message" class="form-control" style="min-height: 90px;" placeholder="Describe brevemente tus objetivos..." maxlength="2000" required></textarea>
+              <textarea id="contact-message" class="form-control" style="min-height: 80px;" placeholder="Describe brevemente tus objetivos..." maxlength="2000" required></textarea>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.2rem;">
+              <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">
+                <input type="checkbox" id="contact-terms" style="margin-top: 3px; accent-color: var(--neon-cyan);" required>
+                <span>
+                  Declaro ser el propietario o contar con autorización explícita para solicitar diagnósticos y software sobre el sitio web indicado (Ley N° 21.459).
+                </span>
+              </label>
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%;">
@@ -1175,7 +1189,7 @@ PPV Soluciones
   </div>
 
   <!-- Scripts -->
-  <script src="db.js?v=20260803003"></script>
-  <script src="app.js?v=20260803003"></script>
+  <script src="db.js?v=20260803004"></script>
+  <script src="app.js?v=20260803004"></script>
 </body>
 </html>

@@ -1394,6 +1394,7 @@ async function sendTelegramNotification(data) {
         name: data.name,
         email: data.email,
         subject: data.subject,
+        website: data.website || '',
         budgetText: data.budgetText || data.budget,
         message: data.message
       })
@@ -1425,11 +1426,13 @@ function initContactAndDB() {
 
     const budgetSelect = document.getElementById('contact-budget');
     const budgetText = (budgetSelect && budgetSelect.selectedIndex >= 0) ? budgetSelect.options[budgetSelect.selectedIndex].text : '';
+    const websiteEl = document.getElementById('contact-website');
 
     const data = {
       name: document.getElementById('contact-name').value.trim(),
       email: document.getElementById('contact-email').value.trim(),
       subject: document.getElementById('contact-subject').value.trim(),
+      website: websiteEl ? websiteEl.value.trim() : '',
       budget: document.getElementById('contact-budget').value,
       budgetText: budgetText,
       message: document.getElementById('contact-message').value.trim()

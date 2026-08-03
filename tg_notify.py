@@ -23,17 +23,20 @@ def escape_html(text):
         return ''
     return str(text).replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
 
-def send_telegram(name, email, subject, budget_text, message):
+def send_telegram(name, email, subject, website, budget_text, message):
     now = datetime.now().strftime('%d-%m-%Y %H:%M')
+    site_info = f"🌐 <b>Sitio Web / URL:</b> {escape_html(website)}\n" if website else ""
     text = (
         f"🚀 <b>NUEVO MENSAJE - PPV SOLUCIONES</b>\n\n"
         f"👤 <b>Nombre:</b> {escape_html(name)}\n"
         f"📧 <b>Email:</b> {escape_html(email)}\n"
         f"📌 <b>Asunto:</b> {escape_html(subject or 'Consulta General')}\n"
-        f"💰 <b>Presupuesto:</b> {escape_html(budget_text or 'Por definir')}\n\n"
+        f"{site_info}"
+        f"💰 <b>Presupuesto:</b> {escape_html(budget_text or 'Por definir')}\n"
+        f"⚖️ <b>Autorización Legal:</b> Aceptada (Ley 21.459)\n\n"
         f"💬 <b>Mensaje:</b>\n<i>\"{escape_html(message)}\"</i>\n\n"
         f"📅 <i>{now}</i>\n"
-        f"🌐 <i>Origen: ppvsoluciones.cl</i>"
+        f"🔒 <i>Origen: ppvsoluciones.cl</i>"
     )
     payload = json.dumps({
         'chat_id': TELEGRAM_CHAT_ID,
@@ -81,6 +84,7 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
             name       = str(data.get('name', ''))[:120]
             email      = str(data.get('email', ''))[:180]
             subject    = str(data.get('subject', ''))[:200]
+            website    = str(data.get('website', ''))[:150]
             budget     = str(data.get('budgetText', ''))[:100]
             message    = str(data.get('message', ''))[:2000]
 
@@ -93,7 +97,7 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({'ok': False, 'error': 'Faltan campos requeridos'}).encode())
                 return
 
-            result = send_telegram(name, email, subject, budget, message)
+            result = send_telegram(name, email, subject, website, budget, message)
 
             self.send_response(200)
             self.send_cors_headers()
