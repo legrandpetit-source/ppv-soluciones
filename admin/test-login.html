@@ -1,0 +1,126 @@
+<!--email_off-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PPV - Test Login</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0d111a; color: #fff; font-family: sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .box { background: #1a1f2e; padding: 2rem; border-radius: 12px; width: 360px; }
+    h2 { margin-bottom: 1rem; color: #00f3ff; }
+    label { display: block; margin-bottom: 4px; font-size: 0.85rem; color: #ccc; }
+    input { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #333; border-radius: 6px; background: #0d111a; color: #fff; font-size: 1rem; }
+    button { width: 100%; padding: 10px; border: none; border-radius: 6px; background: #00f3ff; color: #000; font-weight: 700; cursor: pointer; font-size: 1rem; }
+    button:hover { background: #00c4cc; }
+    .pass-row { display: flex; gap: 8px; align-items: center; }
+    .pass-row input { flex: 1; margin-bottom: 0; }
+    .eye-btn { background: #333; border: 1px solid #555; color: #fff; width: 42px; height: 42px; border-radius: 6px; cursor: pointer; font-size: 1.1rem; }
+    #result { margin-top: 1rem; padding: 10px; border-radius: 6px; display: none; font-size: 0.9rem; }
+    .ok { background: rgba(0,200,100,0.2); border: 1px solid #00c864; color: #00ff7f; }
+    .err { background: rgba(255,0,80,0.2); border: 1px solid #ff0050; color: #ff6b9d; }
+    #debug { margin-top: 1rem; font-size: 0.75rem; color: #888; white-space: pre-wrap; max-height: 200px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Test Login PPV Admin</h2>
+    <form id="testForm">
+      <label>Correo:</label>
+      <input type="email" id="testEmail" placeholder="ppv@ppvsoluciones.cl" value="ppv@ppvsoluciones.cl">
+      
+      <label>Contraseña:</label>
+      <div class="pass-row">
+        <input type="password" id="testPass" placeholder="contraseña" value="axeappv3878">
+        <button type="button" class="eye-btn" id="eyeBtn">👁️</button>
+      </div>
+      <br>
+      <button type="submit">Probar Login</button>
+    </form>
+    <div id="result"></div>
+    <div id="debug"></div>
+  </div>
+
+  <script>
+    const debug = document.getElementById('debug');
+    function log(msg) {
+      debug.textContent += msg + '\n';
+      console.log('[TEST]', msg);
+    }
+
+    log('Script cargado OK');
+    log('crypto.subtle disponible: ' + (!!window.crypto && !!window.crypto.subtle));
+
+    // Eye toggle
+    document.getElementById('eyeBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      const p = document.getElementById('testPass');
+      if (p.type === 'password') {
+        p.type = 'text';
+        this.textContent = '🙈';
+      } else {
+        p.type = 'password';
+        this.textContent = '👁️';
+      }
+      log('Toggle ojo OK - tipo ahora: ' + p.type);
+    });
+
+    // Hash function
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Login test
+    document.getElementById('testForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const res = document.getElementById('result');
+      const email = document.getElementById('testEmail').value.trim().toLowerCase();
+      const pass = document.getElementById('testPass').value.trim();
+
+      log('Email ingresado: ' + email);
+      log('Pass length: ' + pass.length);
+
+      try {
+        const eHash = await sha256(email);
+        const pHash = await sha256(pass);
+
+        log('Email hash: ' + eHash);
+        log('Pass hash: ' + pHash);
+
+        const expectedEmail = '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed';
+        const expectedPass = 'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb';
+
+        log('Email hash match: ' + (eHash === expectedEmail));
+        log('Pass hash match: ' + (pHash === expectedPass));
+
+        const directMatch = (email === 'ppv@ppvsoluciones.cl' && pass === 'axeappv3878');
+        log('Direct match: ' + directMatch);
+
+        if (eHash === expectedEmail && pHash === expectedPass) {
+          res.className = 'ok';
+          res.textContent = '✅ LOGIN CORRECTO - Hashes coinciden perfectamente';
+          res.style.display = 'block';
+        } else if (directMatch) {
+          res.className = 'ok';
+          res.textContent = '✅ LOGIN CORRECTO - Match directo';
+          res.style.display = 'block';
+        } else {
+          res.className = 'err';
+          res.textContent = '❌ Credenciales no coinciden';
+          res.style.display = 'block';
+        }
+      } catch(err) {
+        log('ERROR: ' + err.message);
+        res.className = 'err';
+        res.textContent = '❌ Error: ' + err.message;
+        res.style.display = 'block';
+      }
+    });
+
+    log('Todos los listeners registrados OK');
+  </script>
+</body>
+<!--/email_off-->
+</html>
