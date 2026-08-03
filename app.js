@@ -1528,6 +1528,19 @@ function initModals() {
   const formSec = document.getElementById('form-security-audit-modal');
   const formReq = document.getElementById('form-service-request-modal');
 
+  // Actualizar UI del Modal de Ciberseguridad dinámicamente según el nivel
+  const updateSecModalUI = (tier) => {
+    const badge = document.getElementById('sec-modal-header-badge');
+    const btnSubmit = document.getElementById('btn-sec-modal-submit');
+    if (tier === '200') {
+      if (badge) badge.innerHTML = `<i class="fa-solid fa-tag"></i> Inversión: $200 USD | <i class="fa-solid fa-clock"></i> Plazo de Entrega: 2 días`;
+      if (btnSubmit) btnSubmit.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Enviar Solicitud & Aceptar Diagnóstico ($200 USD)`;
+    } else {
+      if (badge) badge.innerHTML = `<i class="fa-solid fa-tag"></i> Inversión: $450 USD | <i class="fa-solid fa-clock"></i> Plazo de Entrega: 4 días`;
+      if (btnSubmit) btnSubmit.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Enviar Solicitud & Aceptar Hardening ($450 USD)`;
+    }
+  };
+
   // Abrir Modal de Ciberseguridad con nivel seleccionado
   window.openSecurityAuditModal = (tier = '450') => {
     if (!modalSec) return;
@@ -1537,8 +1550,15 @@ function initModals() {
     if (tier === '200' && radio200) radio200.checked = true;
     else if (radio450) radio450.checked = true;
 
+    updateSecModalUI(tier);
     modalSec.classList.add('active');
   };
+
+  document.querySelectorAll('input[name="sec_tier"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      updateSecModalUI(radio.value);
+    });
+  });
 
   if (btnHeroSec) btnHeroSec.onclick = () => window.openSecurityAuditModal('450');
   if (btnSecSection) btnSecSection.onclick = () => window.openSecurityAuditModal('450');
@@ -1616,7 +1636,7 @@ function initModals() {
       if (window.portfolioDB) {
         await window.portfolioDB.add('messages', { ...data, timestamp: new Date().toISOString() });
       }
-      showToast('¡Solicitud de Auditoría enviada con éxito! Revisa tu correo o Telegram.');
+      showToast('¡Solicitud enviada! En 2 a 4 hrs recibirás un correo desde contacto@ppvsoluciones.cl con la orden PDF y documento de inicio.');
       formSec.reset();
       modalSec.classList.remove('active');
     };

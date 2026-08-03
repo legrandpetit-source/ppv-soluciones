@@ -1318,7 +1318,7 @@ PPV Soluciones
         </div>
         <div>
           <h3 style="font-size: 1.25rem; color: #fff; margin: 0;">Auditoría de Ciberseguridad & Hardening Web</h3>
-          <span style="font-size: 0.8rem; color: var(--neon-emerald); font-weight: 600;">
+          <span id="sec-modal-header-badge" style="font-size: 0.8rem; color: var(--neon-emerald); font-weight: 600;">
             <i class="fa-solid fa-tag"></i> Inversión: $450 USD | <i class="fa-solid fa-clock"></i> Plazo de Entrega: 4 días
           </span>
         </div>
@@ -1352,16 +1352,16 @@ PPV Soluciones
 
         <div class="form-group">
           <label for="sec-modal-website"><i class="fa-solid fa-globe" style="color: var(--neon-pink);"></i> Sitio Web / URL a Auditar *</label>
-          <input type="text" id="sec-modal-website" class="form-control" placeholder="Ej. https://miempresa.cl o proyectovertical.cl" maxlength="150" required>
+          <input type="text" id="sec-modal-website" class="form-control" placeholder="Ej. https://miempresa.cl" maxlength="150" required>
         </div>
 
         <div class="form-group">
           <label for="sec-modal-message">Observaciones o Áreas Específicas de Interés</label>
-          <textarea id="sec-modal-message" class="form-control" style="min-height: 70px;" placeholder="Ej. Queremos revisar credenciales expuestas, headers HTTP y formulario de contacto..." maxlength="1500" required></textarea>
+          <textarea id="sec-modal-message" class="form-control" style="min-height: 65px;" placeholder="Ej. Queremos revisar credenciales expuestas, headers HTTP y formulario de contacto..." maxlength="1500" required></textarea>
         </div>
 
-        <div class="form-group" style="margin-bottom: 1.2rem; background: rgba(255,0,127,0.06); padding: 0.8rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,0,127,0.25);">
-          <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-size: 0.78rem; color: #d0d5e2; line-height: 1.4;">
+        <div class="form-group" style="margin-bottom: 0.8rem; background: rgba(255,0,127,0.06); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,0,127,0.25);">
+          <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-size: 0.77rem; color: #d0d5e2; line-height: 1.4;">
             <input type="checkbox" id="sec-modal-terms" style="margin-top: 2px; accent-color: var(--neon-pink);" required>
             <span>
               <strong>Declaración Jurada & Resguardo Legal (Ley N° 21.459 en Chile):</strong> Declaro ser el propietario legítimo o contar con autorización explícita para solicitar diagnósticos y ciberseguridad sobre la URL indicada.
@@ -1369,8 +1369,16 @@ PPV Soluciones
           </label>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width: 100%; background: linear-gradient(135deg, var(--neon-pink), var(--neon-violet)); border: none;">
-          <i class="fa-solid fa-shield-halved"></i> Enviar Solicitud & Aceptar Términos ($450 USD)
+        <!-- Próximos Pasos -->
+        <div style="background: rgba(0, 243, 255, 0.05); padding: 0.75rem 0.9rem; border-radius: var(--radius-sm); border: 1px solid rgba(0, 243, 255, 0.2); margin-bottom: 1.1rem; font-size: 0.77rem; color: #d0d5e2; line-height: 1.4;">
+          <div style="color: var(--neon-cyan); font-weight: 700; margin-bottom: 0.2rem; display: flex; align-items: center; gap: 0.4rem;">
+            <i class="fa-solid fa-envelope-open-text"></i> ¿Qué ocurre al enviar tu solicitud? (Próximos Pasos)
+          </div>
+          <span>En un plazo máximo de <strong>2 a 4 horas hábiles</strong> recibirás un correo oficial desde <strong>contacto@ppvsoluciones.cl</strong> con el documento PDF adjunto para validar el inicio del servicio.</span>
+        </div>
+
+        <button type="submit" id="btn-sec-modal-submit" class="btn btn-primary" style="width: 100%; background: linear-gradient(135deg, var(--neon-pink), var(--neon-violet)); border: none;">
+          <i class="fa-solid fa-shield-halved"></i> Enviar Solicitud & Aceptar Hardening ($450 USD)
         </button>
       </form>
     </div>
@@ -1427,7 +1435,7 @@ PPV Soluciones
   </div>
 
   <!-- Scripts -->
-  <script src="db.js?v=20260803007"></script>
-  <script src="app.js?v=20260803007"></script>
+  <script src="db.js?v=20260803008"></script>
+  <script src="app.js?v=20260803008"></script>
 </body>
 </html>
