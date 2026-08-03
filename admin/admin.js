@@ -101,39 +101,56 @@ function initAuth() {
   }
 
   if (loginForm) {
-    loginForm.onsubmit = (e) => {
+    loginForm.onsubmit = async (e) => {
       e.preventDefault();
       const emailInput = document.getElementById('portal-email');
       const passInput = document.getElementById('portal-password');
       const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
       const pass = passInput ? passInput.value.trim() : '';
 
-      const currentHashes = getAdminHashes();
+      // Verificación directa inmediata
+      if (email === 'ppv@ppvsoluciones.cl' && pass === 'axeappv3878') {
+        sessionStorage.setItem('ppv_admin_logged', 'true');
+        sessionStorage.setItem('ppv_admin_email', email);
+        if (loginError) loginError.style.display = 'none';
+        showToast('¡Bienvenido al Panel de Administración!');
+        checkSession();
+        return;
+      }
 
-      Promise.all([hashString(email), hashString(pass)]).then(async ([eHash, pHash]) => {
-        const isMasterCreds = (
-          (eHash === '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed' && pHash === 'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb') ||
-          (email === 'ppv@ppvsoluciones.cl' && pass === 'axeappv3878')
-        );
+      // Verificación secundaria por Hashes o DB
+      try {
+        const currentHashes = getAdminHashes();
+        const [eHash, pHash] = await Promise.all([hashString(email), hashString(pass)]);
+        const isMasterHash = (eHash === '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed' && pHash === 'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb');
         const isCustomCreds = (eHash === currentHashes.emailHash && pHash === currentHashes.passHash);
 
         let isDbUser = false;
-        if (window.portfolioDB) {
-          const dbUsers = await window.portfolioDB.getAllAdminUsers();
-          const found = dbUsers.find(u => (u.email.toLowerCase() === email || u.emailHash === eHash) && u.passHash === pHash);
-          if (found) isDbUser = true;
+        if (window.portfolioDB && window.portfolioDB.db) {
+          try {
+            const dbUsers = await window.portfolioDB.getAllAdminUsers();
+            if (dbUsers && Array.isArray(dbUsers)) {
+              const found = dbUsers.find(u => (u.email && u.email.toLowerCase() === email || u.emailHash === eHash) && u.passHash === pHash);
+              if (found) isDbUser = true;
+            }
+          } catch (dbErr) {
+            console.warn('[ADMIN] Error consultando usuarios DB:', dbErr);
+          }
         }
 
-        if (isMasterCreds || isCustomCreds || isDbUser) {
+        if (isMasterHash || isCustomCreds || isDbUser) {
           sessionStorage.setItem('ppv_admin_logged', 'true');
           sessionStorage.setItem('ppv_admin_email', email);
           if (loginError) loginError.style.display = 'none';
-          showToast(`¡Bienvenido al Panel de Administración!`);
+          showToast('¡Bienvenido al Panel de Administración!');
           checkSession();
         } else {
           if (loginError) loginError.style.display = 'flex';
         }
-      });
+      } catch (err) {
+        console.error('[ADMIN] Error en validación de credenciales:', err);
+        if (loginError) loginError.style.display = 'flex';
+      }
     };
   }
 
