@@ -2285,7 +2285,7 @@ async function initVCardLogic() {
     const mName = modalVCard.querySelector('h3');
     const mRole = modalVCard.querySelector('p');
     const mQR = modalVCard.querySelector('img');
-    const mWa = modalVCard.querySelector('a[href*="wa.me"]');
+    const mWa = modalVCard.querySelector('a[href*="wa.me"], a.btn-secondary');
     const mAvatar = modalVCard.querySelector('div[style*="border-radius: 50%"]');
 
     if (mName) mName.textContent = profile.name;
@@ -2296,7 +2296,9 @@ async function initVCardLogic() {
     }
 
     const cleanPhone = profile.phone.replace(/[^0-9]/g, '');
-    if (mWa && cleanPhone) mWa.href = `https://wa.me/${cleanPhone}`;
+    if (mWa && cleanPhone) {
+      mWa.href = `https://wa.me/${cleanPhone}`;
+    }
 
     const vcardStr = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:PPV Soluciones\nTITLE:${profile.role}\nTEL;TYPE=CELL,VOICE:${profile.phone}\nEMAIL;TYPE=INTERNET,PREF:${profile.email}\nURL:https://ppvsoluciones.cl\nEND:VCARD`;
 
