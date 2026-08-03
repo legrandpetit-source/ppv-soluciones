@@ -700,18 +700,18 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
               <div class="form-group">
                 <label for="contact-name">Tu Nombre / Empresa</label>
-                <input type="text" id="contact-name" class="form-control" placeholder="Ej. Carlos Mendoza" required>
+                <input type="text" id="contact-name" class="form-control" placeholder="Ej. Carlos Mendoza" maxlength="120" autocomplete="name" required>
               </div>
               <div class="form-group">
                 <label for="contact-email">Correo Electrónico</label>
-                <input type="email" id="contact-email" class="form-control" placeholder="carlos@empresa.com" required>
+                <input type="email" id="contact-email" class="form-control" placeholder="carlos@empresa.com" maxlength="180" autocomplete="email" required>
               </div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
               <div class="form-group">
                 <label for="contact-subject">Asunto del Proyecto</label>
-                <input type="text" id="contact-subject" class="form-control" placeholder="Ej. Integración de Automatización en Web">
+                <input type="text" id="contact-subject" class="form-control" placeholder="Ej. Automatización de CRM" maxlength="200" required>
               </div>
               <div class="form-group">
                 <label for="contact-budget">Presupuesto Estimado (USD)</label>
@@ -725,7 +725,7 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
 
             <div class="form-group">
               <label for="contact-message">Detalles del Proyecto o Consulta</label>
-              <textarea id="contact-message" class="form-control" style="min-height: 90px;" placeholder="Describe brevemente tus objetivos..." required></textarea>
+              <textarea id="contact-message" class="form-control" style="min-height: 90px;" placeholder="Describe brevemente tus objetivos..." maxlength="2000" required></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%;">

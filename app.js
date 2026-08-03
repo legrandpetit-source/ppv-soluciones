@@ -1360,8 +1360,8 @@ function initSignaturePadDemo() {
    6. FORMULARIO DE CONTACTO E INDEXEDDB
    -------------------------------------------------------------------------- */
 async function sendTelegramNotification(data) {
-  const TELEGRAM_BOT_TOKEN = '8623970624:AAEA5GQPNOJE53751yIir5PDCJglBbfFCMM';
-  const TELEGRAM_CHAT_ID = '1468481915';
+  // Token enviado via proxy en Hetzner para no exponerlo en el cliente
+  const PROXY_URL = 'https://ppvsoluciones.cl/tg-notify';
 
   const dateStr = new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' });
   const text = `🚀 <b>NUEVO MENSAJE DE CONTACTO - PPV SOLUCIONES</b>\n\n` +
@@ -1374,18 +1374,20 @@ async function sendTelegramNotification(data) {
     `🌐 <i>Origen: ppvsoluciones.cl</i>`;
 
   try {
-    const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    const response = await fetch(PROXY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       keepalive: true,
       body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: text,
-        parse_mode: 'HTML'
+        name: data.name,
+        email: data.email,
+        subject: data.subject,
+        budgetText: data.budgetText || data.budget,
+        message: data.message
       })
     });
     const resData = await response.json();
-    console.log('Respuesta Telegram API:', resData);
+    console.log('Respuesta proxy Telegram:', resData);
     return resData.ok;
   } catch (err) {
     console.error('Error enviando notificación a Telegram:', err);
@@ -1397,8 +1399,17 @@ function initContactAndDB() {
   const contactForm = document.getElementById('contact-form');
   if (!contactForm) return;
 
+  let lastSubmitTime = 0; // Anti-spam cooldown
+
   contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Anti-spam: bloquear envíos repetidos en menos de 30 segundos
+    const now = Date.now();
+    if (now - lastSubmitTime < 30000) {
+      showToast('Por favor espera un momento antes de enviar otro mensaje.', true);
+      return;
+    }
 
     const budgetSelect = document.getElementById('contact-budget');
     const budgetText = (budgetSelect && budgetSelect.selectedIndex >= 0) ? budgetSelect.options[budgetSelect.selectedIndex].text : '';
@@ -1429,6 +1440,7 @@ function initContactAndDB() {
     }
 
     // 3. Confirmación al usuario y limpiar formulario
+    lastSubmitTime = now;
     showToast('¡Mensaje enviado con éxito!');
     contactForm.reset();
   });
@@ -1451,10 +1463,15 @@ function showToast(msg, isError = false) {
 /* --------------------------------------------------------------------------
    7. GESTIÓN DE MODALES & AUTENTICACIÓN ADMINISTRATIVA
    -------------------------------------------------------------------------- */
-const ADMIN_CREDENTIALS = {
-  email: 'admin@legrandpetit.cl',
-  password: 'LegrandAdmin2026!'
+// Credenciales admin: hash SHA-256 (nunca texto plano en el cliente)
+const ADMIN_HASHES = {
+  emailHash: 'dbcba288f24a1d8b77274a31adba1b6ae7c5744e7b9e99776e556a816a5e4bb1',
+  passHash: '2bea8efab55e996f89e4804280208da9711e6a2a693a30bc77355abed3c2ccdc'
 };
+async function hashString(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 function initModals() {
   const modalLogin = document.getElementById('modal-admin-login');
@@ -1511,15 +1528,18 @@ function initModals() {
       const inputEmail = document.getElementById('admin-email').value.trim();
       const inputPass = document.getElementById('admin-password').value.trim();
 
-      if (inputEmail === ADMIN_CREDENTIALS.email && inputPass === ADMIN_CREDENTIALS.password) {
-        sessionStorage.setItem('ppv_admin_logged', 'true');
-        sessionStorage.setItem('ppv_admin_email', inputEmail);
-        modalLogin.classList.remove('active');
-        showToast('¡Sesión iniciada con éxito!');
-        openDBModal();
-      } else {
-        if (errorMsg) errorMsg.style.display = 'flex';
-      }
+      // Verificar contra hashes SHA-256 (nunca comparar texto plano)
+      Promise.all([hashString(inputEmail), hashString(inputPass)]).then(([eHash, pHash]) => {
+        if (eHash === ADMIN_HASHES.emailHash && pHash === ADMIN_HASHES.passHash) {
+          sessionStorage.setItem('ppv_admin_logged', 'true');
+          sessionStorage.setItem('ppv_admin_email', inputEmail);
+          modalLogin.classList.remove('active');
+          showToast('¡Sesión iniciada con éxito!');
+          openDBModal();
+        } else {
+          if (errorMsg) errorMsg.style.display = 'flex';
+        }
+      });
     };
   }
 
