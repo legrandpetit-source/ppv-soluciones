@@ -347,7 +347,7 @@
               <span class="status-pill" style="border-color: var(--neon-cyan); color: var(--neon-cyan); font-size: 0.75rem;">
                 NIVEL 1 — EVALUACIÓN
               </span>
-              <span style="color: var(--neon-cyan); font-weight: 700; font-size: 1.4rem;">$200 USD</span>
+              <span class="price-level-1-display" style="color: var(--neon-cyan); font-weight: 700; font-size: 1.25rem;">5,0 UF</span>
             </div>
             <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.6rem;">Diagnóstico & Reporte Ejecutivo PDF</h3>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">
@@ -362,7 +362,7 @@
             </ul>
           </div>
           <button class="btn btn-outline btn-sec-tier" data-tier="200" style="width: 100%; border-color: var(--neon-cyan); color: var(--neon-cyan);">
-            <i class="fa-solid fa-file-pdf"></i> Solicitar Solo Diagnóstico ($200 USD)
+            <i class="fa-solid fa-file-pdf"></i> Solicitar Solo Diagnóstico (5,0 UF)
           </button>
         </div>
 
@@ -377,7 +377,7 @@
                 <span style="background: linear-gradient(135deg, var(--neon-pink), #e11d48); color: #fff; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; display: inline-block; margin-bottom: 0.3rem; letter-spacing: 0.5px; box-shadow: 0 0 10px rgba(255,0,127,0.4);">
                   <i class="fa-solid fa-fire"></i> MÁS POPULAR
                 </span>
-                <div style="color: var(--neon-pink); font-weight: 800; font-size: 1.5rem; line-height: 1;">$450 USD</div>
+                <div class="price-level-2-display" style="color: var(--neon-pink); font-weight: 800; font-size: 1.35rem; line-height: 1.2;">11,0 UF</div>
               </div>
             </div>
             <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.6rem;">Auditoría + Hardening & Parcheo Total</h3>
@@ -394,7 +394,7 @@
             </ul>
           </div>
           <button class="btn btn-primary btn-sec-tier" data-tier="450" style="width: 100%; background: linear-gradient(135deg, var(--neon-pink), var(--neon-violet)); border: none;">
-            <i class="fa-solid fa-shield-halved"></i> Solicitar Auditoría + Solución ($450 USD)
+            <i class="fa-solid fa-shield-halved"></i> Solicitar Auditoría + Solución (11,0 UF)
           </button>
         </div>
 
@@ -898,11 +898,14 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
         </div>
 
         <div class="calc-summary">
-          <h3 style="color: var(--text-muted); font-size: 1rem;">Presupuesto Estimado</h3>
-          <div class="total-price" id="calc-total-usd" style="font-size: 2.6rem; margin: 0.6rem 0;">$350 USD</div>
+          <h3 style="color: var(--text-muted); font-size: 1rem;">Presupuesto Estimado (Ajuste Diario UF)</h3>
+          <div class="total-price" id="calc-total-usd" style="font-size: 2.2rem; margin: 0.6rem 0;">8,5 UF</div>
           <p style="color: var(--neon-emerald); font-weight: 600; font-size: 0.9rem; margin-bottom: 1.2rem;">
             <i class="fa-solid fa-clock"></i> Tiempo estimado de entrega: <span id="calc-total-time">3 días</span>
           </p>
+          <div style="font-size: 0.75rem; color: var(--neon-amber, #ffb703); margin-bottom: 1rem;" class="uf-rate-display">
+            <i class="fa-solid fa-chart-line"></i> 1 UF = $40.844 CLP (Oficial Banco Central)
+          </div>
           <button class="btn btn-primary" id="btn-calc-request-modal" style="width: 100%;">
             <i class="fa-solid fa-paper-plane"></i> Solicitar este Proyecto
           </button>
@@ -1066,11 +1069,11 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
                 <input type="text" id="contact-subject" class="form-control" placeholder="Ej. Automatización de CRM" maxlength="200" required>
               </div>
               <div class="form-group">
-                <label for="contact-budget">Presupuesto Estimado (USD)</label>
+                <label for="contact-budget">Presupuesto Estimado (UF)</label>
                 <select id="contact-budget" class="form-control">
-                  <option value="300-500">$300 - $500 USD</option>
-                  <option value="500-1000">$500 - $1,000 USD</option>
-                  <option value="1000+">Más de $1,000 USD</option>
+                  <option value="5-10 UF">5 - 10 UF (~ $200.000 - $400.000 CLP)</option>
+                  <option value="10-25 UF">10 - 25 UF (~ $400.000 - $1.000.000 CLP)</option>
+                  <option value="25+ UF">Más de 25 UF (+ $1.000.000 CLP)</option>
                 </select>
               </div>
             </div>

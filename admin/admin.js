@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initPdfGeneratorMaintainer();
   initSecAuditWorkflowMaintainer();
   initClientsCRUD();
+  initUFHistoryMaintainer();
 });
 
 /* --------------------------------------------------------------------------
@@ -1218,6 +1219,70 @@ function initClientsCRUD() {
         }
       };
     });
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. MANTENEDOR DEL VALOR DE LA UF & HISTORIAL BD (SQLITE)
+   -------------------------------------------------------------------------- */
+function initUFHistoryMaintainer() {
+  const currentValEl = document.getElementById('admin-current-uf-val');
+  const currentDateEl = document.getElementById('admin-current-uf-date');
+  const btnRefresh = document.getElementById('btn-refresh-uf-rate');
+  const tbody = document.getElementById('uf-history-tbody');
+
+  loadUFData();
+
+  if (btnRefresh) {
+    btnRefresh.onclick = async () => {
+      btnRefresh.disabled = true;
+      btnRefresh.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando API...';
+      try {
+        const resp = await fetch('/tg-update-uf-rate', { method: 'POST' });
+        if (resp.ok) {
+          showToast('✅ Valor de la UF actualizado con éxito desde Mindicador API.');
+          await loadUFData();
+        } else {
+          showToast('⚠️ No se pudo conectar a la API de la UF.', true);
+        }
+      } catch(e) {
+        showToast('⚠️ Error al sincronizar UF: ' + e.message, true);
+      } finally {
+        btnRefresh.disabled = false;
+        btnRefresh.innerHTML = '<i class="fa-solid fa-rotate"></i> Actualizar Valor UF Ahora (Sync API)';
+      }
+    };
+  }
+
+  async function loadUFData() {
+    try {
+      const resp = await fetch('/tg-uf-rate');
+      if (resp.ok) {
+        const data = await resp.json();
+        if (currentValEl) currentValEl.textContent = data.clp_formatted || '$40.844,79 CLP';
+        if (currentDateEl) currentDateEl.textContent = `Fecha de Registro: ${data.date || 'Hoy'}`;
+
+        if (tbody && data.history) {
+          tbody.innerHTML = '';
+          if (data.history.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No hay historial almacenado en SQLite.</td></tr>';
+            return;
+          }
+          data.history.forEach(h => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>#${h.id}</td>
+              <td><strong style="color: #ffb703;">${escapeHtml(h.date)}</strong></td>
+              <td><span style="font-size: 0.9rem; color: #fff; font-weight: 600;">${escapeHtml(h.clp_formatted)}</span></td>
+              <td style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(h.fetched_at || 'N/A')}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+      }
+    } catch(e) {
+      console.log('[ADMIN] Error cargando UF:', e);
+    }
   }
 }
 

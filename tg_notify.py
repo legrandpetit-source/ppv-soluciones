@@ -93,6 +93,100 @@ def get_all_messages_from_db():
         print(f"[TG-PROXY] ❌ Error leyendo DB: {e}")
         return []
 
+def init_uf_db():
+    try:
+        os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS uf_history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                date TEXT UNIQUE,
+                uf_value REAL NOT NULL,
+                clp_formatted TEXT,
+                fetched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"[TG-PROXY] DB UF Init Error: {e}")
+
+def fetch_and_save_uf():
+    init_uf_db()
+    today_str = datetime.now().strftime('%Y-%m-%d')
+    uf_val = None
+    
+    # 1. Consultar API de Mindicador.cl
+    try:
+        req = urllib.request.Request('https://mindicador.cl/api/uf', headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            if 'serie' in data and len(data['serie']) > 0:
+                uf_val = float(data['serie'][0]['valor'])
+                raw_fecha = data['serie'][0]['fecha'][:10]
+                if raw_fecha:
+                    today_str = raw_fecha
+    except Exception as e:
+        print(f"[TG-PROXY] Warning mindicador.cl: {e}")
+
+    conn = sqlite3.connect(DB_PATH, timeout=5)
+    cursor = conn.cursor()
+
+    if uf_val:
+        clp_fmt = f"${uf_val:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+        cursor.execute('''
+            INSERT INTO uf_history (date, uf_value, clp_formatted, fetched_at)
+            VALUES (?, ?, ?, datetime('now', 'localtime'))
+            ON CONFLICT(date) DO UPDATE SET uf_value=excluded.uf_value, clp_formatted=excluded.clp_formatted, fetched_at=excluded.fetched_at
+        ''', (today_str, uf_val, clp_fmt))
+        conn.commit()
+    else:
+        cursor.execute("SELECT date, uf_value FROM uf_history ORDER BY id DESC LIMIT 1")
+        row = cursor.fetchone()
+        if row:
+            today_str, uf_val = row[0], row[1]
+        else:
+            uf_val = 40844.79 # Valor base de respaldo
+
+    cursor.execute("SELECT id, date, uf_value, clp_formatted, fetched_at FROM uf_history ORDER BY id DESC LIMIT 30")
+    history_rows = cursor.fetchall()
+    conn.close()
+
+    history_list = []
+    for r in history_rows:
+        history_list.append({
+            'id': r[0],
+            'date': r[1],
+            'uf_value': r[2],
+            'clp_formatted': f"${r[2]:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'),
+            'fetched_at': r[4]
+        })
+
+    clp_formatted_current = f"${uf_val:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+
+    return {
+        'ok': True,
+        'date': today_str,
+        'uf_value': uf_val,
+        'clp_formatted': clp_formatted_current,
+        'prices': {
+            'audit_level_1_uf': 5.0,
+            'audit_level_1_clp': round(5.0 * uf_val),
+            'audit_level_2_uf': 11.0,
+            'audit_level_2_clp': round(11.0 * uf_val),
+            'basic_bot_uf': 8.5,
+            'basic_bot_clp': round(8.5 * uf_val),
+            'workflow_n8n_uf': 11.0,
+            'workflow_n8n_clp': round(11.0 * uf_val),
+            'full_webapp_uf': 15.0,
+            'full_webapp_clp': round(15.0 * uf_val),
+            'code_opt_uf': 6.0,
+            'code_opt_clp': round(6.0 * uf_val)
+        },
+        'history': history_list
+    }
+
 def send_telegram(name, email, subject, website, budget_text, message, phone='', contact_pref=''):
     now = get_chile_now_str()
     site_info = f"🌐 <b>Sitio Web / URL:</b> {escape_html(website)}\n" if website else ""
@@ -152,6 +246,15 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({'ok': True, 'messages': messages}).encode('utf-8'))
+            return
+
+        if self.path in ['/tg-uf-rate', '/api/uf-rate']:
+            uf_data = fetch_and_save_uf()
+            self.send_response(200)
+            self.send_cors_headers()
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps(uf_data).encode('utf-8'))
             return
 
         self.send_response(404)
@@ -267,6 +370,23 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps({'ok': True, 'saved_path': save_file_path}).encode('utf-8'))
+                return
+            except Exception as e:
+                self.send_response(500)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+                return
+
+        if self.path in ['/tg-update-uf-rate', '/api/update-uf-rate']:
+            try:
+                uf_data = fetch_and_save_uf()
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps(uf_data).encode('utf-8'))
                 return
             except Exception as e:
                 self.send_response(500)

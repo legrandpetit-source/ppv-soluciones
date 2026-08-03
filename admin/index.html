@@ -231,6 +231,9 @@
       <button class="sidebar-btn" data-view="view-clients">
         <i class="fa-solid fa-users text-emerald"></i> Gestión de Clientes & Casos
       </button>
+      <button class="sidebar-btn" data-view="view-uf-history">
+        <i class="fa-solid fa-chart-line text-amber"></i> Valor UF & Historial BD
+      </button>
     </aside>
 
     <!-- Contenido Principal -->
@@ -974,6 +977,46 @@
               </tr>
             </thead>
             <tbody id="portal-clients-tbody">
+              <!-- Cargado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Vista 11: Historial de la UF & Cotización Diaria en SQLite -->
+      <div class="admin-panel-view" id="view-uf-history">
+        <h3 style="color: var(--neon-cyan); font-size: 1.2rem; margin-bottom: 1rem;">
+          <i class="fa-solid fa-chart-line text-amber"></i> Valor de la UF & Historial de Ajuste Diario (SQLite)
+        </h3>
+
+        <div class="glass-card" style="background: rgba(13, 17, 26, 0.9); border-color: rgba(255, 183, 3, 0.4); margin-bottom: 1.5rem;">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted); display: block;">Valor UF del Día (Fuente Oficial Banco Central / Mindicador.cl):</span>
+              <div style="font-size: 2.2rem; font-weight: 800; color: #ffb703;" id="admin-current-uf-val">$40.844,79 CLP</div>
+              <span style="font-size: 0.78rem; color: var(--neon-cyan);" id="admin-current-uf-date">Fecha de Registro: Cargas en vivo...</span>
+            </div>
+
+            <button type="button" class="btn btn-primary" id="btn-refresh-uf-rate" style="background: linear-gradient(135deg, #ffb703, var(--neon-pink)); border: none; padding: 0.6rem 1.2rem; color: #000; font-weight: 700;">
+              <i class="fa-solid fa-rotate"></i> Actualizar Valor UF Ahora (Sync API)
+            </button>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <h4 style="color: #fff; font-size: 0.95rem; margin-bottom: 0.8rem;">
+            <i class="fa-solid fa-database text-cyan"></i> Historial de Valores UF Guardados en Base de Datos (uf_history)
+          </h4>
+          <table class="msg-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fecha UF</th>
+                <th>Valor UF (CLP)</th>
+                <th>Fecha / Hora de Consulta</th>
+              </tr>
+            </thead>
+            <tbody id="uf-history-tbody">
               <!-- Cargado dinámicamente -->
             </tbody>
           </table>
