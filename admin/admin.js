@@ -171,7 +171,12 @@ function initAuth() {
    -------------------------------------------------------------------------- */
 async function refreshAllData() {
   if (window.portfolioDB) {
-    try { await window.portfolioDB.init(); } catch(e) {}
+    try { 
+      await window.portfolioDB.init(); 
+      if (window.portfolioDB.seedDefaultsIfEmpty) {
+        await window.portfolioDB.seedDefaultsIfEmpty();
+      }
+    } catch(e) { console.error('Error inicializando DB/Seeds:', e); }
   }
   try { await loadMessagesTable(); } catch(e) { console.error('Error cargando mensajes:', e); }
   try { await loadServicesTable(); } catch(e) { console.error('Error cargando servicios:', e); }
