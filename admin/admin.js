@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initBlockedCRUD();
   initAdminMeetingsMaintainer();
   initUserMaintainer();
+  initPdfGeneratorMaintainer();
 });
 
 /* --------------------------------------------------------------------------
@@ -699,6 +700,53 @@ function initUserMaintainer() {
       confirmInput.value = '';
 
       showToast('¡Credenciales administrativas actualizadas con éxito! Usa tus nuevos datos en el próximo inicio de sesión.');
+    };
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. GENERADOR DE CARTAS LEGALES & DOCUMENTOS PDF
+   -------------------------------------------------------------------------- */
+function initPdfGeneratorMaintainer() {
+  const form = document.getElementById('form-admin-generate-pdf-docs');
+  const resultBox = document.getElementById('gen-pdf-result-box');
+  const resultMsg = document.getElementById('gen-pdf-result-msg');
+
+  if (form) {
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const payload = {
+        client_name: document.getElementById('gen-pdf-name').value.trim(),
+        rut: document.getElementById('gen-pdf-rut').value.trim(),
+        domain: document.getElementById('gen-pdf-domain').value.trim(),
+        contact_person: document.getElementById('gen-pdf-person').value.trim(),
+        email: document.getElementById('gen-pdf-email').value.trim(),
+        plan_tier: document.getElementById('gen-pdf-tier').value
+      };
+
+      showToast('⏳ Compilando y generando documentos PDF...');
+      if (resultBox) resultBox.style.display = 'none';
+
+      try {
+        const res = await fetch('/tg-generate-docs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.ok) {
+          showToast('✅ ¡Documentos PDF generados con éxito!');
+          if (resultBox) resultBox.style.display = 'block';
+          if (resultMsg) {
+            resultMsg.innerHTML = `Se crearon la <strong>Carta de Autorización Legal</strong> y el <strong>Informe de Diagnóstico</strong> en la carpeta:<br><code style="color: var(--neon-cyan); font-size: 0.85rem;">${data.folder}</code>`;
+          }
+        } else {
+          showToast('❌ Error al generar PDFs: ' + (data.error || 'Desconocido'), true);
+        }
+      } catch (err) {
+        console.error('Error enviando petición /tg-generate-docs:', err);
+        showToast('❌ Error de conexión al generar documentos PDF.', true);
+      }
     };
   }
 }

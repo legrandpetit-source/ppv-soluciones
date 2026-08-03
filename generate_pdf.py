@@ -245,6 +245,109 @@ def save_pdf(md_content, filename_base, title="Documento PPV", domain=None):
 
     return created_pdfs
 
+def generate_client_authorization_pdf(client_name, rut, domain, contact_person, email, plan_tier="$450 USD"):
+    from datetime import datetime
+    date_str = datetime.now().strftime('%d/%m/%Y')
+    clean_domain = domain.replace('https://', '').replace('http://', '').strip('/')
+    
+    md_content = f"""# 📜 Carta de Autorización & Exención de Responsabilidad Legal
+**Servicio de Auditoría de Ciberseguridad & Hardening Web**  
+**PPV Soluciones** — https://ppvsoluciones.cl  
+
+---
+
+## 📄 ANTECEDENTES Y DECLARACIÓN JURADA
+
+Por medio del presente documento, el Solicitante identificado a continuación declara bajo su exclusiva responsabilidad contar con las facultades legales, de propiedad o de representación sobre la infraestructura y dominio web indicado.
+
+### 1. Identificación del Solicitante y Sitio Web
+* **Nombre / Razón Social del Cliente:** {client_name}
+* **RUT / Identificación Fiscal:** {rut}
+* **Dominio / URL del Sitio Web a Auditar:** {clean_domain}
+* **Representante Legal / Contacto Autorizado:** {contact_person}
+* **Correo Electrónico de Contacto:** {email}
+* **Servicio & Plan Requerido:** {plan_tier}
+* **Fecha de Emisión:** {date_str}
+
+---
+
+## ⚖️ CLÁUSULAS DE AUTORIZACIÓN Y ALCANCE
+
+### Primera: Autorización Explícita de Análisis y Hardening
+El Solicitante autoriza de manera explícita e irrevocable al equipo técnico de **PPV Soluciones** (representado por Patricio Padilla, CEO & Fundador) a realizar pruebas de diagnóstico, evaluación de cabeceras, revisión de código fuente visible, mitigación de vulnerabilidades y hardening de servidor sobre la infraestructura del sitio web señalado, en conformidad con la **Ley N° 21.459 que Establece Normas sobre Delitos Informáticos en Chile**.
+
+### Segunda: Propósito Exclusivo de Diagnóstico y Remediación
+Las pruebas y correcciones realizadas tienen como único fin identificar fallos de configuración, exposición no autorizada de credenciales/tokens y brechas de seguridad para su posterior mitigación. En ningún caso se realizará extracción, alteración, filtración o destrucción de datos de la empresa o sus usuarios.
+
+### Tercera: Declaración de Propiedad y Exención de Responsabilidad
+El Solicitante declara formalmente ser el propietario legítimo del dominio o poseer el mandato escrito del titular para encomendar esta auditoría. En consecuencia, el Solicitante exime a **PPV Soluciones** de cualquier reclamo de terceros derivado de la falta de representatividad o autorización previa sobre la infraestructura evaluada.
+
+### Cuarta: Confidencialidad de la Información
+Toda la información obtenida durante la auditoría, incluidos los hallazgos técnicos, vectores de vulnerabilidad y datos de credenciales, será tratada con estricta reserva bajo secreto profesional y entregada únicamente al contacto autorizado designado en este documento.
+
+---
+
+## ✍️ FIRMAS Y CONFORMIDAD DE LAS PARTES
+
+| SOLICITANTE / CLIENTE | EMISOR / PPV SOLUCIONES |
+|---|---|
+| **{client_name}** | **Patricio Padilla** |
+| **Firma Representante Autorizado:** {contact_person} | **CEO & Fundador — PPV Soluciones** |
+| **RUT:** {rut} | **Correo:** contacto@ppvsoluciones.cl |
+| **Dominio Autorizado:** {clean_domain} | **Web:** https://ppvsoluciones.cl |
+"""
+    return save_pdf(md_content, 'carta_autorizacion_seguridad', f'Carta de Autorización Legal - {clean_domain}', domain=clean_domain)
+
+def generate_client_audit_report_pdf(client_name, domain, plan_tier="$450 USD"):
+    from datetime import datetime
+    date_str = datetime.now().strftime('%d/%m/%Y')
+    clean_domain = domain.replace('https://', '').replace('http://', '').strip('/')
+    
+    md_content = f"""# 🛡️ Informe de Diagnóstico & Ciberseguridad Web
+**Cliente / Dominio:** {clean_domain}  
+**Fecha de Evaluación:** {date_str}  
+**Plan:** {plan_tier}  
+**Emisor:** PPV Soluciones (contacto@ppvsoluciones.cl)  
+
+---
+
+## 📊 RESUMEN EJECUTIVO
+
+El presente informe consolida el diagnóstico de ciberseguridad, evaluación de vulnerabilidades y recomendaciones de *hardening* para la infraestructura web de **{client_name}** (`{clean_domain}`).
+
+---
+
+## 🔍 MATRIZ DE VERIFICACIÓN DE SEGURIDAD (CHECKLIST)
+
+### 1. Protección de Credenciales & Tokens API (Crítico)
+* **Estado:** Verificado / En Revisión
+* **Evaluación:** Inspección de scripts clientes para garantizar el ocultamiento de tokens de WhatsApp, Telegram y claves de base de datos a través de proxies backend en servidor.
+
+### 2. Cabeceras de Seguridad HTTP & Servidor (Alto)
+* **Estado:** Verificado / En Configuración
+* **Evaluación:** Implementación de `Content-Security-Policy`, `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff` y `HSTS`.
+
+### 3. Formularios, Anti-Spam & Rate Limiting (Alto)
+* **Estado:** Protegido
+* **Evaluación:** Validación de campos, límites de longitud (`maxlength`), cooldowns anti-flood y sanitización `escapeHtml`.
+
+### 4. Autenticación & Hashes Criptográficos (Alto)
+* **Estado:** SHA-256 Activo
+* **Evaluación:** Sustitución de contraseñas plano por algoritmos de hash SHA-256.
+
+### 5. Cifrado SSL/TLS & HTTPS (Medio)
+* **Estado:** Activo 256-bit
+* **Evaluación:** Redirección automática HTTPS y certificados SSL de alta resistencia.
+
+---
+
+## ✍️ APROBACIÓN Y EMISIÓN
+
+**Patricio Padilla — CEO & Fundador**  
+PPV Soluciones | contacto@ppvsoluciones.cl | https://ppvsoluciones.cl
+"""
+    file_prefix = clean_domain.replace(".", "_")
+    return save_pdf(md_content, f'{file_prefix}_security_report', f'Informe de Seguridad - {clean_domain}', domain=clean_domain)
+
 if __name__ == '__main__':
-    # Test script execution
     print("PDF Generator Script Listo.")

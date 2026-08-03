@@ -222,6 +222,9 @@
       <button class="sidebar-btn" data-view="view-users">
         <i class="fa-solid fa-user-shield text-cyan"></i> Gestión de Usuarios Admin
       </button>
+      <button class="sidebar-btn" data-view="view-sec-generator">
+        <i class="fa-solid fa-file-contract text-pink"></i> Generador de Cartas & PDFs
+      </button>
     </aside>
 
     <!-- Contenido Principal -->
@@ -619,6 +622,74 @@
               <i class="fa-solid fa-floppy-disk"></i> Guardar Nuevas Credenciales Cifradas
             </button>
           </form>
+        </div>
+      </div>
+
+      <!-- Vista 8: Generador de Cartas Legales & Reportes PDF de Ciberseguridad -->
+      <div class="admin-panel-view" id="view-sec-generator">
+        <h3 style="color: var(--neon-pink); font-size: 1.2rem; margin-bottom: 1rem;">
+          <i class="fa-solid fa-file-contract"></i> Generador de Cartas de Autorización Legal & Reportes PDF
+        </h3>
+
+        <div class="glass-card" style="background: rgba(13, 17, 26, 0.9); border-color: rgba(255, 0, 127, 0.3); margin-bottom: 1.5rem; max-width: 750px;">
+          <h4 style="color: var(--neon-pink); font-size: 0.95rem; margin-bottom: 0.8rem;">
+            <i class="fa-solid fa-pen-nib"></i> Datos del Cliente & Sitio Web
+          </h4>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+            Ingresa la información del cliente. Al hacer clic en generar, se compilarán y guardarán automáticamente los 2 archivos PDF (<strong>Carta de Autorización Ley 21.459</strong> e <strong>Informe de Diagnóstico</strong>) en la carpeta <code>Escritorio/Auditoría/&lt;dominio&gt;/</code>.
+          </p>
+
+          <form id="form-admin-generate-pdf-docs">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">Nombre / Razón Social del Cliente *</label>
+                <input type="text" id="gen-pdf-name" class="form-control" placeholder="Ej. Proyecto Vertical SpA" required style="padding: 0.6rem;">
+              </div>
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">RUT / Identificación Fiscal *</label>
+                <input type="text" id="gen-pdf-rut" class="form-control" placeholder="Ej. 77.123.456-K" required style="padding: 0.6rem;">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">Sitio Web / Dominio *</label>
+                <input type="text" id="gen-pdf-domain" class="form-control" placeholder="proyectovertical.cl" required style="padding: 0.6rem;">
+              </div>
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">Representante Legal / Persona Autorizada *</label>
+                <input type="text" id="gen-pdf-person" class="form-control" placeholder="Ej. Juan Pérez" required style="padding: 0.6rem;">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.2rem;">
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">Correo Electrónico de Contacto *</label>
+                <input type="email" id="gen-pdf-email" class="form-control" placeholder="contacto@empresa.cl" required style="padding: 0.6rem;">
+              </div>
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">Nivel del Plan Requerido</label>
+                <select id="gen-pdf-tier" class="form-control" style="padding: 0.6rem;">
+                  <option value="$450 USD (Hardening Total)">Nivel 2 — Hardening Total ($450 USD | 4 días)</option>
+                  <option value="$200 USD (Diagnóstico PDF)">Nivel 1 — Solo Diagnóstico PDF ($200 USD | 2 días)</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, var(--neon-pink), var(--neon-violet)); border: none; padding: 0.7rem 1.4rem; font-weight: 700;">
+              <i class="fa-solid fa-file-pdf"></i> Generar Documentos PDF en Escritorio/Auditoría/
+            </button>
+          </form>
+
+          <!-- Resultado / Alerta de archivos generados -->
+          <div id="gen-pdf-result-box" style="display: none; margin-top: 1.2rem; background: rgba(0, 255, 136, 0.05); border: 1px solid var(--neon-emerald); padding: 1rem; border-radius: 8px;">
+            <strong style="color: var(--neon-emerald); font-size: 0.9rem; display: block; margin-bottom: 0.4rem;">
+              <i class="fa-solid fa-circle-check"></i> ¡Documentos PDF Generados Exitosamente!
+            </strong>
+            <span style="font-size: 0.82rem; color: var(--text-muted);" id="gen-pdf-result-msg">
+              Se crearon la Carta de Autorización Legal y el Informe de Diagnóstico en tu directorio Escritorio/Auditoría/.
+            </span>
+          </div>
         </div>
       </div>
     </main>

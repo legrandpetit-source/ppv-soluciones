@@ -145,6 +145,49 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_POST(self):
+        if self.path in ['/tg-generate-docs', '/api/generate-docs']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+
+                client_name = str(data.get('client_name', ''))[:150]
+                rut = str(data.get('rut', ''))[:50]
+                domain = str(data.get('domain', ''))[:150]
+                contact_person = str(data.get('contact_person', ''))[:150]
+                email = str(data.get('email', ''))[:180]
+                plan_tier = str(data.get('plan_tier', '$450 USD'))[:100]
+
+                if not domain:
+                    self.send_response(400)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': False, 'error': 'Falta el dominio o URL'}).encode())
+                    return
+
+                import generate_pdf
+                pdf1 = generate_pdf.generate_client_authorization_pdf(client_name, rut, domain, contact_person, email, plan_tier)
+                pdf2 = generate_pdf.generate_client_audit_report_pdf(client_name, domain, plan_tier)
+
+                clean_dom = domain.replace('https://', '').replace('http://', '').strip('/')
+                out_path = f"/home/patricio/Escritorio/Auditoría/{clean_dom}/"
+
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True, 'folder': out_path, 'files': [pdf1, pdf2]}).encode('utf-8'))
+                return
+            except Exception as e:
+                print(f"[TG-PROXY] Error generando PDFs: {e}")
+                self.send_response(500)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+                return
+
         if self.path not in ['/tg-notify', '/api/notify']:
             self.send_response(404)
             self.end_headers()
