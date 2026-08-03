@@ -425,32 +425,52 @@ header {
   margin-top: 3px;
 }
 
+/* Autofill Overrides for Chrome / Firefox / Safari */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #0d111a inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: var(--neon-cyan) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 /* Password Visibility Toggle Eye Icon */
 .pass-wrapper {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .pass-wrapper input {
-  padding-right: 2.5rem !important;
+  padding-right: 2.8rem !important;
+  width: 100%;
 }
 
 .btn-toggle-pass {
   position: absolute;
-  right: 10px;
-  background: transparent;
-  border: none;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent !important;
+  border: none !important;
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   cursor: pointer;
-  padding: 4px;
+  padding: 6px 10px;
   transition: var(--transition);
-  z-index: 5;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
 }
 
-.btn-toggle-pass:hover {
-  color: var(--neon-cyan);
+.btn-toggle-pass:hover,
+.btn-toggle-pass.active {
+  color: var(--neon-cyan) !important;
 }
 
 /* Admin Login Modal Styles */

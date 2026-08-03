@@ -55,15 +55,20 @@ function initAuth() {
   const passInput = document.getElementById('portal-password');
 
   if (btnTogglePass && passInput) {
-    btnTogglePass.onclick = () => {
+    btnTogglePass.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       const icon = btnTogglePass.querySelector('i');
       if (passInput.type === 'password') {
         passInput.type = 'text';
-        icon.className = 'fa-solid fa-eye-slash';
+        btnTogglePass.classList.add('active');
+        if (icon) icon.className = 'fa-solid fa-eye-slash';
       } else {
         passInput.type = 'password';
-        icon.className = 'fa-solid fa-eye';
+        btnTogglePass.classList.remove('active');
+        if (icon) icon.className = 'fa-solid fa-eye';
       }
+      passInput.focus();
     };
   }
 
