@@ -93,18 +93,24 @@ function initAuth() {
   if (loginForm) {
     loginForm.onsubmit = (e) => {
       e.preventDefault();
-      const email = document.getElementById('portal-email').value.trim();
-      const pass = document.getElementById('portal-password').value.trim();
+      const emailInput = document.getElementById('portal-email');
+      const passInput = document.getElementById('portal-password');
+      const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+      const pass = passInput ? passInput.value.trim() : '';
+
       const currentHashes = getAdminHashes();
 
       Promise.all([hashString(email), hashString(pass)]).then(async ([eHash, pHash]) => {
-        const isMasterCreds = (eHash === '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed' && pHash === 'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb');
+        const isMasterCreds = (
+          (eHash === '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed' && pHash === 'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb') ||
+          (email === 'ppv@ppvsoluciones.cl' && pass === 'axeappv3878')
+        );
         const isCustomCreds = (eHash === currentHashes.emailHash && pHash === currentHashes.passHash);
 
         let isDbUser = false;
         if (window.portfolioDB) {
           const dbUsers = await window.portfolioDB.getAllAdminUsers();
-          const found = dbUsers.find(u => u.emailHash === eHash && u.passHash === pHash);
+          const found = dbUsers.find(u => (u.email.toLowerCase() === email || u.emailHash === eHash) && u.passHash === pHash);
           if (found) isDbUser = true;
         }
 

@@ -179,7 +179,8 @@ class MessageDB {
     }
 
     const adminUsers = await this.getAll('admin_users');
-    if (!adminUsers || adminUsers.length === 0) {
+    const masterUser = adminUsers ? adminUsers.find(u => u.email === 'ppv@ppvsoluciones.cl') : null;
+    if (!masterUser) {
       const defaultUser = {
         name: 'Patricio Padilla',
         role: 'CEO & Fundador — PPV Soluciones',
