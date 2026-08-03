@@ -189,6 +189,8 @@ async function loadMessagesTable() {
         website: m.website,
         budget: m.budget,
         message: m.message,
+        phone: m.phone || '',
+        contact_pref: m.contact_pref || '',
         status: m.status || 'Nuevo',
         timestampFormatted: m.created_at || 'Reciente'
       }));
@@ -214,12 +216,13 @@ async function loadMessagesTable() {
     const tr = document.createElement('tr');
     const badgeClass = msg.status === 'Nuevo' ? 'badge-new' : (msg.status === 'Leído' ? 'badge-read' : 'badge-replied');
     const websiteInfo = msg.website ? `<br><small style="color: var(--neon-pink);"><i class="fa-solid fa-globe"></i> ${escapeHtml(msg.website)}</small>` : '';
+    const phoneInfo = msg.phone ? `<br><small style="color: var(--neon-cyan);"><i class="fa-solid fa-phone"></i> ${escapeHtml(msg.phone)} (${escapeHtml(msg.contact_pref || 'WhatsApp')})</small>` : '';
 
     tr.innerHTML = `
       <td style="font-family: var(--font-code); color: var(--neon-cyan);">#${msg.id}</td>
       <td style="color: var(--text-muted); font-size: 0.8rem;">${msg.timestampFormatted}</td>
       <td><strong>${escapeHtml(msg.name)}</strong>${websiteInfo}</td>
-      <td style="color: var(--neon-violet);">${escapeHtml(msg.email)}</td>
+      <td style="color: var(--neon-violet);">${escapeHtml(msg.email)}${phoneInfo}</td>
       <td style="color: var(--neon-emerald); font-weight: 600;">${escapeHtml(msg.budget || msg.subject)}</td>
       <td><span class="badge-status ${badgeClass}">${msg.status}</span></td>
       <td>

@@ -929,6 +929,22 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
               <div class="form-group">
+                <label for="contact-phone"><i class="fa-solid fa-phone" style="color: var(--neon-cyan);"></i> Teléfono / WhatsApp *</label>
+                <input type="tel" id="contact-phone" class="form-control" placeholder="+56 9 1234 5678" maxlength="30" autocomplete="tel" required>
+              </div>
+              <div class="form-group">
+                <label for="contact-pref"><i class="fa-solid fa-comments" style="color: var(--neon-emerald);"></i> ¿Cómo te gustaría que te contactemos? *</label>
+                <select id="contact-pref" class="form-control">
+                  <option value="WhatsApp">🟢 WhatsApp (Mensaje / Audio)</option>
+                  <option value="Llamada">📞 Llamada Telefónica Directa</option>
+                  <option value="Correo">📧 Correo Electrónico</option>
+                  <option value="Telegram">💬 Telegram</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+              <div class="form-group">
                 <label for="contact-subject">Asunto del Proyecto</label>
                 <input type="text" id="contact-subject" class="form-control" placeholder="Ej. Automatización de CRM" maxlength="200" required>
               </div>
@@ -1399,6 +1415,22 @@ PPV Soluciones
           </div>
         </div>
 
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+          <div class="form-group">
+            <label for="sec-modal-phone"><i class="fa-solid fa-phone" style="color: var(--neon-cyan);"></i> Teléfono / WhatsApp *</label>
+            <input type="tel" id="sec-modal-phone" class="form-control" placeholder="+56 9 1234 5678" maxlength="30" required>
+          </div>
+          <div class="form-group">
+            <label for="sec-modal-contact-pref"><i class="fa-solid fa-comments" style="color: var(--neon-emerald);"></i> ¿Cómo te gustaría que te contactemos? *</label>
+            <select id="sec-modal-contact-pref" class="form-control" style="padding: 0.5rem; font-size: 0.82rem;">
+              <option value="WhatsApp">🟢 WhatsApp (Mensaje / Audio)</option>
+              <option value="Llamada">📞 Llamada Telefónica Directa</option>
+              <option value="Correo">📧 Correo Electrónico</option>
+              <option value="Telegram">💬 Telegram</option>
+            </select>
+          </div>
+        </div>
+
         <div class="form-group" style="margin-bottom: 0.8rem;">
           <label style="color: #fff; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.4rem; display: block;">Nivel de Servicio Requerido:</label>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
@@ -1474,6 +1506,22 @@ PPV Soluciones
           </div>
         </div>
 
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+          <div class="form-group">
+            <label for="req-modal-phone"><i class="fa-solid fa-phone" style="color: var(--neon-cyan);"></i> Teléfono / WhatsApp *</label>
+            <input type="tel" id="req-modal-phone" class="form-control" placeholder="+56 9 1234 5678" maxlength="30" required>
+          </div>
+          <div class="form-group">
+            <label for="req-modal-contact-pref"><i class="fa-solid fa-comments" style="color: var(--neon-emerald);"></i> ¿Cómo te gustaría que te contactemos? *</label>
+            <select id="req-modal-contact-pref" class="form-control" style="padding: 0.5rem; font-size: 0.82rem;">
+              <option value="WhatsApp">🟢 WhatsApp (Mensaje / Audio)</option>
+              <option value="Llamada">📞 Llamada Telefónica Directa</option>
+              <option value="Correo">📧 Correo Electrónico</option>
+              <option value="Telegram">💬 Telegram</option>
+            </select>
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="req-modal-subject">Servicio / Módulo Seleccionado</label>
           <input type="text" id="req-modal-subject" class="form-control" readonly style="background: rgba(255,255,255,0.05); color: var(--neon-cyan); font-weight: 600;">
@@ -1498,7 +1546,7 @@ PPV Soluciones
   </div>
 
   <!-- Scripts -->
-  <script src="db.js?v=20260803013"></script>
-  <script src="app.js?v=20260803013"></script>
+  <script src="db.js?v=20260803080"></script>
+  <script src="app.js?v=20260803080"></script>
 </body>
 </html>

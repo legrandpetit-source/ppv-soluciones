@@ -35,7 +35,7 @@ def escape_html(text):
         return ''
     return str(text).replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
 
-def save_to_db(name, email, subject, website, budget, message):
+def save_to_db(name, email, subject, website, budget, message, phone='', contact_pref=''):
     try:
         os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
         conn = sqlite3.connect(DB_PATH, timeout=5)
@@ -57,12 +57,20 @@ def save_to_db(name, email, subject, website, budget, message):
             cursor.execute("ALTER TABLE contact_messages ADD COLUMN website TEXT DEFAULT '';")
         except Exception:
             pass
+        try:
+            cursor.execute("ALTER TABLE contact_messages ADD COLUMN phone TEXT DEFAULT '';")
+        except Exception:
+            pass
+        try:
+            cursor.execute("ALTER TABLE contact_messages ADD COLUMN contact_pref TEXT DEFAULT '';")
+        except Exception:
+            pass
 
         now_chile = get_chile_now_str()
         cursor.execute('''
-            INSERT INTO contact_messages (name, email, subject, website, budget, message, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ''', (name, email, subject or 'Consulta General', website or '', budget or 'Por definir', message, now_chile))
+            INSERT INTO contact_messages (name, email, subject, website, budget, message, phone, contact_pref, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (name, email, subject or 'Consulta General', website or '', budget or 'Por definir', message, phone or '', contact_pref or '', now_chile))
         conn.commit()
         conn.close()
         print(f"[TG-PROXY] ✅ Mensaje guardado exitosamente en SQLite DB ({email}) a las {now_chile}")
@@ -76,7 +84,7 @@ def get_all_messages_from_db():
         conn = sqlite3.connect(DB_PATH, timeout=5)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        cursor.execute("SELECT id, name, email, subject, website, budget, message, status, created_at FROM contact_messages ORDER BY id DESC")
+        cursor.execute("SELECT id, name, email, subject, website, budget, message, status, created_at, phone, contact_pref FROM contact_messages ORDER BY id DESC")
         rows = cursor.fetchall()
         result = [dict(row) for row in rows]
         conn.close()
@@ -85,13 +93,18 @@ def get_all_messages_from_db():
         print(f"[TG-PROXY] ❌ Error leyendo DB: {e}")
         return []
 
-def send_telegram(name, email, subject, website, budget_text, message):
+def send_telegram(name, email, subject, website, budget_text, message, phone='', contact_pref=''):
     now = get_chile_now_str()
     site_info = f"🌐 <b>Sitio Web / URL:</b> {escape_html(website)}\n" if website else ""
+    phone_info = f"📱 <b>Teléfono:</b> {escape_html(phone)}\n" if phone else ""
+    pref_info = f"💬 <b>Preferencia de Contacto:</b> {escape_html(contact_pref)}\n" if contact_pref else ""
+
     text = (
         f"🚀 <b>NUEVO MENSAJE - PPV SOLUCIONES</b>\n\n"
         f"👤 <b>Nombre:</b> {escape_html(name)}\n"
         f"📧 <b>Email:</b> {escape_html(email)}\n"
+        f"{phone_info}"
+        f"{pref_info}"
         f"📌 <b>Asunto:</b> {escape_html(subject or 'Consulta General')}\n"
         f"{site_info}"
         f"💰 <b>Presupuesto/Plan:</b> {escape_html(budget_text or 'Por definir')}\n"
@@ -205,6 +218,8 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
 
             name       = str(data.get('name', ''))[:120]
             email      = str(data.get('email', ''))[:180]
+            phone      = str(data.get('phone', ''))[:50]
+            contact_pref = str(data.get('contact_pref', ''))[:50]
             subject    = str(data.get('subject', ''))[:200]
             website    = str(data.get('website', ''))[:150]
             budget     = str(data.get('budgetText', ''))[:100]
@@ -219,10 +234,10 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 return
 
             # 1. Guardar en SQLite en el servidor
-            save_to_db(name, email, subject, website, budget, message)
+            save_to_db(name, email, subject, website, budget, message, phone, contact_pref)
 
             # 2. Notificar a Telegram
-            tg_result = send_telegram(name, email, subject, website, budget, message)
+            tg_result = send_telegram(name, email, subject, website, budget, message, phone, contact_pref)
 
             self.send_response(200)
             self.send_cors_headers()

@@ -1393,6 +1393,8 @@ async function sendTelegramNotification(data) {
       body: JSON.stringify({
         name: data.name,
         email: data.email,
+        phone: data.phone || '',
+        contact_pref: data.contact_pref || '',
         subject: data.subject,
         website: data.website || '',
         budgetText: data.budgetText || data.budget,
@@ -1427,10 +1429,14 @@ function initContactAndDB() {
     const budgetSelect = document.getElementById('contact-budget');
     const budgetText = (budgetSelect && budgetSelect.selectedIndex >= 0) ? budgetSelect.options[budgetSelect.selectedIndex].text : '';
     const websiteEl = document.getElementById('contact-website');
+    const phoneEl = document.getElementById('contact-phone');
+    const prefEl = document.getElementById('contact-pref');
 
     const data = {
       name: document.getElementById('contact-name').value.trim(),
       email: document.getElementById('contact-email').value.trim(),
+      phone: phoneEl ? phoneEl.value.trim() : '',
+      contact_pref: prefEl ? prefEl.value : 'WhatsApp',
       subject: document.getElementById('contact-subject').value.trim(),
       website: websiteEl ? websiteEl.value.trim() : '',
       budget: document.getElementById('contact-budget').value,
@@ -1622,10 +1628,14 @@ function initModals() {
       e.preventDefault();
       const selectedTier = document.querySelector('input[name="sec_tier"]:checked')?.value || '450';
       const isTier200 = selectedTier === '200';
+      const phoneSec = document.getElementById('sec-modal-phone')?.value.trim() || '';
+      const prefSec = document.getElementById('sec-modal-contact-pref')?.value || 'WhatsApp';
 
       const data = {
         name: document.getElementById('sec-modal-name').value.trim(),
         email: document.getElementById('sec-modal-email').value.trim(),
+        phone: phoneSec,
+        contact_pref: prefSec,
         subject: isTier200 ? '🛡️ DIAGNÓSTICO DE CIBERSEGURIDAD (NIVEL 1 - $200 USD)' : '🛡️ AUDITORÍA + HARDENING TOTAL (NIVEL 2 - $450 USD)',
         website: document.getElementById('sec-modal-website').value.trim(),
         budgetText: isTier200 ? '$200 USD (Plazo 2 días)' : '$450 USD (Plazo 4 días)',
@@ -1646,9 +1656,14 @@ function initModals() {
   if (formReq) {
     formReq.onsubmit = async (e) => {
       e.preventDefault();
+      const phoneReq = document.getElementById('req-modal-phone')?.value.trim() || '';
+      const prefReq = document.getElementById('req-modal-contact-pref')?.value || 'WhatsApp';
+
       const data = {
         name: document.getElementById('req-modal-name').value.trim(),
         email: document.getElementById('req-modal-email').value.trim(),
+        phone: phoneReq,
+        contact_pref: prefReq,
         subject: document.getElementById('req-modal-subject').value.trim(),
         budgetText: 'Por definir',
         message: document.getElementById('req-modal-message').value.trim()
