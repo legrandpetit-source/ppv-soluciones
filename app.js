@@ -1408,7 +1408,7 @@ function initContactAndDB() {
         await window.portfolioDB.saveMessage(data);
         // Notificar en tiempo real a Telegram con el Bot Legrandpetit_noti_bot
         sendTelegramNotification(data);
-        showToast('¡Mensaje guardado y notificación enviada por Telegram con éxito!');
+        showToast('¡Mensaje enviado con éxito!');
         contactForm.reset();
       }
     } catch (err) {
