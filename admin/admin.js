@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initUserMaintainer();
   initPdfGeneratorMaintainer();
   initSecAuditWorkflowMaintainer();
+  initClientsCRUD();
 });
 
 /* --------------------------------------------------------------------------
@@ -949,6 +950,119 @@ function initSecAuditWorkflowMaintainer() {
         showToast('❌ Error de conexión al generar certificado.', true);
       }
     };
+  }
+/* --------------------------------------------------------------------------
+   10. MANTENEDOR DE CLIENTES & CASOS DE ÉXITO (CRUD)
+   -------------------------------------------------------------------------- */
+function initClientsCRUD() {
+  const form = document.getElementById('form-portal-client');
+  const tbody = document.getElementById('portal-clients-tbody');
+  const btnCancel = document.getElementById('btn-cancel-edit-client');
+  const titleEl = document.getElementById('client-form-title');
+
+  loadClientsTable();
+
+  if (form) {
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('p-client-id').value;
+      const name = document.getElementById('p-client-name').value.trim();
+      const rubro = document.getElementById('p-client-rubro').value.trim();
+      const category = document.getElementById('p-client-category').value;
+      const website = document.getElementById('p-client-website').value.trim();
+      const solution = document.getElementById('p-client-solution').value.trim();
+
+      const clientData = {
+        name,
+        rubro,
+        category,
+        website,
+        solution,
+        badge: category === 'Ciberseguridad' ? '🛡️ Ciberseguridad Ley 21.459' : (category === 'Desarrollo Web' ? '💻 Web App & Automatización' : '🤖 Automatización IA')
+      };
+
+      if (id) {
+        clientData.id = parseInt(id, 10);
+      }
+
+      await window.portfolioDB.saveClient(clientData);
+      showToast(id ? '✅ Cliente actualizado con éxito' : '✅ Nuevo caso de éxito agregado');
+      resetForm();
+      await loadClientsTable();
+    };
+  }
+
+  if (btnCancel) {
+    btnCancel.onclick = () => resetForm();
+  }
+
+  function resetForm() {
+    if (form) form.reset();
+    document.getElementById('p-client-id').value = '';
+    if (titleEl) titleEl.innerHTML = '<i class="fa-solid fa-user-plus"></i> Agregar Nuevo Cliente / Caso de Éxito';
+    if (btnCancel) btnCancel.style.display = 'none';
+  }
+
+  async function loadClientsTable() {
+    if (!tbody || !window.portfolioDB) return;
+    const clients = await window.portfolioDB.getAllClients();
+    tbody.innerHTML = '';
+
+    if (!clients || clients.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No hay clientes ni casos de éxito registrados.</td></tr>';
+      return;
+    }
+
+    clients.forEach(c => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>#${c.id}</td>
+        <td><strong style="color: #fff;">${escapeHtml(c.name)}</strong></td>
+        <td><span style="font-size: 0.8rem; color: var(--neon-cyan);">${escapeHtml(c.rubro)}</span></td>
+        <td><span class="badge-status badge-new">${escapeHtml(c.category)}</span></td>
+        <td style="font-size: 0.8rem; max-width: 250px;">${escapeHtml(c.solution)}</td>
+        <td>
+          <div style="display: flex; gap: 0.4rem;">
+            <button class="btn btn-outline btn-edit-client" data-id="${c.id}" style="padding: 2px 6px; font-size: 0.75rem; border-color: var(--neon-cyan); color: var(--neon-cyan);">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <button class="btn btn-outline btn-delete-client" data-id="${c.id}" style="padding: 2px 6px; font-size: 0.75rem; border-color: var(--neon-pink); color: var(--neon-pink);">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    tbody.querySelectorAll('.btn-edit-client').forEach(btn => {
+      btn.onclick = () => {
+        const id = parseInt(btn.dataset.id, 10);
+        const client = clients.find(item => item.id === id);
+        if (client) {
+          document.getElementById('p-client-id').value = client.id;
+          document.getElementById('p-client-name').value = client.name || '';
+          document.getElementById('p-client-rubro').value = client.rubro || '';
+          document.getElementById('p-client-category').value = client.category || 'Ciberseguridad';
+          document.getElementById('p-client-website').value = client.website || '';
+          document.getElementById('p-client-solution').value = client.solution || '';
+
+          if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Editando Cliente #${client.id}: ${escapeHtml(client.name)}`;
+          if (btnCancel) btnCancel.style.display = 'inline-block';
+          window.scrollTo({ top: document.querySelector('.maintainer-form-box').offsetTop - 80, behavior: 'smooth' });
+        }
+      };
+    });
+
+    tbody.querySelectorAll('.btn-delete-client').forEach(btn => {
+      btn.onclick = async () => {
+        if (confirm('¿Eliminar este caso de éxito de la lista?')) {
+          await window.portfolioDB.deleteClient(parseInt(btn.dataset.id, 10));
+          await loadClientsTable();
+          showToast('Cliente eliminado de los casos de éxito.');
+        }
+      };
+    });
   }
 }
 

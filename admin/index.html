@@ -228,6 +228,9 @@
       <button class="sidebar-btn" data-view="view-sec-audit-workflow" style="border-left: 3px solid var(--neon-cyan); background: rgba(0,243,255,0.05);">
         <i class="fa-solid fa-shield-halved text-cyan"></i> Centro de Ciberseguridad & Auditoría
       </button>
+      <button class="sidebar-btn" data-view="view-clients">
+        <i class="fa-solid fa-users text-emerald"></i> Gestión de Clientes & Casos
+      </button>
     </aside>
 
     <!-- Contenido Principal -->
@@ -845,6 +848,79 @@
               </button>
             </form>
           </div>
+        </div>
+      </div>
+
+      <!-- Vista 10: Gestión de Clientes & Casos de Éxito -->
+      <div class="admin-panel-view" id="view-clients">
+        <h3 style="color: var(--neon-emerald); font-size: 1.2rem; margin-bottom: 1rem;">
+          <i class="fa-solid fa-users"></i> Mantenedor de Clientes & Casos de Éxito
+        </h3>
+
+        <div class="maintainer-form-box">
+          <h4 style="color: var(--neon-emerald); font-size: 0.95rem; margin-bottom: 0.8rem;" id="client-form-title">
+            <i class="fa-solid fa-user-plus"></i> Agregar Nuevo Cliente / Caso de Éxito
+          </h4>
+
+          <form id="form-portal-client">
+            <input type="hidden" id="p-client-id" value="">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.8rem;">Nombre de la Empresa / Cliente *</label>
+                <input type="text" id="p-client-name" class="form-control" placeholder="Ej. OrigenCanino SpA" required style="padding: 0.5rem;">
+              </div>
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.8rem;">Rubro / Actividad del Cliente *</label>
+                <input type="text" id="p-client-rubro" class="form-control" placeholder="Ej. Servicios Médicos Veterinarios" required style="padding: 0.5rem;">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.8rem;">Categoría del Servicio *</label>
+                <select id="p-client-category" class="form-control" style="padding: 0.5rem; font-size: 0.85rem;">
+                  <option value="Ciberseguridad">🛡️ Ciberseguridad (Hardening & Diagnóstico)</option>
+                  <option value="Desarrollo Web">💻 Desarrollo Web (Web App / Landing)</option>
+                  <option value="Automatización IA">🤖 Automatización IA & Integraciones</option>
+                  <option value="Posicionamiento SEO">🚀 Posicionamiento SEO & Visibilidad</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.8rem;">Sitio Web del Cliente (URL Opcional)</label>
+                <input type="url" id="p-client-website" class="form-control" placeholder="https://cliente.cl" style="padding: 0.5rem;">
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label style="color: #fff; font-size: 0.8rem;">Solución Entregada / Trabajo Realizado *</label>
+              <textarea id="p-client-solution" class="form-control" placeholder="Describe brevemente la solución técnica implementada para ayudar al cliente..." required style="min-height: 65px; padding: 0.5rem;"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 0.6rem; justify-content: flex-end;">
+              <button type="button" class="btn btn-outline" id="btn-cancel-edit-client" style="display: none; font-size: 0.8rem; padding: 0.4rem 1rem;">Cancelar Edición</button>
+              <button type="submit" class="btn btn-primary" style="padding: 0.4rem 1.4rem; font-size: 0.8rem; background: linear-gradient(135deg, var(--neon-emerald), var(--neon-cyan)); color: #000; font-weight: 700;">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar Cliente
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="msg-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Cliente / Empresa</th>
+                <th>Rubro</th>
+                <th>Categoría</th>
+                <th>Solución Entregada</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="portal-clients-tbody">
+              <!-- Cargado dinámicamente -->
+            </tbody>
+          </table>
         </div>
       </div>
     </main>

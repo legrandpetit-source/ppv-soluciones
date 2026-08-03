@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initMaintainerServicesCRUD();
   initMaintainerSkillsCRUD();
   initMaintainerBlockedCRUD();
+  await loadClientsSection();
   initCopyButtons();
 });
 
@@ -2135,5 +2136,76 @@ function initCopyButtons() {
 function escapeHtml(str) {
   if (!str) return '';
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+async function loadClientsSection() {
+  const grid = document.getElementById('clients-grid');
+  const filterBtns = document.querySelectorAll('.client-filter-btn');
+  if (!grid || !window.portfolioDB) return;
+
+  const clients = await window.portfolioDB.getAllClients();
+  renderGrid(clients);
+
+  filterBtns.forEach(btn => {
+    btn.onclick = () => {
+      filterBtns.forEach(b => {
+        b.classList.remove('active');
+        b.style.borderColor = 'rgba(255,255,255,0.2)';
+        b.style.color = 'var(--text-muted)';
+      });
+      btn.classList.add('active');
+      btn.style.borderColor = 'var(--neon-cyan)';
+      btn.style.color = 'var(--neon-cyan)';
+
+      const filter = btn.dataset.filter;
+      if (filter === 'all') {
+        renderGrid(clients);
+      } else {
+        const filtered = clients.filter(c => c.category === filter);
+        renderGrid(filtered);
+      }
+    };
+  });
+
+  function renderGrid(items) {
+    grid.innerHTML = '';
+    if (!items || items.length === 0) {
+      grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No hay casos de éxito registrados en esta categoría.</div>';
+      return;
+    }
+
+    items.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'glass-card';
+      card.style.cssText = 'display: flex; flex-direction: column; justify-content: space-between; border-color: rgba(0, 243, 255, 0.2); transition: all 0.3s ease; position: relative; overflow: hidden;';
+
+      const categoryColor = c.category === 'Ciberseguridad' ? 'var(--neon-pink)' : (c.category === 'Desarrollo Web' ? 'var(--neon-cyan)' : 'var(--neon-violet)');
+      const webBtn = c.website ? `<a href="${escapeHtml(c.website)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="font-size: 0.78rem; padding: 4px 10px; border-color: ${categoryColor}; color: ${categoryColor}; text-decoration: none;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visitar Sitio Web</a>` : '';
+
+      card.innerHTML = `
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
+            <h3 style="font-size: 1.15rem; color: #fff; margin: 0;">${escapeHtml(c.name)}</h3>
+            <span class="badge-status" style="background: rgba(0,243,255,0.08); border: 1px solid ${categoryColor}; color: ${categoryColor}; font-size: 0.75rem;">${escapeHtml(c.badge || c.category)}</span>
+          </div>
+
+          <div style="font-size: 0.82rem; color: var(--neon-cyan); font-weight: 600; margin-bottom: 0.6rem;">
+            <i class="fa-solid fa-briefcase"></i> ${escapeHtml(c.rubro)}
+          </div>
+
+          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.2rem;">
+            <strong style="color: #d0d5e2; display: block; margin-bottom: 0.2rem;">💡 Solución Entregada:</strong>
+            ${escapeHtml(c.solution)}
+          </p>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.8rem; margin-top: 0.5rem;">
+          <span style="font-size: 0.75rem; color: var(--neon-emerald);"><i class="fa-solid fa-circle-check"></i> Proyecto Cumplido</span>
+          ${webBtn}
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
 }
 

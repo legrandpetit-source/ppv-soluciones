@@ -11,7 +11,8 @@ class MessageDB {
       services: 'services',
       skills: 'skills',
       config: 'config',
-      blocked: 'blocked_words'
+      blocked: 'blocked_words',
+      clients: 'clients'
     };
     this.db = null;
     this.init();
@@ -49,6 +50,12 @@ class MessageDB {
         if (!db.objectStoreNames.contains(this.stores.blocked)) {
           const bStore = db.createObjectStore(this.stores.blocked, { keyPath: 'id', autoIncrement: true });
           bStore.createIndex('word', 'word', { unique: true });
+        }
+
+        // Store: Clientes & Casos de Éxito
+        if (!db.objectStoreNames.contains(this.stores.clients)) {
+          const cStore = db.createObjectStore(this.stores.clients, { keyPath: 'id', autoIncrement: true });
+          cStore.createIndex('name', 'name', { unique: false });
         }
 
         // Store: Configuración General
@@ -130,6 +137,56 @@ class MessageDB {
         visible: true
       });
     }
+
+    const clients = await this.getAll('clients');
+    if (!clients || clients.length === 0) {
+      const defaultClients = [
+        {
+          name: 'OrigenCanino SpA',
+          rubro: 'Servicios Médicos Veterinarios & Salud Canina',
+          solution: 'Hardening Total de Ciberseguridad Ley N° 21.459 & Diagnóstico Técnico en Servidor Web',
+          category: 'Ciberseguridad',
+          website: 'https://origencanino.cl',
+          badge: '🛡️ Ciberseguridad Ley 21.459'
+        },
+        {
+          name: 'Proyecto Vertical SpA',
+          rubro: 'Construcción, Obras Civiles & Arquitectura',
+          solution: 'Plataforma Web App Cyberpunk Responsiva con Integración de Notificaciones Directas',
+          category: 'Desarrollo Web',
+          website: 'https://proyectovertical.cl',
+          badge: '💻 Web App & Automatización'
+        },
+        {
+          name: 'Legrand Petit Importaciones',
+          rubro: 'Comercio Exterior & Logística Internacional',
+          solution: 'Calculadora Interactiva de Presupuestos en Vivo & Canal de Telegram para Notificaciones de Leads',
+          category: 'Automatización IA',
+          website: 'https://legrandpetit.cl',
+          badge: '🤖 Automatización & Telegram'
+        }
+      ];
+      for (const c of defaultClients) {
+        await this.add('clients', c);
+      }
+    }
+  }
+
+  // --- Métodos de Clientes & Casos de Éxito ---
+  async saveClient(clientData) {
+    if (clientData.id) {
+      return await this.update('clients', clientData);
+    } else {
+      return await this.add('clients', clientData);
+    }
+  }
+
+  async getAllClients() {
+    return await this.getAll('clients');
+  }
+
+  async deleteClient(id) {
+    return await this.delete('clients', id);
   }
 
   // --- Métodos de Configuración Key-Value ---

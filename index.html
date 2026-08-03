@@ -101,6 +101,7 @@
         <li><a href="#soluciones-rubro">Soluciones por Rubro</a></li>
         <li><a href="#auditoria-ciberseguridad" style="color: var(--neon-pink); font-weight: 700;"><i class="fa-solid fa-shield-halved"></i> Ciberseguridad</a></li>
         <li><a href="#posicionamiento-web">Posicionamiento Web</a></li>
+        <li><a href="#clientes" style="color: var(--neon-cyan); font-weight: 600;"><i class="fa-solid fa-users"></i> Clientes</a></li>
         <li><a href="#sobre-mi">Expertise</a></li>
         <li><a href="#habilidades">Matriz Técnica</a></li>
         <li><a href="#demos-auto">Demos</a></li>
@@ -900,6 +901,38 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
             <i class="fa-solid fa-paper-plane"></i> Solicitar este Proyecto
           </button>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de Clientes & Casos de Éxito -->
+  <section id="clientes" style="background: rgba(5,7,12,0.85); border-top: 1px solid rgba(0,243,255,0.15); padding: 5rem 0;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-subtitle" style="color: var(--neon-cyan);">Confianza & Resultados</div>
+        <h2 style="font-size: 2.2rem;">Nuestros Clientes & Casos de Éxito</h2>
+        <p>Conoce las empresas que han confiado en PPV Soluciones para fortalecer su ciberseguridad, automatizar sus procesos y posicionar sus servicios en la web.</p>
+      </div>
+
+      <!-- Filtros por categoría -->
+      <div style="display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+        <button type="button" class="btn btn-outline client-filter-btn active" data-filter="all" style="font-size: 0.82rem; padding: 6px 14px; border-color: var(--neon-cyan); color: var(--neon-cyan);">
+          Todos los Casos
+        </button>
+        <button type="button" class="btn btn-outline client-filter-btn" data-filter="Ciberseguridad" style="font-size: 0.82rem; padding: 6px 14px; border-color: rgba(255,0,127,0.4); color: var(--text-muted);">
+          🛡️ Ciberseguridad
+        </button>
+        <button type="button" class="btn btn-outline client-filter-btn" data-filter="Desarrollo Web" style="font-size: 0.82rem; padding: 6px 14px; border-color: rgba(0,243,255,0.4); color: var(--text-muted);">
+          💻 Desarrollo Web
+        </button>
+        <button type="button" class="btn btn-outline client-filter-btn" data-filter="Automatización IA" style="font-size: 0.82rem; padding: 6px 14px; border-color: rgba(157,78,221,0.4); color: var(--text-muted);">
+          🤖 Automatización IA
+        </button>
+      </div>
+
+      <!-- Grid dinámico de clientes -->
+      <div id="clients-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+        <!-- Se renderiza dinámicamente desde db.js -->
       </div>
     </div>
   </section>
