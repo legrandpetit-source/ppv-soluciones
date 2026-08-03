@@ -208,6 +208,24 @@ def markdown_to_html(md_content, title="Informe PPV Soluciones"):
 </html>"""
     return html_document
 
+import shutil
+
+def find_chrome_executable():
+    candidates = [
+        'google-chrome',
+        'google-chrome-stable',
+        'chromium-browser',
+        'chromium',
+        '/usr/bin/chromium-browser',
+        '/usr/bin/chromium',
+        '/usr/bin/google-chrome'
+    ]
+    for candidate in candidates:
+        path = shutil.which(candidate) or (candidate if os.path.exists(candidate) else None)
+        if path:
+            return path
+    raise FileNotFoundError("No se encontró ejecutable de Chrome/Chromium para compilar PDF.")
+
 def save_pdf(md_content, filename_base, title="Documento PPV", domain=None):
     html_content = markdown_to_html(md_content, title)
     tmp_html = f"/tmp/{filename_base}.html"
@@ -221,15 +239,16 @@ def save_pdf(md_content, filename_base, title="Documento PPV", domain=None):
         '/home/patricio/Documentos/informes_ppv'
     ]
 
+    chrome_bin = find_chrome_executable()
     created_pdfs = []
     for base_dir in output_base_dirs:
         target_dir = os.path.join(base_dir, domain) if domain else base_dir
         os.makedirs(target_dir, exist_ok=True)
         pdf_path = os.path.join(target_dir, f"{filename_base}.pdf")
         
-        # Convert to PDF via headless Google Chrome
+        # Convert to PDF via headless Chromium/Chrome
         cmd = [
-            'google-chrome',
+            chrome_bin,
             '--headless',
             '--disable-gpu',
             '--no-sandbox',
@@ -239,7 +258,7 @@ def save_pdf(md_content, filename_base, title="Documento PPV", domain=None):
         res = subprocess.run(cmd, capture_output=True, text=True)
         if os.path.exists(pdf_path):
             created_pdfs.append(pdf_path)
-            print(f"✅ PDF Creado: {pdf_path} ({os.path.getsize(pdf_path)} bytes)")
+            print(f"✅ PDF Creado con {chrome_bin}: {pdf_path} ({os.path.getsize(pdf_path)} bytes)")
         else:
             print(f"❌ Error creando PDF en {pdf_path}: {res.stderr}")
 
