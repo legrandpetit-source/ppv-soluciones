@@ -269,16 +269,17 @@ async function loadServicesCalculator() {
 
   if (servicesData.length === 0) {
     optionsContainer.innerHTML = '<p style="color: var(--text-muted);">No hay servicios registrados en el mantenedor.</p>';
-    priceDisplay.textContent = '$0 USD';
+    priceDisplay.textContent = '0,0 UF';
     timeDisplay.textContent = '0 días';
     return;
   }
 
   servicesData.forEach((service, index) => {
     const isSelected = index === 0; // Seleccionar el primero por defecto
+    const priceUFVal = service.priceUF !== undefined ? parseFloat(service.priceUF) : (parseFloat(service.priceUSD || 0) / 40.0);
     const card = document.createElement('div');
     card.className = `option-card ${isSelected ? 'selected' : ''}`;
-    card.dataset.price = service.priceUSD;
+    card.dataset.priceUf = priceUFVal;
     card.dataset.time = parseInt(service.timeDays, 10) || 1;
     card.dataset.id = service.id;
 
@@ -305,16 +306,17 @@ async function loadServicesCalculator() {
   updateTotal();
 
   function updateTotal() {
-    let totalPrice = 0;
+    let totalPriceUF = 0;
     let totalDays = 0;
 
     const selectedCards = optionsContainer.querySelectorAll('.option-card.selected');
     selectedCards.forEach(c => {
-      totalPrice += parseInt(c.dataset.price || '0', 10);
+      totalPriceUF += parseFloat(c.dataset.priceUf || '0');
       totalDays += parseInt(c.dataset.time || '1', 10);
     });
 
-    priceDisplay.textContent = `$${totalPrice} USD`;
+    const ufFmt = totalPriceUF.toLocaleString('es-CL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    priceDisplay.textContent = `${ufFmt} UF`;
     timeDisplay.textContent = `${totalDays} días`;
   }
 }
