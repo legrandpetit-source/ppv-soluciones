@@ -1162,6 +1162,7 @@ function initSecAuditWorkflowMaintainer() {
       e.preventDefault();
       const domain = document.getElementById('hard-domain').value.trim();
       const serverType = document.getElementById('hard-server-type').value.trim();
+      const resBox = document.getElementById('hard-result-box') || createHardResultBox();
 
       const payload = {
         client_name: domain,
@@ -1172,6 +1173,8 @@ function initSecAuditWorkflowMaintainer() {
         plan_tier: `Hardening Completado (${serverType || 'Nginx/Ubuntu'})`
       };
 
+      showToast('🛡️ Aplicando certificación de Hardening y emitiendo documentos...');
+
       try {
         const res = await fetch('/tg-generate-docs', {
           method: 'POST',
@@ -1181,6 +1184,26 @@ function initSecAuditWorkflowMaintainer() {
         const data = await res.json();
         if (data.ok) {
           showToast('✅ ¡Certificado de Hardening y Reporte Final emitidos con éxito!');
+          if (resBox) {
+            resBox.style.display = 'block';
+            const folderPath = data.folder || `/home/patricio/Escritorio/Auditoría/${domain}/`;
+            const fileListHtml = data.files ? data.files.map(f => `<li><i class="fa-solid fa-file-pdf text-pink"></i> <code>${escapeHtml(f)}</code></li>`).join('') : '';
+            resBox.innerHTML = `
+              <strong style="color: var(--neon-emerald); font-size: 0.9rem; display: block; margin-bottom: 0.4rem;">
+                <i class="fa-solid fa-circle-check"></i> ¡Certificación & Reporte de Hardening Emitidos!
+              </strong>
+              <p style="font-size: 0.82rem; color: #fff; margin-bottom: 0.5rem;">
+                Los archivos de certificación y reporte fueron guardados en el servidor en la carpeta local:
+                <br><code style="color: var(--neon-cyan); font-weight: 700;">${escapeHtml(folderPath)}</code>
+              </p>
+              <ul style="list-style: none; padding: 0; margin: 0 0 0.8rem 0; font-size: 0.8rem; color: var(--text-muted);">
+                ${fileListHtml}
+              </ul>
+              <div style="background: rgba(255, 0, 127, 0.08); border-left: 3px solid var(--neon-pink); padding: 0.6rem; font-size: 0.8rem; color: #d0d5e2;">
+                <strong>💡 Nota sobre Intervención de Servidor:</strong> Esta pestaña certifica que el administrador ha configurado las reglas Nginx/Apache (HSTS, CSP, X-Frame) en el servidor objetivo. Puedes volver a la pestaña <strong>"2. Diagnóstico Nivel 1"</strong> y presionar <strong>"Iniciar Análisis Técnico"</strong> para verificar que el puntaje del sitio suba inmediatamente al 100%.
+              </div>
+            `;
+          }
         } else {
           showToast('❌ Error al emitir certificado: ' + (data.error || 'Error'), true);
         }
@@ -1189,6 +1212,14 @@ function initSecAuditWorkflowMaintainer() {
         showToast('❌ Error de conexión al generar certificado.', true);
       }
     };
+
+    function createHardResultBox() {
+      const box = document.createElement('div');
+      box.id = 'hard-result-box';
+      box.style.cssText = 'display: none; margin-top: 1.2rem; background: rgba(0, 255, 136, 0.05); border: 1px solid var(--neon-emerald); padding: 1rem; border-radius: 8px;';
+      formHard.appendChild(box);
+      return box;
+    }
   }
 }
 
