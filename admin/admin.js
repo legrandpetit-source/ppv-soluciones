@@ -1160,14 +1160,15 @@ function initSecAuditWorkflowMaintainer() {
   if (formHard) {
     formHard.onsubmit = async (e) => {
       e.preventDefault();
-      const domain = document.getElementById('hard-domain').value.trim();
+      const rawDomain = document.getElementById('hard-domain').value.trim();
+      const cleanDomain = rawDomain.replace(/^https?:\/\//i, '').replace(/^www\./i, '').replace(/\/.*$/, '').trim();
       const serverType = document.getElementById('hard-server-type').value.trim();
       const resBox = document.getElementById('hard-result-box') || createHardResultBox();
 
       const payload = {
-        client_name: domain,
+        client_name: cleanDomain,
         rut: 'Resguardo N° 21.459',
-        domain: domain,
+        domain: cleanDomain,
         contact_person: 'Cliente',
         email: 'contacto@ppvsoluciones.cl',
         plan_tier: `Hardening Completado (${serverType || 'Nginx/Ubuntu'})`
@@ -1186,14 +1187,14 @@ function initSecAuditWorkflowMaintainer() {
           showToast('✅ ¡Certificado de Hardening y Reporte Final emitidos con éxito!');
           if (resBox) {
             resBox.style.display = 'block';
-            const folderPath = data.folder || `/home/patricio/Escritorio/Auditoría/${domain}/`;
+            const folderPath = data.folder || `/home/patricio/Escritorio/Auditoría/${cleanDomain}/`;
             const fileListHtml = data.files ? data.files.map(f => `<li><i class="fa-solid fa-file-pdf text-pink"></i> <code>${escapeHtml(f)}</code></li>`).join('') : '';
             resBox.innerHTML = `
               <strong style="color: var(--neon-emerald); font-size: 0.9rem; display: block; margin-bottom: 0.4rem;">
                 <i class="fa-solid fa-circle-check"></i> ¡Certificación & Reporte de Hardening Emitidos!
               </strong>
               <p style="font-size: 0.82rem; color: #fff; margin-bottom: 0.5rem;">
-                Los archivos de certificación y reporte fueron guardados en el servidor en la carpeta local:
+                Los archivos de certificación y reporte fueron guardados en el servidor local en la carpeta:
                 <br><code style="color: var(--neon-cyan); font-weight: 700;">${escapeHtml(folderPath)}</code>
               </p>
               <ul style="list-style: none; padding: 0; margin: 0 0 0.8rem 0; font-size: 0.8rem; color: var(--text-muted);">
