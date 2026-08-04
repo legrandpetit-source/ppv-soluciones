@@ -1191,12 +1191,13 @@ function initSecAuditWorkflowMaintainer() {
             const fileListHtml = Array.isArray(data.files) 
               ? data.files.flat().map(f => `<li style="margin-bottom: 4px;"><i class="fa-solid fa-file-pdf text-pink"></i> <code>${escapeHtml(f)}</code></li>`).join('') 
               : `<li><i class="fa-solid fa-file-pdf text-pink"></i> <code>${escapeHtml(folderPath)}legrandpetit_cl_security_report.pdf</code></li>`;
+            
             resBox.innerHTML = `
               <strong style="color: var(--neon-emerald); font-size: 0.9rem; display: block; margin-bottom: 0.4rem;">
                 <i class="fa-solid fa-circle-check"></i> ¡Certificación & Reporte de Hardening Emitidos con Éxito!
               </strong>
               <p style="font-size: 0.82rem; color: #fff; margin-bottom: 0.5rem;">
-                Los archivos de certificación PDF fueron compilados y guardados en tu equipo local en:
+                Los archivos PDF fueron compilados en el servidor y tu navegador iniciará la descarga automática:
                 <br><code style="color: var(--neon-cyan); font-weight: 700;">${escapeHtml(folderPath)}</code>
               </p>
               <ul style="list-style: none; padding: 0; margin: 0 0 0.8rem 0; font-size: 0.8rem; color: #d0d5e2;">
@@ -1206,6 +1207,18 @@ function initSecAuditWorkflowMaintainer() {
                 <strong>💡 Nota sobre Intervención de Servidor:</strong> Esta pestaña certifica que el administrador ha configurado las reglas Nginx/Apache (HSTS, CSP, X-Frame) en el servidor objetivo. Puedes volver a la pestaña <strong>"2. Diagnóstico Nivel 1"</strong> y presionar <strong>"Iniciar Análisis Técnico"</strong> para verificar que el puntaje del sitio suba inmediatamente al 100%.
               </div>
             `;
+
+            // Descarga automática local del PDF generado
+            if (data.downloads && data.downloads.length > 0) {
+              data.downloads.forEach(dl => {
+                const link = document.createElement('a');
+                link.href = 'data:application/pdf;base64,' + dl.b64;
+                link.download = dl.name;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+              });
+            }
           }
         } else {
           showToast('❌ Error al emitir certificado: ' + (data.error || 'Error'), true);

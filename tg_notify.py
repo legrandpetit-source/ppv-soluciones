@@ -283,17 +283,28 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                     return
 
                 import generate_pdf
-                pdf1 = generate_pdf.generate_client_authorization_pdf(client_name, rut, domain, contact_person, email, plan_tier)
-                pdf2 = generate_pdf.generate_client_audit_report_pdf(client_name, domain, plan_tier)
+                pdf1_paths = generate_pdf.generate_client_authorization_pdf(client_name, rut, domain, contact_person, email, plan_tier)
+                pdf2_paths = generate_pdf.generate_client_audit_report_pdf(client_name, domain, plan_tier)
 
-                clean_dom = domain.replace('https://', '').replace('http://', '').strip('/')
+                clean_dom = domain.replace('https://', '').replace('http://', '').replace('www.', '').strip('/')
                 out_path = f"/home/patricio/Escritorio/Auditoría/{clean_dom}/"
+
+                # Leer contenido en base64 para descarga directa en el navegador
+                download_files = []
+                target_pdf = pdf2_paths[0] if isinstance(pdf2_paths, list) and pdf2_paths else None
+                if target_pdf and os.path.exists(target_pdf):
+                    with open(target_pdf, 'rb') as f:
+                        b64_pdf = base64.b64encode(f.read()).decode('utf-8')
+                        download_files.append({
+                            'name': os.path.basename(target_pdf),
+                            'b64': b64_pdf
+                        })
 
                 self.send_response(200)
                 self.send_cors_headers()
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
-                self.wfile.write(json.dumps({'ok': True, 'folder': out_path, 'files': [pdf1, pdf2]}).encode('utf-8'))
+                self.wfile.write(json.dumps({'ok': True, 'folder': out_path, 'files': [pdf1_paths, pdf2_paths], 'downloads': download_files}).encode('utf-8'))
                 return
             except Exception as e:
                 print(f"[TG-PROXY] Error generando PDFs: {e}")
