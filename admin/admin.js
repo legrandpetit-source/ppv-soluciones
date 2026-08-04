@@ -982,8 +982,40 @@ function initPdfGeneratorMaintainer() {
         if (data.ok) {
           showToast('✅ ¡Documentos PDF generados con éxito!');
           if (resultBox) resultBox.style.display = 'block';
+          
+          const downloadButtonsHtml = (data.downloads && data.downloads.length > 0)
+            ? data.downloads.map(dl => `
+                <a href="data:application/pdf;base64,${dl.b64}" download="${escapeHtml(dl.name)}" class="btn btn-primary" style="font-size: 0.8rem; padding: 6px 12px; margin-right: 8px; margin-top: 6px; display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); border: none; text-decoration: none; color: #fff;">
+                  <i class="fa-solid fa-download"></i> Descargar ${escapeHtml(dl.name)}
+                </a>
+              `).join('')
+            : '';
+
           if (resultMsg) {
-            resultMsg.innerHTML = `Se crearon la <strong>Carta de Autorización Legal</strong> y el <strong>Informe de Diagnóstico</strong> en la carpeta:<br><code style="color: var(--neon-cyan); font-size: 0.85rem;">${data.folder}</code>`;
+            resultMsg.innerHTML = `
+              Se crearon la <strong>Carta de Autorización Legal</strong> y el <strong>Informe de Diagnóstico</strong> en el servidor:<br>
+              <code style="color: var(--neon-cyan); font-size: 0.85rem;">${data.folder}</code>
+              <p style="margin-top: 0.8rem; margin-bottom: 0.5rem; font-size: 0.85rem; color: #fff;">
+                Haz clic abajo para descargarlos a tu equipo:
+              </p>
+              <div style="margin-bottom: 0.5rem;">
+                ${downloadButtonsHtml}
+              </div>
+            `;
+          }
+
+          // Descarga automática local secuencial
+          if (data.downloads && data.downloads.length > 0) {
+            data.downloads.forEach((dl, i) => {
+              setTimeout(() => {
+                const link = document.createElement('a');
+                link.href = 'data:application/pdf;base64,' + dl.b64;
+                link.download = dl.name;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+              }, i * 500);
+            });
           }
         } else {
           showToast('❌ Error al generar PDFs: ' + (data.error || 'Desconocido'), true);
