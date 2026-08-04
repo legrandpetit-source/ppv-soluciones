@@ -287,24 +287,37 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 pdf2_paths = generate_pdf.generate_client_audit_report_pdf(client_name, domain, plan_tier)
 
                 clean_dom = domain.replace('https://', '').replace('http://', '').replace('www.', '').strip('/')
-                out_path = f"/home/patricio/Escritorio/Auditoría/{clean_dom}/"
+                local_folder_display = f"Escritorio/Auditoría/{clean_dom}/"
 
-                # Leer contenido en base64 para descarga directa en el navegador
+                # Leer archivos en base64 para envío al navegador y posterior descarga directa en la computadora del usuario
                 download_files = []
-                target_pdf = pdf2_paths[0] if isinstance(pdf2_paths, list) and pdf2_paths else None
-                if target_pdf and os.path.exists(target_pdf):
-                    with open(target_pdf, 'rb') as f:
-                        b64_pdf = base64.b64encode(f.read()).decode('utf-8')
-                        download_files.append({
-                            'name': os.path.basename(target_pdf),
-                            'b64': b64_pdf
-                        })
+                all_generated_paths = []
+                if isinstance(pdf1_paths, list): all_generated_paths.extend(pdf1_paths)
+                if isinstance(pdf2_paths, list): all_generated_paths.extend(pdf2_paths)
+
+                seen_names = set()
+                for p_path in all_generated_paths:
+                    if p_path and os.path.exists(p_path):
+                        fname = os.path.basename(p_path)
+                        if fname not in seen_names:
+                            seen_names.add(fname)
+                            with open(p_path, 'rb') as f:
+                                b64_pdf = base64.b64encode(f.read()).decode('utf-8')
+                                download_files.append({
+                                    'name': fname,
+                                    'b64': b64_pdf
+                                })
+                            # ELIMINAR del servidor inmediatamente para no consumir espacio en disco en la nube
+                            try:
+                                os.remove(p_path)
+                            except Exception:
+                                pass
 
                 self.send_response(200)
                 self.send_cors_headers()
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
-                self.wfile.write(json.dumps({'ok': True, 'folder': out_path, 'files': [pdf1_paths, pdf2_paths], 'downloads': download_files}).encode('utf-8'))
+                self.wfile.write(json.dumps({'ok': True, 'folder': local_folder_display, 'files': list(seen_names), 'downloads': download_files}).encode('utf-8'))
                 return
             except Exception as e:
                 print(f"[TG-PROXY] Error generando PDFs: {e}")
