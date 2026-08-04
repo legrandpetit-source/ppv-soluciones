@@ -1187,36 +1187,40 @@ function initSecAuditWorkflowMaintainer() {
           showToast('✅ ¡Certificado de Hardening y Reporte Final emitidos con éxito!');
           if (resBox) {
             resBox.style.display = 'block';
-            const folderPath = data.folder || `/home/patricio/Escritorio/Auditoría/${cleanDomain}/`;
-            const fileListHtml = Array.isArray(data.files) 
-              ? data.files.flat().map(f => `<li style="margin-bottom: 4px;"><i class="fa-solid fa-file-pdf text-pink"></i> <code>${escapeHtml(f)}</code></li>`).join('') 
-              : `<li><i class="fa-solid fa-file-pdf text-pink"></i> <code>${escapeHtml(folderPath)}legrandpetit_cl_security_report.pdf</code></li>`;
-            
+            const downloadButtonsHtml = (data.downloads && data.downloads.length > 0)
+              ? data.downloads.map((dl, idx) => `
+                  <a href="data:application/pdf;base64,${dl.b64}" download="${escapeHtml(dl.name)}" class="btn btn-primary btn-download-pdf-item" style="font-size: 0.8rem; padding: 6px 12px; margin-right: 8px; margin-top: 6px; display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); border: none; text-decoration: none; color: #fff;">
+                    <i class="fa-solid fa-download"></i> Descargar ${escapeHtml(dl.name)}
+                  </a>
+                `).join('')
+              : '';
+
             resBox.innerHTML = `
-              <strong style="color: var(--neon-emerald); font-size: 0.9rem; display: block; margin-bottom: 0.4rem;">
+              <strong style="color: var(--neon-emerald); font-size: 0.95rem; display: block; margin-bottom: 0.4rem;">
                 <i class="fa-solid fa-circle-check"></i> ¡Certificación & Reporte de Hardening Emitidos con Éxito!
               </strong>
-              <p style="font-size: 0.82rem; color: #fff; margin-bottom: 0.5rem;">
-                Los archivos PDF fueron compilados en el servidor y tu navegador iniciará la descarga automática:
-                <br><code style="color: var(--neon-cyan); font-weight: 700;">${escapeHtml(folderPath)}</code>
+              <p style="font-size: 0.85rem; color: #fff; margin-bottom: 0.8rem;">
+                Haz clic en el botón de abajo para guardar los archivos PDF directamente en tu computador:
               </p>
-              <ul style="list-style: none; padding: 0; margin: 0 0 0.8rem 0; font-size: 0.8rem; color: #d0d5e2;">
-                ${fileListHtml}
-              </ul>
+              <div style="margin-bottom: 1rem;">
+                ${downloadButtonsHtml}
+              </div>
               <div style="background: rgba(255, 0, 127, 0.08); border-left: 3px solid var(--neon-pink); padding: 0.6rem; font-size: 0.8rem; color: #d0d5e2;">
                 <strong>💡 Nota sobre Intervención de Servidor:</strong> Esta pestaña certifica que el administrador ha configurado las reglas Nginx/Apache (HSTS, CSP, X-Frame) en el servidor objetivo. Puedes volver a la pestaña <strong>"2. Diagnóstico Nivel 1"</strong> y presionar <strong>"Iniciar Análisis Técnico"</strong> para verificar que el puntaje del sitio suba inmediatamente al 100%.
               </div>
             `;
 
-            // Descarga automática local del PDF generado
+            // Descarga automática con delay para no ser bloqueado por el bloqueador de popups del navegador
             if (data.downloads && data.downloads.length > 0) {
-              data.downloads.forEach(dl => {
-                const link = document.createElement('a');
-                link.href = 'data:application/pdf;base64,' + dl.b64;
-                link.download = dl.name;
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
+              data.downloads.forEach((dl, i) => {
+                setTimeout(() => {
+                  const link = document.createElement('a');
+                  link.href = 'data:application/pdf;base64,' + dl.b64;
+                  link.download = dl.name;
+                  document.body.appendChild(link);
+                  link.click();
+                  link.remove();
+                }, i * 500);
               });
             }
           }
