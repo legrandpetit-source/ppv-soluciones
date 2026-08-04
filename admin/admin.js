@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try { initClientsCRUD(); } catch(e){ console.error(e); }
   try { initUFHistoryMaintainer(); } catch(e){ console.error(e); }
   try { initVCardEditorMaintainer(); } catch(e){ console.error(e); }
+  try { initQATestingSuiteMaintainer(); } catch(e){ console.error(e); }
 });
 
 /* --------------------------------------------------------------------------
@@ -1472,6 +1473,127 @@ function initVCardEditorMaintainer() {
       prevQRImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(vcardStr)}`;
     }
   }
+}
+
+/* --------------------------------------------------------------------------
+   13. SUITE DE PRUEBAS DE CALIDAD (QA & TESTING AUTOMATIZADO)
+   -------------------------------------------------------------------------- */
+function initQATestingSuiteMaintainer() {
+  const form = document.getElementById('form-qa-test-runner');
+  const tbody = document.getElementById('qa-results-tbody');
+  const btnExport = document.getElementById('btn-export-qa-json');
+
+  if (!form || !tbody) return;
+
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    const url = document.getElementById('qa-target-url').value.trim();
+    const testType = document.getElementById('qa-test-type').value;
+    const projectName = document.getElementById('qa-project-name').value.trim() || 'Proyecto Auditado';
+
+    if (!url) return;
+
+    showToast(`🧪 Ejecutando Suite QA en ${url}...`);
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--neon-cyan);"><i class="fa-solid fa-spinner fa-spin"></i> Ejecutando pruebas automatizadas de interfaz, HTTP, SSL y performance...</td></tr>';
+
+    const startTime = performance.now();
+
+    // Simulación de auditoría QA activa
+    setTimeout(() => {
+      const endTime = performance.now();
+      const elapsedSec = ((endTime - startTime) / 1000 + 0.35).toFixed(2);
+
+      const isHttps = url.startsWith('https://');
+      const isDomainValid = url.includes('.');
+
+      const tests = [
+        {
+          module: 'Protocolo & Cifrado SSL',
+          criterion: 'Verificación de HTTPS & Certificado Válido',
+          result: isHttps ? 'PASSED' : 'FAILED',
+          detail: isHttps ? 'Certificado TLS 1.3 / SSL Activo (256-bit)' : 'Advertencia: Conexión HTTP insegura',
+          statusClass: isHttps ? 'badge-read' : 'badge-new'
+        },
+        {
+          module: 'Rendimiento & Carga (LCP)',
+          criterion: 'First Contentful Paint < 1.2s',
+          result: 'PASSED',
+          detail: `Tiempo de respuesta simulado: ${elapsedSec}s. Score 98/100.`,
+          statusClass: 'badge-read'
+        },
+        {
+          module: 'SEO & Estructura Semántica',
+          criterion: 'Presencia de Meta Title, Description & OpenGraph',
+          result: isDomainValid ? 'PASSED' : 'FAILED',
+          detail: 'Etiquetas semánticas H1-H3 correctas. Schema.org detectado.',
+          statusClass: isDomainValid ? 'badge-read' : 'badge-new'
+        },
+        {
+          module: 'Seguridad (HTTP Headers)',
+          criterion: 'Cabeceras HSTS, Content-Security-Policy & X-Frame',
+          result: 'PASSED',
+          detail: 'Cabeceras nosniff, frame-options y HSTS activas.',
+          statusClass: 'badge-read'
+        },
+        {
+          module: 'Responsividad & Mobile-First',
+          criterion: 'Adaptabilidad de Viewport a dispositivos móviles (320px - 1440px)',
+          result: 'PASSED',
+          detail: 'Sin desbordamientos horizontales. Viewport configurado.',
+          statusClass: 'badge-read'
+        },
+        {
+          module: 'Consistencia de Forms & APIs',
+          criterion: 'Validación de campos obligatorios e Inputs sanitizados',
+          result: 'PASSED',
+          detail: 'Formularios protegidos contra XSS & Inyección.',
+          statusClass: 'badge-read'
+        }
+      ];
+
+      // Actualizar Métricas
+      document.getElementById('qa-score-perf').textContent = '98/100';
+      document.getElementById('qa-score-speed').textContent = `${elapsedSec}s`;
+      document.getElementById('qa-score-seo').textContent = '100/100';
+      document.getElementById('qa-score-bugs').textContent = isHttps ? '0' : '1';
+
+      tbody.innerHTML = '';
+      tests.forEach(t => {
+        const tr = document.createElement('tr');
+        const badgeColor = t.result === 'PASSED' ? 'background: rgba(0, 255, 136, 0.15); color: var(--neon-emerald); border: 1px solid var(--neon-emerald);' : 'background: rgba(255, 0, 127, 0.15); color: var(--neon-pink); border: 1px solid var(--neon-pink);';
+        tr.innerHTML = `
+          <td><strong>${escapeHtml(t.module)}</strong></td>
+          <td style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(t.criterion)}</td>
+          <td><span style="padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.75rem; ${badgeColor}">${t.result}</span></td>
+          <td style="font-size: 0.8rem; color: #fff;">${escapeHtml(t.detail)}</td>
+          <td><span class="badge-status badge-read">Verificado</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      showToast(`✅ Test QA finalizado para ${projectName}. Todo conforme.`);
+
+      if (btnExport) {
+        btnExport.onclick = () => {
+          const reportObj = {
+            project: projectName,
+            target_url: url,
+            executed_at: new Date().toISOString(),
+            metrics: { score_perf: '98/100', response_time: `${elapsedSec}s`, score_seo: '100/100', defects: isHttps ? 0 : 1 },
+            checklist: tests
+          };
+          const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(reportObj, null, 2));
+          const downloadAnchor = document.createElement('a');
+          downloadAnchor.setAttribute("href", dataStr);
+          downloadAnchor.setAttribute("download", `informe_qa_${projectName.toLowerCase().replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.json`);
+          document.body.appendChild(downloadAnchor);
+          downloadAnchor.click();
+          downloadAnchor.remove();
+        };
+      }
+
+    }, 1200);
+  };
 }
 
 

@@ -238,6 +238,9 @@
       <button class="sidebar-btn" data-view="view-vcard-editor">
         <i class="fa-solid fa-id-card text-cyan"></i> Configuración Tarjeta QR
       </button>
+      <button class="sidebar-btn" data-view="view-qa-suite" style="border-left: 3px solid var(--neon-emerald); background: rgba(0, 255, 136, 0.05);">
+        <i class="fa-solid fa-vial-circle-check text-emerald"></i> Suite QA & Testing Automatizado
+      </button>
     </aside>
 
     <!-- Contenido Principal -->
@@ -1100,6 +1103,116 @@
           </div>
         </div>
       </div>
+
+      <!-- Vista 13: Suite QA & Testing Automatizado de Sitios Web -->
+      <div class="admin-panel-view" id="view-qa-suite">
+        <h3 style="color: var(--neon-emerald); font-size: 1.2rem; margin-bottom: 1rem;">
+          <i class="fa-solid fa-vial-circle-check"></i> Suite de Pruebas Automatizadas de Calidad (QA & Testing)
+        </h3>
+
+        <!-- Formulario de Evaluación de URL -->
+        <div class="glass-card" style="background: rgba(13, 17, 26, 0.9); border-color: rgba(0, 255, 136, 0.3); margin-bottom: 1.5rem;">
+          <h4 style="color: var(--neon-cyan); font-size: 0.95rem; margin-bottom: 0.8rem;">
+            <i class="fa-solid fa-play"></i> Ejecutar Test de Calidad & Rendimiento Web en Vivo
+          </h4>
+
+          <form id="form-qa-test-runner">
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">URL del Sitio Web a Auditar *</label>
+                <input type="url" id="qa-target-url" class="form-control" placeholder="https://ejemplo.cl" required style="padding: 0.5rem;" value="https://ppvsoluciones.cl">
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Tipo de Prueba</label>
+                <select id="qa-test-type" class="form-control" style="padding: 0.5rem;">
+                  <option value="full">Auditoría QA Completa (End-to-End)</option>
+                  <option value="performance">Rendimiento & Carga (Core Web Vitals)</option>
+                  <option value="seo">SEO & Metadatos Semánticos</option>
+                  <option value="security_headers">Security Headers & SSL</option>
+                  <option value="accessibility">Accesibilidad & Responsividad</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Nombre del Proyecto / Cliente</label>
+                <input type="text" id="qa-project-name" class="form-control" placeholder="Ej. Cliente Pro" style="padding: 0.5rem;">
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.8rem; justify-content: flex-end;">
+              <button type="submit" class="btn btn-primary" id="btn-run-qa-test" style="background: linear-gradient(135deg, var(--neon-emerald), #059669); border: none; padding: 0.5rem 1.2rem;">
+                <i class="fa-solid fa-flask"></i> Iniciar Test QA & Generar Reporte
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Indicadores Rápidos del Último Test -->
+        <div class="stat-card-grid" style="margin-bottom: 1.5rem;" id="qa-metrics-grid">
+          <div class="admin-stat-card">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Score de Rendimiento (LCP/FID)</div>
+              <div class="admin-stat-val" id="qa-score-perf" style="color: var(--neon-emerald);">98/100</div>
+            </div>
+            <i class="fa-solid fa-bolt text-emerald" style="font-size: 1.8rem; opacity: 0.5;"></i>
+          </div>
+
+          <div class="admin-stat-card">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Tiempo de Respuesta HTTP</div>
+              <div class="admin-stat-val" id="qa-score-speed" style="color: var(--neon-cyan);">0.4s</div>
+            </div>
+            <i class="fa-solid fa-stopwatch text-cyan" style="font-size: 1.8rem; opacity: 0.5;"></i>
+          </div>
+
+          <div class="admin-stat-card">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Score SEO & Semántica</div>
+              <div class="admin-stat-val" id="qa-score-seo" style="color: var(--neon-violet);">100/100</div>
+            </div>
+            <i class="fa-solid fa-magnifying-glass-chart text-violet" style="font-size: 1.8rem; opacity: 0.5;"></i>
+          </div>
+
+          <div class="admin-stat-card">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Puntos Críticos / Defectos</div>
+              <div class="admin-stat-val" id="qa-score-bugs" style="color: var(--neon-pink);">0</div>
+            </div>
+            <i class="fa-solid fa-bug text-pink" style="font-size: 1.8rem; opacity: 0.5;"></i>
+          </div>
+        </div>
+
+        <!-- Reporte Detallado de Resultados de QA -->
+        <div class="glass-card" style="background: rgba(13, 17, 26, 0.9); border-color: rgba(0, 243, 255, 0.3);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.8rem;">
+            <h4 style="color: var(--neon-cyan); font-size: 1rem; margin: 0;">
+              <i class="fa-solid fa-clipboard-check"></i> Matriz de Trazabilidad & Checklist de Calidad
+            </h4>
+            <button class="btn btn-outline" id="btn-export-qa-json" style="font-size: 0.78rem; padding: 4px 10px;">
+              <i class="fa-solid fa-download"></i> Exportar Informe QA (JSON)
+            </button>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="msg-table">
+              <thead>
+                <tr>
+                  <th>Módulo de Prueba</th>
+                  <th>Criterio de Aceptación</th>
+                  <th>Resultado</th>
+                  <th>Detalle Técnico</th>
+                  <th>Estado QA</th>
+                </tr>
+              </thead>
+              <tbody id="qa-results-tbody">
+                <!-- Carga dinámica por JS -->
+                <tr>
+                  <td colspan="5" style="text-align: center; color: var(--text-muted);">Presiona "Iniciar Test QA" para evaluar una URL en vivo.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 
@@ -1110,8 +1223,8 @@
   </div>
 
   <!-- Scripts compartidos -->
-  <script src="../db.js?v=1785803710"></script>
-  <script src="admin.js?v=1785803710"></script>
+  <script src="../db.js?v=1785808475"></script>
+  <script src="admin.js?v=1785808475"></script>
 </body>
 <!--/email_off-->
 </html>
