@@ -228,40 +228,88 @@ def find_chrome_executable():
 
 def save_pdf(md_content, filename_base, title="Documento PPV", domain=None):
     html_content = markdown_to_html(md_content, title)
-    tmp_html = f"/tmp/{filename_base}.html"
     
-    with open(tmp_html, 'w', encoding='utf-8') as f:
-        f.write(html_content)
-
+    # Detect if we are inside the Docker container
+    is_container = os.path.exists('/.dockerenv')
+    
     output_base_dirs = [
         '/home/patricio/Escritorio/Auditoría',
         '/home/patricio/Desktop/Auditoría',
         '/home/patricio/Documentos/informes_ppv'
     ]
-
-    chrome_bin = find_chrome_executable()
+    
     created_pdfs = []
-    for base_dir in output_base_dirs:
-        target_dir = os.path.join(base_dir, domain) if domain else base_dir
-        os.makedirs(target_dir, exist_ok=True)
-        pdf_path = os.path.join(target_dir, f"{filename_base}.pdf")
+    
+    if is_container:
+        tmp_html = f"/tmp/{filename_base}.html"
+        with open(tmp_html, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+            
+        chrome_bin = find_chrome_executable()
+        for base_dir in output_base_dirs:
+            target_dir = os.path.join(base_dir, domain) if domain else base_dir
+            os.makedirs(target_dir, exist_ok=True)
+            pdf_path = os.path.join(target_dir, f"{filename_base}.pdf")
+            
+            cmd = [
+                chrome_bin,
+                '--headless',
+                '--disable-gpu',
+                '--no-sandbox',
+                f'--print-to-pdf={pdf_path}',
+                f'file://{tmp_html}'
+            ]
+            res = subprocess.run(cmd, capture_output=True, text=True)
+            if os.path.exists(pdf_path):
+                created_pdfs.append(pdf_path)
+                print(f"✅ PDF Creado con {chrome_bin}: {pdf_path} ({os.path.getsize(pdf_path)} bytes)")
+            else:
+                print(f"❌ Error creando PDF en {pdf_path}: {res.stderr}")
+    else:
+        # We are on the host VPS.
+        # Write the HTML inside the shared folder (/var/www/ppvsoluciones/)
+        shared_html_path = f"/var/www/ppvsoluciones/{filename_base}.html"
+        shared_pdf_path = f"/var/www/ppvsoluciones/{filename_base}.pdf"
         
-        # Convert to PDF via headless Chromium/Chrome
+        with open(shared_html_path, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+            
+        # Compile it inside the container 'ppv-soluciones' where Chromium works perfectly
+        # The container reads the file at /usr/share/nginx/html/{filename_base}.html
+        # and writes the PDF output to /usr/share/nginx/html/{filename_base}.pdf
         cmd = [
-            chrome_bin,
+            'docker', 'exec', 'ppv-soluciones',
+            '/usr/bin/chromium',
             '--headless',
             '--disable-gpu',
             '--no-sandbox',
-            f'--print-to-pdf={pdf_path}',
-            f'file://{tmp_html}'
+            f'--print-to-pdf=/usr/share/nginx/html/{filename_base}.pdf',
+            f'file:///usr/share/nginx/html/{filename_base}.html'
         ]
         res = subprocess.run(cmd, capture_output=True, text=True)
-        if os.path.exists(pdf_path):
-            created_pdfs.append(pdf_path)
-            print(f"✅ PDF Creado con {chrome_bin}: {pdf_path} ({os.path.getsize(pdf_path)} bytes)")
+        
+        # Once compiled inside the container, the PDF is visible on the host at shared_pdf_path
+        if os.path.exists(shared_pdf_path):
+            for base_dir in output_base_dirs:
+                target_dir = os.path.join(base_dir, domain) if domain else base_dir
+                os.makedirs(target_dir, exist_ok=True)
+                pdf_path = os.path.join(target_dir, f"{filename_base}.pdf")
+                
+                # Copy from the shared folder to the target directory
+                shutil.copy2(shared_pdf_path, pdf_path)
+                if os.path.exists(pdf_path):
+                    created_pdfs.append(pdf_path)
+                    print(f"✅ PDF Creado (vía docker container): {pdf_path} ({os.path.getsize(pdf_path)} bytes)")
+            
+            # Clean up the temporary shared files
+            try:
+                os.remove(shared_html_path)
+                os.remove(shared_pdf_path)
+            except Exception:
+                pass
         else:
-            print(f"❌ Error creando PDF en {pdf_path}: {res.stderr}")
-
+            print(f"❌ Error compilando PDF vía docker exec: {res.stderr}")
+            
     return created_pdfs
 
 def generate_client_authorization_pdf(client_name, rut, domain, contact_person, email, plan_tier="$450 USD"):
