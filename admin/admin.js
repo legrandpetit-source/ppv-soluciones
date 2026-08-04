@@ -373,9 +373,11 @@ function initServicesCRUD() {
     e.preventDefault();
     const idInput = document.getElementById('p-service-id').value;
 
+    const priceVal = parseFloat(document.getElementById('p-service-price').value) || 0;
     const serviceData = {
       title: document.getElementById('p-service-title').value.trim(),
-      priceUSD: parseInt(document.getElementById('p-service-price').value, 10) || 0,
+      priceUF: priceVal,
+      priceUSD: Math.round(priceVal * 40),
       timeDays: document.getElementById('p-service-time').value.trim(),
       desc: document.getElementById('p-service-desc').value.trim(),
       icon: 'fa-check'
@@ -413,11 +415,13 @@ async function loadServicesTable() {
   }
 
   services.forEach(s => {
+    const ufVal = s.priceUF !== undefined ? parseFloat(s.priceUF) : (parseFloat(s.priceUSD || 0) / 40.0);
+    const ufStr = ufVal.toLocaleString('es-CL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td style="font-family: var(--font-code); color: var(--neon-cyan);">#${s.id}</td>
       <td><strong>${escapeHtml(s.title)}</strong></td>
-      <td style="color: var(--neon-emerald); font-weight: 700;">$${s.priceUSD} USD</td>
+      <td style="color: var(--neon-emerald); font-weight: 700;">${ufStr} UF</td>
       <td style="color: var(--neon-violet);">${escapeHtml(s.timeDays)}</td>
       <td style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(s.desc)}</td>
       <td>
@@ -438,9 +442,10 @@ async function loadServicesTable() {
       const all = await window.portfolioDB.getAll('services');
       const target = all.find(x => x.id === id);
       if (target) {
+        const ufVal = target.priceUF !== undefined ? target.priceUF : (target.priceUSD / 40.0);
         document.getElementById('p-service-id').value = target.id;
         document.getElementById('p-service-title').value = target.title;
-        document.getElementById('p-service-price').value = target.priceUSD;
+        document.getElementById('p-service-price').value = ufVal;
         document.getElementById('p-service-time').value = target.timeDays;
         document.getElementById('p-service-desc').value = target.desc;
         document.getElementById('p-service-form-title').innerHTML = `<i class="fa-solid fa-pen"></i> Editando Servicio #${target.id}`;

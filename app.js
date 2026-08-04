@@ -264,12 +264,24 @@ async function loadServicesCalculator() {
 
   if (!optionsContainer || !priceDisplay || !timeDisplay || !window.portfolioDB) return;
 
+  // Obtener valor actual de la UF desde la API backend o fallback
+  let currentUfRate = 40845.0;
+  try {
+    const ufRes = await fetch('/tg-uf-rate');
+    const ufData = await ufRes.json();
+    if (ufData.ok && ufData.data && ufData.data.uf_value) {
+      currentUfRate = parseFloat(ufData.data.uf_value);
+    }
+  } catch(e) {
+    console.warn('[CALC] Usando valor de UF fallback:', e);
+  }
+
   const servicesData = await window.portfolioDB.getAll('services');
   optionsContainer.innerHTML = '';
 
   if (servicesData.length === 0) {
     optionsContainer.innerHTML = '<p style="color: var(--text-muted);">No hay servicios registrados en el mantenedor.</p>';
-    priceDisplay.textContent = '0,0 UF';
+    priceDisplay.textContent = '$0 CLP (0,0 UF)';
     timeDisplay.textContent = '0 días';
     return;
   }
@@ -315,8 +327,11 @@ async function loadServicesCalculator() {
       totalDays += parseInt(c.dataset.time || '1', 10);
     });
 
+    const totalCLP = Math.round(totalPriceUF * currentUfRate);
+    const clpFmt = `$${totalCLP.toLocaleString('es-CL')} CLP`;
     const ufFmt = totalPriceUF.toLocaleString('es-CL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-    priceDisplay.textContent = `${ufFmt} UF`;
+
+    priceDisplay.textContent = `${clpFmt} (${ufFmt} UF)`;
     timeDisplay.textContent = `${totalDays} días`;
   }
 }
