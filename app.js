@@ -276,6 +276,27 @@ async function loadServicesCalculator() {
     console.warn('[CALC] Usando valor de UF fallback:', e);
   }
 
+  // Actualizar indicadores de UF y precios en CLP en la sección de Ciberseguridad
+  const clpLvl1 = Math.round(5.0 * currentUfRate);
+  const clpLvl2 = Math.round(11.0 * currentUfRate);
+  const clpLvl1Str = `$${clpLvl1.toLocaleString('es-CL')} CLP`;
+  const clpLvl2Str = `$${clpLvl2.toLocaleString('es-CL')} CLP`;
+
+  const lvl1El = document.querySelector('.price-level-1-display');
+  const lvl2El = document.querySelector('.price-level-2-display');
+  const btnLvl1 = document.querySelector('button[data-tier="200"]');
+  const btnLvl2 = document.querySelector('button[data-tier="450"]');
+  const ufRateBadge = document.querySelector('.uf-rate-display');
+
+  if (lvl1El) lvl1El.innerHTML = `${clpLvl1Str} <small style="font-size: 0.85rem; opacity: 0.8;">(5,0 UF)</small>`;
+  if (lvl2El) lvl2El.innerHTML = `${clpLvl2Str} <small style="font-size: 0.85rem; opacity: 0.8;">(11,0 UF)</small>`;
+  if (btnLvl1) btnLvl1.innerHTML = `<i class="fa-solid fa-file-pdf"></i> Solicitar Solo Diagnóstico (${clpLvl1Str} ~ 5,0 UF)`;
+  if (btnLvl2) btnLvl2.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Solicitar Auditoría + Solución (${clpLvl2Str} ~ 11,0 UF)`;
+  if (ufRateBadge) {
+    const ufFmt = `$${Math.round(currentUfRate).toLocaleString('es-CL')}`;
+    ufRateBadge.innerHTML = `<i class="fa-solid fa-chart-line"></i> 1 UF = ${ufFmt} CLP (Oficial Banco Central)`;
+  }
+
   const servicesData = await window.portfolioDB.getAll('services');
   optionsContainer.innerHTML = '';
 
