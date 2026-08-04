@@ -241,6 +241,9 @@
       <button class="sidebar-btn" data-view="view-qa-suite" style="border-left: 3px solid var(--neon-emerald); background: rgba(0, 255, 136, 0.05);">
         <i class="fa-solid fa-vial-circle-check text-emerald"></i> Suite QA & Testing Automatizado
       </button>
+      <button class="sidebar-btn" data-view="view-cmmi-governance" style="border-left: 3px solid var(--neon-violet); background: rgba(112, 0, 255, 0.05);">
+        <i class="fa-solid fa-award text-violet"></i> Gobierno TI & Kit CMMI Nivel 5
+      </button>
     </aside>
 
     <!-- Contenido Principal -->
@@ -1213,6 +1216,116 @@
           </div>
         </div>
       </div>
+
+      <!-- Vista 14: Generador & Kit de Políticas de Gobierno TI (Estándar CMMI Nivel 5) -->
+      <div class="admin-panel-view" id="view-cmmi-governance">
+        <h3 style="color: var(--neon-violet); font-size: 1.2rem; margin-bottom: 1rem;">
+          <i class="fa-solid fa-award"></i> Generador de Políticas de Gobierno TI & Kit CMMI Nivel 5
+        </h3>
+
+        <!-- Formulario de Configuración de Documentación de Cliente -->
+        <div class="glass-card" style="background: rgba(13, 17, 26, 0.9); border-color: rgba(112, 0, 255, 0.4); margin-bottom: 1.5rem;">
+          <h4 style="color: var(--neon-violet); font-size: 0.95rem; margin-bottom: 0.8rem;">
+            <i class="fa-solid fa-folder-plus"></i> Generar Kit de Documentación Corporativa para Cliente
+          </h4>
+
+          <form id="form-cmmi-generator">
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Razon Social / Nombre del Cliente *</label>
+                <input type="text" id="cmmi-client-name" class="form-control" placeholder="Ej. Banco / Empresa SpA" required style="padding: 0.5rem;" value="OrigenCanino SpA">
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">RUT o ID Corporativo</label>
+                <input type="text" id="cmmi-client-rut" class="form-control" placeholder="77.123.456-7" style="padding: 0.5rem;" value="77.982.102-K">
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Nivel de Madurez Solicitado</label>
+                <select id="cmmi-level-select" class="form-control" style="padding: 0.5rem;">
+                  <option value="CMMI Nivel 5 (Optimizado & Gestión Cuantitativa)">CMMI Nivel 5 (Optimizado & Calidad Total)</option>
+                  <option value="CMMI Nivel 3 (Definido & Estandarizado)">CMMI Nivel 3 (Procesos Estandarizados)</option>
+                  <option value="ISO/IEC 27001 (Seguridad de la Información)">ISO/IEC 27001 (Gobierno & Seguridad)</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1rem;">
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Jefe de Proyecto / Auditor Responsable</label>
+                <input type="text" id="cmmi-auditor-name" class="form-control" placeholder="Patricio Padilla - CEO PPV Soluciones" style="padding: 0.5rem;" value="Patricio Padilla (CEO PPV Soluciones)">
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: var(--text-muted);">Alcance del Proyecto / Sistema</label>
+                <input type="text" id="cmmi-project-scope" class="form-control" placeholder="Ej. Plataforma Web App & Servidores Cloud" style="padding: 0.5rem;" value="Plataforma Web, Infraestructura Linux & APIs Backend">
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.8rem; justify-content: flex-end;">
+              <button type="submit" class="btn btn-primary" id="btn-generate-cmmi-pack" style="background: linear-gradient(135deg, var(--neon-violet), #9333ea); border: none; padding: 0.55rem 1.3rem;">
+                <i class="fa-solid fa-file-zipper"></i> Compilar & Generar Kit Completo de Documentación (ZIP)
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Vista Previa de los Documentos Incluidos en la Carpeta del Cliente -->
+        <div class="glass-card" style="background: rgba(13, 17, 26, 0.9); border-color: rgba(0, 243, 255, 0.3);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.8rem;">
+            <h4 style="color: var(--neon-cyan); font-size: 1rem; margin: 0;">
+              <i class="fa-solid fa-folder-open text-cyan"></i> Documentos Oficiales Generados en la Carpeta Corporativa
+            </h4>
+            <span style="font-size: 0.8rem; color: var(--neon-emerald); font-weight: 600;">
+              <i class="fa-solid fa-shield-check"></i> Estándar CMMI v2.0 Valido
+            </span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+            <!-- Documento 1 -->
+            <div style="background: rgba(7,9,14,0.7); border: 1px solid rgba(0,243,255,0.2); padding: 1rem; border-radius: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                <i class="fa-solid fa-file-pdf text-pink" style="font-size: 1.5rem;"></i>
+                <div>
+                  <strong style="color: #fff; font-size: 0.9rem; display: block;">1. Politica_Gobierno_TI_CMMI5.pdf</strong>
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">Políticas de desarrollo, control de cambios y despliegue.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Documento 2 -->
+            <div style="background: rgba(7,9,14,0.7); border: 1px solid rgba(0,243,255,0.2); padding: 1rem; border-radius: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                <i class="fa-solid fa-file-code text-cyan" style="font-size: 1.5rem;"></i>
+                <div>
+                  <strong style="color: #fff; font-size: 0.9rem; display: block;">2. Manual_Arquitectura_Seguridad.json</strong>
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">Diagrama de componentes, endpoints y cifrado SHA-256.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Documento 3 -->
+            <div style="background: rgba(7,9,14,0.7); border: 1px solid rgba(0,243,255,0.2); padding: 1rem; border-radius: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                <i class="fa-solid fa-file-contract text-emerald" style="font-size: 1.5rem;"></i>
+                <div>
+                  <strong style="color: #fff; font-size: 0.9rem; display: block;">3. Protocolo_Continuidad_SLA.txt</strong>
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">Plan de contingencia, backups y disponibilidad 99.9%.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Documento 4 -->
+            <div style="background: rgba(7,9,14,0.7); border: 1px solid rgba(0,243,255,0.2); padding: 1rem; border-radius: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                <i class="fa-solid fa-file-shield text-amber" style="font-size: 1.5rem;"></i>
+                <div>
+                  <strong style="color: #fff; font-size: 0.9rem; display: block;">4. Certificado_Cumplimiento_Ley21459.pdf</strong>
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">Resguardo legal y firma de resguardo de ciberseguridad.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 
@@ -1223,8 +1336,8 @@
   </div>
 
   <!-- Scripts compartidos -->
-  <script src="../db.js?v=1785808475"></script>
-  <script src="admin.js?v=1785808475"></script>
+  <script src="../db.js?v=1785808953"></script>
+  <script src="admin.js?v=1785808953"></script>
 </body>
 <!--/email_off-->
 </html>

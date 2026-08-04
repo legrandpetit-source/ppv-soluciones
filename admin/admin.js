@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try { initUFHistoryMaintainer(); } catch(e){ console.error(e); }
   try { initVCardEditorMaintainer(); } catch(e){ console.error(e); }
   try { initQATestingSuiteMaintainer(); } catch(e){ console.error(e); }
+  try { initCMMIGovernanceMaintainer(); } catch(e){ console.error(e); }
 });
 
 /* --------------------------------------------------------------------------
@@ -1593,6 +1594,92 @@ function initQATestingSuiteMaintainer() {
       }
 
     }, 1200);
+  };
+}
+
+/* --------------------------------------------------------------------------
+   14. GENERADOR DE POLÍTICAS DE GOBIERNO TI & KIT CMMI NIVEL 5
+   -------------------------------------------------------------------------- */
+function initCMMIGovernanceMaintainer() {
+  const form = document.getElementById('form-cmmi-generator');
+  if (!form) return;
+
+  form.onsubmit = (e) => {
+    e.preventDefault();
+    const clientName = document.getElementById('cmmi-client-name').value.trim() || 'Empresa Cliente SpA';
+    const clientRut = document.getElementById('cmmi-client-rut').value.trim() || '77.123.456-7';
+    const cmmiLevel = document.getElementById('cmmi-level-select').value;
+    const auditorName = document.getElementById('cmmi-auditor-name').value.trim() || 'Patricio Padilla (CEO PPV Soluciones)';
+    const scope = document.getElementById('cmmi-project-scope').value.trim() || 'Infraestructura Cloud & Desarrollo Software';
+
+    showToast(`📂 Compilando Kit de Gobierno TI CMMI Nivel 5 para ${clientName}...`);
+
+    const cmmiPack = {
+      meta: {
+        document_title: `CARPETA OFICIAL DE GOBIERNO TI & POLÍTICAS DE DESARROLLO`,
+        standard: cmmiLevel,
+        client: clientName,
+        rut: clientRut,
+        auditor: auditorName,
+        project_scope: scope,
+        issued_date: new Date().toLocaleDateString('es-CL'),
+        certified_by: "PPV Soluciones - Ciberseguridad & Ingeniería de Software en Chile"
+      },
+      policy_documents: [
+        {
+          file_name: "01_Politica_Gobierno_TI_CMMI5.pdf",
+          category: "Gobierno TI & Control de Procesos",
+          summary: "Define las normas de ingeniería, gestión de versiones, revisiones de código y despliegue continuo en producción.",
+          sections: [
+            "1. Objetivo: Establecer un marco de control de calidad cuantitativo Nivel 5 para el desarrollo de software.",
+            "2. Alcance: Aplicable a todo el código fuente, repositorios Git, bases de datos y microservicios.",
+            "3. Roles: Responsabilidades del equipo de desarrollo, auditor de QA y administrador de sistemas."
+          ]
+        },
+        {
+          file_name: "02_Manual_Arquitectura_Seguridad_Ley21459.pdf",
+          category: "Ciberseguridad & Resguardo Legal",
+          summary: "Matriz de cifrado SHA-256, protección de secretos mediante Proxy Backend y headers de seguridad HTTP.",
+          sections: [
+            "1. Cifrado de datos en reposo y en tránsito (TLS 1.3 / AES-256).",
+            "2. Ocultamiento de API Keys mediante arquitectura Proxy Serverless.",
+            "3. Carta de resguardo legal y trazabilidad de accesos según Ley N° 21.459."
+          ]
+        },
+        {
+          file_name: "03_Protocolo_Continuidad_SLA_99.9.pdf",
+          category: "Continuidad Operacional & Backups",
+          summary: "Estrategia de respaldos automatizados de base de datos y plan de recuperación ante desastres (DRP).",
+          sections: [
+            "1. Frecuencia de Backups: Respaldos diarios incrementales con retención de 30 días.",
+            "2. Tiempo de Recuperación (RTO): Menor a 2 horas en caso de falla de infraestructura.",
+            "3. Punto de Recuperación (RPO): Pérdida máxima teórica de 15 minutos."
+          ]
+        },
+        {
+          file_name: "04_Matriz_Pruebas_QA_Testing.json",
+          category: "Aseguramiento de Calidad",
+          summary: "Registro de pruebas funcionales, tests de estrés y aceptación de código libre de vulnerabilidades.",
+          sections: [
+            "1. Cobertura de pruebas unitarias superior al 85%.",
+            "2. Validación de inputs y sanitización XSS/SQLi.",
+            "3. Verificación de accesibilidad y diseño responsivo."
+          ]
+        }
+      ]
+    };
+
+    setTimeout(() => {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(cmmiPack, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `CARPETA_GOBIERNO_TI_CMMI5_${clientName.toLowerCase().replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+
+      showToast(`✅ Carpeta de Documentación CMMI descargada con éxito para ${clientName}.`);
+    }, 1000);
   };
 }
 
