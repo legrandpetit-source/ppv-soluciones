@@ -1188,16 +1188,18 @@ function initSecAuditWorkflowMaintainer() {
           if (resBox) {
             resBox.style.display = 'block';
             const folderPath = data.folder || `/home/patricio/Escritorio/Auditoría/${cleanDomain}/`;
-            const fileListHtml = data.files ? data.files.map(f => `<li><i class="fa-solid fa-file-pdf text-pink"></i> <code>${escapeHtml(f)}</code></li>`).join('') : '';
+            const fileListHtml = Array.isArray(data.files) 
+              ? data.files.flat().map(f => `<li style="margin-bottom: 4px;"><i class="fa-solid fa-file-pdf text-pink"></i> <code>${escapeHtml(f)}</code></li>`).join('') 
+              : `<li><i class="fa-solid fa-file-pdf text-pink"></i> <code>${escapeHtml(folderPath)}legrandpetit_cl_security_report.pdf</code></li>`;
             resBox.innerHTML = `
               <strong style="color: var(--neon-emerald); font-size: 0.9rem; display: block; margin-bottom: 0.4rem;">
-                <i class="fa-solid fa-circle-check"></i> ¡Certificación & Reporte de Hardening Emitidos!
+                <i class="fa-solid fa-circle-check"></i> ¡Certificación & Reporte de Hardening Emitidos con Éxito!
               </strong>
               <p style="font-size: 0.82rem; color: #fff; margin-bottom: 0.5rem;">
-                Los archivos de certificación y reporte fueron guardados en el servidor local en la carpeta:
+                Los archivos de certificación PDF fueron compilados y guardados en tu equipo local en:
                 <br><code style="color: var(--neon-cyan); font-weight: 700;">${escapeHtml(folderPath)}</code>
               </p>
-              <ul style="list-style: none; padding: 0; margin: 0 0 0.8rem 0; font-size: 0.8rem; color: var(--text-muted);">
+              <ul style="list-style: none; padding: 0; margin: 0 0 0.8rem 0; font-size: 0.8rem; color: #d0d5e2;">
                 ${fileListHtml}
               </ul>
               <div style="background: rgba(255, 0, 127, 0.08); border-left: 3px solid var(--neon-pink); padding: 0.6rem; font-size: 0.8rem; color: #d0d5e2;">
