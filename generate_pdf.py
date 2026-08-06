@@ -269,42 +269,44 @@ def save_pdf(md_content, filename_base, title="Documento PPV", domain=None):
         # We are on the host VPS.
         # Write the HTML inside the shared folder (/var/www/ppvsoluciones/)
         shared_html_path = f"/var/www/ppvsoluciones/{filename_base}.html"
-        shared_pdf_path = f"/var/www/ppvsoluciones/{filename_base}.pdf"
+        host_tmp_pdf = f"/tmp/{filename_base}.pdf"
         
         with open(shared_html_path, 'w', encoding='utf-8') as f:
             f.write(html_content)
             
-        # Compile it inside the container 'ppv-soluciones' where Chromium works perfectly
-        # The container reads the file at /usr/share/nginx/html/{filename_base}.html
-        # and writes the PDF output to /usr/share/nginx/html/{filename_base}.pdf
+        # Compile it inside the container 'ppv-soluciones' where Chromium works
+        # Write output to /tmp/{filename_base}.pdf (which is writeable in Alpine container)
         cmd = [
             'docker', 'exec', 'ppv-soluciones',
             '/usr/bin/chromium',
             '--headless',
             '--disable-gpu',
             '--no-sandbox',
-            f'--print-to-pdf=/usr/share/nginx/html/{filename_base}.pdf',
+            f'--print-to-pdf=/tmp/{filename_base}.pdf',
             f'file:///usr/share/nginx/html/{filename_base}.html'
         ]
         res = subprocess.run(cmd, capture_output=True, text=True)
         
-        # Once compiled inside the container, the PDF is visible on the host at shared_pdf_path
-        if os.path.exists(shared_pdf_path):
+        # Copy the compiled PDF from container /tmp/ to host /tmp/
+        cp_cmd = ['docker', 'cp', f'ppv-soluciones:/tmp/{filename_base}.pdf', host_tmp_pdf]
+        subprocess.run(cp_cmd, capture_output=True, text=True)
+        
+        if os.path.exists(host_tmp_pdf):
             for base_dir in output_base_dirs:
                 target_dir = os.path.join(base_dir, domain) if domain else base_dir
                 os.makedirs(target_dir, exist_ok=True)
                 pdf_path = os.path.join(target_dir, f"{filename_base}.pdf")
                 
-                # Copy from the shared folder to the target directory
-                shutil.copy2(shared_pdf_path, pdf_path)
+                shutil.copy2(host_tmp_pdf, pdf_path)
                 if os.path.exists(pdf_path):
                     created_pdfs.append(pdf_path)
                     print(f"✅ PDF Creado (vía docker container): {pdf_path} ({os.path.getsize(pdf_path)} bytes)")
             
-            # Clean up the temporary shared files
+            # Clean up temporary files on host and in container
             try:
                 os.remove(shared_html_path)
-                os.remove(shared_pdf_path)
+                os.remove(host_tmp_pdf)
+                subprocess.run(['docker', 'exec', 'ppv-soluciones', 'rm', '-f', f'/tmp/{filename_base}.pdf'], capture_output=True)
             except Exception:
                 pass
         else:
