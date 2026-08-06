@@ -15,6 +15,15 @@ OUTPUT_DIRS = [
     '/home/patricio/Escritorio'
 ]
 
+def get_chile_date_str():
+    from datetime import datetime
+    try:
+        from zoneinfo import ZoneInfo
+        now_chile = datetime.now(ZoneInfo('America/Santiago'))
+    except Exception:
+        now_chile = datetime.now()
+    return now_chile.strftime('%d/%m/%Y')
+
 def markdown_to_html(md_content, title="Informe PPV Soluciones"):
     # Convert basic markdown formatting to HTML
     lines = md_content.split('\n')
@@ -315,8 +324,7 @@ def save_pdf(md_content, filename_base, title="Documento PPV", domain=None):
     return created_pdfs
 
 def generate_client_authorization_pdf(client_name, rut, domain, contact_person, email, plan_tier="$450 USD"):
-    from datetime import datetime
-    date_str = datetime.now().strftime('%d/%m/%Y')
+    date_str = get_chile_date_str()
     clean_domain = domain.replace('https://', '').replace('http://', '').strip('/')
     
     md_content = f"""# 📜 Carta de Autorización & Exención de Responsabilidad Legal
@@ -372,8 +380,7 @@ Para la plena efectividad jurídica de este resguardo en conformidad con la **Le
     return save_pdf(md_content, 'carta_autorizacion_seguridad', f'Carta de Autorización Legal - {clean_domain}', domain=clean_domain)
 
 def generate_client_audit_report_pdf(client_name, domain, plan_tier="$450 USD"):
-    from datetime import datetime
-    date_str = datetime.now().strftime('%d/%m/%Y')
+    date_str = get_chile_date_str()
     clean_domain = domain.replace('https://', '').replace('http://', '').strip('/')
     
     md_content = f"""# 🛡️ Informe de Diagnóstico & Ciberseguridad Web
@@ -423,8 +430,7 @@ PPV Soluciones | contacto@ppvsoluciones.cl | https://ppvsoluciones.cl
     return save_pdf(md_content, f'{file_prefix}_security_report', f'Informe de Seguridad - {clean_domain}', domain=clean_domain)
 
 def get_executive_summary_markdown(client_name, company_name, phone, email="", domain="", plan_tier="$450 USD"):
-    from datetime import datetime
-    date_str = datetime.now().strftime('%d/%m/%Y')
+    date_str = get_chile_date_str()
     clean_domain = domain.replace('https://', '').replace('http://', '').strip('/') if domain else 'N/A'
     c_name = client_name or "Cliente Estimado"
     comp_name = company_name or "Empresa"
@@ -506,6 +512,111 @@ def generate_executive_summary_pdf(client_name, company_name, phone, email="", d
         domain=clean_domain
     )
 
+def get_ppv_company_presentation_markdown(client_name="", company_name="", phone="", email="", domain="", plan_tier="$450 USD"):
+    date_str = get_chile_date_str()
+    clean_domain = domain.replace('https://', '').replace('http://', '').strip('/') if domain else 'N/A'
+    c_name = client_name or "Estimado Cliente"
+    comp_name = company_name or "Su Empresa"
+    p_phone = phone or "No especificado"
+    e_mail = email or "contacto@empresa.cl"
+    
+    md_content = f"""# 🛡️ PRESENTACIÓN INSTITUCIONAL DE SERVICIOS — PPV SOLUCIONES
+**Ciberseguridad Defensiva, Hardening de Servidores & Desarrollo Web de Alta Eficiencia**  
+**Sitio Web:** https://ppvsoluciones.cl | **Correo:** contacto@ppvsoluciones.cl | **Fecha:** {date_str}
+
+---
+
+## 📄 PRESENTACIÓN DIRIGIDA A:
+* **Cliente / Representante:** {c_name}
+* **Empresa / Razón Social:** {comp_name}
+* **Teléfono de Contacto:** {p_phone}
+* **Correo Electrónico:** {e_mail}
+* **Infraestructura Evaluada:** {clean_domain}
+
+---
+
+## 🎯 ¿QUIÉNES SOMOS?
+
+En **PPV Soluciones**, somos una firma especializada en **Ciberseguridad Defensiva, Fortalecimiento de Infraestructura Web (Hardening) y Optimización de Performance**. 
+
+Ayudamos a empresas e instituciones a proteger su presencia digital contra ciberataques, robo de datos, inyecciones de malware y caídas de servicio, garantizando además el estricto cumplimiento de la Ley de Delitos Informáticos en Chile (**Ley 21.459**).
+
+---
+
+## 💡 ¿QUÉ HACEMOS? (EXPLICACIÓN TÉCNICA Y SENCILLA)
+
+Explicamos nuestras soluciones de manera transparente, uniendo el rigor de la ingeniería informática con conceptos de fácil comprensión:
+
+### 1. Auditoría & Diagnóstico de Ciberseguridad (Nivel 1)
+* **En lenguaje sencillo**: Realizamos una "revisión técnica exhaustiva" de su sitio web para detectar vulnerabilidades antes de que piratas informáticos las utilicen para atacar.
+* **Aspectos técnicos**:
+  - **Inyecciones SQL / XSS**: Verificamos que los atacantes no puedan manipular su base de datos ni inyectar código dañino a sus usuarios.
+  - **Detección de Claves Expuestas**: Inspeccionamos el código cliente para asegurar que tokens de WhatsApp, Telegram o llaves de pago no estén visibles públicamente.
+  - **Filtros Anti-Spam**: Protegemos sus formularios de contacto contra bots y ataques de denegación de servicio (DDoS).
+
+### 2. Blindaje Web & Hardening de Servidores (Nivel 2 — Servicio Principal)
+* **En lenguaje sencillo**: El *Hardening* (o fortificación) consiste en reforzar digitalmente su servidor web: "cerrar puertas traseras" y colocar cerraduras de alta seguridad.
+* **Acciones Técnicas**:
+  - **Cabeceras HTTP Defensivas**: Activamos reglas de servidor (`Content-Security-Policy`, `HSTS`, `X-Frame-Options`) para prevenir el secuestro de pantalla (*clickjacking*) y la ejecución de scripts maliciosos.
+  - **Proxies de Seguridad Backend**: Ocultamos las credenciales delicadas detrás de un túnel seguro en el servidor.
+  - **Sanitización & Cifrado**: Aseguramos la transmisión de datos mediante cifrado SSL/TLS de 256 bits y hashes SHA-256.
+
+### 3. Desarrollo Web & Performance de Alto Impacto
+* **En lenguaje sencillo**: Un sitio web seguro debe ser también ultrarrápido. Si su página tarda más de 3 segundos en cargar, pierde clientes.
+* **Resultados**: Optimización de *Core Web Vitals* (LCP e INP), código limpio y libre de dependencias pesadas o inseguras.
+
+---
+
+## ⚖️ CUMPLIMIENTO LEGAL & RESGUARDO (LEY 21.459)
+
+Toda auditoría e intervención se ejecuta bajo un marco de confidencialidad y legalidad:
+* Entregamos una **Carta de Autorización & Exención de Responsabilidad Legal**, resguardando legalmente a ambas partes.
+* Emitimos **Certificados de Hardening** verificables que respaldan el compromiso de su empresa con la seguridad de la información.
+
+---
+
+## 📊 RESUMEN DE PLANES Y COBERTURA DE SERVICIO
+
+| Servicio / Cobertura | Nivel 1 — Diagnóstico | Nivel 2 — Hardening Total (Recomendado) |
+|---|---|---|
+| **Diagnóstico de Vulnerabilidades** | ✅ Incluido | ✅ Incluido |
+| **Informe Técnico & Checklist Ejecutivo** | ✅ Incluido | ✅ Incluido |
+| **Implementación Activa de Parches y Correcciones** | ❌ No incluye | ✅ Incluido (Manos a la obra) |
+| **Cabeceras Defensivas HTTP & Proxy Backend** | ❌ No incluye | ✅ Incluido |
+| **Protección Anti-Spam & Rate Limiting** | ❌ No incluye | ✅ Incluido |
+| **Garantía y Soporte Pos-Entrega** | 7 Días | 30 Días |
+| **Tiempo de Entrega estimado** | 48 Horas | 4 Días Hábiles |
+
+---
+
+## ✍️ CONTACTO & CONTRATACIÓN
+
+Estamos listos para potenciar y blindar la presencia digital de **{comp_name}**.
+
+* **Representante Técnico:** Patricio Padilla — CEO & Fundador
+* **Correo Directo:** contacto@ppvsoluciones.cl
+* **WhatsApp / Teléfono Directo:** +56 9 8623 9706
+* **Sitio Web Oficial:** https://ppvsoluciones.cl
+"""
+    return md_content
+
+def generate_ppv_company_presentation_pdf(client_name="", company_name="", phone="", email="", domain="", plan_tier="$450 USD", custom_markdown=None):
+    if custom_markdown and custom_markdown.strip():
+        md_content = custom_markdown
+    else:
+        md_content = get_ppv_company_presentation_markdown(client_name, company_name, phone, email, domain, plan_tier)
+        
+    comp_clean = (company_name or client_name or "cliente").replace(" ", "_").lower()
+    clean_domain = domain.replace('https://', '').replace('http://', '').strip('/') if domain else None
+    
+    return save_pdf(
+        md_content,
+        f'presentacion_institucional_{comp_clean}',
+        f'Presentación Institucional PPV Soluciones - {company_name or client_name}',
+        domain=clean_domain
+    )
+
 if __name__ == '__main__':
     print("PDF Generator Script Listo.")
+
 

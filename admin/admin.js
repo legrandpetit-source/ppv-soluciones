@@ -1785,6 +1785,8 @@ function initExecSummaryMaintainer() {
   if (form) {
     form.onsubmit = async (e) => {
       e.preventDefault();
+      const docTypeEl = document.getElementById('exec-doc-type');
+      const docType = docTypeEl ? docTypeEl.value : 'presentation';
       const contactName = document.getElementById('exec-contact-name').value.trim();
       const companyName = document.getElementById('exec-company-name').value.trim();
       const phone = document.getElementById('exec-phone').value.trim();
@@ -1800,6 +1802,7 @@ function initExecSummaryMaintainer() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'preview',
+            doc_type: docType,
             client_name: contactName,
             company_name: companyName,
             phone: phone,
@@ -1853,6 +1856,8 @@ function initExecSummaryMaintainer() {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(async () => {
       try {
+        const docTypeEl = document.getElementById('exec-doc-type');
+        const docType = docTypeEl ? docTypeEl.value : 'presentation';
         const contactName = document.getElementById('exec-contact-name').value.trim();
         const companyName = document.getElementById('exec-company-name').value.trim();
         const phone = document.getElementById('exec-phone').value.trim();
@@ -1865,6 +1870,7 @@ function initExecSummaryMaintainer() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'preview',
+            doc_type: docType,
             client_name: contactName,
             company_name: companyName,
             phone: phone,
@@ -1886,6 +1892,8 @@ function initExecSummaryMaintainer() {
 
   if (btnExportPdf) {
     btnExportPdf.onclick = async () => {
+      const docTypeEl = document.getElementById('exec-doc-type');
+      const docType = docTypeEl ? docTypeEl.value : 'presentation';
       const contactName = document.getElementById('exec-contact-name').value.trim();
       const companyName = document.getElementById('exec-company-name').value.trim();
       const phone = document.getElementById('exec-phone').value.trim();
@@ -1901,6 +1909,7 @@ function initExecSummaryMaintainer() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'pdf',
+            doc_type: docType,
             client_name: contactName,
             company_name: companyName,
             phone: phone,

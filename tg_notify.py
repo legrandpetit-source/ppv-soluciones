@@ -335,6 +335,7 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 data = json.loads(body.decode('utf-8'))
 
                 action = str(data.get('action', 'pdf'))
+                doc_type = str(data.get('doc_type', 'presentation'))
                 client_name = str(data.get('client_name', ''))[:150]
                 company_name = str(data.get('company_name', ''))[:150]
                 phone = str(data.get('phone', ''))[:50]
@@ -346,8 +347,15 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 import generate_pdf
 
                 if action == 'preview':
-                    md_preview = custom_markdown if (custom_markdown and custom_markdown.strip()) else generate_pdf.get_executive_summary_markdown(client_name, company_name, phone, email, domain, plan_tier)
-                    html_preview = generate_pdf.markdown_to_html(md_preview, f"Resumen Ejecutivo - {company_name or client_name}")
+                    if custom_markdown and custom_markdown.strip():
+                        md_preview = custom_markdown
+                    elif doc_type == 'executive':
+                        md_preview = generate_pdf.get_executive_summary_markdown(client_name, company_name, phone, email, domain, plan_tier)
+                    else:
+                        md_preview = generate_pdf.get_ppv_company_presentation_markdown(client_name, company_name, phone, email, domain, plan_tier)
+                        
+                    doc_title = "Presentación Institucional PPV Soluciones" if doc_type == 'presentation' else f"Resumen Ejecutivo - {company_name or client_name}"
+                    html_preview = generate_pdf.markdown_to_html(md_preview, doc_title)
                     
                     self.send_response(200)
                     self.send_cors_headers()
@@ -356,15 +364,26 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                     self.wfile.write(json.dumps({'ok': True, 'markdown': md_preview, 'html': html_preview}).encode('utf-8'))
                     return
 
-                pdf_paths = generate_pdf.generate_executive_summary_pdf(
-                    client_name=client_name,
-                    company_name=company_name,
-                    phone=phone,
-                    email=email,
-                    domain=domain,
-                    plan_tier=plan_tier,
-                    custom_markdown=custom_markdown
-                )
+                if doc_type == 'executive':
+                    pdf_paths = generate_pdf.generate_executive_summary_pdf(
+                        client_name=client_name,
+                        company_name=company_name,
+                        phone=phone,
+                        email=email,
+                        domain=domain,
+                        plan_tier=plan_tier,
+                        custom_markdown=custom_markdown
+                    )
+                else:
+                    pdf_paths = generate_pdf.generate_ppv_company_presentation_pdf(
+                        client_name=client_name,
+                        company_name=company_name,
+                        phone=phone,
+                        email=email,
+                        domain=domain,
+                        plan_tier=plan_tier,
+                        custom_markdown=custom_markdown
+                    )
 
                 download_files = []
                 seen_names = set()
