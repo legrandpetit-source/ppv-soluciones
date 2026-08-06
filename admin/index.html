@@ -226,6 +226,9 @@
       <button class="sidebar-btn" data-view="view-sec-generator">
         <i class="fa-solid fa-file-contract text-pink"></i> Generador de Cartas & PDFs
       </button>
+      <button class="sidebar-btn" data-view="view-exec-summary" style="border-left: 3px solid var(--neon-amber); background: rgba(255, 170, 0, 0.05);">
+        <i class="fa-solid fa-briefcase text-amber"></i> Resumen Ejecutivo Comercial
+      </button>
       <button class="sidebar-btn" data-view="view-sec-audit-workflow" style="border-left: 3px solid var(--neon-cyan); background: rgba(0,243,255,0.05);">
         <i class="fa-solid fa-shield-halved text-cyan"></i> Centro de Ciberseguridad & Auditoría
       </button>
@@ -768,6 +771,93 @@
             <span style="font-size: 0.82rem; color: var(--text-muted);" id="gen-pdf-result-msg">
               Se crearon la Carta de Autorización Legal y el Informe de Diagnóstico en tu directorio Escritorio/Auditoría/.
             </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista Resumen Ejecutivo Comercial & Presentación PDF con Vista Previa Editable -->
+      <div class="admin-panel-view" id="view-exec-summary">
+        <h3 style="color: var(--neon-amber); font-size: 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-briefcase text-amber"></i> Resumen Ejecutivo Comercial & Presentación PDF
+        </h3>
+
+        <div class="glass-card" style="background: rgba(13, 17, 26, 0.9); border-color: rgba(255, 170, 0, 0.3); margin-bottom: 1.5rem; max-width: 850px;">
+          <h4 style="color: var(--neon-amber); font-size: 0.95rem; margin-bottom: 0.8rem;">
+            <i class="fa-solid fa-pen-to-square"></i> Datos de la Presentación Comercial
+          </h4>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+            Ingresa la información del cliente. Al hacer clic en <strong>Generar Vista Previa Editable</strong>, podrás revisar y modificar el documento directamente en pantalla antes de descargarlo en formato PDF.
+          </p>
+
+          <form id="form-exec-summary">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">Nombre de Contacto *</label>
+                <input type="text" id="exec-contact-name" class="form-control" placeholder="Ej. Carlos Mendoza" required style="padding: 0.6rem;">
+              </div>
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">Nombre de la Empresa *</label>
+                <input type="text" id="exec-company-name" class="form-control" placeholder="Ej. InnovaTech Chile SpA" required style="padding: 0.6rem;">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">Teléfono de Contacto *</label>
+                <input type="tel" id="exec-phone" class="form-control" placeholder="Ej. +56 9 1234 5678" required style="padding: 0.6rem;">
+              </div>
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">Correo Electrónico</label>
+                <input type="email" id="exec-email" class="form-control" placeholder="contacto@innovatech.cl" style="padding: 0.6rem;">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.2rem;">
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">Sitio Web / Dominio Evaluado</label>
+                <input type="text" id="exec-domain" class="form-control" placeholder="innovatech.cl" style="padding: 0.6rem;">
+              </div>
+              <div class="form-group">
+                <label style="color: #fff; font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">Propuesta de Plan / Alcance</label>
+                <select id="exec-plan-tier" class="form-control" style="padding: 0.6rem;">
+                  <option value="$450 USD (Hardening Total & Auditoría Completa)">Nivel 2 — Hardening Total ($450 USD | 4 días)</option>
+                  <option value="$200 USD (Diagnóstico & Informe Técnico)">Nivel 1 — Solo Diagnóstico ($200 USD | 2 días)</option>
+                  <option value="Cotización Personalizada a Medida">Cotización Personalizada / Proyecto Especial</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, var(--neon-amber), var(--neon-violet)); border: none; padding: 0.7rem 1.4rem; font-weight: 700;">
+              <i class="fa-solid fa-eye"></i> Generar Vista Previa Editable
+            </button>
+          </form>
+        </div>
+
+        <!-- Contenedor de Vista Previa Interactiva & Editor Live -->
+        <div id="exec-preview-wrapper" class="glass-card" style="display: none; background: rgba(10, 14, 23, 0.95); border-color: var(--neon-amber); margin-bottom: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.8rem; margin-bottom: 1rem;">
+            <h4 style="color: var(--neon-amber); font-size: 1rem; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-sliders"></i> Vista Previa & Edición Directa del Documento
+            </h4>
+            <div style="display: flex; gap: 0.5rem;">
+              <button id="btn-toggle-exec-mode" class="btn btn-outline" style="font-size: 0.8rem; padding: 0.4rem 0.8rem; border-color: var(--neon-cyan); color: var(--neon-cyan);">
+                <i class="fa-solid fa-code"></i> Alternar Modo Editor / Render
+              </button>
+              <button id="btn-export-exec-pdf" class="btn btn-emerald" style="font-size: 0.85rem; padding: 0.4rem 1rem; font-weight: 700;">
+                <i class="fa-solid fa-file-pdf"></i> Confirmar y Descargar PDF Final
+              </button>
+            </div>
+          </div>
+
+          <div id="exec-editor-box" style="display: none; margin-bottom: 1rem;">
+            <label style="color: var(--text-muted); font-size: 0.8rem; display: block; margin-bottom: 0.4rem;">
+              <i class="fa-solid fa-pencil"></i> Puedes modificar libremente el texto en Markdown a continuación antes de emitir el PDF:
+            </label>
+            <textarea id="exec-markdown-input" rows="16" class="form-control" style="font-family: 'Fira Code', monospace; font-size: 0.85rem; background: #05070a; color: #00f3ff; border: 1px solid rgba(0,243,255,0.3); width: 100%; padding: 0.8rem; border-radius: 6px;"></textarea>
+          </div>
+
+          <div id="exec-render-box" style="background: #ffffff; color: #1a1a1a; padding: 2rem; border-radius: 8px; min-height: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow-x: auto;">
+            <!-- Rendered HTML inserted dynamically -->
           </div>
         </div>
       </div>

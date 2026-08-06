@@ -420,5 +420,90 @@ PPV Soluciones | contacto@ppvsoluciones.cl | https://ppvsoluciones.cl
     file_prefix = clean_domain.replace(".", "_")
     return save_pdf(md_content, f'{file_prefix}_security_report', f'Informe de Seguridad - {clean_domain}', domain=clean_domain)
 
+def get_executive_summary_markdown(client_name, company_name, phone, email="", domain="", plan_tier="$450 USD"):
+    from datetime import datetime
+    date_str = datetime.now().strftime('%d/%m/%Y')
+    clean_domain = domain.replace('https://', '').replace('http://', '').strip('/') if domain else 'N/A'
+    c_name = client_name or "Cliente Estimado"
+    comp_name = company_name or "Empresa"
+    p_phone = phone or "No especificado"
+    e_mail = email or "contacto@empresa.cl"
+    
+    md_content = f"""# 🚀 RESUMEN EJECUTIVO & PRESENTACIÓN COMERCIAL
+**PPV Soluciones — Servicios Profesionales de Ciberseguridad & Desarrollo Web**  
+**Sitio Oficial:** https://ppvsoluciones.cl | **Contacto:** contacto@ppvsoluciones.cl | **Fecha:** {date_str}  
+
+---
+
+## 📋 FICHA DE PRESENTACIÓN PARA EL CLIENTE
+
+* **Nombre de Contacto:** {c_name}
+* **Empresa / Razón Social:** {comp_name}
+* **Teléfono de Contacto:** {p_phone}
+* **Correo Electrónico:** {e_mail}
+* **Dominio / Infraestructura Evaluada:** {clean_domain}
+* **Propuesta / Plan Seleccionado:** {plan_tier}
+
+---
+
+## 🎯 PROPUESTA DE VALOR & OBJETIVOS ESTRATÉGICOS
+
+En **PPV Soluciones**, brindamos soluciones integrales de ciberseguridad, hardening de servidores, mitigación de vulnerabilidades y desarrollo web de alta performance. Nuestra misión es garantizar que la presencia digital e infraestructura de **{comp_name}** opere bajo los más altos estándares internacionales de disponibilidad, confidencialidad e integridad.
+
+### 🛡️ 1. Auditoría & Ciberseguridad Defensiva (Ley 21.459)
+* **Diagnóstico de Vulnerabilidades:** Análisis profundo contra inyecciones SQL/XSS, credenciales expuestas y fallos de lógica.
+* **Hardening Servidores & Web:** Configuración de cabeceras HTTP defensivas (`CSP`, `HSTS`, `X-Frame-Options`, `X-Content-Type-Options`).
+* **Protección Backend & Proxies:** Ocultamiento de tokens de API (Telegram/WhatsApp/Base de Datos) tras proxies seguros.
+* **Mitigación Anti-Spam & Rate Limiting:** Control de concurrencia y prevención contra ataques de denegación de servicio (DDoS) o flood en formularios.
+
+### ⚡ 2. Optimización de Performance & SEO Técnico
+* **Tiempo de Carga & Core Web Vitals:** Optimización LCP e INP para maximizar la velocidad y experiencia de usuario.
+* **Arquitectura Resiliente:** Infraestructura contenerizada y limpia de código redundante.
+* **Monitoreo & Logs Activos:** Trazabilidad completa de accesos y eventos de seguridad.
+
+---
+
+## 📊 COMPARATIVA DE PLANES DE SERVICIO
+
+| Característica / Cobertura | Nivel 1 — Diagnóstico PDF ($200 USD) | Nivel 2 — Hardening Total ($450 USD) [Recomendado] |
+|---|---|---|
+| **Escaneo de Vulnerabilidades** | ✅ Incluido | ✅ Incluido |
+| **Informe Ejecutivo & Certificado** | ✅ Incluido | ✅ Incluido |
+| **Implementación de Parches & Code Fixes** | ❌ No incluye | ✅ Incluido (Manos a la obra) |
+| **Configuración de Headers HTTP & Proxy** | ❌ No incluye | ✅ Incluido |
+| **Protección Anti-Spam & Rate Limiting** | ❌ No incluye | ✅ Incluido |
+| **Garantía & Soporte Pos-Entrega** | 7 Días | 30 Días |
+| **Tiempo de Entrega** | 48 Horas | 4 Días Hábiles |
+
+---
+
+## ✍️ ACEPTACIÓN Y CONTACTO DIRECTO
+
+Para dar inicio a la auditoría e implementación de mejoras de ciberseguridad para **{comp_name}**, puede contactarnos directamente a través de nuestros canales oficiales:
+
+* **Representante PPV Soluciones:** Patricio Padilla — CEO & Fundador
+* **Correo Directo:** contacto@ppvsoluciones.cl
+* **WhatsApp / Teléfono Directo:** +56 9 8623 9706
+* **Sitio Web & Consola Admin:** https://ppvsoluciones.cl
+"""
+    return md_content
+
+def generate_executive_summary_pdf(client_name, company_name, phone, email="", domain="", plan_tier="$450 USD", custom_markdown=None):
+    if custom_markdown and custom_markdown.strip():
+        md_content = custom_markdown
+    else:
+        md_content = get_executive_summary_markdown(client_name, company_name, phone, email, domain, plan_tier)
+        
+    comp_clean = (company_name or client_name or "cliente").replace(" ", "_").lower()
+    clean_domain = domain.replace('https://', '').replace('http://', '').strip('/') if domain else None
+    
+    return save_pdf(
+        md_content,
+        f'resumen_ejecutivo_{comp_clean}',
+        f'Resumen Ejecutivo - {company_name or client_name}',
+        domain=clean_domain
+    )
+
 if __name__ == '__main__':
     print("PDF Generator Script Listo.")
+

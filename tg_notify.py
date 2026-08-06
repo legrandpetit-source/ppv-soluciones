@@ -328,6 +328,78 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
                 return
 
+        if self.path in ['/tg-generate-executive-summary', '/api/generate-executive-summary']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+
+                action = str(data.get('action', 'pdf'))
+                client_name = str(data.get('client_name', ''))[:150]
+                company_name = str(data.get('company_name', ''))[:150]
+                phone = str(data.get('phone', ''))[:50]
+                email = str(data.get('email', ''))[:180]
+                domain = str(data.get('domain', ''))[:150]
+                plan_tier = str(data.get('plan_tier', '$450 USD'))[:100]
+                custom_markdown = data.get('custom_markdown')
+
+                import generate_pdf
+
+                if action == 'preview':
+                    md_preview = custom_markdown if (custom_markdown and custom_markdown.strip()) else generate_pdf.get_executive_summary_markdown(client_name, company_name, phone, email, domain, plan_tier)
+                    html_preview = generate_pdf.markdown_to_html(md_preview, f"Resumen Ejecutivo - {company_name or client_name}")
+                    
+                    self.send_response(200)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': True, 'markdown': md_preview, 'html': html_preview}).encode('utf-8'))
+                    return
+
+                pdf_paths = generate_pdf.generate_executive_summary_pdf(
+                    client_name=client_name,
+                    company_name=company_name,
+                    phone=phone,
+                    email=email,
+                    domain=domain,
+                    plan_tier=plan_tier,
+                    custom_markdown=custom_markdown
+                )
+
+                download_files = []
+                seen_names = set()
+                if isinstance(pdf_paths, list):
+                    for p_path in pdf_paths:
+                        if p_path and os.path.exists(p_path):
+                            fname = os.path.basename(p_path)
+                            if fname not in seen_names:
+                                seen_names.add(fname)
+                                with open(p_path, 'rb') as f:
+                                    b64_pdf = base64.b64encode(f.read()).decode('utf-8')
+                                    download_files.append({
+                                        'name': fname,
+                                        'b64': b64_pdf
+                                    })
+                                try:
+                                    os.remove(p_path)
+                                except Exception:
+                                    pass
+
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True, 'files': list(seen_names), 'downloads': download_files}).encode('utf-8'))
+                return
+            except Exception as e:
+                print(f"[TG-PROXY] Error generando Resumen Ejecutivo PDF: {e}")
+                self.send_response(500)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode('utf-8'))
+                return
+
         if self.path in ['/tg-run-security-scan', '/api/run-security-scan']:
             try:
                 length = int(self.headers.get('Content-Length', 0))

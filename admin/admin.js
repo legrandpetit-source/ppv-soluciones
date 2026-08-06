@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try { initVCardEditorMaintainer(); } catch(e){ console.error(e); }
   try { initQATestingSuiteMaintainer(); } catch(e){ console.error(e); }
   try { initCMMIGovernanceMaintainer(); } catch(e){ console.error(e); }
+  try { initExecSummaryMaintainer(); } catch(e){ console.error(e); }
 });
 
 /* --------------------------------------------------------------------------
@@ -1765,5 +1766,175 @@ function initCMMIGovernanceMaintainer() {
     }, 1000);
   };
 }
+
+/* --------------------------------------------------------------------------
+   15. GENERADOR DE RESUMEN EJECUTIVO COMERCIAL & VISTA PREVIA EDITABLE
+   -------------------------------------------------------------------------- */
+function initExecSummaryMaintainer() {
+  const form = document.getElementById('form-exec-summary');
+  const previewWrapper = document.getElementById('exec-preview-wrapper');
+  const editorBox = document.getElementById('exec-editor-box');
+  const renderBox = document.getElementById('exec-render-box');
+  const markdownInput = document.getElementById('exec-markdown-input');
+  const btnToggleMode = document.getElementById('btn-toggle-exec-mode');
+  const btnExportPdf = document.getElementById('btn-export-exec-pdf');
+
+  let currentMarkdown = '';
+  let isEditorOpen = false;
+
+  if (form) {
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const contactName = document.getElementById('exec-contact-name').value.trim();
+      const companyName = document.getElementById('exec-company-name').value.trim();
+      const phone = document.getElementById('exec-phone').value.trim();
+      const email = document.getElementById('exec-email').value.trim();
+      const domain = document.getElementById('exec-domain').value.trim();
+      const planTier = document.getElementById('exec-plan-tier').value;
+
+      showToast('🔄 Generando vista previa de la presentación comercial...');
+
+      try {
+        const response = await fetch('/tg-generate-executive-summary', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'preview',
+            client_name: contactName,
+            company_name: companyName,
+            phone: phone,
+            email: email,
+            domain: domain,
+            plan_tier: planTier
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.ok) {
+          currentMarkdown = data.markdown || '';
+          markdownInput.value = currentMarkdown;
+          renderBox.innerHTML = data.html || '';
+          previewWrapper.style.display = 'block';
+          previewWrapper.scrollIntoView({ behavior: 'smooth' });
+          showToast('✅ Vista previa generada. Puedes editar los textos o confirmar el PDF.');
+        } else {
+          showToast('❌ Error generando vista previa: ' + (data.error || 'Error desconocido'), true);
+        }
+      } catch (err) {
+        console.error('Error vista previa resumen ejecutivo:', err);
+        showToast('❌ Error de conexión al generar vista previa.', true);
+      }
+    };
+  }
+
+  if (btnToggleMode) {
+    btnToggleMode.onclick = () => {
+      isEditorOpen = !isEditorOpen;
+      if (isEditorOpen) {
+        editorBox.style.display = 'block';
+        btnToggleMode.innerHTML = '<i class="fa-solid fa-eye"></i> Ver Render Visual';
+      } else {
+        editorBox.style.display = 'none';
+        btnToggleMode.innerHTML = '<i class="fa-solid fa-code"></i> Alternar Modo Editor / Render';
+      }
+    };
+  }
+
+  if (markdownInput) {
+    markdownInput.oninput = () => {
+      currentMarkdown = markdownInput.value;
+      debounceUpdatePreview();
+    };
+  }
+
+  let debounceTimer = null;
+  function debounceUpdatePreview() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(async () => {
+      try {
+        const contactName = document.getElementById('exec-contact-name').value.trim();
+        const companyName = document.getElementById('exec-company-name').value.trim();
+        const phone = document.getElementById('exec-phone').value.trim();
+        const email = document.getElementById('exec-email').value.trim();
+        const domain = document.getElementById('exec-domain').value.trim();
+        const planTier = document.getElementById('exec-plan-tier').value;
+
+        const response = await fetch('/tg-generate-executive-summary', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'preview',
+            client_name: contactName,
+            company_name: companyName,
+            phone: phone,
+            email: email,
+            domain: domain,
+            plan_tier: planTier,
+            custom_markdown: currentMarkdown
+          })
+        });
+        const data = await response.json();
+        if (data.ok && data.html) {
+          renderBox.innerHTML = data.html;
+        }
+      } catch (err) {
+        console.error('Error live sync preview:', err);
+      }
+    }, 400);
+  }
+
+  if (btnExportPdf) {
+    btnExportPdf.onclick = async () => {
+      const contactName = document.getElementById('exec-contact-name').value.trim();
+      const companyName = document.getElementById('exec-company-name').value.trim();
+      const phone = document.getElementById('exec-phone').value.trim();
+      const email = document.getElementById('exec-email').value.trim();
+      const domain = document.getElementById('exec-domain').value.trim();
+      const planTier = document.getElementById('exec-plan-tier').value;
+
+      showToast('⏳ Compilando y generando el archivo PDF oficial...');
+
+      try {
+        const response = await fetch('/tg-generate-executive-summary', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'pdf',
+            client_name: contactName,
+            company_name: companyName,
+            phone: phone,
+            email: email,
+            domain: domain,
+            plan_tier: planTier,
+            custom_markdown: currentMarkdown
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.ok && data.downloads && data.downloads.length > 0) {
+          data.downloads.forEach((dl, i) => {
+            setTimeout(() => {
+              const link = document.createElement('a');
+              link.href = 'data:application/pdf;base64,' + dl.b64;
+              link.download = dl.name;
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+            }, i * 500);
+          });
+          showToast('✅ ¡Presentación en PDF generada y descargada exitosamente!');
+        } else {
+          showToast('❌ Error compilando el PDF: ' + (data.error || 'Sin archivo generado'), true);
+        }
+      } catch (err) {
+        console.error('Error exportando PDF resumen ejecutivo:', err);
+        showToast('❌ Error de conexión al generar PDF.', true);
+      }
+    };
+  }
+}
+
 
 
