@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   runSafe('initMaintainerBlockedCRUD', () => initMaintainerBlockedCRUD());
   runSafe('initCopyButtons', () => initCopyButtons());
   runSafe('initVCardLogic', () => initVCardLogic());
+  runSafe('initFormatPreviews', () => initFormatPreviews());
 
   // 3. Load dynamic database-driven components safely
   await runSafe('loadDynamicStatusPill', async () => await loadDynamicStatusPill());
@@ -2465,3 +2466,179 @@ async function initVCardLogic() {
   }
 }
 
+
+/* --------------------------------------------------------------------------
+   16. GESTIÓN DE PREVISUALIZACIÓN Y COTIZACIÓN DE FORMATOS WEB EN UF
+   -------------------------------------------------------------------------- */
+function initFormatPreviews() {
+  const modalFormat = document.getElementById('modal-format-preview');
+  const btnCloseFormat = document.getElementById('btn-close-format-modal');
+  const modalBody = document.getElementById('format-modal-body');
+
+  const formatData = {
+    landing: {
+      title: 'Landing Page (Página de Aterrizaje)',
+      badge: '🎯 Objetivo: Alta Conversión de Leads',
+      uf: '4 – 12 UF (~ $160.000 – $480.000 CLP + IVA)',
+      desc: 'Formato diseñado exclusivamente para transformar visitantes en clientes. No posee menús con enlaces externos ni distracciones.',
+      diagram: [
+        { section: '1. Encabezado Impactante', icon: 'fa-heading', detail: 'Titular de propuesta de valor clara + Subtítulo persuasivo + Botón directo a WhatsApp/Formulario.' },
+        { section: '2. Formulario Lead / Captura', icon: 'fa-wpforms', detail: 'Campos breves de contacto directo (Nombre, Teléfono, Correo) conectados a Telegram/Email.' },
+        { section: '3. Beneficios & Galería', icon: 'fa-star', detail: 'Iconos de ventajas competitivas, imágenes atractivas del producto o servicio y testimonios.' },
+        { section: '4. Llamado a la Acción (CTA)', icon: 'fa-paper-plane', detail: 'Botón final flotante o fijo de contacto para cerrar la venta.' }
+      ],
+      idealFor: 'Lanzamiento de ofertas específicas, campañas de publicidad en Google Ads o Meta Ads, captar leads calificados.',
+      subject: 'Cotización de Landing Page (4-12 UF)'
+    },
+    onepage: {
+      title: 'Sitio "One-Page" (Página Única Ágil)',
+      badge: '⚡ Objetivo: Presencia Rápida & Fluida',
+      uf: '6 – 20 UF (~ $240.000 – $800.000 CLP + IVA)',
+      desc: 'Toda la empresa explicada en una sola página larga con desplazamiento automático (Smooth Scroll) al presionar las opciones del menú.',
+      diagram: [
+        { section: '1. Barra de Navegación', icon: 'fa-bars', detail: 'Menú fijo con enlaces a secciones internas (Inicio, Nosotros, Servicios, Contacto).' },
+        { section: '2. Banner Principal & Quiénes Somos', icon: 'fa-address-card', detail: 'Presentación del equipo, historia resumida y misión de la empresa.' },
+        { section: '3. Grid de Servicios o Productos', icon: 'fa-cubes', detail: 'Tarjetas informativas de los servicios ofrecidos con precios o descripción.' },
+        { section: '4. Formulario de Contacto & Mapa', icon: 'fa-location-dot', detail: 'Formulario integrado al final del scroll junto con canales directos.' }
+      ],
+      idealFor: 'Profesionales independientes, freelancers, consultores, PYMEs locales que no requieren cientos de páginas internas.',
+      subject: 'Cotización de Sitio One-Page (6-20 UF)'
+    },
+    corporate: {
+      title: 'Sitio Web Corporativo (Multi-Página & SEO)',
+      badge: '🏢 Objetivo: Credibilidad & Posicionamiento en Google',
+      uf: '12 – 38 UF (~ $480.000 – $1.500.000 CLP + IVA)',
+      desc: 'Plataforma completa estructurada en varias páginas independientes para presentar la empresa con máxima solvencia institucional.',
+      diagram: [
+        { section: '1. Página de Inicio (Home)', icon: 'fa-house', detail: 'Resumen ejecutivo de la empresa, servicios destacados, opiniones de clientes e hitos.' },
+        { section: '2. Páginas de Servicios Internos', icon: 'fa-list-check', detail: 'Páginas dedicadas a cada servicio por separado para posicionar palabras clave en Google (SEO).' },
+        { section: '3. Nosotros & Casos de Éxito', icon: 'fa-award', detail: 'Historia detallada, valores, certificaciones, portafolio de clientes y proyectos realizados.' },
+        { section: '4. Central de Contacto & Soporte', icon: 'fa-headset', detail: 'Múltiples vías de atención, mapas interactivos, preguntas frecuentes (FAQ) y formularios.' }
+      ],
+      idealFor: 'Empresas consolidadas, consultoras, constructoras, clínicas e instituciones que necesitan transmitir seguridad institucional.',
+      subject: 'Cotización de Sitio Corporativo (12-38 UF)'
+    },
+    ecommerce: {
+      title: 'Tienda Online (E-commerce Automatizado)',
+      badge: '🛒 Objetivo: Ventas Automatizadas 24/7',
+      uf: '25 – 100+ UF (~ $1.000.000 – $4.000.000+ CLP + IVA)',
+      desc: 'Sistema dinámico para vender productos físicos o digitales con pasarelas de pago y gestión automática de inventarios.',
+      diagram: [
+        { section: '1. Catálogo Dinámico & Filtros', icon: 'fa-boxes-stacked', detail: 'Búsqueda instantánea, categorías, ofertas y filtros por precio o atributo.' },
+        { section: '2. Ficha de Producto', icon: 'fa-tag', detail: 'Galería de imágenes, variaciones de tamaño/color, stock en tiempo real y botón de compra.' },
+        { section: '3. Carrito de Compras & Checkout', icon: 'fa-cart-shopping', detail: 'Revisión del pedido, cálculo de envío automatizado e ingreso de datos del comprador.' },
+        { section: '4. Pasarela de Pago (Webpay / Tarjetas)', icon: 'fa-credit-card', detail: 'Procesamiento seguro con Webpay Plus, MercadoPago o tarjetas bancarias.' }
+      ],
+      idealFor: 'Negocios de retail, marcas de ropa, venta de insumos, suscripciones o servicios digitales con pago automático.',
+      subject: 'Cotización de Tienda E-commerce (25-100+ UF)'
+    },
+    blog: {
+      title: 'Blog o Portal de Contenidos & Noticias',
+      badge: '📰 Objetivo: Tráfico Orgánico & Marketing de Contenidos',
+      uf: '8 – 20 UF (~ $320.000 – $800.000 CLP + IVA)',
+      desc: 'Plataforma para la publicación periódica de artículos, noticias y guías clasificadas por categorías y etiquetas.',
+      diagram: [
+        { section: '1. Feed Principal de Artículos', icon: 'fa-newspaper', detail: 'Destacados de la semana, publicaciones recientes ordenadas por fecha e imágenes de portada.' },
+        { section: '2. Vista de Lectura & Comentarios', icon: 'fa-file-lines', detail: 'Diseño limpio de lectura, tiempo estimado de lectura, autor y botones para compartir en redes.' },
+        { section: '3. Categorías & Buscador Interno', icon: 'fa-magnifying-glass', detail: 'Búsqueda por palabras clave, etiquetas temáticas y artículos relacionados.' },
+        { section: '4. Captura de Suscriptores / Newsletter', icon: 'fa-paper-plane', detail: 'Cajas de suscripción para boletines por correo y recomendación de servicios al final del post.' }
+      ],
+      idealFor: 'Medios digitales, blogs especializados, creadores de contenido o marcas que buscan posicionamiento SEO informativo.',
+      subject: 'Cotización de Blog / Portal de Noticias (8-20 UF)'
+    }
+  };
+
+  // Delegated click event for opening format preview modal
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-open-format-preview');
+    if (btn) {
+      e.preventDefault();
+      const formatKey = btn.dataset.format;
+      const data = formatData[formatKey];
+      if (data && modalBody && modalFormat) {
+        let diagramHtml = data.diagram.map(item => `
+          <div style="background: rgba(13, 17, 26, 0.8); border: 1px solid var(--border-glow); padding: 0.9rem; border-radius: 8px; margin-bottom: 0.6rem;">
+            <div style="display: flex; align-items: center; gap: 0.6rem; color: var(--neon-cyan); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.3rem;">
+              <i class="fa-solid ${item.icon}"></i> ${escapeHtml(item.section)}
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0; line-height: 1.4;">${escapeHtml(item.detail)}</p>
+          </div>
+        `).join('');
+
+        modalBody.innerHTML = `
+          <div style="text-align: left;">
+            <div style="display: inline-block; background: rgba(0,243,255,0.1); color: var(--neon-cyan); border: 1px solid var(--neon-cyan); padding: 4px 12px; border-radius: 50px; font-size: 0.78rem; font-weight: 700; margin-bottom: 0.8rem;">
+              ${escapeHtml(data.badge)}
+            </div>
+            <h2 style="font-size: 1.5rem; color: #fff; margin-bottom: 0.3rem;">${escapeHtml(data.title)}</h2>
+            <p style="font-size: 0.9rem; color: #ffb703; font-weight: 700; margin-bottom: 1rem;">
+              <i class="fa-solid fa-tag"></i> Inversión Estimada: ${escapeHtml(data.uf)}
+            </p>
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.2rem;">
+              ${escapeHtml(data.desc)}
+            </p>
+
+            <h4 style="font-size: 1rem; color: #fff; margin-bottom: 0.8rem; border-bottom: 1px solid var(--border-glow); padding-bottom: 0.4rem;">
+              <i class="fa-solid fa-sitemap text-cyan"></i> Estructura & Diagrama de Secciones Incluidas
+            </h4>
+            <div style="margin-bottom: 1.2rem;">
+              ${diagramHtml}
+            </div>
+
+            <div style="background: rgba(0, 255, 136, 0.05); border: 1px solid var(--neon-emerald); padding: 0.9rem; border-radius: 8px; margin-bottom: 1.5rem;">
+              <strong style="color: var(--neon-emerald); font-size: 0.85rem; display: block; margin-bottom: 0.3rem;">
+                <i class="fa-solid fa-circle-check"></i> Uso Recomendado:
+              </strong>
+              <p style="font-size: 0.82rem; color: var(--text-main); margin: 0; line-height: 1.4;">${escapeHtml(data.idealFor)}</p>
+            </div>
+
+            <button class="btn btn-primary btn-modal-select-format" data-subject="${escapeHtml(data.subject)}" style="width: 100%; font-size: 0.9rem;">
+              <i class="fa-solid fa-paper-plane"></i> Solicitar Cotización de este Formato
+            </button>
+          </div>
+        `;
+
+        modalFormat.classList.add('active');
+        modalFormat.style.display = 'flex';
+      }
+    }
+
+    // Delegated click for "Cotizar este Formato" button inside format modal or cards
+    const selectBtn = e.target.closest('.btn-select-format, .btn-modal-select-format');
+    if (selectBtn) {
+      e.preventDefault();
+      const subject = selectBtn.dataset.subject || 'Cotización de Desarrollo Web';
+      const subjInput = document.getElementById('contact-subject');
+      if (subjInput) subjInput.value = subject;
+
+      // Close format preview modal if open
+      if (modalFormat) {
+        modalFormat.classList.remove('active');
+        modalFormat.style.display = 'none';
+      }
+
+      // Open contact modal
+      const modalContacto = document.getElementById('modal-contacto');
+      if (modalContacto) {
+        modalContacto.classList.add('active');
+        modalContacto.style.display = 'flex';
+      }
+    }
+  });
+
+  if (btnCloseFormat && modalFormat) {
+    btnCloseFormat.onclick = () => {
+      modalFormat.classList.remove('active');
+      modalFormat.style.display = 'none';
+    };
+  }
+
+  if (modalFormat) {
+    modalFormat.onclick = (e) => {
+      if (e.target === modalFormat) {
+        modalFormat.classList.remove('active');
+        modalFormat.style.display = 'none';
+      }
+    };
+  }
+}

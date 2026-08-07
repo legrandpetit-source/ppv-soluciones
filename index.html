@@ -107,6 +107,7 @@
         <li><a href="#sobre-mi">Expertise</a></li>
         <li><a href="#habilidades">Matriz Técnica</a></li>
         <li><a href="#demos-auto">Demos</a></li>
+        <li><a href="#formatos-web" style="color: var(--neon-cyan); font-weight: 600;"><i class="fa-solid fa-layer-group"></i> Tipos de Web</a></li>
         <li><a href="#servicios">Calculadora</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
@@ -907,7 +908,177 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
     </div>
   </section>
 
-  <!-- Calculadora de Presupuesto -->
+    <!-- Sección: Formatos y Estructuras Web -->
+  <section id="formatos-web" style="background: rgba(7, 9, 14, 0.6); border-top: 1px solid var(--border-glow); border-bottom: 1px solid var(--border-glow); padding: 4rem 0;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-subtitle" style="color: var(--neon-cyan);">
+          <i class="fa-solid fa-layer-group"></i> Arquitectura & Tipos de Sitios Web
+        </div>
+        <h2>Formatos de Desarrollo Web & Presupuestos en UF</h2>
+        <p>Elige el tipo de sitio web que mejor se adapte al objetivo comercial de tu empresa: captar clientes, vender productos o posicionar tu marca en Google.</p>
+      </div>
+
+      <div class="format-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+        <!-- Card 1: Landing Page -->
+        <div class="glass-card format-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid var(--neon-cyan); background: rgba(13, 17, 26, 0.7);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
+              <span class="badge-status" style="background: rgba(0, 243, 255, 0.1); color: var(--neon-cyan); border: 1px solid var(--neon-cyan); font-size: 0.75rem;">
+                🎯 Ideal para Ads / Anuncios
+              </span>
+              <span style="font-size: 0.85rem; font-weight: 800; color: #ffb703; background: rgba(255,183,3,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,183,3,0.3);">4 - 12 UF</span>
+            </div>
+            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
+              <i class="fa-solid fa-bullseye text-cyan"></i> Landing Page
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--neon-cyan); font-weight: 600; margin-bottom: 0.8rem;">Página de Aterrizaje de Alta Conversión</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+              Diseñada sin distracciones con un único objetivo: que el visitante compre una oferta, llame por teléfono o deje sus datos en un formulario.
+            </p>
+            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.8rem;">
+              <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">Rango CLP Estimado (+ IVA):</strong>
+              <span style="color: var(--neon-emerald); font-weight: 700; font-size: 0.95rem;">~ $160.000 – $480.000 CLP + IVA</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <button class="btn btn-outline btn-open-format-preview" data-format="landing" style="width: 100%; border-color: var(--neon-cyan); color: var(--neon-cyan); font-size: 0.82rem;">
+              <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
+            </button>
+            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Landing Page (4-12 UF)" style="width: 100%; font-size: 0.82rem;">
+              <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 2: Sitio One-Page -->
+        <div class="glass-card format-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid var(--neon-emerald); background: rgba(13, 17, 26, 0.7);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
+              <span class="badge-status" style="background: rgba(0, 255, 136, 0.1); color: var(--neon-emerald); border: 1px solid var(--neon-emerald); font-size: 0.75rem;">
+                ⚡ Freelancers & PYMEs
+              </span>
+              <span style="font-size: 0.85rem; font-weight: 800; color: #ffb703; background: rgba(255,183,3,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,183,3,0.3);">6 - 20 UF</span>
+            </div>
+            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
+              <i class="fa-solid fa-bolt text-emerald"></i> Sitio "One-Page"
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--neon-emerald); font-weight: 600; margin-bottom: 0.8rem;">Página Única con Desplazamiento Ágil</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+              Toda la información condensada en una sola vista continua. El menú desplaza suavemente al usuario hacia la sección seleccionada.
+            </p>
+            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.8rem;">
+              <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">Rango CLP Estimado (+ IVA):</strong>
+              <span style="color: var(--neon-emerald); font-weight: 700; font-size: 0.95rem;">~ $240.000 – $800.000 CLP + IVA</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <button class="btn btn-outline btn-open-format-preview" data-format="onepage" style="width: 100%; border-color: var(--neon-emerald); color: var(--neon-emerald); font-size: 0.82rem;">
+              <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
+            </button>
+            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Sitio One-Page (6-20 UF)" style="width: 100%; font-size: 0.82rem;">
+              <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 3: Sitio Web Corporativo -->
+        <div class="glass-card format-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid var(--neon-violet); background: rgba(13, 17, 26, 0.7);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
+              <span class="badge-status" style="background: rgba(147, 51, 234, 0.15); color: var(--neon-violet); border: 1px solid var(--neon-violet); font-size: 0.75rem;">
+                🏢 Credibilidad & SEO
+              </span>
+              <span style="font-size: 0.85rem; font-weight: 800; color: #ffb703; background: rgba(255,183,3,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,183,3,0.3);">12 - 38 UF</span>
+            </div>
+            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
+              <i class="fa-solid fa-building text-violet"></i> Sitio Corporativo
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--neon-violet); font-weight: 600; margin-bottom: 0.8rem;">Carta de Presentación Multi-Página</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+              Estructura corporativa con páginas internas (Nosotros, Servicios, Proyectos, Contacto) optimizadas para el posicionamiento en Google.
+            </p>
+            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.8rem;">
+              <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">Rango CLP Estimado (+ IVA):</strong>
+              <span style="color: var(--neon-emerald); font-weight: 700; font-size: 0.95rem;">~ $480.000 – $1.500.000 CLP + IVA</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <button class="btn btn-outline btn-open-format-preview" data-format="corporate" style="width: 100%; border-color: var(--neon-violet); color: var(--neon-violet); font-size: 0.82rem;">
+              <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
+            </button>
+            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Sitio Corporativo (12-38 UF)" style="width: 100%; font-size: 0.82rem;">
+              <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 4: Tienda Online (E-commerce) -->
+        <div class="glass-card format-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid var(--neon-pink); background: rgba(13, 17, 26, 0.7);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
+              <span class="badge-status" style="background: rgba(255, 0, 127, 0.15); color: var(--neon-pink); border: 1px solid var(--neon-pink); font-size: 0.75rem;">
+                🛒 Ventas 24/7 & Pagos Webpay
+              </span>
+              <span style="font-size: 0.85rem; font-weight: 800; color: #ffb703; background: rgba(255,183,3,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,183,3,0.3);">25 - 100+ UF</span>
+            </div>
+            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
+              <i class="fa-solid fa-cart-shopping text-pink"></i> Tienda Online (E-commerce)
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--neon-pink); font-weight: 600; margin-bottom: 0.8rem;">Plataforma de Venta Automatizada</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+              Catálogo de productos, carrito de compras, pasarela de pago automatizada (Webpay / Tarjetas) e integración de inventario.
+            </p>
+            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.8rem;">
+              <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">Rango CLP Estimado (+ IVA):</strong>
+              <span style="color: var(--neon-emerald); font-weight: 700; font-size: 0.95rem;">~ $1.000.000 – $4.000.000+ CLP + IVA</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <button class="btn btn-outline btn-open-format-preview" data-format="ecommerce" style="width: 100%; border-color: var(--neon-pink); color: var(--neon-pink); font-size: 0.82rem;">
+              <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
+            </button>
+            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Tienda E-commerce (25-100+ UF)" style="width: 100%; font-size: 0.82rem;">
+              <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 5: Blog o Portal de Contenidos -->
+        <div class="glass-card format-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #ffb703; background: rgba(13, 17, 26, 0.7);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
+              <span class="badge-status" style="background: rgba(255, 183, 3, 0.15); color: #ffb703; border: 1px solid #ffb703; font-size: 0.75rem;">
+                📰 Contenidos & Tráfico
+              </span>
+              <span style="font-size: 0.85rem; font-weight: 800; color: #ffb703; background: rgba(255,183,3,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,183,3,0.3);">8 - 20 UF</span>
+            </div>
+            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
+              <i class="fa-solid fa-newspaper" style="color: #ffb703;"></i> Blog o Portal de Noticias
+            </h3>
+            <p style="font-size: 0.82rem; color: #ffb703; font-weight: 600; margin-bottom: 0.8rem;">Publicación de Artículos & Estrategia</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+              Sitio enfocado en publicar artículos, guías y noticias ordenados cronológicamente por categorías para atraer clientes de forma orgánica.
+            </p>
+            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.8rem;">
+              <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">Rango CLP Estimado (+ IVA):</strong>
+              <span style="color: var(--neon-emerald); font-weight: 700; font-size: 0.95rem;">~ $320.000 – $800.000 CLP + IVA</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <button class="btn btn-outline btn-open-format-preview" data-format="blog" style="width: 100%; border-color: #ffb703; color: #ffb703; font-size: 0.82rem;">
+              <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
+            </button>
+            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Blog / Portal de Noticias (8-20 UF)" style="width: 100%; font-size: 0.82rem;">
+              <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Calculadora de Presupuesto -->
   <section id="servicios" style="background: rgba(13, 17, 26, 0.4);">
     <div class="container">
       <div class="section-header">
@@ -1428,6 +1599,13 @@ PPV Soluciones
           </a>
         </li>
         <li>
+          <a href="#formatos-web" class="mobile-nav-item">
+            <div class="nav-icon-box cyan"><i class="fa-solid fa-layer-group"></i></div>
+            <span>Formatos & Tipos de Web</span>
+            <i class="fa-solid fa-chevron-right arrow-icon"></i>
+          </a>
+        </li>
+        <li>
           <a href="#servicios" class="mobile-nav-item">
             <div class="nav-icon-box violet"><i class="fa-solid fa-calculator"></i></div>
             <span>Calculadora de Cotización</span>
@@ -1666,6 +1844,16 @@ PPV Soluciones
     </div>
   </div>
 
+    <!-- Modal: Ejemplo & Estructura Visual de Formatos Web -->
+  <div class="modal-overlay" id="modal-format-preview">
+    <div class="modal-content" style="max-width: 780px; max-height: 90vh; overflow-y: auto; background: var(--bg-card); border: 1px solid var(--border-glow); padding: 2rem;">
+      <button class="modal-close" id="btn-close-format-modal">&times;</button>
+      <div id="format-modal-body">
+        <!-- Contenido inyectado dinámicamente por app.js -->
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div class="toast" id="global-toast">
     <i class="fa-solid fa-circle-check text-emerald" style="font-size: 1.1rem;"></i>
@@ -1673,7 +1861,7 @@ PPV Soluciones
   </div>
 
   <!-- Scripts -->
-  <script src="db.js?v=1786127000"></script>
-  <script src="app.js?v=1786127000"></script>
+  <script src="db.js?v=1786128888"></script>
+  <script src="app.js?v=1786128888"></script>
 </body>
 </html>
