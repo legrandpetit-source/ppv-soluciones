@@ -2500,6 +2500,50 @@ function initFormatPreviews() {
       uf: '4 – 12 UF (~ $160.000 – $480.000 CLP + IVA)',
       budget: '4-12 UF',
       desc: 'Formato diseñado exclusivamente para transformar visitantes en clientes. No posee menús con enlaces externos ni distracciones.',
+      mockupHtml: `
+        <div class="mini-browser-mockup" style="background: #0d111a; border: 1px solid var(--neon-cyan); border-radius: 10px; overflow: hidden; margin-bottom: 1.2rem; box-shadow: 0 8px 25px rgba(0,243,255,0.15);">
+          <div style="background: #161d2b; padding: 6px 12px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
+            <div style="background: #0d111a; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1px 10px; font-size: 0.68rem; color: var(--neon-cyan); flex: 1; text-align: center; font-family: monospace;">https://oferta.tu-empresa.cl/landing-demo</div>
+          </div>
+          <div style="padding: 0.9rem; background: #0a0d14;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 6px; margin-bottom: 10px;">
+              <span style="color: var(--neon-cyan); font-weight: 800; font-size: 0.8rem;">[LOGO EMPRESA]</span>
+              <span style="background: #10b981; color: #000; font-weight: 800; padding: 2px 8px; border-radius: 4px; font-size: 0.65rem;">
+                <i class="fa-brands fa-whatsapp"></i> Llamar / WhatsApp
+              </span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: rgba(0,243,255,0.04); border: 1px dashed var(--neon-cyan); padding: 10px; border-radius: 6px; margin-bottom: 8px;">
+              <div>
+                <span style="background: rgba(255,0,127,0.2); color: var(--neon-pink); padding: 2px 6px; border-radius: 4px; font-size: 0.62rem; font-weight: 700;">OFERTA ÚNICA</span>
+                <h4 style="color: #fff; font-size: 0.82rem; margin: 3px 0;">¡Obtén tu Cotización Directa Hoy!</h4>
+                <p style="font-size: 0.68rem; color: var(--text-muted); margin: 0;">Captura el 100% de la atención sin enlaces externos que distraigan.</p>
+              </div>
+              <div style="background: #161d2b; padding: 6px; border-radius: 6px; border: 1px solid var(--border-glow);">
+                <div style="font-size: 0.68rem; color: #fff; font-weight: 700; margin-bottom: 4px;">Formulario de Registro</div>
+                <div style="background: #0d111a; height: 16px; border-radius: 3px; margin-bottom: 3px; font-size: 0.6rem; color: #666; padding: 1px 4px;">Tu Nombre</div>
+                <div style="background: #0d111a; height: 16px; border-radius: 3px; margin-bottom: 4px; font-size: 0.6rem; color: #666; padding: 1px 4px;">Teléfono WhatsApp</div>
+                <div style="background: var(--neon-cyan); color: #000; font-weight: 800; font-size: 0.64rem; text-align: center; padding: 2px; border-radius: 3px;">
+                  ¡ENVIAR AHORA!
+                </div>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; text-align: center;">
+              <div style="background: rgba(255,255,255,0.02); padding: 4px; border-radius: 4px; font-size: 0.62rem; color: var(--text-muted);">
+                <i class="fa-solid fa-bolt text-cyan"></i><br><strong style="color: #fff;">100% Enfocado</strong>
+              </div>
+              <div style="background: rgba(255,255,255,0.02); padding: 4px; border-radius: 4px; font-size: 0.62rem; color: var(--text-muted);">
+                <i class="fa-solid fa-shield text-emerald"></i><br><strong style="color: #fff;">Sin Distracciones</strong>
+              </div>
+              <div style="background: rgba(255,255,255,0.02); padding: 4px; border-radius: 4px; font-size: 0.62rem; color: var(--text-muted);">
+                <i class="fa-solid fa-star text-pink"></i><br><strong style="color: #fff;">Alta Conversión</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
       diagram: [
         { section: '1. Encabezado Impactante', icon: 'fa-heading', detail: 'Titular de propuesta de valor clara + Subtítulo persuasivo + Botón directo a WhatsApp/Formulario.' },
         { section: '2. Formulario Lead / Captura', icon: 'fa-wpforms', detail: 'Campos breves de contacto directo (Nombre, Teléfono, Correo) conectados a Telegram/Email.' },
@@ -2515,6 +2559,41 @@ function initFormatPreviews() {
       uf: '6 – 20 UF (~ $240.000 – $800.000 CLP + IVA)',
       budget: '6-20 UF',
       desc: 'Toda la empresa explicada en una sola página larga con desplazamiento automático (Smooth Scroll) al presionar las opciones del menú.',
+      mockupHtml: `
+        <div class="mini-browser-mockup" style="background: #0d111a; border: 1px solid var(--neon-emerald); border-radius: 10px; overflow: hidden; margin-bottom: 1.2rem; box-shadow: 0 8px 25px rgba(0,255,136,0.15);">
+          <div style="background: #161d2b; padding: 6px 12px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
+            <div style="background: #0d111a; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1px 10px; font-size: 0.68rem; color: var(--neon-emerald); flex: 1; text-align: center; font-family: monospace;">https://www.tu-empresa.cl (Navegación Scroll Única)</div>
+          </div>
+          <div style="padding: 0.9rem; background: #0a0d14;">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #161d2b; padding: 5px 8px; border-radius: 6px; margin-bottom: 8px;">
+              <span style="color: var(--neon-emerald); font-weight: 800; font-size: 0.78rem;">MI MARCA</span>
+              <div style="display: flex; gap: 6px; font-size: 0.62rem; color: var(--text-muted);">
+                <span style="color: var(--neon-cyan); text-decoration: underline;">#Inicio</span>
+                <span>#Nosotros</span>
+                <span>#Servicios</span>
+                <span>#Contacto</span>
+              </div>
+            </div>
+            <div style="background: linear-gradient(135deg, rgba(0,255,136,0.1), rgba(0,243,255,0.05)); border: 1px solid var(--neon-emerald); padding: 8px; border-radius: 6px; margin-bottom: 6px; text-align: center;">
+              <h4 style="color: #fff; font-size: 0.8rem; margin: 0 0 2px 0;">Soluciones Integrales en Una Sola Vista</h4>
+              <span style="font-size: 0.64rem; color: var(--neon-emerald);">Desplazamiento fluido a secciones sin recargar la página</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+              <div style="background: rgba(255,255,255,0.03); padding: 5px; border-radius: 4px;">
+                <span style="font-size: 0.62rem; color: var(--neon-cyan); font-weight: 700;">SECCIÓN: NOSOTROS</span>
+                <p style="font-size: 0.6rem; color: var(--text-muted); margin: 2px 0 0 0;">Historia, equipo y valores resumidos.</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.03); padding: 5px; border-radius: 4px;">
+                <span style="font-size: 0.62rem; color: var(--neon-emerald); font-weight: 700;">SECCIÓN: SERVICIOS</span>
+                <p style="font-size: 0.6rem; color: var(--text-muted); margin: 2px 0 0 0;">Grid de tarjetas de servicios y oferta.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
       diagram: [
         { section: '1. Barra de Navegación', icon: 'fa-bars', detail: 'Menú fijo con enlaces a secciones internas (Inicio, Nosotros, Servicios, Contacto).' },
         { section: '2. Banner Principal & Quiénes Somos', icon: 'fa-address-card', detail: 'Presentación del equipo, historia resumida y misión de la empresa.' },
@@ -2530,6 +2609,41 @@ function initFormatPreviews() {
       uf: '12 – 38 UF (~ $480.000 – $1.500.000 CLP + IVA)',
       budget: '12-38 UF',
       desc: 'Plataforma completa estructurada en varias páginas independientes para presentar la empresa con máxima solvencia institucional.',
+      mockupHtml: `
+        <div class="mini-browser-mockup" style="background: #0d111a; border: 1px solid var(--neon-violet); border-radius: 10px; overflow: hidden; margin-bottom: 1.2rem; box-shadow: 0 8px 25px rgba(147,51,234,0.15);">
+          <div style="background: #161d2b; padding: 6px 12px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
+            <div style="background: #0d111a; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1px 10px; font-size: 0.68rem; color: var(--neon-violet); flex: 1; text-align: center; font-family: monospace;">https://www.corporativo-empresa.cl (Multi-Página SEO)</div>
+          </div>
+          <div style="padding: 0.9rem; background: #0a0d14;">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #161d2b; padding: 5px 8px; border-radius: 6px; margin-bottom: 8px;">
+              <span style="color: var(--neon-violet); font-weight: 800; font-size: 0.78rem;">GLOBAL CORP</span>
+              <div style="display: flex; gap: 6px; font-size: 0.62rem; color: var(--text-muted);">
+                <span style="background: rgba(147,51,234,0.3); color: #fff; padding: 1px 5px; border-radius: 3px;">Inicio.html</span>
+                <span>Nosotros.html</span>
+                <span>Servicios/▼</span>
+                <span>Contacto.html</span>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 6px; margin-bottom: 6px;">
+              <div style="background: rgba(147,51,234,0.08); border: 1px solid var(--neon-violet); padding: 6px; border-radius: 6px;">
+                <h4 style="color: #fff; font-size: 0.78rem; margin: 0 0 2px 0;">Líderes en Consultoría & Tecnología</h4>
+                <p style="font-size: 0.6rem; color: var(--text-muted); margin: 0;">Múltiples subpáginas indexables independientemente en Google (SEO).</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.03); padding: 5px; border-radius: 6px; font-size: 0.6rem; color: var(--text-muted);">
+                <strong style="color: var(--neon-cyan); display: block;">Respaldo</strong>
+                Certificaciones ISO, Convenio Marco, Clientes.
+              </div>
+            </div>
+            <div style="background: #0d111a; padding: 4px 6px; border-radius: 4px; font-size: 0.58rem; color: #666; display: flex; justify-content: space-between;">
+              <span>© 2026 Global Corp S.A.</span>
+              <span>Mapa del Sitio | Políticas Legal</span>
+            </div>
+          </div>
+        </div>
+      `,
       diagram: [
         { section: '1. Página de Inicio (Home)', icon: 'fa-house', detail: 'Resumen ejecutivo de la empresa, servicios destacados, opiniones de clientes e hitos.' },
         { section: '2. Páginas de Servicios Internos', icon: 'fa-list-check', detail: 'Páginas dedicadas a cada servicio por separado para posicionar palabras clave en Google (SEO).' },
@@ -2545,6 +2659,47 @@ function initFormatPreviews() {
       uf: '25 – 100+ UF (~ $1.000.000 – $4.000.000+ CLP + IVA)',
       budget: '25-100+ UF',
       desc: 'Sistema dinámico para vender productos físicos o digitales con pasarelas de pago y gestión automática de inventarios.',
+      mockupHtml: `
+        <div class="mini-browser-mockup" style="background: #0d111a; border: 1px solid var(--neon-pink); border-radius: 10px; overflow: hidden; margin-bottom: 1.2rem; box-shadow: 0 8px 25px rgba(255,0,127,0.15);">
+          <div style="background: #161d2b; padding: 6px 12px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
+            <div style="background: #0d111a; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1px 10px; font-size: 0.68rem; color: var(--neon-pink); flex: 1; text-align: center; font-family: monospace;">https://tienda.tu-marca.cl (Catálogo & Carrito)</div>
+          </div>
+          <div style="padding: 0.9rem; background: #0a0d14;">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #161d2b; padding: 5px 8px; border-radius: 6px; margin-bottom: 6px;">
+              <span style="color: var(--neon-pink); font-weight: 800; font-size: 0.78rem;">STORE 24/7</span>
+              <div style="background: #0d111a; border: 1px solid #333; padding: 1px 6px; border-radius: 10px; font-size: 0.6rem; color: #aaa;">🔍 Buscar...</div>
+              <span style="background: var(--neon-pink); color: #fff; padding: 1px 6px; border-radius: 10px; font-size: 0.62rem; font-weight: 800;">🛒 Carrito (2)</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-bottom: 6px;">
+              <div style="background: rgba(255,0,127,0.06); border: 1px solid rgba(255,0,127,0.2); padding: 5px; border-radius: 5px; text-align: center;">
+                <div style="background: #161d2b; height: 30px; border-radius: 3px; margin-bottom: 3px; display: flex; align-items: center; justify-content: center; color: var(--neon-pink); font-size: 0.8rem;"><i class="fa-solid fa-box-open"></i></div>
+                <div style="font-size: 0.6rem; color: #fff; font-weight: 700;">Producto A</div>
+                <div style="font-size: 0.58rem; color: var(--neon-emerald); font-weight: 800;">$29.990 CLP</div>
+                <div style="background: var(--neon-pink); color: #fff; font-size: 0.55rem; padding: 1px; border-radius: 2px; margin-top: 2px; font-weight: 700;">+ Agregar</div>
+              </div>
+              <div style="background: rgba(255,0,127,0.06); border: 1px solid rgba(255,0,127,0.2); padding: 5px; border-radius: 5px; text-align: center;">
+                <div style="background: #161d2b; height: 30px; border-radius: 3px; margin-bottom: 3px; display: flex; align-items: center; justify-content: center; color: var(--neon-cyan); font-size: 0.8rem;"><i class="fa-solid fa-shirt"></i></div>
+                <div style="font-size: 0.6rem; color: #fff; font-weight: 700;">Producto B</div>
+                <div style="font-size: 0.58rem; color: var(--neon-emerald); font-weight: 800;">$45.990 CLP</div>
+                <div style="background: var(--neon-pink); color: #fff; font-size: 0.55rem; padding: 1px; border-radius: 2px; margin-top: 2px; font-weight: 700;">+ Agregar</div>
+              </div>
+              <div style="background: rgba(255,0,127,0.06); border: 1px solid rgba(255,0,127,0.2); padding: 5px; border-radius: 5px; text-align: center;">
+                <div style="background: #161d2b; height: 30px; border-radius: 3px; margin-bottom: 3px; display: flex; align-items: center; justify-content: center; color: #ffb703; font-size: 0.8rem;"><i class="fa-solid fa-mobile-screen"></i></div>
+                <div style="font-size: 0.6rem; color: #fff; font-weight: 700;">Producto C</div>
+                <div style="font-size: 0.58rem; color: var(--neon-emerald); font-weight: 800;">$89.990 CLP</div>
+                <div style="background: var(--neon-pink); color: #fff; font-size: 0.55rem; padding: 1px; border-radius: 2px; margin-top: 2px; font-weight: 700;">+ Agregar</div>
+              </div>
+            </div>
+            <div style="background: #161d2b; padding: 4px 6px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; font-size: 0.58rem; color: var(--text-muted);">
+              <span>💳 Medios de Pago Integrados:</span>
+              <span style="color: #fff; font-weight: 700;">Webpay Plus / MercadoPago / Tarjetas</span>
+            </div>
+          </div>
+        </div>
+      `,
       diagram: [
         { section: '1. Catálogo Dinámico & Filtros', icon: 'fa-boxes-stacked', detail: 'Búsqueda instantánea, categorías, ofertas y filtros por precio o atributo.' },
         { section: '2. Ficha de Producto', icon: 'fa-tag', detail: 'Galería de imágenes, variaciones de tamaño/color, stock en tiempo real y botón de compra.' },
@@ -2560,6 +2715,41 @@ function initFormatPreviews() {
       uf: '8 – 20 UF (~ $320.000 – $800.000 CLP + IVA)',
       budget: '8-20 UF',
       desc: 'Plataforma para la publicación periódica de artículos, noticias y guías clasificadas por categorías y etiquetas.',
+      mockupHtml: `
+        <div class="mini-browser-mockup" style="background: #0d111a; border: 1px solid #ffb703; border-radius: 10px; overflow: hidden; margin-bottom: 1.2rem; box-shadow: 0 8px 25px rgba(255,183,3,0.15);">
+          <div style="background: #161d2b; padding: 6px 12px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
+            <div style="background: #0d111a; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1px 10px; font-size: 0.68rem; color: #ffb703; flex: 1; text-align: center; font-family: monospace;">https://blog.tu-marca.cl (Publicación & SEO)</div>
+          </div>
+          <div style="padding: 0.9rem; background: #0a0d14;">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #161d2b; padding: 5px 8px; border-radius: 6px; margin-bottom: 6px;">
+              <span style="color: #ffb703; font-weight: 800; font-size: 0.78rem;">BLOG DIGITAL</span>
+              <div style="display: flex; gap: 6px; font-size: 0.6rem; color: var(--text-muted);">
+                <span style="color: #ffb703;">Tecnología</span>
+                <span>Negocios</span>
+                <span>Tutoriales</span>
+              </div>
+            </div>
+            <div style="background: rgba(255,183,3,0.06); border: 1px solid rgba(255,183,3,0.3); padding: 6px; border-radius: 6px; margin-bottom: 6px;">
+              <span style="background: #ffb703; color: #000; font-size: 0.55rem; font-weight: 800; padding: 1px 4px; border-radius: 3px;">DESTACADO</span>
+              <h4 style="color: #fff; font-size: 0.78rem; margin: 3px 0 2px 0;">"10 Estrategias de Marketing Digital para 2026"</h4>
+              <div style="font-size: 0.58rem; color: var(--text-muted);">Por Patricio Padilla | ⏱️ 5 min lectura</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+              <div style="background: rgba(255,255,255,0.02); padding: 5px; border-radius: 4px; font-size: 0.6rem;">
+                <strong style="color: #fff; display: block;">Guía de Ciberseguridad PYME</strong>
+                <span style="color: #888;">Publicado el 5 de Agosto</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.02); padding: 5px; border-radius: 4px; font-size: 0.6rem;">
+                <strong style="color: #fff; display: block;">Cómo Automatizar tu CRM</strong>
+                <span style="color: #888;">Publicado el 2 de Agosto</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
       diagram: [
         { section: '1. Feed Principal de Artículos', icon: 'fa-newspaper', detail: 'Destacados de la semana, publicaciones recientes ordenadas por fecha e imágenes de portada.' },
         { section: '2. Vista de Lectura & Comentarios', icon: 'fa-file-lines', detail: 'Diseño limpio de lectura, tiempo estimado de lectura, autor y botones para compartir en redes.' },
@@ -2570,7 +2760,6 @@ function initFormatPreviews() {
       subject: 'Cotización de Blog / Portal de Noticias (8-20 UF)'
     }
   };
-
   // Delegated click event for opening format preview modal
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('.btn-open-format-preview');
@@ -2597,9 +2786,14 @@ function initFormatPreviews() {
             <p style="font-size: 0.9rem; color: #ffb703; font-weight: 700; margin-bottom: 1rem;">
               <i class="fa-solid fa-tag"></i> Inversión Estimada: ${escapeHtml(data.uf)}
             </p>
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.2rem;">
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
               ${escapeHtml(data.desc)}
             </p>
+
+            <h4 style="font-size: 0.95rem; color: #fff; margin-bottom: 0.6rem;">
+              <i class="fa-solid fa-desktop text-cyan"></i> Ejemplo Gráfico de Interfaz (${escapeHtml(data.title.split(' ')[0])})
+            </h4>
+            ${data.mockupHtml}
 
             <h4 style="font-size: 1rem; color: #fff; margin-bottom: 0.8rem; border-bottom: 1px solid var(--border-glow); padding-bottom: 0.4rem;">
               <i class="fa-solid fa-sitemap text-cyan"></i> Estructura & Diagrama de Secciones Incluidas
