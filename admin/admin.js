@@ -2096,7 +2096,5 @@ function initExecSummaryMaintainer() {
   }
 }
 
-}
-
 
 
