@@ -1563,6 +1563,7 @@ function initModals() {
   if (modalContacto && btnCloseContacto) {
     btnCloseContacto.addEventListener('click', () => {
       modalContacto.classList.remove('active');
+      modalContacto.style.display = 'none';
     });
     
     document.addEventListener('click', (e) => {
@@ -1570,13 +1571,30 @@ function initModals() {
       if (link) {
         e.preventDefault();
         modalContacto.classList.add('active');
+        modalContacto.style.display = 'flex';
       }
     });
     
     modalContacto.addEventListener('click', (e) => {
-      if (e.target === modalContacto) modalContacto.classList.remove('active');
+      if (e.target === modalContacto) {
+        modalContacto.classList.remove('active');
+        modalContacto.style.display = 'none';
+      }
     });
   }
+
+  // Interceptor global para cerrar cualquier modal con el botón .modal-close
+  document.addEventListener('click', (e) => {
+    const closeBtn = e.target.closest('.modal-close');
+    if (closeBtn) {
+      e.preventDefault();
+      const modal = closeBtn.closest('.modal-overlay');
+      if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+      }
+    }
+  });
 
   // Modal Tarjeta Digital (vCard)
   const modalVCard = document.getElementById('modal-vcard');
@@ -2480,6 +2498,7 @@ function initFormatPreviews() {
       title: 'Landing Page (Página de Aterrizaje)',
       badge: '🎯 Objetivo: Alta Conversión de Leads',
       uf: '4 – 12 UF (~ $160.000 – $480.000 CLP + IVA)',
+      budget: '4-12 UF',
       desc: 'Formato diseñado exclusivamente para transformar visitantes en clientes. No posee menús con enlaces externos ni distracciones.',
       diagram: [
         { section: '1. Encabezado Impactante', icon: 'fa-heading', detail: 'Titular de propuesta de valor clara + Subtítulo persuasivo + Botón directo a WhatsApp/Formulario.' },
@@ -2494,6 +2513,7 @@ function initFormatPreviews() {
       title: 'Sitio "One-Page" (Página Única Ágil)',
       badge: '⚡ Objetivo: Presencia Rápida & Fluida',
       uf: '6 – 20 UF (~ $240.000 – $800.000 CLP + IVA)',
+      budget: '6-20 UF',
       desc: 'Toda la empresa explicada en una sola página larga con desplazamiento automático (Smooth Scroll) al presionar las opciones del menú.',
       diagram: [
         { section: '1. Barra de Navegación', icon: 'fa-bars', detail: 'Menú fijo con enlaces a secciones internas (Inicio, Nosotros, Servicios, Contacto).' },
@@ -2508,6 +2528,7 @@ function initFormatPreviews() {
       title: 'Sitio Web Corporativo (Multi-Página & SEO)',
       badge: '🏢 Objetivo: Credibilidad & Posicionamiento en Google',
       uf: '12 – 38 UF (~ $480.000 – $1.500.000 CLP + IVA)',
+      budget: '12-38 UF',
       desc: 'Plataforma completa estructurada en varias páginas independientes para presentar la empresa con máxima solvencia institucional.',
       diagram: [
         { section: '1. Página de Inicio (Home)', icon: 'fa-house', detail: 'Resumen ejecutivo de la empresa, servicios destacados, opiniones de clientes e hitos.' },
@@ -2522,6 +2543,7 @@ function initFormatPreviews() {
       title: 'Tienda Online (E-commerce Automatizado)',
       badge: '🛒 Objetivo: Ventas Automatizadas 24/7',
       uf: '25 – 100+ UF (~ $1.000.000 – $4.000.000+ CLP + IVA)',
+      budget: '25-100+ UF',
       desc: 'Sistema dinámico para vender productos físicos o digitales con pasarelas de pago y gestión automática de inventarios.',
       diagram: [
         { section: '1. Catálogo Dinámico & Filtros', icon: 'fa-boxes-stacked', detail: 'Búsqueda instantánea, categorías, ofertas y filtros por precio o atributo.' },
@@ -2536,6 +2558,7 @@ function initFormatPreviews() {
       title: 'Blog o Portal de Contenidos & Noticias',
       badge: '📰 Objetivo: Tráfico Orgánico & Marketing de Contenidos',
       uf: '8 – 20 UF (~ $320.000 – $800.000 CLP + IVA)',
+      budget: '8-20 UF',
       desc: 'Plataforma para la publicación periódica de artículos, noticias y guías clasificadas por categorías y etiquetas.',
       diagram: [
         { section: '1. Feed Principal de Artículos', icon: 'fa-newspaper', detail: 'Destacados de la semana, publicaciones recientes ordenadas por fecha e imágenes de portada.' },
@@ -2592,7 +2615,7 @@ function initFormatPreviews() {
               <p style="font-size: 0.82rem; color: var(--text-main); margin: 0; line-height: 1.4;">${escapeHtml(data.idealFor)}</p>
             </div>
 
-            <button class="btn btn-primary btn-modal-select-format" data-subject="${escapeHtml(data.subject)}" style="width: 100%; font-size: 0.9rem;">
+            <button class="btn btn-primary btn-modal-select-format" data-subject="${escapeHtml(data.subject)}" data-budget="${escapeHtml(data.budget)}" style="width: 100%; font-size: 0.9rem;">
               <i class="fa-solid fa-paper-plane"></i> Solicitar Cotización de este Formato
             </button>
           </div>
@@ -2608,8 +2631,15 @@ function initFormatPreviews() {
     if (selectBtn) {
       e.preventDefault();
       const subject = selectBtn.dataset.subject || 'Cotización de Desarrollo Web';
+      const budget = selectBtn.dataset.budget || '';
+
       const subjInput = document.getElementById('contact-subject');
       if (subjInput) subjInput.value = subject;
+
+      const budgetSelect = document.getElementById('contact-budget');
+      if (budgetSelect && budget) {
+        budgetSelect.value = budget;
+      }
 
       // Close format preview modal if open
       if (modalFormat) {

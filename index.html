@@ -945,7 +945,7 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
             <button class="btn btn-outline btn-open-format-preview" data-format="landing" style="width: 100%; border-color: var(--neon-cyan); color: var(--neon-cyan); font-size: 0.82rem;">
               <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
             </button>
-            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Landing Page (4-12 UF)" style="width: 100%; font-size: 0.82rem;">
+            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Landing Page (4-12 UF)" data-budget="4-12 UF" style="width: 100%; font-size: 0.82rem;">
               <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
             </a>
           </div>
@@ -976,7 +976,7 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
             <button class="btn btn-outline btn-open-format-preview" data-format="onepage" style="width: 100%; border-color: var(--neon-emerald); color: var(--neon-emerald); font-size: 0.82rem;">
               <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
             </button>
-            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Sitio One-Page (6-20 UF)" style="width: 100%; font-size: 0.82rem;">
+            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Sitio One-Page (6-20 UF)" data-budget="6-20 UF" style="width: 100%; font-size: 0.82rem;">
               <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
             </a>
           </div>
@@ -1007,7 +1007,7 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
             <button class="btn btn-outline btn-open-format-preview" data-format="corporate" style="width: 100%; border-color: var(--neon-violet); color: var(--neon-violet); font-size: 0.82rem;">
               <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
             </button>
-            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Sitio Corporativo (12-38 UF)" style="width: 100%; font-size: 0.82rem;">
+            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Sitio Corporativo (12-38 UF)" data-budget="12-38 UF" style="width: 100%; font-size: 0.82rem;">
               <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
             </a>
           </div>
@@ -1038,7 +1038,7 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
             <button class="btn btn-outline btn-open-format-preview" data-format="ecommerce" style="width: 100%; border-color: var(--neon-pink); color: var(--neon-pink); font-size: 0.82rem;">
               <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
             </button>
-            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Tienda E-commerce (25-100+ UF)" style="width: 100%; font-size: 0.82rem;">
+            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Tienda E-commerce (25-100+ UF)" data-budget="25-100+ UF" style="width: 100%; font-size: 0.82rem;">
               <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
             </a>
           </div>
@@ -1069,7 +1069,7 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
             <button class="btn btn-outline btn-open-format-preview" data-format="blog" style="width: 100%; border-color: #ffb703; color: #ffb703; font-size: 0.82rem;">
               <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
             </button>
-            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Blog / Portal de Noticias (8-20 UF)" style="width: 100%; font-size: 0.82rem;">
+            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Blog / Portal de Noticias (8-20 UF)" data-budget="8-20 UF" style="width: 100%; font-size: 0.82rem;">
               <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
             </a>
           </div>
@@ -1233,9 +1233,12 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
             <div class="form-group">
               <label for="contact-budget">Presupuesto Estimado (UF)</label>
               <select id="contact-budget" class="form-control">
-                <option value="5-10 UF">5 - 10 UF (~ $200.000 - $400.000 CLP + IVA)</option>
-                <option value="10-25 UF">10 - 25 UF (~ $400.000 - $1.000.000 CLP + IVA)</option>
-                <option value="25+ UF">Más de 25 UF (+ $1.000.000 CLP + IVA)</option>
+                <option value="4-12 UF">4 - 12 UF (~ $160.000 - $480.000 CLP + IVA) — Landing Page</option>
+                <option value="6-20 UF">6 - 20 UF (~ $240.000 - $800.000 CLP + IVA) — Sitio One-Page</option>
+                <option value="8-20 UF">8 - 20 UF (~ $320.000 - $800.000 CLP + IVA) — Blog / Portal</option>
+                <option value="12-38 UF">12 - 38 UF (~ $480.000 - $1.500.000 CLP + IVA) — Sitio Corporativo</option>
+                <option value="25-100+ UF">25 - 100+ UF (~ $1.000.000 - $4.000.000+ CLP + IVA) — Tienda E-commerce</option>
+                <option value="Por Definir">Por Definir / Consulta General</option>
               </select>
             </div>
           </div>
@@ -1861,7 +1864,7 @@ PPV Soluciones
   </div>
 
   <!-- Scripts -->
-  <script src="db.js?v=1786128888"></script>
-  <script src="app.js?v=1786128888"></script>
+  <script src="db.js?v=1786131000"></script>
+  <script src="app.js?v=1786131000"></script>
 </body>
 </html>
