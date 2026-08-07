@@ -2366,6 +2366,7 @@ async function initVCardLogic() {
     const mRole = modalVCard.querySelector('p');
     const mQR = modalVCard.querySelector('img');
     const mWa = modalVCard.querySelector('a[href*="wa.me"], a.btn-secondary');
+    const mMail = modalVCard.querySelector('a[href*="mailto:"], a.btn-vcard-email');
     const mAvatar = modalVCard.querySelector('div[style*="border-radius: 50%"]');
 
     if (mName) mName.textContent = profile.name;
@@ -2378,6 +2379,9 @@ async function initVCardLogic() {
     const cleanPhone = profile.phone.replace(/[^0-9]/g, '');
     if (mWa && cleanPhone) {
       mWa.href = `https://wa.me/${cleanPhone}`;
+    }
+    if (mMail) {
+      mMail.href = `mailto:${profile.email}`;
     }
 
     const vcardStr = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:PPV Soluciones\nTITLE:${profile.role}\nTEL;TYPE=CELL,VOICE:${profile.phone}\nEMAIL;TYPE=INTERNET,PREF:${profile.email}\nURL:https://ppvsoluciones.cl\nEND:VCARD`;
@@ -2413,11 +2417,13 @@ async function initVCardLogic() {
     };
   });
 
-  btnOpenModal.forEach(btn => {
-    btn.onclick = (e) => {
+  // Click listeners delegados para abrir vcard
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href="#vcard"], .btn-open-vcard-modal');
+    if (link) {
       e.preventDefault();
       if (modalVCard) modalVCard.style.display = 'flex';
-    };
+    }
   });
 
   if (btnCloseModal && modalVCard) {

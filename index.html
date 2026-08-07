@@ -1013,86 +1013,7 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
       <div id="clients-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
         <!-- Se renderiza dinámicamente desde db.js -->
       </div>
-  <!-- Sección: Tarjeta Digital Ejecutiva & Código QR -->
-  <section id="vcard" class="vcard-section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle" style="color: #ffb703;">
-          <i class="fa-solid fa-address-card"></i> Contacto Inteligente Instantáneo
-        </div>
-        <h2>Tarjeta Digital Ejecutiva & Código QR</h2>
-        <p>Apunta la cámara de tu smartphone al código QR para agregar directamente los datos de contacto oficiales de Patricio Padilla a tu agenda telefónica.</p>
-      </div>
-
-      <div class="vcard-grid">
-        <!-- Tarjeta Física Ejecutiva (Diseño Cyberpunk Glassmorphism) -->
-        <div class="vcard-card">
-          <div class="vcard-header">
-            <div class="vcard-avatar">PP</div>
-            <div class="vcard-info">
-              <h3>Patricio Padilla</h3>
-              <p>CEO & Fundador — PPV Soluciones</p>
-              <div class="vcard-badge">
-                <i class="fa-solid fa-circle-check"></i> VERIFICADO OFICIAL
-              </div>
-            </div>
-          </div>
-
-          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.2rem;">
-            Especialista en Ciberseguridad Web, Hardening de Servidores Linux/Docker, Automatización de Procesos con IA (n8n) y Desarrollo de Software en Chile.
-          </p>
-
-          <ul class="vcard-details-list">
-            <li>
-              <i class="fa-solid fa-envelope text-cyan"></i>
-              <span><strong>Correo Oficial:</strong> ppv@ppvsoluciones.cl</span>
-            </li>
-            <li>
-              <i class="fa-brands fa-whatsapp text-emerald"></i>
-              <span><strong>WhatsApp Directo:</strong> +56 9 5704 0679</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-globe text-violet"></i>
-              <span><strong>Sitio Web:</strong> https://ppvsoluciones.cl</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-location-dot text-pink"></i>
-              <span><strong>Ubicación:</strong> Santiago, Chile</span>
-            </li>
-          </ul>
-
-          <div class="vcard-actions">
-            <button class="btn btn-primary btn-download-vcard" style="background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); border: none;">
-              <i class="fa-solid fa-file-arrow-down"></i> Guardar Contacto (.vcf)
-            </button>
-            <a href="https://wa.me/56957040679" target="_blank" class="btn btn-secondary" style="border-color: #10b981; color: #10b981;">
-              <i class="fa-brands fa-whatsapp"></i> Chat WhatsApp
-            </a>
-            <a href="mailto:ppv@ppvsoluciones.cl" class="btn btn-outline" style="border-color: rgba(255,255,255,0.2); color: #fff;">
-              <i class="fa-solid fa-paper-plane"></i> Enviar Email
-            </a>
-          </div>
-        </div>
-
-        <!-- Caja con Código QR -->
-        <div class="vcard-qr-box">
-          <div style="background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-cyan); border-radius: 50px; padding: 6px 16px; display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--neon-cyan); font-weight: 700; margin-bottom: 0.8rem;">
-            <i class="fa-solid fa-qrcode"></i> ESCANEAR CON CÁMARA
-          </div>
-          
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3APadilla%3BPatricio%0AFN%3APatricio+Padilla%0AORG%3APPV+Soluciones%0ATITLE%3ACEO+%26+Fundador%0ATEL%3BTYPE%3DCELL%2CVOICE%3A%2B56957040679%0AEMAIL%3Appv%40ppvsoluciones.cl%0AURL%3Ahttps%3A%2F%2Fppvsoluciones.cl%0ANOTE%3ACiberseguridad+Web%2C+Hardening+de+Servidores+y+Automatizacion+de+Software+en+Chile.%0AEND%3AVCARD" alt="Código QR de Contacto - Patricio Padilla PPV Soluciones" class="qr-code-img">
-
-          <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 320px; margin-bottom: 1.2rem;">
-            Escanea desde cualquier smartphone para añadir automáticamente a tu libreta de contactos.
-          </p>
-
-          <button class="btn btn-outline btn-copy-vcard-link" style="border-color: var(--neon-cyan); color: var(--neon-cyan); font-size: 0.82rem;">
-            <i class="fa-solid fa-link"></i> Copiar Link de la Tarjeta
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
+  
 
   <!-- Modal Contacto -->
   <div class="modal-overlay" id="modal-contacto">
@@ -1730,6 +1651,9 @@ PPV Soluciones
         </button>
         <a href="https://wa.me/56957040679" target="_blank" class="btn btn-secondary" style="width: 100%; border-color: #10b981; color: #10b981;">
           <i class="fa-brands fa-whatsapp"></i> Chat Directo en WhatsApp
+        </a>
+        <a href="mailto:ppv@ppvsoluciones.cl" class="btn btn-outline btn-vcard-email" style="width: 100%; border-color: rgba(255,255,255,0.2); color: #fff;">
+          <i class="fa-solid fa-paper-plane"></i> Enviar Correo Electrónico
         </a>
       </div>
     </div>
