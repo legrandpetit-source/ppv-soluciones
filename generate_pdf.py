@@ -235,7 +235,17 @@ def find_chrome_executable():
             return path
     raise FileNotFoundError("No se encontró ejecutable de Chrome/Chromium para compilar PDF.")
 
+def sanitize_filename_component(s):
+    if not s:
+        return "cliente"
+    clean = str(s).replace('https://', '').replace('http://', '').replace('www.', '')
+    clean = re.sub(r'[^a-zA-Z0-9_-]', '_', clean)
+    clean = re.sub(r'_+', '_', clean).strip('_')
+    return clean if clean else "cliente"
+
 def save_pdf(md_content, filename_base, title="Documento PPV", domain=None):
+    filename_base = sanitize_filename_component(filename_base)
+    clean_dom = sanitize_filename_component(domain) if domain else None
     html_content = markdown_to_html(md_content, title)
     
     # Detect if we are inside the Docker container
@@ -256,7 +266,7 @@ def save_pdf(md_content, filename_base, title="Documento PPV", domain=None):
             
         chrome_bin = find_chrome_executable()
         for base_dir in output_base_dirs:
-            target_dir = os.path.join(base_dir, domain) if domain else base_dir
+            target_dir = os.path.join(base_dir, clean_dom) if clean_dom else base_dir
             os.makedirs(target_dir, exist_ok=True)
             pdf_path = os.path.join(target_dir, f"{filename_base}.pdf")
             
@@ -302,7 +312,7 @@ def save_pdf(md_content, filename_base, title="Documento PPV", domain=None):
         
         if os.path.exists(host_tmp_pdf):
             for base_dir in output_base_dirs:
-                target_dir = os.path.join(base_dir, domain) if domain else base_dir
+                target_dir = os.path.join(base_dir, clean_dom) if clean_dom else base_dir
                 os.makedirs(target_dir, exist_ok=True)
                 pdf_path = os.path.join(target_dir, f"{filename_base}.pdf")
                 
@@ -502,8 +512,8 @@ def generate_executive_summary_pdf(client_name, company_name, phone, email="", d
     else:
         md_content = get_executive_summary_markdown(client_name, company_name, phone, email, domain, plan_tier)
         
-    comp_clean = (company_name or client_name or "cliente").replace(" ", "_").lower()
-    clean_domain = domain.replace('https://', '').replace('http://', '').strip('/') if domain else None
+    comp_clean = sanitize_filename_component(company_name or client_name or "cliente").lower()
+    clean_domain = sanitize_filename_component(domain) if domain else None
     
     return save_pdf(
         md_content,
@@ -606,8 +616,8 @@ def generate_ppv_company_presentation_pdf(client_name="", company_name="", phone
     else:
         md_content = get_ppv_company_presentation_markdown(client_name, company_name, phone, email, domain, plan_tier)
         
-    comp_clean = (company_name or client_name or "cliente").replace(" ", "_").lower()
-    clean_domain = domain.replace('https://', '').replace('http://', '').strip('/') if domain else None
+    comp_clean = sanitize_filename_component(company_name or client_name or "cliente").lower()
+    clean_domain = sanitize_filename_component(domain) if domain else None
     
     return save_pdf(
         md_content,
