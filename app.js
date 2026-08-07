@@ -1564,11 +1564,12 @@ function initModals() {
       modalContacto.classList.remove('active');
     });
     
-    document.querySelectorAll('a[href="#contacto"]').forEach(link => {
-      link.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[href="#contacto"]');
+      if (link) {
         e.preventDefault();
         modalContacto.classList.add('active');
-      });
+      }
     });
     
     modalContacto.addEventListener('click', (e) => {
