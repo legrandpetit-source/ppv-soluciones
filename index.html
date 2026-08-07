@@ -863,7 +863,7 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: rgba(0, 243, 255, 0.04); padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(0, 243, 255, 0.2);">
                 <div>
                   <span style="font-size: 0.75rem; color: var(--text-muted);">Inversión Acordada:</span>
-                  <div style="font-size: 1.2rem; font-weight: 700; color: var(--neon-emerald);">$450 USD</div>
+                  <div style="font-size: 1.2rem; font-weight: 700; color: var(--neon-emerald);">$450 USD + IVA</div>
                 </div>
                 <div>
                   <span style="font-size: 0.75rem; color: var(--text-muted);">Plazo de Entrega:</span>
@@ -1141,9 +1141,9 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
               <div class="form-group">
                 <label for="contact-budget">Presupuesto Estimado (UF)</label>
                 <select id="contact-budget" class="form-control">
-                  <option value="5-10 UF">5 - 10 UF (~ $200.000 - $400.000 CLP)</option>
-                  <option value="10-25 UF">10 - 25 UF (~ $400.000 - $1.000.000 CLP)</option>
-                  <option value="25+ UF">Más de 25 UF (+ $1.000.000 CLP)</option>
+                  <option value="5-10 UF">5 - 10 UF (~ $200.000 - $400.000 CLP + IVA)</option>
+                  <option value="10-25 UF">10 - 25 UF (~ $400.000 - $1.000.000 CLP + IVA)</option>
+                  <option value="25+ UF">Más de 25 UF (+ $1.000.000 CLP + IVA)</option>
                 </select>
               </div>
             </div>
@@ -1588,7 +1588,7 @@ PPV Soluciones
         <div>
           <h3 style="font-size: 1.25rem; color: #fff; margin: 0;">Auditoría de Ciberseguridad & Hardening Web</h3>
           <span id="sec-modal-header-badge" style="font-size: 0.8rem; color: var(--neon-emerald); font-weight: 600;">
-            <i class="fa-solid fa-tag"></i> Inversión: $450 USD | <i class="fa-solid fa-clock"></i> Plazo de Entrega: 4 días
+            <i class="fa-solid fa-tag"></i> Inversión: $450 USD + IVA | <i class="fa-solid fa-clock"></i> Plazo de Entrega: 4 días
           </span>
         </div>
       </div>
@@ -1626,11 +1626,11 @@ PPV Soluciones
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
             <label style="display: flex; align-items: center; gap: 0.5rem; background: rgba(0,243,255,0.06); padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(0,243,255,0.3); cursor: pointer; font-size: 0.78rem; color: #fff;">
               <input type="radio" name="sec_tier" id="radio-tier-200" value="200" style="accent-color: var(--neon-cyan);">
-              <span><strong>Nivel 1:</strong> Solo Diagnóstico PDF ($200 USD)</span>
+              <span><strong>Nivel 1:</strong> Solo Diagnóstico PDF ($200 USD + IVA)</span>
             </label>
             <label style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,0,127,0.06); padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,0,127,0.3); cursor: pointer; font-size: 0.78rem; color: #fff;">
               <input type="radio" name="sec_tier" id="radio-tier-450" value="450" checked style="accent-color: var(--neon-pink);">
-              <span><strong>Nivel 2:</strong> Hardening Total ($450 USD)</span>
+              <span><strong>Nivel 2:</strong> Hardening Total ($450 USD + IVA)</span>
             </label>
           </div>
         </div>
@@ -1663,7 +1663,7 @@ PPV Soluciones
         </div>
 
         <button type="submit" id="btn-sec-modal-submit" class="btn btn-primary" style="width: 100%; background: linear-gradient(135deg, var(--neon-pink), var(--neon-violet)); border: none;">
-          <i class="fa-solid fa-shield-halved"></i> Enviar Solicitud & Aceptar Hardening ($450 USD)
+          <i class="fa-solid fa-shield-halved"></i> Enviar Solicitud & Aceptar Hardening ($450 USD + IVA)
         </button>
       </form>
     </div>

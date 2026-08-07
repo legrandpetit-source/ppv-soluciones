@@ -279,8 +279,8 @@ async function loadServicesCalculator() {
   // Actualizar indicadores de UF y precios en CLP en la sección de Ciberseguridad
   const clpLvl1 = Math.round(5.0 * currentUfRate);
   const clpLvl2 = Math.round(11.0 * currentUfRate);
-  const clpLvl1Str = `$${clpLvl1.toLocaleString('es-CL')} CLP`;
-  const clpLvl2Str = `$${clpLvl2.toLocaleString('es-CL')} CLP`;
+  const clpLvl1Str = `$${clpLvl1.toLocaleString('es-CL')} CLP + IVA`;
+  const clpLvl2Str = `$${clpLvl2.toLocaleString('es-CL')} CLP + IVA`;
 
   const lvl1El = document.querySelector('.price-level-1-display');
   const lvl2El = document.querySelector('.price-level-2-display');
@@ -302,7 +302,7 @@ async function loadServicesCalculator() {
 
   if (servicesData.length === 0) {
     optionsContainer.innerHTML = '<p style="color: var(--text-muted);">No hay servicios registrados en el mantenedor.</p>';
-    priceDisplay.textContent = '$0 CLP (0,0 UF)';
+    priceDisplay.textContent = '$0 CLP + IVA (0,0 UF)';
     timeDisplay.textContent = '0 días';
     return;
   }
@@ -349,7 +349,7 @@ async function loadServicesCalculator() {
     });
 
     const totalCLP = Math.round(totalPriceUF * currentUfRate);
-    const clpFmt = `$${totalCLP.toLocaleString('es-CL')} CLP`;
+    const clpFmt = `$${totalCLP.toLocaleString('es-CL')} CLP + IVA`;
     const ufFmt = totalPriceUF.toLocaleString('es-CL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
     priceDisplay.textContent = `${clpFmt} (${ufFmt} UF)`;
