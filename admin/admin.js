@@ -1889,33 +1889,54 @@ function initCMMIGovernanceMaintainer() {
 }
 
 async function getActiveIssuerData() {
+  const sessionEmail = sessionStorage.getItem('ppv_admin_email') || 'ppv@ppvsoluciones.cl';
+  
   let name = localStorage.getItem('ppv_admin_name');
   let role = localStorage.getItem('ppv_admin_role');
   let phone = localStorage.getItem('ppv_admin_phone');
-  let email = localStorage.getItem('ppv_admin_custom_email') || sessionStorage.getItem('ppv_admin_email');
+  let email = localStorage.getItem('ppv_admin_custom_email');
 
-  if ((!name || !role || !phone) && window.portfolioDB) {
-    try {
-      const users = await window.portfolioDB.getAllAdminUsers();
-      if (users && users.length > 0) {
-        const u = users.find(x => x.email === email || x.email === 'ppv@ppvsoluciones.cl') || users[0];
-        if (u) {
-          name = name || u.name;
-          role = role || u.role;
-          phone = phone || u.phone;
-          email = email || u.email;
+  // Si el email en localStorage no coincide con el de la sesión actual (posible secuestro previo)
+  // o si faltan datos, forzamos la recuperación desde la DB o valores por defecto.
+  if (email !== sessionEmail || !name || !role || !phone) {
+    name = ''; role = ''; phone = ''; email = sessionEmail;
+    
+    if (window.portfolioDB) {
+      try {
+        const users = await window.portfolioDB.getAllAdminUsers();
+        if (users && users.length > 0) {
+          const u = users.find(x => x.email && x.email.toLowerCase() === email.toLowerCase());
+          if (u) {
+            name = u.name;
+            role = u.role;
+            phone = u.phone;
+            email = u.email;
+          }
         }
+      } catch (e) {
+        console.error('Error leyendo usuario admin para emisor:', e);
       }
-    } catch (e) {
-      console.error('Error leyendo usuario admin para emisor:', e);
     }
+
+    // Si aún no hay nombre (ej. cuenta maestra que no está en la BD)
+    if (!name && email === 'ppv@ppvsoluciones.cl') {
+      name = 'Patricio Padilla';
+      role = 'CEO & Fundador';
+      phone = '+56 9 5704 0679';
+    }
+
+    // Guardar en localStorage para la próxima vez, ahora corregido
+    localStorage.setItem('ppv_admin_name', name || 'Patricio Padilla');
+    localStorage.setItem('ppv_admin_role', role || 'CEO & Fundador');
+    localStorage.setItem('ppv_admin_phone', phone || '+56 9 5704 0679');
+    localStorage.setItem('ppv_admin_custom_email', email);
   }
 
   return {
     issuer_name: name || 'Patricio Padilla',
-    issuer_role: role || 'CEO & Fundador — PPV Soluciones',
+    issuer_role: role || 'CEO & Fundador',
     issuer_phone: phone || '+56 9 5704 0679',
-    issuer_email: email || 'contacto@ppvsoluciones.cl',
+    issuer_email: email,
     issuer_website: 'https://ppvsoluciones.cl'
   };
 }
