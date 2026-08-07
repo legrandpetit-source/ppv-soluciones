@@ -94,15 +94,15 @@ def markdown_to_html(md_content, title="Informe PPV Soluciones"):
         }}
         body {{
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            color: #1a1e29;
             background: #ffffff;
-            line-height: 1.6;
+            color: #1a1a1a;
+            line-height: 1.5;
             font-size: 13px;
             margin: 0;
             padding: 20px;
         }}
         .header-bar {{
-            border-bottom: 3px solid #00f3ff;
+            border-bottom: 3px solid #0055aa;
             padding-bottom: 12px;
             margin-bottom: 25px;
             display: flex;
@@ -118,26 +118,26 @@ def markdown_to_html(md_content, title="Informe PPV Soluciones"):
         }}
         .header-subtitle {{
             font-size: 11px;
-            color: #666;
+            color: #555555;
             text-align: right;
         }}
         h1 {{
             font-size: 22px;
             color: #0d111a;
-            border-bottom: 2px solid #00f3ff;
+            border-bottom: 2px solid #0055aa;
             padding-bottom: 6px;
             margin-top: 15px;
             margin-bottom: 15px;
         }}
         h2 {{
             font-size: 16px;
-            color: #7000ff;
+            color: #333333;
             margin-top: 20px;
             margin-bottom: 10px;
         }}
         h3 {{
             font-size: 14px;
-            color: #0088cc;
+            color: #0055aa;
             margin-top: 15px;
             margin-bottom: 8px;
         }}
@@ -169,7 +169,7 @@ def markdown_to_html(md_content, title="Informe PPV Soluciones"):
         }}
         .pdf-table th {{
             background: #0d111a;
-            color: #00f3ff;
+            color: #ffffff;
             text-align: left;
             padding: 8px 12px;
             font-weight: 600;

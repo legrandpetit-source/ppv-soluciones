@@ -168,6 +168,23 @@ function initAuth() {
         if (isMasterHash || isCustomCreds || isDbUser) {
           sessionStorage.setItem('ppv_admin_logged', 'true');
           sessionStorage.setItem('ppv_admin_email', email);
+          
+          if (isDbUser && window.portfolioDB) {
+            const dbUsers = await window.portfolioDB.getAllAdminUsers();
+            const found = dbUsers.find(u => u.email && u.email.toLowerCase() === email);
+            if (found) {
+              localStorage.setItem('ppv_admin_custom_email', found.email);
+              localStorage.setItem('ppv_admin_name', found.name);
+              localStorage.setItem('ppv_admin_role', found.role);
+              localStorage.setItem('ppv_admin_phone', found.phone || '');
+            }
+          } else if (email === 'ppv@ppvsoluciones.cl') {
+            localStorage.setItem('ppv_admin_custom_email', email);
+            localStorage.setItem('ppv_admin_name', 'Patricio Padilla');
+            localStorage.setItem('ppv_admin_role', 'CEO & Fundador');
+            localStorage.setItem('ppv_admin_phone', '+56 9 5704 0679');
+          }
+          
           if (loginError) loginError.style.display = 'none';
           showToast('¡Bienvenido al Panel de Administración!');
           checkSession();
@@ -904,28 +921,32 @@ function initUserMaintainer() {
       await window.portfolioDB.saveAdminUser(userData);
 
       // Sincronizar SIEMPRE la información del gestor activo en localStorage y servidor VPS
-      localStorage.setItem('ppv_admin_custom_email', userData.email);
-      localStorage.setItem('ppv_admin_name', userData.name);
-      localStorage.setItem('ppv_admin_role', userData.role);
-      localStorage.setItem('ppv_admin_phone', userData.phone);
-      if (pass) {
-        localStorage.setItem('ppv_admin_custom_hashes', JSON.stringify({ emailHash: eHash, passHash: userData.passHash }));
-      }
+      // SOLO si el usuario editado es el mismo que está actualmente logueado
+      const loggedEmail = sessionStorage.getItem('ppv_admin_email') || '';
+      if (userData.email.toLowerCase() === loggedEmail.toLowerCase()) {
+        localStorage.setItem('ppv_admin_custom_email', userData.email);
+        localStorage.setItem('ppv_admin_name', userData.name);
+        localStorage.setItem('ppv_admin_role', userData.role);
+        localStorage.setItem('ppv_admin_phone', userData.phone);
+        if (pass) {
+          localStorage.setItem('ppv_admin_custom_hashes', JSON.stringify({ emailHash: eHash, passHash: userData.passHash }));
+        }
 
-      try {
-        await fetch('/tg-issuer-config', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            issuer_name: userData.name,
-            issuer_role: userData.role,
-            issuer_phone: userData.phone,
-            issuer_email: userData.email,
-            issuer_website: 'https://ppvsoluciones.cl'
-          })
-        });
-      } catch (err) {
-        console.error('Error sincronizando datos del gestor al servidor:', err);
+        try {
+          await fetch('/tg-issuer-config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              issuer_name: userData.name,
+              issuer_role: userData.role,
+              issuer_phone: userData.phone,
+              issuer_email: userData.email,
+              issuer_website: 'https://ppvsoluciones.cl'
+            })
+          });
+        } catch (err) {
+          console.error('Error sincronizando datos del gestor al servidor:', err);
+        }
       }
 
       showToast(id ? '✅ Usuario administrador actualizado' : '✅ Nuevo usuario administrador registrado');
