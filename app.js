@@ -198,10 +198,6 @@ async function loadDynamicStatusPill() {
       statusCtaEl.style.display = 'none';
     } else {
       statusCtaEl.style.display = 'flex';
-      const textSpan = statusCtaEl.querySelector('.status-title-text');
-      if (textSpan) {
-        textSpan.textContent = cfg.text || 'Disponible para proyectos';
-      }
     }
   }
 
@@ -211,6 +207,11 @@ async function loadDynamicStatusPill() {
         pillEl.style.display = 'none';
       } else {
         pillEl.style.display = 'inline-flex';
+        pillEl.classList.remove('theme-amber', 'theme-pink', 'theme-cyan');
+        if (cfg.theme && cfg.theme !== 'emerald') {
+          pillEl.classList.add(`theme-${cfg.theme}`);
+        }
+
         const textSpan = pillEl.querySelector('span:not(.pulse-dot)');
         if (textSpan) {
           textSpan.textContent = cfg.text || 'Disponible para Proyectos';
