@@ -1892,7 +1892,7 @@ textarea.form-control {
   background: #07090e;
   z-index: 9999999 !important;
   flex-direction: column;
-  padding: 0.6rem 0.8rem;
+  padding: 0.4rem 0.6rem;
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
@@ -1909,9 +1909,9 @@ textarea.form-control {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 0.4rem;
+  padding-bottom: 0.25rem;
   border-bottom: 1px solid var(--border-glow);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.25rem;
   flex-shrink: 0;
 }
 
@@ -1922,7 +1922,7 @@ textarea.form-control {
   font-family: var(--font-heading);
   font-size: 0.8rem;
   font-weight: 700;
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: var(--transition);
@@ -1954,9 +1954,9 @@ textarea.form-control {
   justify-content: center;
   text-align: center;
   width: 100%;
-  margin-top: 0.4rem;
-  margin-bottom: 0.4rem;
-  padding: 0.5rem 0.8rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+  padding: 0.4rem 0.8rem;
   background: #0e131f;
   border: 1.5px solid var(--neon-cyan);
   border-radius: var(--radius-md);
@@ -1968,7 +1968,7 @@ textarea.form-control {
 
 .mobile-status-card-centered .status-title-text {
   font-family: var(--font-heading);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: #ffffff !important;
   text-align: center;
@@ -1980,7 +1980,7 @@ textarea.form-control {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.2rem;
   margin: 0;
   padding: 0;
   flex-grow: 1;
@@ -1991,14 +1991,14 @@ textarea.form-control {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.4rem 0.75rem;
+  padding: 0.35rem 0.75rem;
   background: #0e131f;
   border: 1px solid var(--border-glass);
   border-radius: 8px;
   color: #ffffff !important;
   text-decoration: none !important;
   font-family: var(--font-heading);
-  font-size: 0.82rem;
+  font-size: 0.92rem;
   font-weight: 700;
   transition: var(--transition);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
@@ -2017,13 +2017,13 @@ textarea.form-control {
 }
 
 .nav-icon-box {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   flex-shrink: 0;
   margin-right: 8px;
 }
