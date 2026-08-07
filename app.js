@@ -1577,6 +1577,34 @@ function initModals() {
     });
   }
 
+  // Modal Tarjeta Digital (vCard)
+  const modalVCard = document.getElementById('modal-vcard');
+  const btnCloseVCard = document.getElementById('btn-close-vcard-modal');
+  if (modalVCard) {
+    if (btnCloseVCard) {
+      btnCloseVCard.addEventListener('click', () => {
+        modalVCard.classList.remove('active');
+        modalVCard.style.display = 'none';
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[href="#vcard"], .btn-open-vcard-modal');
+      if (link) {
+        e.preventDefault();
+        modalVCard.classList.add('active');
+        modalVCard.style.display = 'flex';
+      }
+    });
+
+    modalVCard.addEventListener('click', (e) => {
+      if (e.target === modalVCard) {
+        modalVCard.classList.remove('active');
+        modalVCard.style.display = 'none';
+      }
+    });
+  }
+
   const modalLogin = document.getElementById('modal-admin-login');
   const modalDB = document.getElementById('modal-db-admin');
   const btnOpenDB = document.getElementById('btn-open-admin-db');
