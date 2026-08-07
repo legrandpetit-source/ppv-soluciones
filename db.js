@@ -187,7 +187,7 @@ class MessageDB {
         email: 'ppv@ppvsoluciones.cl',
         emailHash: '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed',
         passHash: 'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb',
-        phone: '+56 9 1234 5678',
+        phone: '+56 9 5704 0679',
         userLevel: 'Administrador Principal',
         createdAt: '03/08/2026'
       };

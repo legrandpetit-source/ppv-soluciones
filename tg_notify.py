@@ -398,7 +398,14 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                     return
 
                 import generate_pdf
-                issuer_cfg = get_issuer_config()
+                db_cfg = get_issuer_config()
+                issuer_cfg = {
+                    'issuer_name': str(data.get('issuer_name') or db_cfg.get('issuer_name') or 'Patricio Padilla').strip(),
+                    'issuer_role': str(data.get('issuer_role') or db_cfg.get('issuer_role') or 'CEO & Fundador').strip(),
+                    'issuer_phone': str(data.get('issuer_phone') or db_cfg.get('issuer_phone') or '+56 9 5704 0679').strip(),
+                    'issuer_email': str(data.get('issuer_email') or db_cfg.get('issuer_email') or 'contacto@ppvsoluciones.cl').strip(),
+                    'issuer_website': str(data.get('issuer_website') or db_cfg.get('issuer_website') or 'https://ppvsoluciones.cl').strip()
+                }
                 pdf1_paths = generate_pdf.generate_client_authorization_pdf(client_name, rut, domain, contact_person, email, plan_tier, issuer_config=issuer_cfg)
                 pdf2_paths = generate_pdf.generate_client_audit_report_pdf(client_name, domain, plan_tier, issuer_config=issuer_cfg)
 
@@ -461,7 +468,14 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 custom_markdown = data.get('custom_markdown')
 
                 import generate_pdf
-                issuer_cfg = get_issuer_config()
+                db_cfg = get_issuer_config()
+                issuer_cfg = {
+                    'issuer_name': str(data.get('issuer_name') or db_cfg.get('issuer_name') or 'Patricio Padilla').strip(),
+                    'issuer_role': str(data.get('issuer_role') or db_cfg.get('issuer_role') or 'CEO & Fundador').strip(),
+                    'issuer_phone': str(data.get('issuer_phone') or db_cfg.get('issuer_phone') or '+56 9 5704 0679').strip(),
+                    'issuer_email': str(data.get('issuer_email') or db_cfg.get('issuer_email') or 'contacto@ppvsoluciones.cl').strip(),
+                    'issuer_website': str(data.get('issuer_website') or db_cfg.get('issuer_website') or 'https://ppvsoluciones.cl').strip()
+                }
 
                 if action == 'preview':
                     if custom_markdown and custom_markdown.strip():

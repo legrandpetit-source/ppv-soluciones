@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   try { initQATestingSuiteMaintainer(); } catch(e){ console.error(e); }
   try { initCMMIGovernanceMaintainer(); } catch(e){ console.error(e); }
   try { initExecSummaryMaintainer(); } catch(e){ console.error(e); }
-  try { initGlobalIssuerMaintainer(); } catch(e){ console.error(e); }
 });
 
 /* --------------------------------------------------------------------------
@@ -857,15 +856,29 @@ function initUserMaintainer() {
 
       await window.portfolioDB.saveAdminUser(userData);
 
-      // Si es el usuario actual, actualizar localStorage
-      if (email === sessionStorage.getItem('ppv_admin_email') || email === 'ppv@ppvsoluciones.cl') {
-        localStorage.setItem('ppv_admin_custom_email', email);
-        localStorage.setItem('ppv_admin_name', userData.name);
-        localStorage.setItem('ppv_admin_role', userData.role);
-        localStorage.setItem('ppv_admin_phone', userData.phone);
-        if (pass) {
-          localStorage.setItem('ppv_admin_custom_hashes', JSON.stringify({ emailHash: eHash, passHash: userData.passHash }));
-        }
+      // Sincronizar SIEMPRE la información del gestor activo en localStorage y servidor VPS
+      localStorage.setItem('ppv_admin_custom_email', userData.email);
+      localStorage.setItem('ppv_admin_name', userData.name);
+      localStorage.setItem('ppv_admin_role', userData.role);
+      localStorage.setItem('ppv_admin_phone', userData.phone);
+      if (pass) {
+        localStorage.setItem('ppv_admin_custom_hashes', JSON.stringify({ emailHash: eHash, passHash: userData.passHash }));
+      }
+
+      try {
+        await fetch('/tg-issuer-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            issuer_name: userData.name,
+            issuer_role: userData.role,
+            issuer_phone: userData.phone,
+            issuer_email: userData.email,
+            issuer_website: 'https://ppvsoluciones.cl'
+          })
+        });
+      } catch (err) {
+        console.error('Error sincronizando datos del gestor al servidor:', err);
       }
 
       showToast(id ? '✅ Usuario administrador actualizado' : '✅ Nuevo usuario administrador registrado');
@@ -962,13 +975,15 @@ function initPdfGeneratorMaintainer() {
   if (form) {
     form.onsubmit = async (e) => {
       e.preventDefault();
+      const activeIssuer = await getActiveIssuerData();
       const payload = {
         client_name: document.getElementById('gen-pdf-name').value.trim(),
         rut: document.getElementById('gen-pdf-rut').value.trim(),
         domain: document.getElementById('gen-pdf-domain').value.trim(),
         contact_person: document.getElementById('gen-pdf-person').value.trim(),
         email: document.getElementById('gen-pdf-email').value.trim(),
-        plan_tier: document.getElementById('gen-pdf-tier').value
+        plan_tier: document.getElementById('gen-pdf-tier').value,
+        ...activeIssuer
       };
 
       showToast('⏳ Compilando y generando documentos PDF...');
@@ -1768,6 +1783,38 @@ function initCMMIGovernanceMaintainer() {
   };
 }
 
+async function getActiveIssuerData() {
+  let name = localStorage.getItem('ppv_admin_name');
+  let role = localStorage.getItem('ppv_admin_role');
+  let phone = localStorage.getItem('ppv_admin_phone');
+  let email = localStorage.getItem('ppv_admin_custom_email') || sessionStorage.getItem('ppv_admin_email');
+
+  if ((!name || !role || !phone) && window.portfolioDB) {
+    try {
+      const users = await window.portfolioDB.getAllAdminUsers();
+      if (users && users.length > 0) {
+        const u = users.find(x => x.email === email || x.email === 'ppv@ppvsoluciones.cl') || users[0];
+        if (u) {
+          name = name || u.name;
+          role = role || u.role;
+          phone = phone || u.phone;
+          email = email || u.email;
+        }
+      }
+    } catch (e) {
+      console.error('Error leyendo usuario admin para emisor:', e);
+    }
+  }
+
+  return {
+    issuer_name: name || 'Patricio Padilla',
+    issuer_role: role || 'CEO & Fundador — PPV Soluciones',
+    issuer_phone: phone || '+56 9 5704 0679',
+    issuer_email: email || 'contacto@ppvsoluciones.cl',
+    issuer_website: 'https://ppvsoluciones.cl'
+  };
+}
+
 /* --------------------------------------------------------------------------
    15. GENERADOR DE RESUMEN EJECUTIVO COMERCIAL & VISTA PREVIA EDITABLE
    -------------------------------------------------------------------------- */
@@ -1794,6 +1841,7 @@ function initExecSummaryMaintainer() {
       const email = document.getElementById('exec-email').value.trim();
       const domain = document.getElementById('exec-domain').value.trim();
       const planTier = document.getElementById('exec-plan-tier').value;
+      const activeIssuer = await getActiveIssuerData();
 
       showToast('🔄 Generando vista previa de la presentación comercial...');
 
@@ -1809,7 +1857,8 @@ function initExecSummaryMaintainer() {
             phone: phone,
             email: email,
             domain: domain,
-            plan_tier: planTier
+            plan_tier: planTier,
+            ...activeIssuer
           })
         });
 
@@ -1865,6 +1914,7 @@ function initExecSummaryMaintainer() {
         const email = document.getElementById('exec-email').value.trim();
         const domain = document.getElementById('exec-domain').value.trim();
         const planTier = document.getElementById('exec-plan-tier').value;
+        const activeIssuer = await getActiveIssuerData();
 
         const response = await fetch('/tg-generate-executive-summary', {
           method: 'POST',
@@ -1878,7 +1928,8 @@ function initExecSummaryMaintainer() {
             email: email,
             domain: domain,
             plan_tier: planTier,
-            custom_markdown: currentMarkdown
+            custom_markdown: currentMarkdown,
+            ...activeIssuer
           })
         });
         const data = await response.json();
@@ -1901,6 +1952,7 @@ function initExecSummaryMaintainer() {
       const email = document.getElementById('exec-email').value.trim();
       const domain = document.getElementById('exec-domain').value.trim();
       const planTier = document.getElementById('exec-plan-tier').value;
+      const activeIssuer = await getActiveIssuerData();
 
       showToast('⏳ Compilando y generando el archivo PDF oficial...');
 
@@ -1917,7 +1969,8 @@ function initExecSummaryMaintainer() {
             email: email,
             domain: domain,
             plan_tier: planTier,
-            custom_markdown: currentMarkdown
+            custom_markdown: currentMarkdown,
+            ...activeIssuer
           })
         });
 
@@ -1959,63 +2012,6 @@ function initExecSummaryMaintainer() {
   }
 }
 
-/* --------------------------------------------------------------------------
-   16. MANTENEDOR GLOBAL DE CONFIGURACIÓN DEL EMISOR / FIRMANTE
-   -------------------------------------------------------------------------- */
-function initGlobalIssuerMaintainer() {
-  const form = document.getElementById('form-global-issuer');
-  const nameInput = document.getElementById('issuer-name');
-  const roleInput = document.getElementById('issuer-role');
-  const phoneInput = document.getElementById('issuer-phone');
-  const emailInput = document.getElementById('issuer-email');
-  const websiteInput = document.getElementById('issuer-website');
-
-  async function loadIssuerConfig() {
-    try {
-      const res = await fetch('/tg-issuer-config');
-      const data = await res.json();
-      if (data.ok && data.config) {
-        if (nameInput) nameInput.value = data.config.issuer_name || 'Patricio Padilla';
-        if (roleInput) roleInput.value = data.config.issuer_role || 'CEO & Fundador';
-        if (phoneInput) phoneInput.value = data.config.issuer_phone || '+56 9 5704 0679';
-        if (emailInput) emailInput.value = data.config.issuer_email || 'contacto@ppvsoluciones.cl';
-        if (websiteInput) websiteInput.value = data.config.issuer_website || 'https://ppvsoluciones.cl';
-      }
-    } catch (err) {
-      console.error('Error cargando issuer config:', err);
-    }
-  }
-
-  loadIssuerConfig();
-
-  if (form) {
-    form.onsubmit = async (e) => {
-      e.preventDefault();
-      showToast('🔄 Guardando datos globales del firmante...');
-      try {
-        const res = await fetch('/tg-issuer-config', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            issuer_name: nameInput ? nameInput.value.trim() : '',
-            issuer_role: roleInput ? roleInput.value.trim() : '',
-            issuer_phone: phoneInput ? phoneInput.value.trim() : '',
-            issuer_email: emailInput ? emailInput.value.trim() : '',
-            issuer_website: websiteInput ? websiteInput.value.trim() : ''
-          })
-        });
-        const data = await res.json();
-        if (data.ok) {
-          showToast('✅ ¡Datos del firmante/emisor actualizados globalmente!');
-        } else {
-          showToast('❌ Error guardando datos del emisor: ' + (data.error || 'Error desconocido'), true);
-        }
-      } catch (err) {
-        console.error('Error guardando issuer config:', err);
-        showToast('❌ Error de conexión al guardar datos del emisor.', true);
-      }
-    };
-  }
 }
 
 
