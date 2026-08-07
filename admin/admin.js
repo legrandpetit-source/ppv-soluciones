@@ -1875,53 +1875,43 @@ function initCMMIGovernanceMaintainer() {
 async function getActiveIssuerData() {
   const sessionEmail = sessionStorage.getItem('ppv_admin_email') || 'ppv@ppvsoluciones.cl';
   
-  let name = localStorage.getItem('ppv_admin_name');
-  let role = localStorage.getItem('ppv_admin_role');
-  let phone = localStorage.getItem('ppv_admin_phone');
-  let email = localStorage.getItem('ppv_admin_custom_email');
+  let name = '';
+  let role = '';
+  let phone = '';
+  let email = sessionEmail;
 
-  // Si el email en localStorage no coincide con el de la sesión actual (posible secuestro previo)
-  // o si faltan datos, forzamos la recuperación desde la DB o valores por defecto.
-  if (email !== sessionEmail || !name || !role || !phone) {
-    name = ''; role = ''; phone = ''; email = sessionEmail;
-    
-    if (window.portfolioDB) {
-      try {
-        const users = await window.portfolioDB.getAllAdminUsers();
-        if (users && users.length > 0) {
-          const u = users.find(x => x.email && x.email.toLowerCase() === email.toLowerCase());
-          if (u) {
-            name = u.name;
-            role = u.role;
-            phone = u.phone;
-            email = u.email;
-          }
+  if (window.portfolioDB) {
+    try {
+      const users = await window.portfolioDB.getAllAdminUsers();
+      if (users && users.length > 0) {
+        const u = users.find(x => x.email && x.email.toLowerCase() === email.toLowerCase());
+        if (u) {
+          name = u.name;
+          role = u.role;
+          phone = u.phone;
+          email = u.email;
         }
-      } catch (e) {
-        console.error('Error leyendo usuario admin para emisor:', e);
       }
+    } catch (e) {
+      console.error('Error fetching issuer from db:', e);
     }
+  }
 
-    // Si aún no hay nombre (ej. cuenta maestra que no está en la BD)
-    if (!name && email === 'ppv@ppvsoluciones.cl') {
-      name = 'Patricio Padilla';
-      role = 'CEO & Fundador';
-      phone = '+56 9 5704 0679';
-    }
+  if (!name) name = localStorage.getItem('ppv_admin_name') || 'Patricio Padilla V.';
+  if (!role) role = localStorage.getItem('ppv_admin_role') || 'Ingeniero de Software y Ciberseguridad';
+  if (!phone) phone = localStorage.getItem('ppv_admin_phone') || '+56 9 9414 4133';
 
-    // Guardar en localStorage para la próxima vez, ahora corregido
-    localStorage.setItem('ppv_admin_name', name || 'Patricio Padilla');
-    localStorage.setItem('ppv_admin_role', role || 'CEO & Fundador');
-    localStorage.setItem('ppv_admin_phone', phone || '+56 9 5704 0679');
-    localStorage.setItem('ppv_admin_custom_email', email);
+  // Make sure we NEVER return 'Juan Prueba' if it somehow got stuck in localStorage
+  if (name === 'Juan Prueba') {
+    name = 'Patricio Padilla V.';
+    role = 'Ingeniero de Software y Ciberseguridad';
   }
 
   return {
-    issuer_name: name || 'Patricio Padilla',
-    issuer_role: role || 'CEO & Fundador',
-    issuer_phone: phone || '+56 9 5704 0679',
-    issuer_email: email,
-    issuer_website: 'https://ppvsoluciones.cl'
+    in_name: name,
+    in_role: role,
+    in_phone: phone,
+    in_email: email
   };
 }
 
@@ -1982,6 +1972,8 @@ function initExecSummaryMaintainer() {
           iframe.style.height = '100%';
           iframe.style.minHeight = '600px';
           iframe.style.border = 'none';
+          iframe.style.backgroundColor = '#ffffff';
+          iframe.style.borderRadius = '8px';
           iframe.srcdoc = data.html || '';
           renderBox.innerHTML = '';
           renderBox.appendChild(iframe);

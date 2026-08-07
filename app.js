@@ -1452,23 +1452,20 @@ async function sendTelegramNotification(data) {
 
 function initContactAndDB() {
   const contactForm = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('btn-submit-contacto');
+  const modalContacto = document.getElementById('modal-contacto');
   if (!contactForm) return;
-
-  let lastSubmitTime = 0; // Anti-spam cooldown
 
   contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Anti-spam: bloquear envíos repetidos en menos de 30 segundos
-    const now = Date.now();
-    if (now - lastSubmitTime < 30000) {
-      showToast('Por favor espera un momento antes de enviar otro mensaje.', true);
-      return;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
     }
 
     const budgetSelect = document.getElementById('contact-budget');
     const budgetText = (budgetSelect && budgetSelect.selectedIndex >= 0) ? budgetSelect.options[budgetSelect.selectedIndex].text : '';
-    const websiteEl = document.getElementById('contact-website');
     const phoneEl = document.getElementById('contact-phone');
     const prefEl = document.getElementById('contact-pref');
 
@@ -1478,7 +1475,6 @@ function initContactAndDB() {
       phone: phoneEl ? phoneEl.value.trim() : '',
       contact_pref: prefEl ? prefEl.value : 'WhatsApp',
       subject: document.getElementById('contact-subject').value.trim(),
-      website: websiteEl ? websiteEl.value.trim() : '',
       budget: document.getElementById('contact-budget').value,
       budgetText: budgetText,
       message: document.getElementById('contact-message').value.trim()
@@ -1501,9 +1497,17 @@ function initContactAndDB() {
     }
 
     // 3. Confirmación al usuario y limpiar formulario
-    lastSubmitTime = now;
     showToast('¡Mensaje enviado con éxito!');
     contactForm.reset();
+    
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar Mensaje';
+    }
+    
+    if (modalContacto) {
+      modalContacto.classList.remove('active');
+    }
   });
 }
 
@@ -1535,6 +1539,27 @@ async function hashString(str) {
 }
 
 function initModals() {
+  // Modal Contacto
+  const modalContacto = document.getElementById('modal-contacto');
+  const btnCloseContacto = document.getElementById('btn-close-contacto');
+  
+  if (modalContacto && btnCloseContacto) {
+    btnCloseContacto.addEventListener('click', () => {
+      modalContacto.classList.remove('active');
+    });
+    
+    document.querySelectorAll('a[href="#contacto"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        modalContacto.classList.add('active');
+      });
+    });
+    
+    modalContacto.addEventListener('click', (e) => {
+      if (e.target === modalContacto) modalContacto.classList.remove('active');
+    });
+  }
+
   const modalLogin = document.getElementById('modal-admin-login');
   const modalDB = document.getElementById('modal-db-admin');
   const btnOpenDB = document.getElementById('btn-open-admin-db');
