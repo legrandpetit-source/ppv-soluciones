@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try { initQATestingSuiteMaintainer(); } catch(e){ console.error(e); }
   try { initCMMIGovernanceMaintainer(); } catch(e){ console.error(e); }
   try { initExecSummaryMaintainer(); } catch(e){ console.error(e); }
+  try { initGlobalIssuerMaintainer(); } catch(e){ console.error(e); }
 });
 
 /* --------------------------------------------------------------------------
@@ -1940,6 +1941,78 @@ function initExecSummaryMaintainer() {
       } catch (err) {
         console.error('Error exportando PDF resumen ejecutivo:', err);
         showToast('❌ Error de conexión al generar PDF.', true);
+      }
+    };
+  }
+
+  const btnClosePreview = document.getElementById('btn-close-exec-preview');
+  if (btnClosePreview) {
+    btnClosePreview.onclick = () => {
+      if (previewWrapper) {
+        previewWrapper.style.display = 'none';
+      }
+      if (form) {
+        form.scrollIntoView({ behavior: 'smooth' });
+      }
+      showToast('ℹ️ Vista previa del documento cerrada.');
+    };
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16. MANTENEDOR GLOBAL DE CONFIGURACIÓN DEL EMISOR / FIRMANTE
+   -------------------------------------------------------------------------- */
+function initGlobalIssuerMaintainer() {
+  const form = document.getElementById('form-global-issuer');
+  const nameInput = document.getElementById('issuer-name');
+  const roleInput = document.getElementById('issuer-role');
+  const phoneInput = document.getElementById('issuer-phone');
+  const emailInput = document.getElementById('issuer-email');
+  const websiteInput = document.getElementById('issuer-website');
+
+  async function loadIssuerConfig() {
+    try {
+      const res = await fetch('/tg-issuer-config');
+      const data = await res.json();
+      if (data.ok && data.config) {
+        if (nameInput) nameInput.value = data.config.issuer_name || 'Patricio Padilla';
+        if (roleInput) roleInput.value = data.config.issuer_role || 'CEO & Fundador';
+        if (phoneInput) phoneInput.value = data.config.issuer_phone || '+56 9 5704 0679';
+        if (emailInput) emailInput.value = data.config.issuer_email || 'contacto@ppvsoluciones.cl';
+        if (websiteInput) websiteInput.value = data.config.issuer_website || 'https://ppvsoluciones.cl';
+      }
+    } catch (err) {
+      console.error('Error cargando issuer config:', err);
+    }
+  }
+
+  loadIssuerConfig();
+
+  if (form) {
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      showToast('🔄 Guardando datos globales del firmante...');
+      try {
+        const res = await fetch('/tg-issuer-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            issuer_name: nameInput ? nameInput.value.trim() : '',
+            issuer_role: roleInput ? roleInput.value.trim() : '',
+            issuer_phone: phoneInput ? phoneInput.value.trim() : '',
+            issuer_email: emailInput ? emailInput.value.trim() : '',
+            issuer_website: websiteInput ? websiteInput.value.trim() : ''
+          })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          showToast('✅ ¡Datos del firmante/emisor actualizados globalmente!');
+        } else {
+          showToast('❌ Error guardando datos del emisor: ' + (data.error || 'Error desconocido'), true);
+        }
+      } catch (err) {
+        console.error('Error guardando issuer config:', err);
+        showToast('❌ Error de conexión al guardar datos del emisor.', true);
       }
     };
   }

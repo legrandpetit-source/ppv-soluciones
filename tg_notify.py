@@ -257,10 +257,46 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(uf_data).encode('utf-8'))
             return
 
+        if self.path in ['/tg-issuer-config', '/api/issuer-config']:
+            cfg = get_issuer_config()
+            self.send_response(200)
+            self.send_cors_headers()
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'config': cfg}).encode('utf-8'))
+            return
+
         self.send_response(404)
         self.end_headers()
 
     def do_POST(self):
+        if self.path in ['/tg-issuer-config', '/api/issuer-config']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                iname = str(data.get('issuer_name', '')).strip()
+                irole = str(data.get('issuer_role', '')).strip()
+                iphone = str(data.get('issuer_phone', '')).strip()
+                iemail = str(data.get('issuer_email', '')).strip()
+                iwebsite = str(data.get('issuer_website', '')).strip()
+
+                success = save_issuer_config(iname, irole, iphone, iemail, iwebsite)
+                self.send_response(200 if success else 500)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': success, 'config': get_issuer_config()}).encode('utf-8'))
+                return
+            except Exception as e:
+                print(f"[TG-PROXY] Error actualizando issuer config: {e}")
+                self.send_response(500)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode('utf-8'))
+                return
+
         if self.path in ['/tg-generate-docs', '/api/generate-docs']:
             try:
                 length = int(self.headers.get('Content-Length', 0))
@@ -283,8 +319,9 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                     return
 
                 import generate_pdf
-                pdf1_paths = generate_pdf.generate_client_authorization_pdf(client_name, rut, domain, contact_person, email, plan_tier)
-                pdf2_paths = generate_pdf.generate_client_audit_report_pdf(client_name, domain, plan_tier)
+                issuer_cfg = get_issuer_config()
+                pdf1_paths = generate_pdf.generate_client_authorization_pdf(client_name, rut, domain, contact_person, email, plan_tier, issuer_config=issuer_cfg)
+                pdf2_paths = generate_pdf.generate_client_audit_report_pdf(client_name, domain, plan_tier, issuer_config=issuer_cfg)
 
                 clean_dom = domain.replace('https://', '').replace('http://', '').replace('www.', '').strip('/')
                 local_folder_display = f"Escritorio/Auditoría/{clean_dom}/"
@@ -345,14 +382,15 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 custom_markdown = data.get('custom_markdown')
 
                 import generate_pdf
+                issuer_cfg = get_issuer_config()
 
                 if action == 'preview':
                     if custom_markdown and custom_markdown.strip():
                         md_preview = custom_markdown
                     elif doc_type == 'executive':
-                        md_preview = generate_pdf.get_executive_summary_markdown(client_name, company_name, phone, email, domain, plan_tier)
+                        md_preview = generate_pdf.get_executive_summary_markdown(client_name, company_name, phone, email, domain, plan_tier, issuer_config=issuer_cfg)
                     else:
-                        md_preview = generate_pdf.get_ppv_company_presentation_markdown(client_name, company_name, phone, email, domain, plan_tier)
+                        md_preview = generate_pdf.get_ppv_company_presentation_markdown(client_name, company_name, phone, email, domain, plan_tier, issuer_config=issuer_cfg)
                         
                     doc_title = "Presentación Institucional PPV Soluciones" if doc_type == 'presentation' else f"Resumen Ejecutivo - {company_name or client_name}"
                     html_preview = generate_pdf.markdown_to_html(md_preview, doc_title)
@@ -372,7 +410,8 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                         email=email,
                         domain=domain,
                         plan_tier=plan_tier,
-                        custom_markdown=custom_markdown
+                        custom_markdown=custom_markdown,
+                        issuer_config=issuer_cfg
                     )
                 else:
                     pdf_paths = generate_pdf.generate_ppv_company_presentation_pdf(
@@ -382,7 +421,8 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                         email=email,
                         domain=domain,
                         plan_tier=plan_tier,
-                        custom_markdown=custom_markdown
+                        custom_markdown=custom_markdown,
+                        issuer_config=issuer_cfg
                     )
 
                 download_files = []

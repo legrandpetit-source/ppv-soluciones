@@ -333,13 +333,28 @@ def save_pdf(md_content, filename_base, title="Documento PPV", domain=None):
             
     return created_pdfs
 
-def generate_client_authorization_pdf(client_name, rut, domain, contact_person, email, plan_tier="$450 USD"):
+def get_default_issuer_config():
+    return {
+        'issuer_name': 'Patricio Padilla',
+        'issuer_role': 'CEO & Fundador',
+        'issuer_phone': '+56 9 5704 0679',
+        'issuer_email': 'contacto@ppvsoluciones.cl',
+        'issuer_website': 'https://ppvsoluciones.cl'
+    }
+
+def generate_client_authorization_pdf(client_name, rut, domain, contact_person, email, plan_tier="$450 USD", issuer_config=None):
     date_str = get_chile_date_str()
     clean_domain = domain.replace('https://', '').replace('http://', '').strip('/')
+    cfg = issuer_config or get_default_issuer_config()
+    in_name = cfg.get('issuer_name') or 'Patricio Padilla'
+    in_role = cfg.get('issuer_role') or 'CEO & Fundador'
+    in_phone = cfg.get('issuer_phone') or '+56 9 5704 0679'
+    in_email = cfg.get('issuer_email') or 'contacto@ppvsoluciones.cl'
+    in_website = cfg.get('issuer_website') or 'https://ppvsoluciones.cl'
     
     md_content = f"""# 📜 Carta de Autorización & Exención de Responsabilidad Legal
 **Servicio de Auditoría de Ciberseguridad & Hardening Web**  
-**PPV Soluciones** — https://ppvsoluciones.cl  
+**PPV Soluciones** — {in_website}  
 
 ---
 
@@ -361,7 +376,7 @@ Por medio del presente documento, el Solicitante identificado a continuación de
 ## ⚖️ CLÁUSULAS DE AUTORIZACIÓN Y ALCANCE
 
 ### Primera: Autorización Explícita de Análisis y Hardening
-El Solicitante autoriza de manera explícita e irrevocable al equipo técnico de **PPV Soluciones** (representado por Patricio Padilla, CEO & Fundador) a realizar pruebas de diagnóstico, evaluación de cabeceras, revisión de código fuente visible, mitigación de vulnerabilidades y hardening de servidor sobre la infraestructura del sitio web señalado, en conformidad con la **Ley N° 21.459 que Establece Normas sobre Delitos Informáticos en Chile**.
+El Solicitante autoriza de manera explícita e irrevocable al equipo técnico de **PPV Soluciones** (representado por {in_name}, {in_role}) a realizar pruebas de diagnóstico, evaluación de cabeceras, revisión de código fuente visible, mitigación de vulnerabilidades y hardening de servidor sobre la infraestructura del sitio web señalado, en conformidad con la **Ley N° 21.459 que Establece Normas sobre Delitos Informáticos en Chile**.
 
 ### Segunda: Propósito Exclusivo de Diagnóstico y Remediación
 Las pruebas y correcciones realizadas tienen como único fin identificar fallos de configuración, exposición no autorizada de credenciales/tokens y brechas de seguridad para su posterior mitigación. En ningún caso se realizará extracción, alteración, filtración o destrucción de datos de la empresa o sus usuarios.
@@ -381,23 +396,29 @@ Para la plena efectividad jurídica de este resguardo en conformidad con la **Le
 
 | SOLICITANTE / CLIENTE | EMISOR / PPV SOLUCIONES |
 |---|---|
-| **{client_name}** | **Patricio Padilla** |
-| **Firma Representante Autorizado:** {contact_person} | **CEO & Fundador — PPV Soluciones** |
-| **RUT:** {rut} | **Correo:** contacto@ppvsoluciones.cl |
-| **Adjunto:** Cédula de Identidad / Pasaporte Verificado | **Web:** https://ppvsoluciones.cl |
+| **{client_name}** | **{in_name}** |
+| **Firma Representante Autorizado:** {contact_person} | **{in_role} — PPV Soluciones** |
+| **RUT:** {rut} | **Correo:** {in_email} |
+| **Adjunto:** Cédula de Identidad / Pasaporte Verificado | **Teléfono:** {in_phone} |
 | **Dominio Autorizado:** {clean_domain} | **Fecha:** {date_str} |
 """
     return save_pdf(md_content, 'carta_autorizacion_seguridad', f'Carta de Autorización Legal - {clean_domain}', domain=clean_domain)
 
-def generate_client_audit_report_pdf(client_name, domain, plan_tier="$450 USD"):
+def generate_client_audit_report_pdf(client_name, domain, plan_tier="$450 USD", issuer_config=None):
     date_str = get_chile_date_str()
     clean_domain = domain.replace('https://', '').replace('http://', '').strip('/')
+    cfg = issuer_config or get_default_issuer_config()
+    in_name = cfg.get('issuer_name') or 'Patricio Padilla'
+    in_role = cfg.get('issuer_role') or 'CEO & Fundador'
+    in_phone = cfg.get('issuer_phone') or '+56 9 5704 0679'
+    in_email = cfg.get('issuer_email') or 'contacto@ppvsoluciones.cl'
+    in_website = cfg.get('issuer_website') or 'https://ppvsoluciones.cl'
     
     md_content = f"""# 🛡️ Informe de Diagnóstico & Ciberseguridad Web
 **Cliente / Dominio:** {clean_domain}  
 **Fecha de Evaluación:** {date_str}  
 **Plan:** {plan_tier}  
-**Emisor:** PPV Soluciones (contacto@ppvsoluciones.cl)  
+**Emisor:** PPV Soluciones ({in_email})  
 
 ---
 
@@ -433,23 +454,29 @@ El presente informe consolida el diagnóstico de ciberseguridad, evaluación de 
 
 ## ✍️ APROBACIÓN Y EMISIÓN
 
-**Patricio Padilla — CEO & Fundador**  
-PPV Soluciones | contacto@ppvsoluciones.cl | https://ppvsoluciones.cl
+**{in_name} — {in_role}**  
+PPV Soluciones | Tel: {in_phone} | {in_email} | {in_website}
 """
     file_prefix = clean_domain.replace(".", "_")
     return save_pdf(md_content, f'{file_prefix}_security_report', f'Informe de Seguridad - {clean_domain}', domain=clean_domain)
 
-def get_executive_summary_markdown(client_name, company_name, phone, email="", domain="", plan_tier="$450 USD"):
+def get_executive_summary_markdown(client_name, company_name, phone, email="", domain="", plan_tier="$450 USD", issuer_config=None):
     date_str = get_chile_date_str()
     clean_domain = domain.replace('https://', '').replace('http://', '').strip('/') if domain else 'N/A'
     c_name = client_name or "Cliente Estimado"
     comp_name = company_name or "Empresa"
     p_phone = phone or "No especificado"
     e_mail = email or "contacto@empresa.cl"
+    cfg = issuer_config or get_default_issuer_config()
+    in_name = cfg.get('issuer_name') or 'Patricio Padilla'
+    in_role = cfg.get('issuer_role') or 'CEO & Fundador'
+    in_phone = cfg.get('issuer_phone') or '+56 9 5704 0679'
+    in_email = cfg.get('issuer_email') or 'contacto@ppvsoluciones.cl'
+    in_website = cfg.get('issuer_website') or 'https://ppvsoluciones.cl'
     
     md_content = f"""# 🚀 RESUMEN EJECUTIVO & PRESENTACIÓN COMERCIAL
 **PPV Soluciones — Servicios Profesionales de Ciberseguridad & Desarrollo Web**  
-**Sitio Oficial:** https://ppvsoluciones.cl | **Contacto:** contacto@ppvsoluciones.cl | **Fecha:** {date_str}  
+**Sitio Oficial:** {in_website} | **Contacto:** {in_email} | **Fecha:** {date_str}  
 
 ---
 
@@ -499,18 +526,18 @@ En **PPV Soluciones**, brindamos soluciones integrales de ciberseguridad, harden
 
 Para dar inicio a la auditoría e implementación de mejoras de ciberseguridad para **{comp_name}**, puede contactarnos directamente a través de nuestros canales oficiales:
 
-* **Representante PPV Soluciones:** Patricio Padilla — CEO & Fundador
-* **Correo Directo:** contacto@ppvsoluciones.cl
-* **WhatsApp / Teléfono Directo:** +56 9 8623 9706
-* **Sitio Web & Consola Admin:** https://ppvsoluciones.cl
+* **Representante PPV Soluciones:** {in_name} — {in_role}
+* **Correo Directo:** {in_email}
+* **WhatsApp / Teléfono Directo:** {in_phone}
+* **Sitio Web & Consola Admin:** {in_website}
 """
     return md_content
 
-def generate_executive_summary_pdf(client_name, company_name, phone, email="", domain="", plan_tier="$450 USD", custom_markdown=None):
+def generate_executive_summary_pdf(client_name, company_name, phone, email="", domain="", plan_tier="$450 USD", custom_markdown=None, issuer_config=None):
     if custom_markdown and custom_markdown.strip():
         md_content = custom_markdown
     else:
-        md_content = get_executive_summary_markdown(client_name, company_name, phone, email, domain, plan_tier)
+        md_content = get_executive_summary_markdown(client_name, company_name, phone, email, domain, plan_tier, issuer_config)
         
     comp_clean = sanitize_filename_component(company_name or client_name or "cliente").lower()
     clean_domain = sanitize_filename_component(domain) if domain else None
@@ -522,17 +549,23 @@ def generate_executive_summary_pdf(client_name, company_name, phone, email="", d
         domain=clean_domain
     )
 
-def get_ppv_company_presentation_markdown(client_name="", company_name="", phone="", email="", domain="", plan_tier="$450 USD"):
+def get_ppv_company_presentation_markdown(client_name="", company_name="", phone="", email="", domain="", plan_tier="$450 USD", issuer_config=None):
     date_str = get_chile_date_str()
     clean_domain = domain.replace('https://', '').replace('http://', '').strip('/') if domain else 'N/A'
     c_name = client_name or "Estimado Cliente"
     comp_name = company_name or "Su Empresa"
     p_phone = phone or "No especificado"
     e_mail = email or "contacto@empresa.cl"
+    cfg = issuer_config or get_default_issuer_config()
+    in_name = cfg.get('issuer_name') or 'Patricio Padilla'
+    in_role = cfg.get('issuer_role') or 'CEO & Fundador'
+    in_phone = cfg.get('issuer_phone') or '+56 9 5704 0679'
+    in_email = cfg.get('issuer_email') or 'contacto@ppvsoluciones.cl'
+    in_website = cfg.get('issuer_website') or 'https://ppvsoluciones.cl'
     
     md_content = f"""# 🛡️ PRESENTACIÓN INSTITUCIONAL DE SERVICIOS — PPV SOLUCIONES
 **Ciberseguridad Defensiva, Hardening de Servidores & Desarrollo Web de Alta Eficiencia**  
-**Sitio Web:** https://ppvsoluciones.cl | **Correo:** contacto@ppvsoluciones.cl | **Fecha:** {date_str}
+**Sitio Web:** {in_website} | **Correo:** {in_email} | **Fecha:** {date_str}
 
 ---
 
@@ -603,18 +636,18 @@ Toda auditoría e intervención se ejecuta bajo un marco de confidencialidad y l
 
 Estamos listos para potenciar y blindar la presencia digital de **{comp_name}**.
 
-* **Representante Técnico:** Patricio Padilla — CEO & Fundador
-* **Correo Directo:** contacto@ppvsoluciones.cl
-* **WhatsApp / Teléfono Directo:** +56 9 8623 9706
-* **Sitio Web Oficial:** https://ppvsoluciones.cl
+* **Representante Técnico:** {in_name} — {in_role}
+* **Correo Directo:** {in_email}
+* **WhatsApp / Teléfono Directo:** {in_phone}
+* **Sitio Web Oficial:** {in_website}
 """
     return md_content
 
-def generate_ppv_company_presentation_pdf(client_name="", company_name="", phone="", email="", domain="", plan_tier="$450 USD", custom_markdown=None):
+def generate_ppv_company_presentation_pdf(client_name="", company_name="", phone="", email="", domain="", plan_tier="$450 USD", custom_markdown=None, issuer_config=None):
     if custom_markdown and custom_markdown.strip():
         md_content = custom_markdown
     else:
-        md_content = get_ppv_company_presentation_markdown(client_name, company_name, phone, email, domain, plan_tier)
+        md_content = get_ppv_company_presentation_markdown(client_name, company_name, phone, email, domain, plan_tier, issuer_config)
         
     comp_clean = sanitize_filename_component(company_name or client_name or "cliente").lower()
     clean_domain = sanitize_filename_component(domain) if domain else None
