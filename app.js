@@ -3,30 +3,46 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Inicializar IndexedDB y luego renderizar
-  if (window.portfolioDB) {
-    await window.portfolioDB.init();
+  // Helper for safe execution
+  const runSafe = async (name, fn) => {
+    try {
+      await fn();
+    } catch (e) {
+      console.error(`[Init Error] Failed to run ${name}:`, e);
+    }
+  };
+
+  // 1. Initialize DB first
+  try {
+    if (window.portfolioDB) {
+      await window.portfolioDB.init();
+    }
+  } catch (err) {
+    console.error('Error initializing portfolioDB:', err);
   }
 
-  initMobileMenuNav();
-  await loadDynamicStatusPill();
-  initNeonSign();
-  await loadSkillsMatrix();
-  await loadServicesCalculator();
-  initIndustrySolutions();
-  initDemoTabs();
-  initChatbotDemo();
-  initWorkflowDemo();
-  initSignaturePadDemo();
-  initContactAndDB();
-  initModals();
-  initMaintainerTabs();
-  initMaintainerServicesCRUD();
-  initMaintainerSkillsCRUD();
-  initMaintainerBlockedCRUD();
-  await loadClientsSection();
-  initCopyButtons();
-  initVCardLogic();
+  // 2. Load static & UI components safely
+  runSafe('initMobileMenuNav', () => initMobileMenuNav());
+  runSafe('initNeonSign', () => initNeonSign());
+  runSafe('initIndustrySolutions', () => initIndustrySolutions());
+  runSafe('initDemoTabs', () => initDemoTabs());
+  runSafe('initChatbotDemo', () => initChatbotDemo());
+  runSafe('initWorkflowDemo', () => initWorkflowDemo());
+  runSafe('initSignaturePadDemo', () => initSignaturePadDemo());
+  runSafe('initContactAndDB', () => initContactAndDB());
+  runSafe('initModals', () => initModals());
+  runSafe('initMaintainerTabs', () => initMaintainerTabs());
+  runSafe('initMaintainerServicesCRUD', () => initMaintainerServicesCRUD());
+  runSafe('initMaintainerSkillsCRUD', () => initMaintainerSkillsCRUD());
+  runSafe('initMaintainerBlockedCRUD', () => initMaintainerBlockedCRUD());
+  runSafe('initCopyButtons', () => initCopyButtons());
+  runSafe('initVCardLogic', () => initVCardLogic());
+
+  // 3. Load dynamic database-driven components safely
+  await runSafe('loadDynamicStatusPill', async () => await loadDynamicStatusPill());
+  await runSafe('loadSkillsMatrix', async () => await loadSkillsMatrix());
+  await runSafe('loadServicesCalculator', async () => await loadServicesCalculator());
+  await runSafe('loadClientsSection', async () => await loadClientsSection());
 });
 
 /* --------------------------------------------------------------------------
