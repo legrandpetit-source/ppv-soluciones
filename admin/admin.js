@@ -137,16 +137,32 @@ function initAuth() {
         const isCustomCreds = (eHash === currentHashes.emailHash && pHash === currentHashes.passHash);
 
         let isDbUser = false;
+        let isBlockedUser = false;
         if (window.portfolioDB && window.portfolioDB.db) {
           try {
             const dbUsers = await window.portfolioDB.getAllAdminUsers();
             if (dbUsers && Array.isArray(dbUsers)) {
               const found = dbUsers.find(u => (u.email && u.email.toLowerCase() === email || u.emailHash === eHash) && u.passHash === pHash);
-              if (found) isDbUser = true;
+              if (found) {
+                if (found.isBlocked) {
+                  isBlockedUser = true;
+                } else {
+                  isDbUser = true;
+                }
+              }
             }
           } catch (dbErr) {
             console.warn('[ADMIN] Error consultando usuarios DB:', dbErr);
           }
+        }
+
+        if (isBlockedUser) {
+          if (loginError) {
+            loginError.innerHTML = '<i class="fa-solid fa-lock" style="margin-right: 6px;"></i> Tu cuenta de usuario se encuentra bloqueada por el Administrador Principal.';
+            loginError.style.display = 'flex';
+          }
+          showToast('🔒 Usuario bloqueado. Contacta al administrador principal.', true);
+          return;
         }
 
         if (isMasterHash || isCustomCreds || isDbUser) {
@@ -778,6 +794,8 @@ function initUserMaintainer() {
   const passInput = document.getElementById('edit-admin-password');
   const confirmInput = document.getElementById('edit-admin-password-confirm');
   const btnToggleEditPass = document.getElementById('btn-toggle-edit-pass');
+  const btnToggleEditPassConfirm = document.getElementById('btn-toggle-edit-pass-confirm');
+  const btnNewUser = document.getElementById('btn-new-admin-user');
   const btnCancel = document.getElementById('btn-cancel-edit-admin-user');
   const titleEl = document.getElementById('admin-user-form-title');
   const tbody = document.getElementById('admin-users-tbody');
@@ -798,6 +816,32 @@ function initUserMaintainer() {
         btnToggleEditPass.classList.remove('active');
         if (icon) icon.className = 'fa-solid fa-eye';
       }
+    };
+  }
+
+  if (btnToggleEditPassConfirm && confirmInput) {
+    btnToggleEditPassConfirm.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const icon = btnToggleEditPassConfirm.querySelector('i');
+      if (confirmInput.type === 'password') {
+        confirmInput.type = 'text';
+        btnToggleEditPassConfirm.classList.add('active');
+        if (icon) icon.className = 'fa-solid fa-eye-slash';
+      } else {
+        confirmInput.type = 'password';
+        btnToggleEditPassConfirm.classList.remove('active');
+        if (icon) icon.className = 'fa-solid fa-eye';
+      }
+    };
+  }
+
+  if (btnNewUser) {
+    btnNewUser.onclick = (e) => {
+      e.preventDefault();
+      resetForm();
+      showToast('Formulario listo para registrar un nuevo usuario.');
+      if (nameInput) nameInput.focus();
     };
   }
 
@@ -850,8 +894,11 @@ function initUserMaintainer() {
         const existingUsers = await window.portfolioDB.getAllAdminUsers();
         const existing = existingUsers.find(u => u.id === userData.id);
         userData.passHash = pass ? await hashString(pass) : (existing ? existing.passHash : await hashString('axeappv3878'));
+        userData.isBlocked = existing ? !!existing.isBlocked : false;
+        userData.createdAt = existing ? existing.createdAt : new Date().toLocaleDateString('es-CL');
       } else {
         userData.passHash = await hashString(pass);
+        userData.isBlocked = false;
       }
 
       await window.portfolioDB.saveAdminUser(userData);
@@ -894,7 +941,9 @@ function initUserMaintainer() {
   function resetForm() {
     if (form) form.reset();
     if (userIdInput) userIdInput.value = '';
-    if (titleEl) titleEl.innerHTML = '<i class="fa-solid fa-user-plus"></i> Crear / Editar Usuario Administrador';
+    if (passInput) passInput.value = '';
+    if (confirmInput) confirmInput.value = '';
+    if (titleEl) titleEl.innerHTML = '<i class="fa-solid fa-user-plus"></i> Crear Nuevo Usuario Administrador';
     if (btnCancel) btnCancel.style.display = 'none';
   }
 
@@ -904,13 +953,18 @@ function initUserMaintainer() {
     tbody.innerHTML = '';
 
     if (!users || users.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">No hay usuarios registrados.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-muted);">No hay usuarios registrados.</td></tr>';
       return;
     }
 
     users.forEach(u => {
       const tr = document.createElement('tr');
       const levelBadgeClass = u.userLevel.includes('Principal') ? 'badge-new' : (u.userLevel.includes('Ciberseguridad') ? 'badge-read' : 'badge-replied');
+      const isBlocked = !!u.isBlocked;
+      const statusBadge = isBlocked
+        ? `<span class="badge-status" style="background: rgba(255, 0, 127, 0.15); color: var(--neon-pink); border: 1px solid var(--neon-pink);">🔒 Bloqueado</span>`
+        : `<span class="badge-status" style="background: rgba(0, 255, 136, 0.15); color: var(--neon-emerald); border: 1px solid var(--neon-emerald);">✅ Activo</span>`;
+
       tr.innerHTML = `
         <td>#${u.id}</td>
         <td><strong style="color: #fff;">${escapeHtml(u.name)}</strong></td>
@@ -918,13 +972,17 @@ function initUserMaintainer() {
         <td style="font-size: 0.8rem;">${escapeHtml(u.email)}</td>
         <td style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(u.phone || 'N/A')}</td>
         <td><span class="badge-status ${levelBadgeClass}">${escapeHtml(u.userLevel || 'Administrador')}</span></td>
+        <td>${statusBadge}</td>
         <td>
           <div style="display: flex; gap: 0.4rem;">
-            <button class="btn btn-outline btn-edit-admin-user" data-id="${u.id}" style="padding: 2px 6px; font-size: 0.75rem; border-color: var(--neon-cyan); color: var(--neon-cyan);">
+            <button class="btn btn-outline btn-edit-admin-user" data-id="${u.id}" title="Editar Usuario" style="padding: 2px 6px; font-size: 0.75rem; border-color: var(--neon-cyan); color: var(--neon-cyan);">
               <i class="fa-solid fa-pen"></i>
             </button>
-            ${u.email === 'ppv@ppvsoluciones.cl' ? '' : `
-            <button class="btn btn-outline btn-delete-admin-user" data-id="${u.id}" style="padding: 2px 6px; font-size: 0.75rem; border-color: var(--neon-pink); color: var(--neon-pink);">
+            <button class="btn btn-outline btn-block-admin-user" data-id="${u.id}" title="${isBlocked ? 'Desbloquear Acceso' : 'Bloquear Acceso'}" style="padding: 2px 6px; font-size: 0.75rem; border-color: ${isBlocked ? 'var(--neon-emerald)' : 'var(--neon-amber)'}; color: ${isBlocked ? 'var(--neon-emerald)' : 'var(--neon-amber)'};">
+              <i class="fa-solid ${isBlocked ? 'fa-user-check' : 'fa-user-slash'}"></i>
+            </button>
+            ${(u.email === 'ppv@ppvsoluciones.cl' || u.id === 1) ? '' : `
+            <button class="btn btn-outline btn-delete-admin-user" data-id="${u.id}" title="Eliminar Usuario" style="padding: 2px 6px; font-size: 0.75rem; border-color: var(--neon-pink); color: var(--neon-pink);">
               <i class="fa-solid fa-trash"></i>
             </button>`}
           </div>
@@ -944,6 +1002,8 @@ function initUserMaintainer() {
           if (levelSelect) levelSelect.value = user.userLevel || 'Administrador Principal';
           if (emailInput) emailInput.value = user.email || '';
           if (phoneInput) phoneInput.value = user.phone || '';
+          if (passInput) passInput.value = '';
+          if (confirmInput) confirmInput.value = '';
 
           if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Editando Usuario #${user.id}: ${escapeHtml(user.name)}`;
           if (btnCancel) btnCancel.style.display = 'inline-block';
@@ -952,12 +1012,36 @@ function initUserMaintainer() {
       };
     });
 
+    tbody.querySelectorAll('.btn-block-admin-user').forEach(btn => {
+      btn.onclick = async () => {
+        const id = parseInt(btn.dataset.id, 10);
+        const user = users.find(u => u.id === id);
+        if (!user) return;
+        if (user.email === 'ppv@ppvsoluciones.cl' || user.id === 1) {
+          showToast('⚠️ No se puede bloquear al Administrador Principal del sistema.', true);
+          return;
+        }
+
+        user.isBlocked = !user.isBlocked;
+        await window.portfolioDB.saveAdminUser(user);
+        await loadAdminUsersTable();
+        showToast(user.isBlocked ? `🔒 Usuario #${user.id} (${user.name}) bloqueado.` : `✅ Acceso deshabilitado/restablecido para #${user.id} (${user.name}).`);
+      };
+    });
+
     tbody.querySelectorAll('.btn-delete-admin-user').forEach(btn => {
       btn.onclick = async () => {
-        if (confirm('¿Eliminar este usuario administrador de la consola?')) {
-          await window.portfolioDB.deleteAdminUser(parseInt(btn.dataset.id, 10));
+        const id = parseInt(btn.dataset.id, 10);
+        const user = users.find(u => u.id === id);
+        if (!user) return;
+        if (user.email === 'ppv@ppvsoluciones.cl' || user.id === 1) {
+          showToast('⚠️ No se puede eliminar al Administrador Principal.', true);
+          return;
+        }
+        if (confirm(`¿Eliminar permanentemente al usuario #${user.id} (${user.name}) de la consola?`)) {
+          await window.portfolioDB.deleteAdminUser(id);
           await loadAdminUsersTable();
-          showToast('Usuario eliminado del sistema.');
+          showToast('🗑️ Usuario eliminado del sistema.');
         }
       };
     });
