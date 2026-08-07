@@ -187,6 +187,85 @@ def fetch_and_save_uf():
         'history': history_list
     }
 
+def get_issuer_config():
+    try:
+        os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS issuer_config (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                issuer_name TEXT DEFAULT 'Patricio Padilla',
+                issuer_role TEXT DEFAULT 'CEO & Fundador',
+                issuer_phone TEXT DEFAULT '+56 9 5704 0679',
+                issuer_email TEXT DEFAULT 'contacto@ppvsoluciones.cl',
+                issuer_website TEXT DEFAULT 'https://ppvsoluciones.cl',
+                updated_at TEXT
+            )
+        ''')
+        cursor.execute("SELECT issuer_name, issuer_role, issuer_phone, issuer_email, issuer_website FROM issuer_config WHERE id = 1")
+        row = cursor.fetchone()
+        if not row:
+            now_str = get_chile_now_str()
+            cursor.execute('''
+                INSERT INTO issuer_config (id, issuer_name, issuer_role, issuer_phone, issuer_email, issuer_website, updated_at)
+                VALUES (1, 'Patricio Padilla', 'CEO & Fundador', '+56 9 5704 0679', 'contacto@ppvsoluciones.cl', 'https://ppvsoluciones.cl', ?)
+            ''', (now_str,))
+            conn.commit()
+            row = ('Patricio Padilla', 'CEO & Fundador', '+56 9 5704 0679', 'contacto@ppvsoluciones.cl', 'https://ppvsoluciones.cl')
+        conn.close()
+        return {
+            'issuer_name': row[0],
+            'issuer_role': row[1],
+            'issuer_phone': row[2],
+            'issuer_email': row[3],
+            'issuer_website': row[4]
+        }
+    except Exception as e:
+        print(f"[TG-PROXY] Error leyendo issuer_config: {e}")
+        return {
+            'issuer_name': 'Patricio Padilla',
+            'issuer_role': 'CEO & Fundador',
+            'issuer_phone': '+56 9 5704 0679',
+            'issuer_email': 'contacto@ppvsoluciones.cl',
+            'issuer_website': 'https://ppvsoluciones.cl'
+        }
+
+def save_issuer_config(name, role, phone, email, website):
+    try:
+        os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS issuer_config (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                issuer_name TEXT DEFAULT 'Patricio Padilla',
+                issuer_role TEXT DEFAULT 'CEO & Fundador',
+                issuer_phone TEXT DEFAULT '+56 9 5704 0679',
+                issuer_email TEXT DEFAULT 'contacto@ppvsoluciones.cl',
+                issuer_website TEXT DEFAULT 'https://ppvsoluciones.cl',
+                updated_at TEXT
+            )
+        ''')
+        now_str = get_chile_now_str()
+        cursor.execute('''
+            INSERT INTO issuer_config (id, issuer_name, issuer_role, issuer_phone, issuer_email, issuer_website, updated_at)
+            VALUES (1, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(id) DO UPDATE SET
+                issuer_name=excluded.issuer_name,
+                issuer_role=excluded.issuer_role,
+                issuer_phone=excluded.issuer_phone,
+                issuer_email=excluded.issuer_email,
+                issuer_website=excluded.issuer_website,
+                updated_at=excluded.updated_at
+        ''', (name or 'Patricio Padilla', role or 'CEO & Fundador', phone or '+56 9 5704 0679', email or 'contacto@ppvsoluciones.cl', website or 'https://ppvsoluciones.cl', now_str))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print(f"[TG-PROXY] Error guardando issuer_config: {e}")
+        return False
+
 def send_telegram(name, email, subject, website, budget_text, message, phone='', contact_pref=''):
     now = get_chile_now_str()
     site_info = f"🌐 <b>Sitio Web / URL:</b> {escape_html(website)}\n" if website else ""
