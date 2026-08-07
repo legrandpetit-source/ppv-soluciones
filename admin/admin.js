@@ -931,22 +931,6 @@ function initUserMaintainer() {
         if (pass) {
           localStorage.setItem('ppv_admin_custom_hashes', JSON.stringify({ emailHash: eHash, passHash: userData.passHash }));
         }
-
-        try {
-          await fetch('/tg-issuer-config', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              issuer_name: userData.name,
-              issuer_role: userData.role,
-              issuer_phone: userData.phone,
-              issuer_email: userData.email,
-              issuer_website: 'https://ppvsoluciones.cl'
-            })
-          });
-        } catch (err) {
-          console.error('Error sincronizando datos del gestor al servidor:', err);
-        }
       }
 
       showToast(id ? '✅ Usuario administrador actualizado' : '✅ Nuevo usuario administrador registrado');
@@ -1993,7 +1977,14 @@ function initExecSummaryMaintainer() {
         if (data.ok) {
           currentMarkdown = data.markdown || '';
           markdownInput.value = currentMarkdown;
-          renderBox.innerHTML = data.html || '';
+          const iframe = document.createElement('iframe');
+          iframe.style.width = '100%';
+          iframe.style.height = '100%';
+          iframe.style.minHeight = '600px';
+          iframe.style.border = 'none';
+          iframe.srcdoc = data.html || '';
+          renderBox.innerHTML = '';
+          renderBox.appendChild(iframe);
           previewWrapper.style.display = 'block';
           previewWrapper.scrollIntoView({ behavior: 'smooth' });
           showToast('✅ Vista previa generada. Puedes editar los textos o confirmar el PDF.');
@@ -2060,7 +2051,14 @@ function initExecSummaryMaintainer() {
         });
         const data = await response.json();
         if (data.ok && data.html) {
-          renderBox.innerHTML = data.html;
+          const iframe = document.createElement('iframe');
+          iframe.style.width = '100%';
+          iframe.style.height = '100%';
+          iframe.style.minHeight = '600px';
+          iframe.style.border = 'none';
+          iframe.srcdoc = data.html || '';
+          renderBox.innerHTML = '';
+          renderBox.appendChild(iframe);
         }
       } catch (err) {
         console.error('Error live sync preview:', err);

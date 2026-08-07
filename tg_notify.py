@@ -336,45 +336,12 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(uf_data).encode('utf-8'))
             return
 
-        if self.path in ['/tg-issuer-config', '/api/issuer-config']:
-            cfg = get_issuer_config()
-            self.send_response(200)
-            self.send_cors_headers()
-            self.send_header('Content-Type', 'application/json')
-            self.end_headers()
-            self.wfile.write(json.dumps({'ok': True, 'config': cfg}).encode('utf-8'))
-            return
+
 
         self.send_response(404)
         self.end_headers()
 
     def do_POST(self):
-        if self.path in ['/tg-issuer-config', '/api/issuer-config']:
-            try:
-                length = int(self.headers.get('Content-Length', 0))
-                body = self.rfile.read(length)
-                data = json.loads(body.decode('utf-8'))
-                iname = str(data.get('issuer_name', '')).strip()
-                irole = str(data.get('issuer_role', '')).strip()
-                iphone = str(data.get('issuer_phone', '')).strip()
-                iemail = str(data.get('issuer_email', '')).strip()
-                iwebsite = str(data.get('issuer_website', '')).strip()
-
-                success = save_issuer_config(iname, irole, iphone, iemail, iwebsite)
-                self.send_response(200 if success else 500)
-                self.send_cors_headers()
-                self.send_header('Content-Type', 'application/json')
-                self.end_headers()
-                self.wfile.write(json.dumps({'ok': success, 'config': get_issuer_config()}).encode('utf-8'))
-                return
-            except Exception as e:
-                print(f"[TG-PROXY] Error actualizando issuer config: {e}")
-                self.send_response(500)
-                self.send_cors_headers()
-                self.send_header('Content-Type', 'application/json')
-                self.end_headers()
-                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode('utf-8'))
-                return
 
         if self.path in ['/tg-generate-docs', '/api/generate-docs']:
             try:
@@ -468,13 +435,12 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 custom_markdown = data.get('custom_markdown')
 
                 import generate_pdf
-                db_cfg = get_issuer_config()
                 issuer_cfg = {
-                    'issuer_name': str(data.get('issuer_name') or db_cfg.get('issuer_name') or 'Patricio Padilla').strip(),
-                    'issuer_role': str(data.get('issuer_role') or db_cfg.get('issuer_role') or 'CEO & Fundador').strip(),
-                    'issuer_phone': str(data.get('issuer_phone') or db_cfg.get('issuer_phone') or '+56 9 5704 0679').strip(),
-                    'issuer_email': str(data.get('issuer_email') or db_cfg.get('issuer_email') or 'contacto@ppvsoluciones.cl').strip(),
-                    'issuer_website': str(data.get('issuer_website') or db_cfg.get('issuer_website') or 'https://ppvsoluciones.cl').strip()
+                    'issuer_name': str(data.get('issuer_name') or 'Patricio Padilla').strip(),
+                    'issuer_role': str(data.get('issuer_role') or 'CEO & Fundador').strip(),
+                    'issuer_phone': str(data.get('issuer_phone') or '+56 9 5704 0679').strip(),
+                    'issuer_email': str(data.get('issuer_email') or 'contacto@ppvsoluciones.cl').strip(),
+                    'issuer_website': str(data.get('issuer_website') or 'https://ppvsoluciones.cl').strip()
                 }
 
                 if action == 'preview':
