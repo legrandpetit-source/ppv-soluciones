@@ -28,7 +28,7 @@ def load_env():
 load_env()
 
 # ── Configuración segura (desde .env o variables de entorno) ──────────────────
-TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '8623970624:AAEA5GQPNOJE53751yIir5PDCJglBbfFCMM')
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '8623970624:AAHpuDjIr5gvSiSEAwdapx99EKZZzXEgD1c')
 TELEGRAM_CHAT_ID   = os.environ.get('TELEGRAM_CHAT_ID', '1468481915')
 PORT               = int(os.environ.get('PORT', 9001))
 DB_PATH            = os.environ.get('DB_PATH', '/var/www/ppvsoluciones/ppv_database.sqlite')
