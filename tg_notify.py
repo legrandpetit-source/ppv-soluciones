@@ -15,11 +15,23 @@ try:
 except ImportError:
     ZoneInfo = None
 
-# ── Configuración segura (solo en el servidor) ────────────────────────────────
-TELEGRAM_BOT_TOKEN = '8623970624:AAEA5GQPNOJE53751yIir5PDCJglBbfFCMM'
-TELEGRAM_CHAT_ID   = '1468481915'
-PORT               = 9001
-DB_PATH            = '/var/www/ppvsoluciones/ppv_database.sqlite'
+def load_env():
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+    if os.path.exists(env_path):
+        with open(env_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    k, v = line.split('=', 1)
+                    os.environ[k.strip()] = v.strip().strip("'\"")
+
+load_env()
+
+# ── Configuración segura (desde .env o variables de entorno) ──────────────────
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '8623970624:AAEA5GQPNOJE53751yIir5PDCJglBbfFCMM')
+TELEGRAM_CHAT_ID   = os.environ.get('TELEGRAM_CHAT_ID', '1468481915')
+PORT               = int(os.environ.get('PORT', 9001))
+DB_PATH            = os.environ.get('DB_PATH', '/var/www/ppvsoluciones/ppv_database.sqlite')
 
 def get_chile_now_str():
     """Retorna fecha y hora exacta en zona horaria de Chile (America/Santiago)."""
