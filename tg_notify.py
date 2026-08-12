@@ -142,28 +142,42 @@ def fetch_and_save_uf():
     except Exception as e:
         print(f"[TG-PROXY] Warning mindicador.cl: {e}")
 
-    conn = sqlite3.connect(DB_PATH, timeout=5)
-    cursor = conn.cursor()
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
 
-    if uf_val:
-        clp_fmt = f"${uf_val:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
-        cursor.execute('''
-            INSERT INTO uf_history (date, uf_value, clp_formatted, fetched_at)
-            VALUES (?, ?, ?, datetime('now', 'localtime'))
-            ON CONFLICT(date) DO UPDATE SET uf_value=excluded.uf_value, clp_formatted=excluded.clp_formatted, fetched_at=excluded.fetched_at
-        ''', (today_str, uf_val, clp_fmt))
-        conn.commit()
-    else:
-        cursor.execute("SELECT date, uf_value FROM uf_history ORDER BY id DESC LIMIT 1")
-        row = cursor.fetchone()
-        if row:
-            today_str, uf_val = row[0], row[1]
+        if uf_val:
+            clp_fmt = f"${uf_val:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+            
+            # Compatible Upsert for older SQLite versions
+            cursor.execute("SELECT id FROM uf_history WHERE date = ?", (today_str,))
+            if cursor.fetchone():
+                cursor.execute('''
+                    UPDATE uf_history SET uf_value=?, clp_formatted=?, fetched_at=datetime('now', 'localtime')
+                    WHERE date=?
+                ''', (uf_val, clp_fmt, today_str))
+            else:
+                cursor.execute('''
+                    INSERT INTO uf_history (date, uf_value, clp_formatted, fetched_at)
+                    VALUES (?, ?, ?, datetime('now', 'localtime'))
+                ''', (today_str, uf_val, clp_fmt))
+            conn.commit()
         else:
-            uf_val = 40844.79 # Valor base de respaldo
+            cursor.execute("SELECT date, uf_value FROM uf_history ORDER BY id DESC LIMIT 1")
+            row = cursor.fetchone()
+            if row:
+                today_str, uf_val = row[0], row[1]
+            else:
+                uf_val = 40844.79 # Valor base de respaldo
 
-    cursor.execute("SELECT id, date, uf_value, clp_formatted, fetched_at FROM uf_history ORDER BY id DESC LIMIT 30")
-    history_rows = cursor.fetchall()
-    conn.close()
+        cursor.execute("SELECT id, date, uf_value, clp_formatted, fetched_at FROM uf_history ORDER BY id DESC LIMIT 30")
+        history_rows = cursor.fetchall()
+        conn.close()
+    except Exception as e:
+        print(f"[TG-PROXY] Error UF DB: {e}")
+        if not uf_val:
+            uf_val = 40844.79
+        history_rows = []
 
     history_list = []
     for r in history_rows:
@@ -260,17 +274,20 @@ def save_issuer_config(name, role, phone, email, website):
             )
         ''')
         now_str = get_chile_now_str()
-        cursor.execute('''
-            INSERT INTO issuer_config (id, issuer_name, issuer_role, issuer_phone, issuer_email, issuer_website, updated_at)
-            VALUES (1, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT(id) DO UPDATE SET
-                issuer_name=excluded.issuer_name,
-                issuer_role=excluded.issuer_role,
-                issuer_phone=excluded.issuer_phone,
-                issuer_email=excluded.issuer_email,
-                issuer_website=excluded.issuer_website,
-                updated_at=excluded.updated_at
-        ''', (name or 'Patricio Padilla', role or 'CEO & Fundador', phone or '+56 9 5704 0679', email or 'contacto@ppvsoluciones.cl', website or 'https://ppvsoluciones.cl', now_str))
+        
+        cursor.execute("SELECT id FROM issuer_config WHERE id = 1")
+        if cursor.fetchone():
+            cursor.execute('''
+                UPDATE issuer_config SET 
+                    issuer_name=?, issuer_role=?, issuer_phone=?, 
+                    issuer_email=?, issuer_website=?, updated_at=?
+                WHERE id = 1
+            ''', (name or 'Patricio Padilla', role or 'CEO & Fundador', phone or '+56 9 5704 0679', email or 'contacto@ppvsoluciones.cl', website or 'https://ppvsoluciones.cl', now_str))
+        else:
+            cursor.execute('''
+                INSERT INTO issuer_config (id, issuer_name, issuer_role, issuer_phone, issuer_email, issuer_website, updated_at)
+                VALUES (1, ?, ?, ?, ?, ?, ?)
+            ''', (name or 'Patricio Padilla', role or 'CEO & Fundador', phone or '+56 9 5704 0679', email or 'contacto@ppvsoluciones.cl', website or 'https://ppvsoluciones.cl', now_str))
         conn.commit()
         conn.close()
         return True
