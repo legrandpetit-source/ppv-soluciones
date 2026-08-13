@@ -295,6 +295,51 @@ def save_issuer_config(name, role, phone, email, website):
         print(f"[TG-PROXY] Error guardando issuer_config: {e}")
         return False
 
+def init_config_kv():
+    try:
+        os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS config_kv (
+                key TEXT PRIMARY KEY,
+                value TEXT
+            )
+        ''')
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"[TG-PROXY] Error init config_kv: {e}")
+
+def get_config_kv(key):
+    init_config_kv()
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute("SELECT value FROM config_kv WHERE key = ?", (key,))
+        row = cursor.fetchone()
+        conn.close()
+        return json.loads(row[0]) if row else None
+    except Exception:
+        return None
+
+def set_config_kv(key, value):
+    init_config_kv()
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute("SELECT key FROM config_kv WHERE key = ?", (key,))
+        if cursor.fetchone():
+            cursor.execute("UPDATE config_kv SET value = ? WHERE key = ?", (json.dumps(value), key))
+        else:
+            cursor.execute("INSERT INTO config_kv (key, value) VALUES (?, ?)", (key, json.dumps(value)))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print(f"[TG-PROXY] Error guardando config_kv: {e}")
+        return False
+
 def send_telegram(name, email, subject, website, budget_text, message, phone='', contact_pref=''):
     now = get_chile_now_str()
     site_info = f"🌐 <b>Sitio Web / URL:</b> {escape_html(website)}\n" if website else ""
@@ -365,7 +410,25 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(uf_data).encode('utf-8'))
             return
 
-
+        if self.path.startswith('/tg-get-config') or self.path.startswith('/api/get-config'):
+            import urllib.parse
+            parsed_path = urllib.parse.urlparse(self.path)
+            query = urllib.parse.parse_qs(parsed_path.query)
+            key = query.get('key', [None])[0]
+            if key:
+                val = get_config_kv(key)
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True, 'value': val}).encode('utf-8'))
+            else:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': 'Missing key'}).encode('utf-8'))
+            return
 
         self.send_response(404)
         self.end_headers()
@@ -677,6 +740,30 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 
                 if msg_id and status:
                     update_message_field(msg_id, 'status', status)
+                    
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True}).encode('utf-8'))
+                return
+            except Exception as e:
+                self.send_response(500)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+                return
+
+        if self.path in ['/tg-set-config', '/api/set-config']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                key = data.get('key')
+                value = data.get('value')
+                
+                if key and value is not None:
+                    set_config_kv(key, value)
                     
                 self.send_response(200)
                 self.send_cors_headers()

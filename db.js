@@ -231,6 +231,18 @@ class MessageDB {
 
   // --- Métodos de Configuración Key-Value ---
   async getConfig(key) {
+    try {
+      const res = await fetch(`/tg-get-config?key=${key}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.ok && data.value !== null) {
+          return data.value;
+        }
+      }
+    } catch(e) {
+      console.warn("Failed to getConfig from backend", e);
+    }
+    
     if (!this.db) await this.init();
     return new Promise((resolve, reject) => {
       const tx = this.db.transaction(this.stores.config, 'readonly');
@@ -242,6 +254,16 @@ class MessageDB {
   }
 
   async saveConfig(key, value) {
+    try {
+      await fetch('/tg-set-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: key, value: value })
+      });
+    } catch(e) {
+      console.warn("Failed to saveConfig to backend", e);
+    }
+    
     if (!this.db) await this.init();
     return new Promise((resolve, reject) => {
       const tx = this.db.transaction(this.stores.config, 'readwrite');
