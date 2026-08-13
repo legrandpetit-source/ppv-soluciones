@@ -86,40 +86,47 @@
   <link rel="stylesheet" href="styles.css?v=1786244444">
 </head>
 <body>
+  <!-- Autonomous Snake Background -->
+  <canvas id="snake-bg" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.7; pointer-events: none;"></canvas>
 
   <!-- Navegación -->
-  <header>
-    <div class="container nav-content">
-      <a href="#" class="logo" title="PPV Soluciones">
-        <img src="assets/ppv_logo_3d_transparent.png" alt="PPV Soluciones" style="height: 48px; width: auto; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.4));">
-      </a>
-      
-      <!-- Menú Desktop -->
-      <ul class="nav-links">
-        <li><a href="#soluciones-rubro">Soluciones por Rubro</a></li>
-        <li><a href="#auditoria-ciberseguridad" style="color: var(--neon-pink); font-weight: 700;"><i class="fa-solid fa-shield-halved"></i> Ciberseguridad</a></li>
-        <li><a href="#posicionamiento-web">Posicionamiento Web</a></li>
-        <li><a href="#qa-gobierno-ti" style="color: var(--neon-cyan); font-weight: 600;"><i class="fa-solid fa-vial-circle-check"></i> QA & Gobierno TI</a></li>
-        <li><a href="#clientes" style="color: var(--neon-cyan); font-weight: 600;"><i class="fa-solid fa-users"></i> Clientes</a></li>
-        <li><a href="#vcard" style="color: #ffb703; font-weight: 600;"><i class="fa-solid fa-qrcode"></i> Tarjeta Digital</a></li>
-        <li><a href="#sobre-mi">Expertise</a></li>
-        <li><a href="#habilidades">Matriz Técnica</a></li>
-        <li><a href="#demos-auto">Demos</a></li>
-        <li><a href="#formatos-web" style="color: var(--neon-cyan); font-weight: 600;"><i class="fa-solid fa-layer-group"></i> Tipos de Web</a></li>
-        <li><a href="#servicios">Calculadora</a></li>
-        <li><a href="#contacto">Contacto</a></li>
-      </ul>
-      
-      <div class="nav-actions">
-        <div class="status-pill">
-          <span class="pulse-dot"></span>
-          <span>Disponible para Proyectos</span>
-        </div>
+  <header id="main-header">
+    <div class="nav-container-inner">
+      <div class="container nav-content">
+        <a href="#" class="logo" title="PPV Soluciones">
+          <span class="logo-text">PPV<span class="text-cyan">.</span></span>
+        </a>
+        
+        <!-- Menú Desktop -->
+        <ul class="nav-links">
+          <li class="dropdown">
+            <a href="#soluciones-rubro">Servicios <i class="fa-solid fa-chevron-down dropdown-icon"></i></a>
+            <ul class="dropdown-menu">
+              <li><a href="#soluciones-rubro">Soluciones por Rubro</a></li>
+              <li><a href="#auditoria-ciberseguridad" style="color: var(--neon-pink);"><i class="fa-solid fa-shield-halved"></i> Ciberseguridad</a></li>
+              <li><a href="#posicionamiento-web">Posicionamiento Web</a></li>
+              <li><a href="#qa-gobierno-ti" style="color: var(--neon-cyan);"><i class="fa-solid fa-vial-circle-check"></i> QA & Gobierno TI</a></li>
+              <li><a href="#formatos-web" style="color: var(--neon-cyan);"><i class="fa-solid fa-layer-group"></i> Tipos de Web</a></li>
+            </ul>
+          </li>
+          <li><a href="#demos-auto">Demos</a></li>
+          <li><a href="#habilidades">Matriz Técnica</a></li>
+          <li><a href="#clientes">Clientes</a></li>
+          <li><a href="#servicios">Calculadora</a></li>
+          <li><a href="#contacto" style="color: #ffb703; font-weight: 600;"><i class="fa-solid fa-address-card"></i> Contacto & Tarjeta</a></li>
+        </ul>
+        
+        <div class="nav-actions">
+          <div class="status-pill hide-mobile">
+            <span class="pulse-dot"></span>
+            <span>Disponible</span>
+          </div>
 
-        <!-- Botón Menú Móvil (Hamburguesa) -->
-        <button type="button" class="mobile-menu-toggle" id="btn-mobile-toggle" aria-label="Abrir Menú de Navegación">
-          <i class="fa-solid fa-bars"></i> <span>Menú</span>
-        </button>
+          <!-- Botón Menú Móvil (Hamburguesa) -->
+          <button type="button" class="mobile-menu-toggle" id="btn-mobile-toggle" aria-label="Abrir Menú de Navegación">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -560,31 +567,18 @@
     </div>
   </section>
 
-  <!-- Hobbies, Valores & Expertise -->
-  <section id="sobre-mi">
+
+
+  <!-- Matriz de Capacidades Técnicas -->
+  <section id="habilidades" style="background: rgba(13, 17, 26, 0.4);">
     <div class="container">
       <div class="section-header">
-        <div class="section-subtitle">Filosofía & Capacidades</div>
-        <h2>Hobbies, Valores & Método de Trabajo</h2>
-        <p>Combinación de disciplina personal, análisis riguroso y flexibilidad tecnológica para resolver cualquier desafío técnico.</p>
+        <div class="section-subtitle">Stack de Tecnologías</div>
+        <h2>Matriz de Capacidades Técnicas</h2>
+        <p>Herramientas y tecnologías seleccionadas para entregar soluciones de alta velocidad y precisión.</p>
       </div>
 
-      <div class="expertise-grid">
-        <!-- Card 1: Calistenia & Disciplina -->
-        <div class="glass-card expertise-card">
-          <div class="expertise-icon">
-            <i class="fa-solid fa-person-running text-cyan"></i>
-          </div>
-          <h3>Calistenia & Disciplina Rigurosa</h3>
-          <p>La calistenia enseña que el progreso constante requiere paciencia, técnica perfecta y disciplina diaria. Aplicamos el mismo enfoque de superación continua para optimizar código y resolver bugs complejos.</p>
-          <div class="expertise-tags">
-            <span class="tag">Constancia</span>
-            <span class="tag">Enfoque Físico & Mental</span>
-            <span class="tag">Superación</span>
-          </div>
-        </div>
-
-        <!-- Card 2: Análisis de Requerimientos -->
+      <div class="expertise-grid" style="margin-bottom: 3rem; grid-template-columns: 1fr 1fr;">
         <div class="glass-card expertise-card">
           <div class="expertise-icon">
             <i class="fa-solid fa-diagram-project text-violet"></i>
@@ -597,8 +591,6 @@
             <span class="tag">Lógica de Negocio</span>
           </div>
         </div>
-
-        <!-- Card 3: Dominio de Lenguajes según Requerimiento -->
         <div class="glass-card expertise-card">
           <div class="expertise-icon">
             <i class="fa-solid fa-code text-emerald"></i>
@@ -612,17 +604,6 @@
             <span class="tag">APIs & Webhooks</span>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Matriz de Capacidades Técnicas -->
-  <section id="habilidades" style="background: rgba(13, 17, 26, 0.4);">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle">Stack de Tecnologías</div>
-        <h2>Matriz de Capacidades Técnicas</h2>
-        <p>Herramientas y tecnologías seleccionadas para entregar soluciones de alta velocidad y precisión.</p>
       </div>
 
       <div class="skills-filter">
@@ -919,13 +900,13 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
 
       <div class="format-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
         <!-- Card 1: Landing Page -->
-        <div class="glass-card format-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid var(--neon-cyan); background: rgba(13, 17, 26, 0.7);">
+        <div class="format-card" style="display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 2px 0 var(--neon-cyan), 0 10px 30px rgba(0,0,0,0.5);">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
-              <span class="badge-status" style="background: rgba(0, 243, 255, 0.1); color: var(--neon-cyan); border: 1px solid var(--neon-cyan); font-size: 0.75rem;">
+              <span class="badge-status" style="background: rgba(0, 243, 255, 0.1); color: var(--neon-cyan); font-size: 0.75rem;">
                 🎯 Ideal para Ads / Anuncios
               </span>
-              <span style="font-size: 0.85rem; font-weight: 800; color: #ffb703; background: rgba(255,183,3,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,183,3,0.3);">4 - 12 UF</span>
+              <span style="font-size: 0.9rem; font-weight: 800; color: #ffb703; padding: 4px 10px; border-radius: 6px; background: linear-gradient(135deg, rgba(255,183,3,0.15), rgba(255,183,3,0.05));">4 - 12 UF</span>
             </div>
             <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
               <i class="fa-solid fa-bullseye text-cyan"></i> Landing Page
@@ -950,13 +931,13 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
         </div>
 
         <!-- Card 2: Sitio One-Page -->
-        <div class="glass-card format-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid var(--neon-emerald); background: rgba(13, 17, 26, 0.7);">
+        <div class="format-card" style="display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 2px 0 var(--neon-emerald), 0 10px 30px rgba(0,0,0,0.5);">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
-              <span class="badge-status" style="background: rgba(0, 255, 136, 0.1); color: var(--neon-emerald); border: 1px solid var(--neon-emerald); font-size: 0.75rem;">
+              <span class="badge-status" style="background: rgba(0, 255, 136, 0.1); color: var(--neon-emerald); font-size: 0.75rem;">
                 ⚡ Freelancers & PYMEs
               </span>
-              <span style="font-size: 0.85rem; font-weight: 800; color: #ffb703; background: rgba(255,183,3,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,183,3,0.3);">6 - 20 UF</span>
+              <span style="font-size: 0.9rem; font-weight: 800; color: #ffb703; padding: 4px 10px; border-radius: 6px; background: linear-gradient(135deg, rgba(255,183,3,0.15), rgba(255,183,3,0.05));">6 - 20 UF</span>
             </div>
             <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
               <i class="fa-solid fa-bolt text-emerald"></i> Sitio "One-Page"
@@ -981,13 +962,13 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
         </div>
 
         <!-- Card 3: Sitio Web Corporativo -->
-        <div class="glass-card format-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid var(--neon-violet); background: rgba(13, 17, 26, 0.7);">
+        <div class="format-card" style="display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 2px 0 var(--neon-violet), 0 10px 30px rgba(0,0,0,0.5);">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
-              <span class="badge-status" style="background: rgba(147, 51, 234, 0.15); color: var(--neon-violet); border: 1px solid var(--neon-violet); font-size: 0.75rem;">
-                🏢 Credibilidad & SEO
+              <span class="badge-status" style="background: rgba(139, 92, 246, 0.1); color: var(--neon-violet); font-size: 0.75rem;">
+                🏢 Marcas & Empresas
               </span>
-              <span style="font-size: 0.85rem; font-weight: 800; color: #ffb703; background: rgba(255,183,3,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,183,3,0.3);">12 - 38 UF</span>
+              <span style="font-size: 0.9rem; font-weight: 800; color: #ffb703; padding: 4px 10px; border-radius: 6px; background: linear-gradient(135deg, rgba(255,183,3,0.15), rgba(255,183,3,0.05));">12 - 38 UF</span>
             </div>
             <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
               <i class="fa-solid fa-building text-violet"></i> Sitio Corporativo
@@ -1012,13 +993,13 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
         </div>
 
         <!-- Card 4: Tienda Online (E-commerce) -->
-        <div class="glass-card format-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid var(--neon-pink); background: rgba(13, 17, 26, 0.7);">
+        <div class="format-card" style="display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 2px 0 var(--neon-pink), 0 10px 30px rgba(0,0,0,0.5);">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
-              <span class="badge-status" style="background: rgba(255, 0, 127, 0.15); color: var(--neon-pink); border: 1px solid var(--neon-pink); font-size: 0.75rem;">
-                🛒 Ventas 24/7 & Pagos Webpay
+              <span class="badge-status" style="background: rgba(255, 0, 127, 0.1); color: var(--neon-pink); font-size: 0.75rem;">
+                🛒 Ventas Automáticas
               </span>
-              <span style="font-size: 0.85rem; font-weight: 800; color: #ffb703; background: rgba(255,183,3,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,183,3,0.3);">25 - 100+ UF</span>
+              <span style="font-size: 0.9rem; font-weight: 800; color: #ffb703; padding: 4px 10px; border-radius: 6px; background: linear-gradient(135deg, rgba(255,183,3,0.15), rgba(255,183,3,0.05));">25 - 100+ UF</span>
             </div>
             <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
               <i class="fa-solid fa-cart-shopping text-pink"></i> Tienda Online (E-commerce)
@@ -1043,13 +1024,13 @@ def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
         </div>
 
         <!-- Card 5: Blog o Portal de Contenidos -->
-        <div class="glass-card format-card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #ffb703; background: rgba(13, 17, 26, 0.7);">
+        <div class="format-card" style="display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 2px 0 var(--neon-amber), 0 10px 30px rgba(0,0,0,0.5);">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
-              <span class="badge-status" style="background: rgba(255, 183, 3, 0.15); color: #ffb703; border: 1px solid #ffb703; font-size: 0.75rem;">
-                📰 Contenidos & Tráfico
+              <span class="badge-status" style="background: rgba(255, 183, 3, 0.1); color: var(--neon-amber); font-size: 0.75rem;">
+                📰 Noticias & Artículos
               </span>
-              <span style="font-size: 0.85rem; font-weight: 800; color: #ffb703; background: rgba(255,183,3,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,183,3,0.3);">8 - 20 UF</span>
+              <span style="font-size: 0.9rem; font-weight: 800; color: #ffb703; padding: 4px 10px; border-radius: 6px; background: linear-gradient(135deg, rgba(255,183,3,0.15), rgba(255,183,3,0.05));">8 - 20 UF</span>
             </div>
             <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
               <i class="fa-solid fa-newspaper" style="color: #ffb703;"></i> Blog o Portal de Noticias
@@ -1852,5 +1833,96 @@ PPV Soluciones
   <!-- Scripts compartidos -->
   <script src="db.js?v=20260812_01"></script>
   <script src="app.js?v=20260812_01"></script>
+  
+  <!-- Efecto de Escritura de Terminal -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const terminal = document.querySelector('.terminal-body');
+      if (!terminal) return;
+      
+      // Fijar el alto exacto antes de vaciarlo para evitar redimensionamiento
+      terminal.style.minHeight = terminal.getBoundingClientRect().height + "px";
+      
+      const lines = Array.from(terminal.children);
+      terminal.innerHTML = '';
+      
+      let currentLineIdx = 0;
+      
+      function typeLine() {
+        if (currentLineIdx >= lines.length) {
+          return; // Finaliza y no hace bucle
+        }
+        
+        const originalLine = lines[currentLineIdx];
+        const newLine = document.createElement(originalLine.tagName);
+        
+        for (let i = 0; i < originalLine.attributes.length; i++) {
+          newLine.setAttribute(originalLine.attributes[i].name, originalLine.attributes[i].value);
+        }
+        
+        terminal.appendChild(newLine);
+        
+        if (originalLine.tagName.toLowerCase() === 'br') {
+            currentLineIdx++;
+            setTimeout(typeLine, 50);
+            return;
+        }
+        
+        const nodes = Array.from(originalLine.childNodes);
+        let currentNodeIdx = 0;
+        
+        function typeNode() {
+          if (currentNodeIdx >= nodes.length) {
+            currentLineIdx++;
+            setTimeout(typeLine, 100);
+            return;
+          }
+          
+          const node = nodes[currentNodeIdx];
+          
+          if (node.nodeType === Node.TEXT_NODE) {
+            const text = node.textContent;
+            let charIdx = 0;
+            const textNode = document.createTextNode('');
+            newLine.appendChild(textNode);
+            
+            function typeChar() {
+              if (charIdx < text.length) {
+                textNode.textContent += text[charIdx];
+                charIdx++;
+                setTimeout(typeChar, 20 + Math.random() * 20);
+              } else {
+                currentNodeIdx++;
+                typeNode();
+              }
+            }
+            typeChar();
+            
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            const clone = node.cloneNode(false);
+            newLine.appendChild(clone);
+            const text = node.textContent;
+            let charIdx = 0;
+            
+            function typeCharElem() {
+              if (charIdx < text.length) {
+                clone.textContent += text[charIdx];
+                charIdx++;
+                setTimeout(typeCharElem, 20 + Math.random() * 20);
+              } else {
+                currentNodeIdx++;
+                typeNode();
+              }
+            }
+            typeCharElem();
+          }
+        }
+        
+        typeNode();
+      }
+      
+      setTimeout(typeLine, 1000);
+    });
+  </script>
 </body>
 </html>

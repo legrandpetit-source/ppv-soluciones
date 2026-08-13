@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // 2. Load static & UI components safely
+  runSafe('initSnakeBackground', () => initSnakeBackground());
+  runSafe('initScrollHeader', () => initScrollHeader());
   runSafe('initMobileMenuNav', () => initMobileMenuNav());
   runSafe('initNeonSign', () => initNeonSign());
   runSafe('initIndustrySolutions', () => initIndustrySolutions());
@@ -180,6 +182,136 @@ function initNeonSign() {
   }
 
   setTimeout(lightUpLetter, 600);
+}
+
+/* ==========================================================================
+   AUTONOMOUS SNAKE BACKGROUND
+   ========================================================================== */
+function initSnakeBackground() {
+  const canvas = document.getElementById('snake-bg');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let width, height;
+  const gridSize = 40;
+  
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  let snake = [
+    {x: 4, y: 4},
+    {x: 3, y: 4},
+    {x: 2, y: 4}
+  ];
+  let dx = 1;
+  let dy = 0;
+  let apple = {x: 10, y: 10};
+
+  function spawnApple() {
+    const maxCols = Math.floor(width / gridSize);
+    const maxRows = Math.floor(height / gridSize);
+    apple.x = Math.floor(Math.random() * maxCols);
+    apple.y = Math.floor(Math.random() * maxRows);
+  }
+  spawnApple();
+
+  let lastTime = 0;
+  const speed = 150; 
+  
+  const snakeColor = 'rgba(0, 243, 255, 0.4)';
+  const appleColor = 'rgba(255, 0, 127, 0.6)';
+
+  let eatEffect = 0;
+
+  function loop(time) {
+    requestAnimationFrame(loop);
+    if (time - lastTime < speed) return;
+    lastTime = time;
+
+    const head = snake[0];
+    
+    // AI Logic (Simple)
+    let possibleDirs = [];
+    if (head.x < apple.x && dx !== -1) possibleDirs.push({dx: 1, dy: 0});
+    else if (head.x > apple.x && dx !== 1) possibleDirs.push({dx: -1, dy: 0});
+    
+    if (head.y < apple.y && dy !== -1) possibleDirs.push({dx: 0, dy: 1});
+    else if (head.y > apple.y && dy !== 1) possibleDirs.push({dx: 0, dy: -1});
+
+    if (possibleDirs.length > 0) {
+      const dir = possibleDirs[Math.floor(Math.random() * possibleDirs.length)];
+      dx = dir.dx;
+      dy = dir.dy;
+    }
+
+    let newHead = { x: head.x + dx, y: head.y + dy };
+    
+    const maxCols = Math.floor(width / gridSize);
+    const maxRows = Math.floor(height / gridSize);
+    
+    if (newHead.x >= maxCols) newHead.x = 0;
+    if (newHead.x < 0) newHead.x = maxCols - 1;
+    if (newHead.y >= maxRows) newHead.y = 0;
+    if (newHead.y < 0) newHead.y = maxRows - 1;
+
+    snake.unshift(newHead);
+
+    if (newHead.x === apple.x && newHead.y === apple.y) {
+      spawnApple();
+      eatEffect = 1.0;
+    } else {
+      snake.pop();
+      if (eatEffect > 0) eatEffect -= 0.1;
+    }
+
+    draw();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    ctx.fillStyle = appleColor;
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = appleColor;
+    
+    if (eatEffect > 0) {
+      ctx.beginPath();
+      ctx.arc(apple.x * gridSize + gridSize/2, apple.y * gridSize + gridSize/2, (gridSize/2) * (1 + eatEffect), 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    ctx.fillRect(apple.x * gridSize + 12, apple.y * gridSize + 12, gridSize - 24, gridSize - 24);
+
+    ctx.fillStyle = snakeColor;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = snakeColor;
+    snake.forEach((segment, idx) => {
+      const padding = idx === 0 ? 6 : 10;
+      ctx.fillRect(segment.x * gridSize + padding, segment.y * gridSize + padding, gridSize - padding*2, gridSize - padding*2);
+    });
+    ctx.shadowBlur = 0;
+  }
+
+  requestAnimationFrame(loop);
+}
+
+function initScrollHeader() {
+  const header = document.getElementById('main-header');
+  if (!header) return;
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
 }
 
 /* --------------------------------------------------------------------------
