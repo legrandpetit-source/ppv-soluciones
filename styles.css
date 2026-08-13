@@ -175,7 +175,7 @@ header.scrolled .nav-container-inner {
   font-family: var(--font-heading);
   font-size: 1.8rem;
   font-weight: 800;
-  color: #fff;
+  color: #ffffff !important;
   letter-spacing: -1px;
   text-shadow: 0 0 15px rgba(255,255,255,0.2);
   animation: glowPulse 2.5s infinite alternate;
@@ -187,7 +187,7 @@ header.scrolled .nav-container-inner {
 }
 
 .text-cyan {
-  color: var(--neon-cyan);
+  color: var(--neon-cyan) !important;
   text-shadow: 0 0 12px rgba(0, 243, 255, 0.5);
 }
 
@@ -2103,10 +2103,12 @@ textarea.form-control {
   margin-top: 0.2rem;
   margin-bottom: 0.2rem;
   padding: 0.4rem 0.8rem;
-  background: #0e131f;
-  border: 1.5px solid var(--neon-cyan);
+  background: rgba(13, 17, 26, 0.6);
+  border: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-radius: var(--radius-md);
-  box-shadow: 0 0 18px rgba(0, 243, 255, 0.35);
+  box-shadow: inset 0 1px 0 rgba(0, 243, 255, 0.3), 0 4px 10px rgba(0, 0, 0, 0.3);
   cursor: default !important;
   user-select: none;
   transition: var(--transition);
@@ -2137,8 +2139,10 @@ textarea.form-control {
   align-items: center;
   justify-content: space-between;
   padding: 0.35rem 0.75rem;
-  background: #0e131f;
-  border: 1px solid var(--border-glass);
+  background: rgba(13, 17, 26, 0.5);
+  border: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-radius: 8px;
   color: #ffffff !important;
   text-decoration: none !important;
@@ -2146,19 +2150,18 @@ textarea.form-control {
   font-size: 0.92rem;
   font-weight: 700;
   transition: var(--transition);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.4);
   touch-action: manipulation;
 }
 
 .mobile-nav-item:hover, .mobile-nav-item:active {
-  border-color: var(--neon-cyan);
-  background: rgba(0, 243, 255, 0.18);
-  box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+  background: rgba(0, 243, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(0, 243, 255, 0.3), 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .mobile-nav-item.active-cta {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.25), rgba(0, 243, 255, 0.25));
-  border-color: var(--neon-emerald);
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 243, 255, 0.15));
+  box-shadow: inset 0 1px 0 var(--neon-emerald), 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .nav-icon-box {
