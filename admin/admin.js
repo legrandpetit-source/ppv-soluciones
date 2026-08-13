@@ -337,7 +337,7 @@ async function loadMessagesTable() {
   if (statCounter) statCounter.textContent = messages.length;
 
   if (!messages.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color: var(--text-muted);">No hay mensajes registrados aún.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color: var(--text-muted);">No hay mensajes registrados aún.</td></tr>';
     return;
   }
 
@@ -349,6 +349,7 @@ async function loadMessagesTable() {
     const phoneInfo = msg.phone ? `<br><small style="color: var(--neon-cyan);"><i class="fa-solid fa-phone"></i> ${escapeHtml(msg.phone)} (${escapeHtml(msg.contact_pref || 'WhatsApp')})</small>` : '';
 
     tr.innerHTML = `
+      <td style="text-align: center;"><input type="checkbox" class="bulk-msg-cb" value="${msg.id}"></td>
       <td style="font-family: var(--font-code); color: var(--neon-cyan);">#${msg.id}</td>
       <td style="color: var(--text-muted); font-size: 0.8rem;">${msg.timestampFormatted}</td>
       <td><strong>${escapeHtml(msg.name)}</strong>${websiteInfo}</td>
@@ -366,6 +367,51 @@ async function loadMessagesTable() {
     `;
     tbody.appendChild(tr);
   });
+
+  // Checkbox interactions
+  const bulkDelBtn = document.getElementById('btn-portal-bulk-delete');
+  const selectAllCb = document.getElementById('bulk-select-all-msgs');
+  const rowCbs = tbody.querySelectorAll('.bulk-msg-cb');
+  
+  const updateBulkDelBtn = () => {
+    const anyChecked = Array.from(rowCbs).some(cb => cb.checked);
+    if (bulkDelBtn) bulkDelBtn.style.display = anyChecked ? 'inline-block' : 'none';
+  };
+
+  if (selectAllCb) {
+    selectAllCb.checked = false;
+    selectAllCb.onchange = (e) => {
+      rowCbs.forEach(cb => cb.checked = e.target.checked);
+      updateBulkDelBtn();
+    };
+  }
+
+  rowCbs.forEach(cb => {
+    cb.onchange = () => {
+      if (!cb.checked && selectAllCb) selectAllCb.checked = false;
+      updateBulkDelBtn();
+    };
+  });
+
+  if (bulkDelBtn) {
+    bulkDelBtn.onclick = async () => {
+      const selectedIds = Array.from(rowCbs).filter(cb => cb.checked).map(cb => parseInt(cb.value, 10));
+      if (selectedIds.length === 0) return;
+      if (confirm(`¿Eliminar ${selectedIds.length} mensajes seleccionados permanentemente?`)) {
+        bulkDelBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Eliminando...';
+        bulkDelBtn.disabled = true;
+        for (const id of selectedIds) {
+          await window.portfolioDB.deleteMessage(id);
+        }
+        await refreshAllData();
+        if (bulkDelBtn) {
+          bulkDelBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Eliminar Seleccionados';
+          bulkDelBtn.disabled = false;
+          bulkDelBtn.style.display = 'none';
+        }
+      }
+    };
+  }
 
   tbody.querySelectorAll('.btn-msg-read').forEach(btn => {
     btn.onclick = async () => {
