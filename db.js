@@ -232,7 +232,7 @@ class MessageDB {
   // --- Métodos de Configuración Key-Value ---
   async getConfig(key) {
     try {
-      const res = await fetch(`/tg-get-config?key=${key}`);
+      const res = await fetch(`/api/get-config?key=${key}`);
       if (res.ok) {
         const data = await res.json();
         if (data.ok && data.value !== null) {
@@ -255,7 +255,7 @@ class MessageDB {
 
   async saveConfig(key, value) {
     try {
-      await fetch('/tg-set-config', {
+      await fetch('/api/set-config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key: key, value: value })
@@ -341,7 +341,7 @@ class MessageDB {
 
   async updateMessageStatus(id, newStatus) {
     try {
-      await fetch('/tg-update-message-status', {
+      await fetch('/api/update-message-status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id, status: newStatus })
@@ -358,7 +358,7 @@ class MessageDB {
 
   async deleteMessage(id) {
     try {
-      await fetch('/tg-delete-message', {
+      await fetch('/api/delete-message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id })
