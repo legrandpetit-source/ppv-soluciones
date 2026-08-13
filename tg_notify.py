@@ -779,6 +779,42 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
                 return
 
+        if self.path in ['/tg-deploy', '/api/deploy']:
+            try:
+                import subprocess, threading, time, sys, os
+                
+                project_dir = os.path.dirname(os.path.abspath(__file__))
+                result = subprocess.run(['git', 'pull', 'origin', 'main'], cwd=project_dir, capture_output=True, text=True)
+                
+                if result.returncode != 0:
+                    raise Exception(f"Git pull falló: {result.stderr}")
+                
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    'ok': True, 
+                    'msg': 'Despliegue exitoso, reiniciando servidor...',
+                    'output': result.stdout
+                }).encode('utf-8'))
+                
+                def restart_server(server_instance):
+                    time.sleep(1)
+                    server_instance.server_close()
+                    print("[TG-PROXY] Reiniciando servidor para aplicar cambios del webhook...")
+                    os.execv(sys.executable, ['python3', sys.argv[0]] + sys.argv[1:])
+                
+                threading.Thread(target=restart_server, args=(self.server,)).start()
+                return
+            except Exception as e:
+                self.send_response(500)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+                return
+
         if self.path not in ['/tg-notify', '/api/notify']:
             self.send_response(404)
             self.end_headers()
