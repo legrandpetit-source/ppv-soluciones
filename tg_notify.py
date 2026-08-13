@@ -639,6 +639,59 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
                 return
 
+        if self.path in ['/tg-delete-message', '/api/delete-message']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                msg_id = data.get('id')
+                
+                if msg_id:
+                    conn = sqlite3.connect(DB_PATH, timeout=5)
+                    cursor = conn.cursor()
+                    cursor.execute("DELETE FROM contact_messages WHERE id = ?", (msg_id,))
+                    conn.commit()
+                    conn.close()
+                    
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True}).encode('utf-8'))
+                return
+            except Exception as e:
+                self.send_response(500)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+                return
+
+        if self.path in ['/tg-update-message-status', '/api/update-message-status']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                msg_id = data.get('id')
+                status = data.get('status')
+                
+                if msg_id and status:
+                    update_message_field(msg_id, 'status', status)
+                    
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True}).encode('utf-8'))
+                return
+            except Exception as e:
+                self.send_response(500)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+                return
+
         if self.path not in ['/tg-notify', '/api/notify']:
             self.send_response(404)
             self.end_headers()

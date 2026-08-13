@@ -318,6 +318,15 @@ class MessageDB {
   }
 
   async updateMessageStatus(id, newStatus) {
+    try {
+      await fetch('/tg-update-message-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id, status: newStatus })
+      });
+    } catch(e) {
+      console.warn("Failed to update status on backend", e);
+    }
     const messages = await this.getAll('messages');
     const target = messages.find(m => m.id === id);
     if (!target) throw new Error('Mensaje no encontrado');
@@ -326,6 +335,15 @@ class MessageDB {
   }
 
   async deleteMessage(id) {
+    try {
+      await fetch('/tg-delete-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id })
+      });
+    } catch(e) {
+      console.warn("Failed to delete message on backend", e);
+    }
     return await this.delete('messages', id);
   }
 
