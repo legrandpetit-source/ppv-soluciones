@@ -114,7 +114,8 @@
           <li><a href="#habilidades">Matriz Técnica</a></li>
           <li><a href="#clientes">Clientes</a></li>
           <li><a href="#servicios">Calculadora</a></li>
-          <li><a href="#contacto" style="color: #ffb703; font-weight: 600;"><i class="fa-solid fa-address-card"></i> Contacto & Tarjeta</a></li>
+          <li><a href="#contacto"><i class="fa-solid fa-envelope"></i> Contacto</a></li>
+          <li><a href="#vcard" style="color: var(--neon-cyan); border: 1px solid var(--neon-cyan); padding: 0.4rem 0.8rem; border-radius: 20px; font-weight: 600;"><i class="fa-solid fa-qrcode"></i> Tarjeta Digital</a></li>
         </ul>
         
         <div class="nav-actions">
@@ -1561,20 +1562,6 @@ PPV Soluciones
           </a>
         </li>
         <li>
-          <a href="#sobre-mi" class="mobile-nav-item">
-            <div class="nav-icon-box violet"><i class="fa-solid fa-user-gear"></i></div>
-            <span>Expertise & Perfil</span>
-            <i class="fa-solid fa-chevron-right arrow-icon"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#habilidades" class="mobile-nav-item">
-            <div class="nav-icon-box cyan"><i class="fa-solid fa-list-check"></i></div>
-            <span>Matriz de Habilidades</span>
-            <i class="fa-solid fa-chevron-right arrow-icon"></i>
-          </a>
-        </li>
-        <li>
           <a href="#demos-auto" class="mobile-nav-item">
             <div class="nav-icon-box emerald"><i class="fa-solid fa-robot"></i></div>
             <span>Demos de Automatización</span>
@@ -1596,24 +1583,16 @@ PPV Soluciones
           </a>
         </li>
         <li>
-          <a href="#kit-freelance" class="mobile-nav-item">
-            <div class="nav-icon-box cyan"><i class="fa-solid fa-folder-open"></i></div>
-            <span>Kit Freelance</span>
-            <i class="fa-solid fa-chevron-right arrow-icon"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#vcard" class="mobile-nav-item">
-            <div class="nav-icon-box" style="background: rgba(255, 183, 3, 0.15); color: #ffb703; border: 1px solid #ffb703;"><i class="fa-solid fa-qrcode"></i></div>
-            <span>Tarjeta Digital QR</span>
-            <i class="fa-solid fa-chevron-right arrow-icon"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#contacto" class="mobile-nav-item active-cta">
+          <a href="#contacto" class="mobile-nav-item">
             <div class="nav-icon-box emerald"><i class="fa-solid fa-paper-plane"></i></div>
             <span>Contactar Directamente</span>
             <i class="fa-solid fa-chevron-right arrow-icon"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#vcard" class="mobile-nav-item active-cta" style="margin-top: 0.5rem; justify-content: center; gap: 0.5rem;">
+            <i class="fa-solid fa-qrcode"></i>
+            <span>Ver Tarjeta Digital</span>
           </a>
         </li>
       </ul>
@@ -1627,6 +1606,58 @@ PPV Soluciones
       </div>
     </div>
   </div>
+
+  <!-- Footer Cyberpunk -->
+  <footer style="background: rgba(13, 17, 26, 0.9); border-top: 1px solid var(--border-glass); padding: 3rem 0 2rem 0; margin-top: 4rem; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+        
+        <!-- Columna 1: Branding -->
+        <div>
+          <a href="#" class="logo" title="PPV Soluciones" style="margin-bottom: 1rem; display: inline-block; text-decoration: none;">
+            <span class="logo-text">PPV<span class="text-cyan">.</span></span>
+          </a>
+          <p style="font-size: 0.9rem; color: #a1a1aa; line-height: 1.6; max-width: 300px;">
+            Impulsamos tu negocio con <strong>Ciberseguridad Web</strong>, <strong>Automatización con IA</strong> y <strong>Desarrollo Full-Stack</strong>. Soluciones tecnológicas seguras y escalables desde Chile.
+          </p>
+        </div>
+
+        <!-- Columna 2: Enlaces Rápidos -->
+        <div>
+          <h4 style="color: #fff; font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 1rem;">Enlaces Rápidos</h4>
+          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem;">
+            <li><a href="#soluciones-rubro" style="color: #a1a1aa; text-decoration: none; font-size: 0.9rem; transition: color 0.3s;">Soluciones por Rubro</a></li>
+            <li><a href="#formatos-web" style="color: #a1a1aa; text-decoration: none; font-size: 0.9rem; transition: color 0.3s;">Desarrollo Web</a></li>
+            <li><a href="#servicios" style="color: #a1a1aa; text-decoration: none; font-size: 0.9rem; transition: color 0.3s;">Cotizador Online</a></li>
+            <li><a href="#contacto" class="btn-open-contacto-modal" style="color: var(--neon-cyan); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;">Contactar Soporte</a></li>
+          </ul>
+        </div>
+
+        <!-- Columna 3: Contacto -->
+        <div>
+          <h4 style="color: #fff; font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 1rem;">Contacto Directo</h4>
+          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.8rem;">
+            <li style="color: #a1a1aa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-envelope" style="color: var(--neon-pink);"></i> ppv@ppvsoluciones.cl
+            </li>
+            <li style="color: #a1a1aa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-brands fa-whatsapp" style="color: var(--neon-emerald);"></i> +56 9 5704 0679
+            </li>
+            <li style="color: #a1a1aa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-location-dot" style="color: var(--neon-cyan);"></i> Chile (Atención Remota)
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 1rem;">
+        <div style="color: rgba(255,255,255,0.4); font-size: 0.8rem; text-align: center;">
+          &copy; 2026 PPV Soluciones. Todos los derechos reservados.
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <!-- Modal 1: Solicitud Específica de Auditoría de Ciberseguridad & Resguardo Legal -->
   <div class="modal-overlay" id="modal-security-audit">
