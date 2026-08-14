@@ -2035,7 +2035,7 @@ textarea.form-control {
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  background: #07090e;
+  background: rgba(7, 9, 14, 0.85); /* Semi-transparent for snake */
   z-index: 9999999 !important;
   flex-direction: column;
   padding: 0.4rem 0.6rem;

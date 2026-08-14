@@ -66,12 +66,16 @@ function initMobileMenuNav() {
     drawer.style.display = 'flex';
     drawer.classList.add('active');
     document.body.style.overflow = 'hidden';
+    const snakeBg = document.getElementById('snake-bg');
+    if (snakeBg) snakeBg.style.zIndex = '9999998';
   }
 
   function closeDrawer() {
     drawer.classList.remove('active');
     drawer.style.display = 'none';
     document.body.style.overflow = '';
+    const snakeBg = document.getElementById('snake-bg');
+    if (snakeBg) snakeBg.style.zIndex = '0';
   }
 
   btnToggle.onclick = (e) => {
