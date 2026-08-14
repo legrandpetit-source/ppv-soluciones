@@ -66,21 +66,22 @@ function initMobileMenuNav() {
     drawer.style.display = 'flex';
     drawer.classList.add('active');
     document.body.style.overflow = 'hidden';
-    document.querySelectorAll('main, footer, #main-header').forEach(el => {
-      el.style.visibility = 'hidden';
-      el.style.opacity = '0';
-      el.style.transition = 'opacity 0.2s';
-    });
+    const snakeBg = document.getElementById('snake-bg');
+    if (snakeBg) {
+      snakeBg.style.zIndex = '9999998';
+      snakeBg.style.opacity = '0.5';
+    }
   }
 
   function closeDrawer() {
     drawer.classList.remove('active');
     drawer.style.display = 'none';
     document.body.style.overflow = '';
-    document.querySelectorAll('main, footer, #main-header').forEach(el => {
-      el.style.visibility = '';
-      el.style.opacity = '';
-    });
+    const snakeBg = document.getElementById('snake-bg');
+    if (snakeBg) {
+      snakeBg.style.zIndex = '-1';
+      snakeBg.style.opacity = '0.15';
+    }
   }
 
   btnToggle.onclick = (e) => {
@@ -231,7 +232,22 @@ function initSnakeBackground() {
   spawnApple();
 
   let lastTime = 0;
-  const speed = 150; 
+  const speed = 120; 
+  
+  let gameOver = false;
+  let gameOverTime = 0;
+
+  function resetGame() {
+    snake = [
+      {x: 4, y: 4},
+      {x: 3, y: 4},
+      {x: 2, y: 4}
+    ];
+    dx = 1;
+    dy = 0;
+    spawnApple();
+    gameOver = false;
+  }
   
   const snakeColor = 'rgba(0, 243, 255, 0.4)';
   const appleColor = 'rgba(255, 0, 127, 0.6)';
@@ -240,6 +256,14 @@ function initSnakeBackground() {
 
   function loop(time) {
     requestAnimationFrame(loop);
+    
+    if (gameOver) {
+      if (time - gameOverTime > 2000) {
+        resetGame();
+      }
+      return;
+    }
+
     if (time - lastTime < speed) return;
     lastTime = time;
 
@@ -268,6 +292,21 @@ function initSnakeBackground() {
     if (newHead.x < 0) newHead.x = maxCols - 1;
     if (newHead.y >= maxRows) newHead.y = 0;
     if (newHead.y < 0) newHead.y = maxRows - 1;
+
+    let collision = false;
+    for (let i = 0; i < snake.length; i++) {
+      if (newHead.x === snake[i].x && newHead.y === snake[i].y) {
+        collision = true;
+        break;
+      }
+    }
+
+    if (collision) {
+      gameOver = true;
+      gameOverTime = performance.now();
+      draw();
+      return;
+    }
 
     snake.unshift(newHead);
 
@@ -305,6 +344,18 @@ function initSnakeBackground() {
       ctx.fillRect(segment.x * gridSize + padding, segment.y * gridSize + padding, gridSize - padding*2, gridSize - padding*2);
     });
     ctx.shadowBlur = 0;
+    ctx.shadowBlur = 0;
+
+    if (gameOver) {
+      ctx.fillStyle = 'rgba(255, 0, 50, 0.9)';
+      ctx.font = 'bold 36px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = 'rgba(255, 0, 50, 1)';
+      ctx.fillText('GAME OVER', width/2, height/2);
+      ctx.shadowBlur = 0;
+    }
   }
 
   requestAnimationFrame(loop);

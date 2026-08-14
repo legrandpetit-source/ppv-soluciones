@@ -2035,7 +2035,10 @@ textarea.form-control {
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  background: transparent !important;
+  background-color: rgba(7, 9, 14, 0.9) !important;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px) !important;
+  background-size: 40px 40px !important;
   z-index: 9999999 !important;
   flex-direction: column;
   padding: 0.4rem 0.6rem;
