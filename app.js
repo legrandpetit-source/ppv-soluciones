@@ -66,16 +66,21 @@ function initMobileMenuNav() {
     drawer.style.display = 'flex';
     drawer.classList.add('active');
     document.body.style.overflow = 'hidden';
-    const snakeBg = document.getElementById('snake-bg');
-    if (snakeBg) snakeBg.style.zIndex = '9999998';
+    document.querySelectorAll('main, footer, #main-header').forEach(el => {
+      el.style.visibility = 'hidden';
+      el.style.opacity = '0';
+      el.style.transition = 'opacity 0.2s';
+    });
   }
 
   function closeDrawer() {
     drawer.classList.remove('active');
     drawer.style.display = 'none';
     document.body.style.overflow = '';
-    const snakeBg = document.getElementById('snake-bg');
-    if (snakeBg) snakeBg.style.zIndex = '0';
+    document.querySelectorAll('main, footer, #main-header').forEach(el => {
+      el.style.visibility = '';
+      el.style.opacity = '';
+    });
   }
 
   btnToggle.onclick = (e) => {
