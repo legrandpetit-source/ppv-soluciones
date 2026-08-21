@@ -157,6 +157,195 @@ def delete_client_from_db(client_id):
         print("Error deleting client from DB:", e)
         return False
 
+# --- SERVICES ---
+def get_all_services_from_db():
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM services")
+        rows = cursor.fetchall()
+        conn.close()
+        return [dict(row) for row in rows]
+    except Exception as e:
+        print("Error reading services from DB:", e)
+        return []
+
+def save_service_to_db(data):
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        if data.get('id'):
+            cursor.execute("""
+                UPDATE services SET title=?, description=?, price_usd=?, time_days=?, icon=?, selected=?
+                WHERE id=?
+            """, (data.get('title',''), data.get('description',''), data.get('price_usd',0), data.get('time_days',''), data.get('icon','fa-check'), data.get('selected',0), data.get('id')))
+            client_id = data.get('id')
+        else:
+            cursor.execute("""
+                INSERT INTO services (title, description, price_usd, time_days, icon, selected)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (data.get('title',''), data.get('description',''), data.get('price_usd',0), data.get('time_days',''), data.get('icon','fa-check'), data.get('selected',0)))
+            client_id = cursor.lastrowid
+        conn.commit()
+        conn.close()
+        return client_id
+    except Exception as e:
+        print("Error saving service to DB:", e)
+        return None
+
+def delete_service_from_db(item_id):
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM services WHERE id=?", (item_id,))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print("Error deleting service from DB:", e)
+        return False
+
+# --- SKILLS ---
+def get_all_skills_from_db():
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM skills")
+        rows = cursor.fetchall()
+        conn.close()
+        return [dict(row) for row in rows]
+    except Exception as e:
+        print("Error reading skills from DB:", e)
+        return []
+
+def save_skill_to_db(data):
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        if data.get('id'):
+            cursor.execute("""
+                UPDATE skills SET name=?, category=?, level=?, level_text=?, description=?
+                WHERE id=?
+            """, (data.get('name',''), data.get('category',''), data.get('level',''), data.get('level_text',''), data.get('description',''), data.get('id')))
+            item_id = data.get('id')
+        else:
+            cursor.execute("""
+                INSERT INTO skills (name, category, level, level_text, description)
+                VALUES (?, ?, ?, ?, ?)
+            """, (data.get('name',''), data.get('category',''), data.get('level',''), data.get('level_text',''), data.get('description','')))
+            item_id = cursor.lastrowid
+        conn.commit()
+        conn.close()
+        return item_id
+    except Exception as e:
+        print("Error saving skill to DB:", e)
+        return None
+
+def delete_skill_from_db(item_id):
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM skills WHERE id=?", (item_id,))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print("Error deleting skill from DB:", e)
+        return False
+
+# --- ADMIN USERS ---
+def get_all_admin_users_from_db():
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM admin_users")
+        rows = cursor.fetchall()
+        conn.close()
+        return [dict(row) for row in rows]
+    except Exception as e:
+        print("Error reading admin_users from DB:", e)
+        return []
+
+def save_admin_user_to_db(data):
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        if data.get('id'):
+            cursor.execute("""
+                UPDATE admin_users SET name=?, role=?, email=?, emailHash=?, passHash=?, phone=?, userLevel=?, createdAt=?
+                WHERE id=?
+            """, (data.get('name',''), data.get('role',''), data.get('email',''), data.get('emailHash',''), data.get('passHash',''), data.get('phone',''), data.get('userLevel',''), data.get('createdAt',''), data.get('id')))
+            item_id = data.get('id')
+        else:
+            cursor.execute("""
+                INSERT INTO admin_users (name, role, email, emailHash, passHash, phone, userLevel, createdAt)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """, (data.get('name',''), data.get('role',''), data.get('email',''), data.get('emailHash',''), data.get('passHash',''), data.get('phone',''), data.get('userLevel',''), data.get('createdAt','')))
+            item_id = cursor.lastrowid
+        conn.commit()
+        conn.close()
+        return item_id
+    except Exception as e:
+        print("Error saving admin_user to DB:", e)
+        return None
+
+def delete_admin_user_from_db(item_id):
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM admin_users WHERE id=?", (item_id,))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print("Error deleting admin_user from DB:", e)
+        return False
+
+# --- BLOCKED WORDS ---
+def get_all_blocked_words_from_db():
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM blocked_words")
+        rows = cursor.fetchall()
+        conn.close()
+        return [dict(row) for row in rows]
+    except Exception as e:
+        print("Error reading blocked_words from DB:", e)
+        return []
+
+def add_blocked_word_to_db(data):
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT OR IGNORE INTO blocked_words (word)
+            VALUES (?)
+        """, (data.get('word',''),))
+        item_id = cursor.lastrowid
+        conn.commit()
+        conn.close()
+        return item_id
+    except Exception as e:
+        print("Error saving blocked_word to DB:", e)
+        return None
+
+def delete_blocked_word_from_db(item_id):
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM blocked_words WHERE id=?", (item_id,))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print("Error deleting blocked_word from DB:", e)
+        return False
+
 def init_uf_db():
     try:
         os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
@@ -460,6 +649,41 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({'ok': True, 'clients': clients}).encode('utf-8'))
+            return
+        if self.path in ['/tg-services', '/api/services']:
+            services = get_all_services_from_db()
+            self.send_response(200)
+            self.send_cors_headers()
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'services': services}).encode('utf-8'))
+            return
+
+        if self.path in ['/tg-skills', '/api/skills']:
+            skills = get_all_skills_from_db()
+            self.send_response(200)
+            self.send_cors_headers()
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'skills': skills}).encode('utf-8'))
+            return
+
+        if self.path in ['/tg-admin-users', '/api/admin-users']:
+            users = get_all_admin_users_from_db()
+            self.send_response(200)
+            self.send_cors_headers()
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'admin_users': users}).encode('utf-8'))
+            return
+
+        if self.path in ['/tg-blocked-words', '/api/blocked-words']:
+            words = get_all_blocked_words_from_db()
+            self.send_response(200)
+            self.send_cors_headers()
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'blocked_words': words}).encode('utf-8'))
             return
 
         if self.path in ['/tg-uf-rate', '/api/uf-rate']:
@@ -822,6 +1046,189 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 client_id = data.get('id')
                 
                 if client_id and delete_client_from_db(client_id):
+                    self.send_response(200)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': True}).encode())
+                else:
+                    raise ValueError("Error al eliminar en DB o falta ID")
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
+        if self.path in ['/tg-save-service', '/api/save-service']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                
+                item_id = save_service_to_db(data)
+                if item_id is not None:
+                    self.send_response(200)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': True, 'id': item_id}).encode())
+                else:
+                    raise ValueError("Error al guardar en DB")
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
+
+        if self.path in ['/tg-delete-service', '/api/delete-service']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                item_id = data.get('id')
+                
+                if item_id and delete_service_from_db(item_id):
+                    self.send_response(200)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': True}).encode())
+                else:
+                    raise ValueError("Error al eliminar en DB o falta ID")
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
+
+        if self.path in ['/tg-save-skill', '/api/save-skill']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                
+                item_id = save_skill_to_db(data)
+                if item_id is not None:
+                    self.send_response(200)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': True, 'id': item_id}).encode())
+                else:
+                    raise ValueError("Error al guardar en DB")
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
+
+        if self.path in ['/tg-delete-skill', '/api/delete-skill']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                item_id = data.get('id')
+                
+                if item_id and delete_skill_from_db(item_id):
+                    self.send_response(200)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': True}).encode())
+                else:
+                    raise ValueError("Error al eliminar en DB o falta ID")
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
+
+        if self.path in ['/tg-save-admin-user', '/api/save-admin-user']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                
+                item_id = save_admin_user_to_db(data)
+                if item_id is not None:
+                    self.send_response(200)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': True, 'id': item_id}).encode())
+                else:
+                    raise ValueError("Error al guardar en DB")
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
+
+        if self.path in ['/tg-delete-admin-user', '/api/delete-admin-user']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                item_id = data.get('id')
+                
+                if item_id and delete_admin_user_from_db(item_id):
+                    self.send_response(200)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': True}).encode())
+                else:
+                    raise ValueError("Error al eliminar en DB o falta ID")
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
+
+        if self.path in ['/tg-add-blocked-word', '/api/add-blocked-word']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                
+                item_id = add_blocked_word_to_db(data)
+                if item_id is not None:
+                    self.send_response(200)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': True, 'id': item_id}).encode())
+                else:
+                    raise ValueError("Error al guardar en DB")
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
+
+        if self.path in ['/tg-delete-blocked-word', '/api/delete-blocked-word']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                item_id = data.get('id')
+                
+                if item_id and delete_blocked_word_from_db(item_id):
                     self.send_response(200)
                     self.send_cors_headers()
                     self.send_header('Content-Type', 'application/json')

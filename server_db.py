@@ -135,6 +135,21 @@ def init_database():
             );
         """)
 
+        # 9. Tabla de Usuarios Administradores
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS admin_users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                role TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                emailHash TEXT NOT NULL,
+                passHash TEXT NOT NULL,
+                phone TEXT,
+                userLevel TEXT,
+                createdAt TEXT
+            );
+        """)
+
         # Cargar datos semilla iniciales si la base de datos es nueva
         cursor.execute("SELECT COUNT(*) FROM portfolio_clients")
         if cursor.fetchone()[0] == 0:
@@ -173,7 +188,36 @@ def init_database():
                 'puta', 'mierda', 'basura', 'asdf', 'qwerty', '1234', 'test', 'xxx', 'porno', 'sexo'
             ]
             for word in default_blocked:
-                cursor.execute("INSERT OR IGNORE INTO blocked_words (word) VALUES (?);", (word.lower().trim() if hasattr(word, 'trim') else word.lower().strip(),))
+                cursor.execute("INSERT OR IGNORE INTO blocked_words (word) VALUES (?);", (word.lower().strip(),))
+
+        cursor.execute("SELECT COUNT(*) FROM skills")
+        if cursor.fetchone()[0] == 0:
+            default_skills = [
+                ('APIs REST & Integración Webhooks', 'ai', '95%', 'Avanzado', 'Conexión entre sistemas SaaS y estructuración JSON.'),
+                ('Python (FastAPI & Automation)', 'ai', '92%', 'Avanzado', 'Desarrollo de scripts, automatizaciones y microservicios.'),
+                ('n8n & Make (Integromat)', 'auto', '94%', 'Avanzado', 'Orquestación de flujos de trabajo automatizados.'),
+                ('JavaScript / Node.js', 'web', '95%', 'Avanzado', 'Desarrollo Full-Stack y manipulación de APIs.'),
+                ('HTML5 & Vanilla CSS (Cyberpunk)', 'web', '98%', 'Experto', 'Diseños responsive, Glassmorphism y animaciones.'),
+                ('React & Frontend Moderno', 'web', '88%', 'Intermedio-Alto', 'Componentes reusables y Single Page Apps.'),
+                ('IndexedDB, SQL & NoSQL', 'db', '90%', 'Avanzado', 'Esquemas relacionales y almacenamiento local.')
+            ]
+            cursor.executemany("""
+                INSERT INTO skills (name, category, level, level_text, description)
+                VALUES (?, ?, ?, ?, ?);
+            """, default_skills)
+
+        cursor.execute("SELECT COUNT(*) FROM admin_users")
+        if cursor.fetchone()[0] == 0:
+            default_user = (
+                'Patricio Padilla', 'CEO & Fundador — PPV Soluciones', 'ppv@ppvsoluciones.cl',
+                '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed',
+                'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb',
+                '+56 9 5704 0679', 'Administrador Principal', '03/08/2026'
+            )
+            cursor.execute("""
+                INSERT INTO admin_users (name, role, email, emailHash, passHash, phone, userLevel, createdAt)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+            """, default_user)
 
         # Configuración por defecto de la insignia de estado
         cursor.execute("""
@@ -189,7 +233,7 @@ def export_backup_json():
     init_database()
     backup_data = {}
     with get_connection() as conn:
-        for table in ['contact_messages', 'services', 'skills', 'blocked_words', 'system_config', 'meeting_rooms', 'signature_audit_logs', 'portfolio_clients']:
+        for table in ['contact_messages', 'services', 'skills', 'blocked_words', 'system_config', 'meeting_rooms', 'signature_audit_logs', 'portfolio_clients', 'admin_users']:
             cursor = conn.execute(f"SELECT * FROM {table}")
             backup_data[table] = [dict(row) for row in cursor.fetchall()]
 

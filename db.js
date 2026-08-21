@@ -1,184 +1,65 @@
 /**
- * MessageDB - Gestor de Base de Datos IndexedDB Completo (Mantenedores CRUD)
+ * MessageDB - Gestor de Base de Datos Cliente-Servidor (SQLite Backend API)
  * Soporta Mensajes, Servicios (Calculadora), Habilidades Técnicas, Palabras Bloqueadas y Configuración.
  */
 class MessageDB {
   constructor() {
-    this.dbName = 'PPVSolutionsDB';
-    this.dbVersion = 4;
-    this.stores = {
-      messages: 'contact_messages',
-      services: 'services',
-      skills: 'skills',
-      config: 'config',
-      blocked: 'blocked_words',
-      clients: 'clients',
-      admin_users: 'admin_users'
-    };
     this.db = null;
     this.init();
   }
 
-  init() {
-    if (this.initPromise) return this.initPromise;
-
-    this.initPromise = new Promise((resolve, reject) => {
-      const request = indexedDB.open(this.dbName, this.dbVersion);
-
-      request.onupgradeneeded = (e) => {
-        const db = e.target.result;
-        
-        // Store: Mensajes de Contacto
-        if (!db.objectStoreNames.contains(this.stores.messages)) {
-          const mStore = db.createObjectStore(this.stores.messages, { keyPath: 'id', autoIncrement: true });
-          mStore.createIndex('createdAt', 'createdAt', { unique: false });
-          mStore.createIndex('status', 'status', { unique: false });
-        }
-
-        // Store: Servicios & Precios (Calculadora)
-        if (!db.objectStoreNames.contains(this.stores.services)) {
-          const sStore = db.createObjectStore(this.stores.services, { keyPath: 'id', autoIncrement: true });
-          sStore.createIndex('title', 'title', { unique: false });
-        }
-
-        // Store: Habilidades Técnicas
-        if (!db.objectStoreNames.contains(this.stores.skills)) {
-          const skStore = db.createObjectStore(this.stores.skills, { keyPath: 'id', autoIncrement: true });
-          skStore.createIndex('category', 'category', { unique: false });
-        }
-
-        // Store: Palabras & Rubros Bloqueados
-        if (!db.objectStoreNames.contains(this.stores.blocked)) {
-          const bStore = db.createObjectStore(this.stores.blocked, { keyPath: 'id', autoIncrement: true });
-          bStore.createIndex('word', 'word', { unique: true });
-        }
-
-        // Store: Clientes & Casos de Éxito
-        if (!db.objectStoreNames.contains(this.stores.clients)) {
-          const cStore = db.createObjectStore(this.stores.clients, { keyPath: 'id', autoIncrement: true });
-          cStore.createIndex('name', 'name', { unique: false });
-        }
-
-        // Store: Usuarios Administradores
-        if (!db.objectStoreNames.contains(this.stores.admin_users)) {
-          const uStore = db.createObjectStore(this.stores.admin_users, { keyPath: 'id', autoIncrement: true });
-          uStore.createIndex('email', 'email', { unique: true });
-        }
-
-        // Store: Configuración General
-        if (!db.objectStoreNames.contains(this.stores.config)) {
-          db.createObjectStore(this.stores.config, { keyPath: 'key' });
-        }
-      };
-
-      request.onsuccess = (e) => {
-        this.db = e.target.result;
-        this.seedDefaultsIfEmpty().then(() => resolve(this.db));
-      };
-
-      request.onerror = (e) => {
-        console.error('IndexedDB Error:', e.target.error);
-        reject(e.target.error);
-      };
-    });
-
-    return this.initPromise;
-  }
-
-  // Datos semilla por defecto si la base de datos está vacía
-  async seedDefaultsIfEmpty() {
-    const services = await this.getAll('services');
-    if (!services || services.length === 0) {
-      const defaultServices = [
-        { title: 'Sistema de Automatización & Bot Básico', desc: 'Asistente web inteligente conectado a tus datos y servicios.', priceUF: 8.5, timeDays: '3 días', icon: 'fa-robot', selected: true },
-        { title: 'Flujo de Automatización n8n / Make', desc: 'Conexión de CRM, Email, Bases de datos y procesos en segundo plano.', priceUF: 11.0, timeDays: '4 días', icon: 'fa-network-wired', selected: false },
-        { title: 'Desarrollo Web App Completo', desc: 'Aplicación Frontend + Backend responsiva con diseño Cyberpunk/Glassmorphism.', priceUF: 15.0, timeDays: '5 días', icon: 'fa-laptop-code', selected: false },
-        { title: 'Diagnóstico de Ciberseguridad & Reporte PDF (Nivel 1)', desc: 'Auditoría de vulnerabilidades, chequeo de credenciales expuestas y entrega de informe PDF.', priceUF: 5.0, timeDays: '2 días', icon: 'fa-file-pdf', selected: false },
-        { title: 'Auditoría + Hardening & Parcheo Total (Nivel 2 Llave en Mano)', desc: 'Diagnóstico + Proxy backend seguro, hashes SHA-256, headers HTTP y carta legal Ley 21.459.', priceUF: 11.0, timeDays: '4 días', icon: 'fa-shield-halved', selected: false },
-        { title: 'Optimización & Evaluación de Código Automatizado', desc: 'Auditoría de rendimiento, refactorización y pruebas unitarias de código existente.', priceUF: 6.0, timeDays: '2 días', icon: 'fa-code-compare', selected: false }
-      ];
-      for (const s of defaultServices) {
-        await this.add('services', s);
-      }
-    }
-
-    const skills = await this.getAll('skills');
-    if (!skills || skills.length === 0) {
-      const defaultSkills = [
-        { name: 'APIs REST & Integración Webhooks', category: 'ai', level: '95%', levelText: 'Avanzado', desc: 'Conexión entre sistemas SaaS y estructuración JSON.' },
-        { name: 'Python (FastAPI & Automation)', category: 'ai', level: '92%', levelText: 'Avanzado', desc: 'Desarrollo de scripts, automatizaciones y microservicios.' },
-        { name: 'n8n & Make (Integromat)', category: 'auto', level: '94%', levelText: 'Avanzado', desc: 'Orquestación de flujos de trabajo automatizados.' },
-        { name: 'JavaScript / Node.js', category: 'web', level: '95%', levelText: 'Avanzado', desc: 'Desarrollo Full-Stack y manipulación de APIs.' },
-        { name: 'HTML5 & Vanilla CSS (Cyberpunk)', category: 'web', level: '98%', levelText: 'Experto', desc: 'Diseños responsive, Glassmorphism y animaciones.' },
-        { name: 'React & Frontend Moderno', category: 'web', level: '88%', levelText: 'Intermedio-Alto', desc: 'Componentes reusables y Single Page Apps.' },
-        { name: 'IndexedDB, SQL & NoSQL', category: 'db', level: '90%', levelText: 'Avanzado', desc: 'Esquemas relacionales y almacenamiento local.' }
-      ];
-      for (const sk of defaultSkills) {
-        await this.add('skills', sk);
-      }
-    }
-
-    const blocked = await this.getAll('blocked');
-    if (!blocked || blocked.length === 0) {
-      const defaultBlocked = [
-        'delincuente', 'delincuencia', 'robo', 'ladron', 'ladrón', 'narcotrafico', 'narcotráfico',
-        'droga', 'drogas', 'arma', 'armas', 'sicario', 'estafador', 'estafa', 'hack', 'hacker',
-        'ilegal', 'ilícito', 'ilicito', 'matar', 'asesinato', 'prostitucion', 'prostitución',
-        'puta', 'mierda', 'basura', 'asdf', 'qwerty', '1234', 'test', 'xxx', 'porno', 'sexo'
-      ];
-      for (const word of defaultBlocked) {
-        try {
-          await this.add('blocked', { word: word.toLowerCase().trim() });
-        } catch (e) {
-          // Ignorar duplicados
-        }
-      }
-    }
-
-    // Configuración por defecto de la insignia de estado
-    const statusCfg = await this.getConfig('status_pill');
-    if (!statusCfg) {
-      await this.saveConfig('status_pill', {
-        text: 'Disponible para Proyectos',
-        theme: 'emerald', // emerald, amber, pink, cyan
-        visible: true
-      });
-    }
-
-    // Clientes ya no se inicializan localmente, se obtienen del backend.
-
-    const adminUsers = await this.getAll('admin_users');
-    const masterUser = adminUsers ? adminUsers.find(u => u.email === 'ppv@ppvsoluciones.cl') : null;
-    if (!masterUser) {
-      const defaultUser = {
-        name: 'Patricio Padilla',
-        role: 'CEO & Fundador — PPV Soluciones',
-        email: 'ppv@ppvsoluciones.cl',
-        emailHash: '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed',
-        passHash: 'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb',
-        phone: '+56 9 5704 0679',
-        userLevel: 'Administrador Principal',
-        createdAt: '03/08/2026'
-      };
-      await this.add('admin_users', defaultUser);
-    }
+  async init() {
+    // Ya no se requiere IndexedDB local
+    // Todas las operaciones van contra la API de Python/SQLite.
+    return Promise.resolve();
   }
 
   // --- Métodos de Usuarios Administradores (Multi-Usuario) ---
   async saveAdminUser(userData) {
-    if (userData.id) {
-      return await this.update('admin_users', userData);
-    } else {
-      return await this.add('admin_users', userData);
+    try {
+      const res = await fetch('/api/save-admin-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.id;
+      }
+    } catch(e) {
+      console.warn("Failed to save admin user to backend", e);
     }
+    return null;
   }
 
   async getAllAdminUsers() {
-    return await this.getAll('admin_users');
+    try {
+      const res = await fetch('/api/admin-users');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.ok) return data.admin_users;
+      }
+    } catch(e) {
+      console.warn("Failed to get admin users from backend", e);
+    }
+    return [];
   }
 
   async deleteAdminUser(id) {
-    return await this.delete('admin_users', id);
+    try {
+      const res = await fetch('/api/delete-admin-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.ok;
+      }
+    } catch(e) {
+      console.warn("Failed to delete admin user from backend", e);
+    }
+    return false;
   }
 
   // --- Métodos de Clientes & Casos de Éxito ---
@@ -232,7 +113,7 @@ class MessageDB {
   // --- Métodos de Configuración Key-Value ---
   async getConfig(key) {
     try {
-      const res = await fetch(`/tg-get-config?key=${key}`);
+      const res = await fetch(`/api/get-config?key=${key}`);
       if (res.ok) {
         const data = await res.json();
         if (data.ok && data.value !== null) {
@@ -242,168 +123,253 @@ class MessageDB {
     } catch(e) {
       console.warn("Failed to getConfig from backend", e);
     }
-    
-    if (!this.db) await this.init();
-    return new Promise((resolve, reject) => {
-      const tx = this.db.transaction(this.stores.config, 'readonly');
-      const store = tx.objectStore(this.stores.config);
-      const req = store.get(key);
-      req.onsuccess = () => resolve(req.result ? req.result.value : null);
-      req.onerror = (e) => reject(e.target.error);
-    });
+    return null;
   }
 
   async saveConfig(key, value) {
     try {
-      await fetch('/tg-set-config', {
+      const res = await fetch('/api/set-config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key: key, value: value })
       });
+      return res.ok;
     } catch(e) {
       console.warn("Failed to saveConfig to backend", e);
+      return false;
     }
-    
-    if (!this.db) await this.init();
-    return new Promise((resolve, reject) => {
-      const tx = this.db.transaction(this.stores.config, 'readwrite');
-      const store = tx.objectStore(this.stores.config);
-      const req = store.put({ key, value });
-      req.onsuccess = () => resolve(true);
-      req.onerror = (e) => reject(e.target.error);
-    });
-  }
-
-  // --- Métodos Genéricos CRUD ---
-  async getAll(storeName) {
-    if (!this.db) await this.init();
-    return new Promise((resolve, reject) => {
-      const tx = this.db.transaction(this.stores[storeName] || storeName, 'readonly');
-      const store = tx.objectStore(this.stores[storeName] || storeName);
-      const req = store.getAll();
-      req.onsuccess = () => resolve(req.result || []);
-      req.onerror = (e) => reject(e.target.error);
-    });
-  }
-
-  async add(storeName, record) {
-    if (!this.db) await this.init();
-    return new Promise((resolve, reject) => {
-      const tx = this.db.transaction(this.stores[storeName] || storeName, 'readwrite');
-      const store = tx.objectStore(this.stores[storeName] || storeName);
-      const req = store.add(record);
-      req.onsuccess = () => resolve(req.result);
-      req.onerror = (e) => reject(e.target.error);
-    });
-  }
-
-  async update(storeName, record) {
-    if (!this.db) await this.init();
-    return new Promise((resolve, reject) => {
-      const tx = this.db.transaction(this.stores[storeName] || storeName, 'readwrite');
-      const store = tx.objectStore(this.stores[storeName] || storeName);
-      const req = store.put(record);
-      req.onsuccess = () => resolve(req.result);
-      req.onerror = (e) => reject(e.target.error);
-    });
-  }
-
-  async delete(storeName, id) {
-    if (!this.db) await this.init();
-    return new Promise((resolve, reject) => {
-      const tx = this.db.transaction(this.stores[storeName] || storeName, 'readwrite');
-      const store = tx.objectStore(this.stores[storeName] || storeName);
-      const req = store.delete(id);
-      req.onsuccess = () => resolve(true);
-      req.onerror = (e) => reject(e.target.error);
-    });
   }
 
   // --- Métodos de Mensajes ---
   async saveMessage(data) {
-    const record = {
-      name: data.name,
-      email: data.email,
-      subject: data.subject || 'Consulta General',
-      budget: data.budget || 'Por definir',
-      message: data.message,
-      createdAt: new Date().toISOString(),
-      timestampFormatted: new Date().toLocaleString('es-CL', { dateStyle: 'medium', timeStyle: 'short' }),
-      status: 'Nuevo'
-    };
-    return await this.add('messages', record);
+    // The main contact form handles saving via /api/notify normally, 
+    // this function is mostly for consistency if used locally.
+    console.warn("saveMessage called via db.js, expected to use /api/notify in submit form.");
+    return true; 
   }
 
   async getAllMessages() {
-    const messages = await this.getAll('messages');
-    return messages.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    try {
+      const res = await fetch('/api/messages');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.ok) return data.messages.sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt));
+      }
+    } catch(e) {
+      console.warn("Failed to get messages from backend", e);
+    }
+    return [];
   }
 
   async updateMessageStatus(id, newStatus) {
     try {
-      await fetch('/tg-update-message-status', {
+      const res = await fetch('/api/update-message-status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id, status: newStatus })
       });
+      if (res.ok) {
+        const data = await res.json();
+        return data.ok;
+      }
     } catch(e) {
       console.warn("Failed to update status on backend", e);
     }
-    const messages = await this.getAll('messages');
-    const target = messages.find(m => m.id === id);
-    if (!target) throw new Error('Mensaje no encontrado');
-    target.status = newStatus;
-    return await this.update('messages', target);
+    return false;
   }
 
   async deleteMessage(id) {
     try {
-      await fetch('/tg-delete-message', {
+      const res = await fetch('/api/delete-message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id })
       });
+      if (res.ok) {
+        const data = await res.json();
+        return data.ok;
+      }
     } catch(e) {
       console.warn("Failed to delete message on backend", e);
     }
-    return await this.delete('messages', id);
+    return false;
   }
 
   // --- Métodos de Servicios (Calculadora) ---
   async saveService(serviceData) {
-    if (serviceData.id) {
-      return await this.update('services', serviceData);
-    } else {
-      return await this.add('services', serviceData);
+    try {
+      const res = await fetch('/api/save-service', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(serviceData)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.id;
+      }
+    } catch(e) {
+      console.warn("Failed to save service to backend", e);
     }
+    return null;
+  }
+
+  async getAllServices() {
+    try {
+      const res = await fetch('/api/services');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.ok) return data.services;
+      }
+    } catch(e) {
+      console.warn("Failed to get services from backend", e);
+    }
+    return [];
   }
 
   async deleteService(id) {
-    return await this.delete('services', id);
+    try {
+      const res = await fetch('/api/delete-service', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.ok;
+      }
+    } catch(e) {
+      console.warn("Failed to delete service from backend", e);
+    }
+    return false;
   }
 
   // --- Métodos de Habilidades ---
   async saveSkill(skillData) {
-    if (skillData.id) {
-      return await this.update('skills', skillData);
-    } else {
-      return await this.add('skills', skillData);
+    try {
+      const res = await fetch('/api/save-skill', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(skillData)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.id;
+      }
+    } catch(e) {
+      console.warn("Failed to save skill to backend", e);
     }
+    return null;
+  }
+
+  async getAllSkills() {
+    try {
+      const res = await fetch('/api/skills');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.ok) return data.skills;
+      }
+    } catch(e) {
+      console.warn("Failed to get skills from backend", e);
+    }
+    return [];
   }
 
   async deleteSkill(id) {
-    return await this.delete('skills', id);
+    try {
+      const res = await fetch('/api/delete-skill', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.ok;
+      }
+    } catch(e) {
+      console.warn("Failed to delete skill from backend", e);
+    }
+    return false;
   }
 
   // --- Métodos de Palabras Bloqueadas ---
   async addBlockedWord(word) {
     const cleanWord = word.toLowerCase().trim();
     if (!cleanWord) return;
-    return await this.add('blocked', { word: cleanWord });
+    try {
+      const res = await fetch('/api/add-blocked-word', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ word: cleanWord })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.id;
+      }
+    } catch(e) {
+      console.warn("Failed to save blocked word to backend", e);
+    }
+    return null;
+  }
+
+  async getAllBlockedWords() {
+    try {
+      const res = await fetch('/api/blocked-words');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.ok) return data.blocked_words;
+      }
+    } catch(e) {
+      console.warn("Failed to get blocked words from backend", e);
+    }
+    return [];
   }
 
   async deleteBlockedWord(id) {
-    return await this.delete('blocked', id);
+    try {
+      const res = await fetch('/api/delete-blocked-word', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.ok;
+      }
+    } catch(e) {
+      console.warn("Failed to delete blocked word from backend", e);
+    }
+    return false;
+  }
+  
+  // Generic fallback for compatibility with existing UI code
+  async getAll(storeName) {
+    switch(storeName) {
+      case 'services': return await this.getAllServices();
+      case 'skills': return await this.getAllSkills();
+      case 'blocked_words': 
+      case 'blocked': return await this.getAllBlockedWords();
+      case 'admin_users': return await this.getAllAdminUsers();
+      case 'clients': return await this.getAllClients();
+      case 'messages':
+      case 'contact_messages': return await this.getAllMessages();
+    }
+    return [];
+  }
+
+  // Compatibility fallback for specific components that might use add/update/delete 
+  // without calling the specific methods above.
+  async delete(storeName, id) {
+    switch(storeName) {
+      case 'services': return await this.deleteService(id);
+      case 'skills': return await this.deleteSkill(id);
+      case 'blocked_words': 
+      case 'blocked': return await this.deleteBlockedWord(id);
+      case 'admin_users': return await this.deleteAdminUser(id);
+      case 'clients': return await this.deleteClient(id);
+      case 'messages':
+      case 'contact_messages': return await this.deleteMessage(id);
+    }
+    return false;
   }
 }
 
