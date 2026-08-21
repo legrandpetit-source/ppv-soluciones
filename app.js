@@ -125,6 +125,19 @@ function initMobileMenuNav() {
 /* --------------------------------------------------------------------------
    0.3. LETRERO NEÓN ANIMADO (CADA LETRA SE ILUMINA SECUENCIALMENTE)
    -------------------------------------------------------------------------- */
+function initScrollHeader() {
+  const header = document.getElementById('main-header');
+  if (!header) return;
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+}
+
 function initNeonSign() {
   const container = document.getElementById('neon-sign-text');
   if (!container) return;
