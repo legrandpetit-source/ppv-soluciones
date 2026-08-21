@@ -171,6 +171,14 @@ class MessageDB {
           category: 'Automatización IA',
           website: 'https://legrandpetit.cl',
           badge: '🤖 Automatización & Telegram'
+        },
+        {
+          name: 'Aurora Designs',
+          rubro: 'Agencia de Identidad Visual & Papelería Corporativa',
+          solution: 'Desarrollo Landing Page Responsiva con Efectos Visuales Avanzados (Glassmorphism & Animaciones)',
+          category: 'Desarrollo Web',
+          website: 'https://auroradesigns.cl',
+          badge: '💻 Landing Page & UI/UX'
         }
       ];
       for (const c of defaultClients) {
