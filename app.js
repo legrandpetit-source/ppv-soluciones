@@ -68,8 +68,8 @@ function initMobileMenuNav() {
     document.body.style.overflow = 'hidden';
     const snakeBg = document.getElementById('snake-bg');
     if (snakeBg) {
-      snakeBg.style.zIndex = '10000000';
-      snakeBg.style.opacity = '1';
+      snakeBg.style.zIndex = '9999998';
+      snakeBg.style.opacity = '0.5';
     }
   }
 
@@ -79,8 +79,8 @@ function initMobileMenuNav() {
     document.body.style.overflow = '';
     const snakeBg = document.getElementById('snake-bg');
     if (snakeBg) {
-      snakeBg.style.zIndex = '0';
-      snakeBg.style.opacity = '0.7';
+      snakeBg.style.zIndex = '-1';
+      snakeBg.style.opacity = '0.15';
     }
   }
 
@@ -267,12 +267,9 @@ function initSnakeBackground() {
     if (time - lastTime < speed) return;
     lastTime = time;
 
-    const maxCols = Math.floor(width / gridSize);
-    const maxRows = Math.floor(height / gridSize);
-
     const head = snake[0];
-
-    // AI Logic (Smarter to avoid body)
+    
+    // AI Logic (Simple)
     let possibleDirs = [];
     if (head.x < apple.x && dx !== -1) possibleDirs.push({dx: 1, dy: 0});
     else if (head.x > apple.x && dx !== 1) possibleDirs.push({dx: -1, dy: 0});
@@ -280,38 +277,10 @@ function initSnakeBackground() {
     if (head.y < apple.y && dy !== -1) possibleDirs.push({dx: 0, dy: 1});
     else if (head.y > apple.y && dy !== 1) possibleDirs.push({dx: 0, dy: -1});
 
-    function isSafe(d_x, d_y) {
-      let nx = head.x + d_x;
-      let ny = head.y + d_y;
-      if (nx >= maxCols) nx = 0;
-      if (nx < 0) nx = maxCols - 1;
-      if (ny >= maxRows) ny = 0;
-      if (ny < 0) ny = maxRows - 1;
-      for (let i = 0; i < snake.length; i++) {
-        if (nx === snake[i].x && ny === snake[i].y) return false;
-      }
-      return true;
-    }
-
-    let safeDirs = possibleDirs.filter(dir => isSafe(dir.dx, dir.dy));
-
-    if (safeDirs.length > 0) {
-      const dir = safeDirs[Math.floor(Math.random() * safeDirs.length)];
+    if (possibleDirs.length > 0) {
+      const dir = possibleDirs[Math.floor(Math.random() * possibleDirs.length)];
       dx = dir.dx;
       dy = dir.dy;
-    } else {
-      let allDirs = [
-        {dx: 1, dy: 0}, {dx: -1, dy: 0}, {dx: 0, dy: 1}, {dx: 0, dy: -1}
-      ];
-      // Prevent reversing into neck
-      allDirs = allDirs.filter(dir => !(dir.dx === -dx && dir.dy === -dy && snake.length > 1));
-      let backupSafeDirs = allDirs.filter(dir => isSafe(dir.dx, dir.dy));
-      if (backupSafeDirs.length > 0) {
-        const dir = backupSafeDirs[Math.floor(Math.random() * backupSafeDirs.length)];
-        dx = dir.dx;
-        dy = dir.dy;
-      }
-      // If no safe directions, keep dx, dy (it will hit itself and game over)
     }
 
     let newHead = { x: head.x + dx, y: head.y + dy };

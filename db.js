@@ -17,7 +17,7 @@ class MessageDB {
   // --- Métodos de Usuarios Administradores (Multi-Usuario) ---
   async saveAdminUser(userData) {
     try {
-      const res = await fetch('/api/save-admin-user', {
+      const res = await fetch('/tg-save-admin-user', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
@@ -34,7 +34,7 @@ class MessageDB {
 
   async getAllAdminUsers() {
     try {
-      const res = await fetch('/api/admin-users');
+      const res = await fetch('/tg-admin-users');
       if (res.ok) {
         const data = await res.json();
         if (data.ok) return data.admin_users;
@@ -47,7 +47,7 @@ class MessageDB {
 
   async deleteAdminUser(id) {
     try {
-      const res = await fetch('/api/delete-admin-user', {
+      const res = await fetch('/tg-delete-admin-user', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id })
@@ -65,7 +65,7 @@ class MessageDB {
   // --- Métodos de Clientes & Casos de Éxito ---
   async saveClient(clientData) {
     try {
-      const res = await fetch('/api/save-client', {
+      const res = await fetch('/tg-save-client', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(clientData)
@@ -82,7 +82,7 @@ class MessageDB {
 
   async getAllClients() {
     try {
-      const res = await fetch('/api/clients');
+      const res = await fetch('/tg-clients');
       if (res.ok) {
         const data = await res.json();
         if (data.ok) return data.clients;
@@ -95,7 +95,7 @@ class MessageDB {
 
   async deleteClient(id) {
     try {
-      const res = await fetch('/api/delete-client', {
+      const res = await fetch('/tg-delete-client', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id })
@@ -113,7 +113,7 @@ class MessageDB {
   // --- Métodos de Configuración Key-Value ---
   async getConfig(key) {
     try {
-      const res = await fetch(`/api/get-config?key=${key}`);
+      const res = await fetch(`/tg-get-config?key=${key}`);
       if (res.ok) {
         const data = await res.json();
         if (data.ok && data.value !== null) {
@@ -128,7 +128,7 @@ class MessageDB {
 
   async saveConfig(key, value) {
     try {
-      const res = await fetch('/api/set-config', {
+      const res = await fetch('/tg-set-config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key: key, value: value })
@@ -142,15 +142,15 @@ class MessageDB {
 
   // --- Métodos de Mensajes ---
   async saveMessage(data) {
-    // The main contact form handles saving via /api/notify normally, 
+    // The main contact form handles saving via /tg-notify normally, 
     // this function is mostly for consistency if used locally.
-    console.warn("saveMessage called via db.js, expected to use /api/notify in submit form.");
+    console.warn("saveMessage called via db.js, expected to use /tg-notify in submit form.");
     return true; 
   }
 
   async getAllMessages() {
     try {
-      const res = await fetch('/api/messages');
+      const res = await fetch('/tg-messages');
       if (res.ok) {
         const data = await res.json();
         if (data.ok) return data.messages.sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt));
@@ -163,7 +163,7 @@ class MessageDB {
 
   async updateMessageStatus(id, newStatus) {
     try {
-      const res = await fetch('/api/update-message-status', {
+      const res = await fetch('/tg-update-message-status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id, status: newStatus })
@@ -180,7 +180,7 @@ class MessageDB {
 
   async deleteMessage(id) {
     try {
-      const res = await fetch('/api/delete-message', {
+      const res = await fetch('/tg-delete-message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id })
@@ -198,7 +198,7 @@ class MessageDB {
   // --- Métodos de Servicios (Calculadora) ---
   async saveService(serviceData) {
     try {
-      const res = await fetch('/api/save-service', {
+      const res = await fetch('/tg-save-service', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(serviceData)
@@ -215,7 +215,7 @@ class MessageDB {
 
   async getAllServices() {
     try {
-      const res = await fetch('/api/services');
+      const res = await fetch('/tg-services');
       if (res.ok) {
         const data = await res.json();
         if (data.ok) return data.services;
@@ -228,7 +228,7 @@ class MessageDB {
 
   async deleteService(id) {
     try {
-      const res = await fetch('/api/delete-service', {
+      const res = await fetch('/tg-delete-service', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id })
@@ -246,7 +246,7 @@ class MessageDB {
   // --- Métodos de Habilidades ---
   async saveSkill(skillData) {
     try {
-      const res = await fetch('/api/save-skill', {
+      const res = await fetch('/tg-save-skill', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(skillData)
@@ -263,7 +263,7 @@ class MessageDB {
 
   async getAllSkills() {
     try {
-      const res = await fetch('/api/skills');
+      const res = await fetch('/tg-skills');
       if (res.ok) {
         const data = await res.json();
         if (data.ok) return data.skills;
@@ -276,7 +276,7 @@ class MessageDB {
 
   async deleteSkill(id) {
     try {
-      const res = await fetch('/api/delete-skill', {
+      const res = await fetch('/tg-delete-skill', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id })
@@ -296,7 +296,7 @@ class MessageDB {
     const cleanWord = word.toLowerCase().trim();
     if (!cleanWord) return;
     try {
-      const res = await fetch('/api/add-blocked-word', {
+      const res = await fetch('/tg-add-blocked-word', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ word: cleanWord })
@@ -313,7 +313,7 @@ class MessageDB {
 
   async getAllBlockedWords() {
     try {
-      const res = await fetch('/api/blocked-words');
+      const res = await fetch('/tg-blocked-words');
       if (res.ok) {
         const data = await res.json();
         if (data.ok) return data.blocked_words;
@@ -326,7 +326,7 @@ class MessageDB {
 
   async deleteBlockedWord(id) {
     try {
-      const res = await fetch('/api/delete-blocked-word', {
+      const res = await fetch('/tg-delete-blocked-word', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id })
