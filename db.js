@@ -145,46 +145,7 @@ class MessageDB {
       });
     }
 
-    const clients = await this.getAll('clients');
-    if (!clients || clients.length === 0) {
-      const defaultClients = [
-        {
-          name: 'OrigenCanino SpA',
-          rubro: 'Servicios Médicos Veterinarios & Salud Canina',
-          solution: 'Hardening Total de Ciberseguridad Ley N° 21.459 & Diagnóstico Técnico en Servidor Web',
-          category: 'Ciberseguridad',
-          website: 'https://origencanino.cl',
-          badge: '🛡️ Ciberseguridad Ley 21.459'
-        },
-        {
-          name: 'Proyecto Vertical SpA',
-          rubro: 'Construcción, Obras Civiles & Arquitectura',
-          solution: 'Plataforma Web App Cyberpunk Responsiva con Integración de Notificaciones Directas',
-          category: 'Desarrollo Web',
-          website: 'https://proyectovertical.cl',
-          badge: '💻 Web App & Automatización'
-        },
-        {
-          name: 'Legrand Petit Importaciones',
-          rubro: 'Comercio Exterior & Logística Internacional',
-          solution: 'Calculadora Interactiva de Presupuestos en Vivo & Canal de Telegram para Notificaciones de Leads',
-          category: 'Automatización IA',
-          website: 'https://legrandpetit.cl',
-          badge: '🤖 Automatización & Telegram'
-        },
-        {
-          name: 'Aurora Designs',
-          rubro: 'Agencia de Identidad Visual & Papelería Corporativa',
-          solution: 'Desarrollo Landing Page Responsiva con Efectos Visuales Avanzados (Glassmorphism & Animaciones)',
-          category: 'Desarrollo Web',
-          website: 'https://auroradesigns.cl',
-          badge: '💻 Landing Page & UI/UX'
-        }
-      ];
-      for (const c of defaultClients) {
-        await this.add('clients', c);
-      }
-    }
+    // Clientes ya no se inicializan localmente, se obtienen del backend.
 
     const adminUsers = await this.getAll('admin_users');
     const masterUser = adminUsers ? adminUsers.find(u => u.email === 'ppv@ppvsoluciones.cl') : null;
@@ -222,19 +183,50 @@ class MessageDB {
 
   // --- Métodos de Clientes & Casos de Éxito ---
   async saveClient(clientData) {
-    if (clientData.id) {
-      return await this.update('clients', clientData);
-    } else {
-      return await this.add('clients', clientData);
+    try {
+      const res = await fetch('/api/save-client', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(clientData)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.id;
+      }
+    } catch(e) {
+      console.warn("Failed to save client to backend", e);
     }
+    return null;
   }
 
   async getAllClients() {
-    return await this.getAll('clients');
+    try {
+      const res = await fetch('/api/clients');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.ok) return data.clients;
+      }
+    } catch(e) {
+      console.warn("Failed to get clients from backend", e);
+    }
+    return [];
   }
 
   async deleteClient(id) {
-    return await this.delete('clients', id);
+    try {
+      const res = await fetch('/api/delete-client', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.ok;
+      }
+    } catch(e) {
+      console.warn("Failed to delete client from backend", e);
+    }
+    return false;
   }
 
   // --- Métodos de Configuración Key-Value ---

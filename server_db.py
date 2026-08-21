@@ -122,7 +122,33 @@ def init_database():
             );
         """)
 
+        # 8. Tabla de Clientes (Casos de Éxito / Portafolio)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS portfolio_clients (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                rubro TEXT NOT NULL,
+                solution TEXT NOT NULL,
+                category TEXT NOT NULL,
+                website TEXT,
+                badge TEXT
+            );
+        """)
+
         # Cargar datos semilla iniciales si la base de datos es nueva
+        cursor.execute("SELECT COUNT(*) FROM portfolio_clients")
+        if cursor.fetchone()[0] == 0:
+            default_clients = [
+                ('OrigenCanino SpA', 'Servicios Médicos Veterinarios & Salud Canina', 'Hardening Total de Ciberseguridad Ley N° 21.459 & Diagnóstico Técnico en Servidor Web', 'Ciberseguridad', 'https://origencanino.cl', '🛡️ Ciberseguridad Ley 21.459'),
+                ('Proyecto Vertical SpA', 'Construcción, Obras Civiles & Arquitectura', 'Plataforma Web App Cyberpunk Responsiva con Integración de Notificaciones Directas', 'Desarrollo Web', 'https://proyectovertical.cl', '💻 Web App & Automatización'),
+                ('Legrand Petit Importaciones', 'Comercio Exterior & Logística Internacional', 'Calculadora Interactiva de Presupuestos en Vivo & Canal de Telegram para Notificaciones de Leads', 'Automatización IA', 'https://legrandpetit.cl', '🤖 Automatización & Telegram'),
+                ('Aurora Designs', 'Agencia de Identidad Visual & Papelería Corporativa', 'Desarrollo Landing Page Responsiva con Efectos Visuales Avanzados (Glassmorphism & Animaciones)', 'Desarrollo Web', 'https://auroradesigns.cl', '💻 Landing Page & UI/UX')
+            ]
+            cursor.executemany("""
+                INSERT INTO portfolio_clients (name, rubro, solution, category, website, badge)
+                VALUES (?, ?, ?, ?, ?, ?);
+            """, default_clients)
+
         cursor.execute("SELECT COUNT(*) FROM services")
         if cursor.fetchone()[0] == 0:
             default_services = [
@@ -163,7 +189,7 @@ def export_backup_json():
     init_database()
     backup_data = {}
     with get_connection() as conn:
-        for table in ['contact_messages', 'services', 'skills', 'blocked_words', 'system_config', 'meeting_rooms', 'signature_audit_logs']:
+        for table in ['contact_messages', 'services', 'skills', 'blocked_words', 'system_config', 'meeting_rooms', 'signature_audit_logs', 'portfolio_clients']:
             cursor = conn.execute(f"SELECT * FROM {table}")
             backup_data[table] = [dict(row) for row in cursor.fetchall()]
 

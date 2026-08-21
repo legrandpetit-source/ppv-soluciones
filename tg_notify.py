@@ -105,6 +105,58 @@ def get_all_messages_from_db():
         print(f"[TG-PROXY] ❌ Error leyendo DB: {e}")
         return []
 
+def get_all_clients_from_db():
+    try:
+        if not os.path.exists(DB_PATH):
+            return []
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, name, rubro, solution, category, website, badge FROM portfolio_clients ORDER BY id DESC")
+        rows = cursor.fetchall()
+        result = [dict(row) for row in rows]
+        conn.close()
+        return result
+    except Exception as e:
+        print("Error reading clients from DB:", e)
+        return []
+
+def save_client_to_db(data):
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        if 'id' in data and data['id']:
+            cursor.execute('''
+                UPDATE portfolio_clients 
+                SET name=?, rubro=?, solution=?, category=?, website=?, badge=?
+                WHERE id=?
+            ''', (data.get('name'), data.get('rubro'), data.get('solution'), data.get('category'), data.get('website'), data.get('badge'), data['id']))
+            client_id = data['id']
+        else:
+            cursor.execute('''
+                INSERT INTO portfolio_clients (name, rubro, solution, category, website, badge)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (data.get('name'), data.get('rubro'), data.get('solution'), data.get('category'), data.get('website'), data.get('badge')))
+            client_id = cursor.lastrowid
+        conn.commit()
+        conn.close()
+        return client_id
+    except Exception as e:
+        print("Error saving client to DB:", e)
+        return None
+
+def delete_client_from_db(client_id):
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM portfolio_clients WHERE id=?", (client_id,))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print("Error deleting client from DB:", e)
+        return False
+
 def init_uf_db():
     try:
         os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
@@ -399,6 +451,15 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({'ok': True, 'messages': messages}).encode('utf-8'))
+            return
+
+        if self.path in ['/tg-clients', '/api/clients']:
+            clients = get_all_clients_from_db()
+            self.send_response(200)
+            self.send_cors_headers()
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'clients': clients}).encode('utf-8'))
             return
 
         if self.path in ['/tg-uf-rate', '/api/uf-rate']:
@@ -729,6 +790,52 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
                 return
+
+        if self.path in ['/tg-save-client', '/api/save-client']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                
+                client_id = save_client_to_db(data)
+                if client_id is not None:
+                    self.send_response(200)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': True, 'id': client_id}).encode())
+                else:
+                    raise ValueError("Error al guardar en DB")
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
+
+        if self.path in ['/tg-delete-client', '/api/delete-client']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                client_id = data.get('id')
+                
+                if client_id and delete_client_from_db(client_id):
+                    self.send_response(200)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': True}).encode())
+                else:
+                    raise ValueError("Error al eliminar en DB o falta ID")
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
 
         if self.path in ['/tg-update-message-status', '/api/update-message-status']:
             try:
