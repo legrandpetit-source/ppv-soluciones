@@ -255,8 +255,75 @@ def delete_skill_from_db(item_id):
         print("Error deleting skill from DB:", e)
         return False
 
+def init_admin_access_logs_db():
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS admin_access_logs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                email TEXT,
+                status TEXT,
+                ip_address TEXT,
+                user_agent TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"[TG-PROXY] DB admin_access_logs Init Error: {e}")
+
+def log_admin_access(email, status, ip_address, user_agent):
+    init_admin_access_logs_db()
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO admin_access_logs (email, status, ip_address, user_agent)
+            VALUES (?, ?, ?, ?)
+        ''', (email, status, ip_address, user_agent))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"[TG-PROXY] Error logging admin access: {e}")
+
+def check_brute_force(ip_address, email):
+    init_admin_access_logs_db()
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        # Check failed attempts in the last 10 minutes
+        cursor.execute('''
+            SELECT COUNT(*) FROM admin_access_logs 
+            WHERE status LIKE 'failed_%' 
+            AND (ip_address = ? OR email = ?)
+            AND timestamp >= datetime('now', '-10 minutes')
+        ''', (ip_address, email))
+        count = cursor.fetchone()[0]
+        conn.close()
+        return count >= 3
+    except Exception as e:
+        print(f"[TG-PROXY] Error checking brute force: {e}")
+        return False
+
+def get_all_admin_access_logs_from_db():
+    init_admin_access_logs_db()
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM admin_access_logs ORDER BY timestamp DESC LIMIT 200")
+        rows = cursor.fetchall()
+        conn.close()
+        return [dict(row) for row in rows]
+    except Exception as e:
+        print("Error reading admin_access_logs from DB:", e)
+        return []
+
 # --- ADMIN USERS ---
 def get_all_admin_users_from_db():
+    init_admin_access_logs_db()
     try:
         conn = sqlite3.connect(DB_PATH, timeout=5)
         conn.row_factory = sqlite3.Row
@@ -649,6 +716,15 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
+        if self.path in ['/tg-access-logs', '/api/access-logs']:
+            logs = get_all_admin_access_logs_from_db()
+            self.send_response(200)
+            self.send_cors_headers()
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True, 'logs': logs}).encode('utf-8'))
+            return
+
         if self.path in ['/tg-messages', '/api/messages']:
             messages = get_all_messages_from_db()
             self.send_response(200)
@@ -735,6 +811,39 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_POST(self):
+        
+        if self.path in ['/tg-log-access', '/api/log-access']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                
+                email = data.get('email', '').strip()
+                status = data.get('status', 'unknown')
+                
+                # Obtener IP (considerando NGINX / Cloudflare proxy)
+                ip_address = self.headers.get('X-Forwarded-For') or self.headers.get('X-Real-IP') or self.client_address[0]
+                user_agent = self.headers.get('User-Agent', '')
+                
+                log_admin_access(email, status, ip_address, user_agent)
+                
+                if 'failed' in status:
+                    if check_brute_force(ip_address, email):
+                        text = f"🚨 <b>ALERTA DE SEGURIDAD (FUERZA BRUTA)</b>\n\nIntento de acceso denegado repetitivo detectado.\n<b>Email:</b> {email}\n<b>IP:</b> {ip_address}\n<b>Navegador:</b> {user_agent}"
+                        send_telegram_generic(text)
+                
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True}).encode())
+                return
+            except Exception as e:
+                print(f"[TG-PROXY] Error en log-access: {e}")
+                self.send_response(500)
+                self.send_cors_headers()
+                self.end_headers()
+                return
 
         if self.path in ['/tg-generate-docs', '/api/generate-docs']:
             try:

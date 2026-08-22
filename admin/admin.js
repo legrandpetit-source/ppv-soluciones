@@ -19,6 +19,18 @@ function getAdminEmail() {
   return localStorage.getItem('ppv_admin_custom_email') || 'ppv@ppvsoluciones.cl';
 }
 
+async function logAdminAccess(email, status) {
+  try {
+    await fetch('/tg-log-access', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, status })
+    });
+  } catch (e) {
+    console.error('[ADMIN] Error logging access', e);
+  }
+}
+
 async function hashString(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
@@ -165,6 +177,7 @@ function initAuth() {
             loginError.style.display = 'flex';
           }
           showToast('🔒 Usuario bloqueado. Contacta al administrador principal.', true);
+          logAdminAccess(email, 'failed_blocked');
           return;
         }
 
@@ -179,6 +192,7 @@ function initAuth() {
             loginError.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <span>Credenciales incorrectas.</span>';
             loginError.style.display = 'flex';
           }
+          logAdminAccess(email, 'failed_bad_credentials');
         }
       } catch (err) {
         console.error('[ADMIN] Error en validación de credenciales:', err);
@@ -266,6 +280,7 @@ function initAuth() {
           localStorage.setItem('ppv_admin_role', sessionStorage.getItem('pending_2fa_role') || 'Admin');
           localStorage.setItem('ppv_admin_phone', sessionStorage.getItem('pending_2fa_phone') || '');
           
+          logAdminAccess(currentLoginEmail, 'success');
           showToast('¡Bienvenido al Panel de Administración!');
           checkSession();
           form2FA.style.display = 'none';
@@ -279,6 +294,7 @@ function initAuth() {
           loginError.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <span>El código ingresado es incorrecto o ha expirado.</span>';
           loginError.style.display = 'flex';
         }
+        logAdminAccess(currentLoginEmail, 'failed_bad_2fa');
       } finally {
         btnVerify.innerHTML = originalText;
         btnVerify.disabled = false;
@@ -314,6 +330,8 @@ async function refreshAllData() {
   try { await loadServicesTable(); } catch(e) { console.error('Error cargando servicios:', e); }
   try { await loadSkillsTable(); } catch(e) { console.error('Error cargando habilidades:', e); }
   try { await loadBlockedTable(); } catch(e) { console.error('Error cargando bloqueados:', e); }
+  try { await loadAdminUsersTable(); } catch(e) { console.error('Error cargando usuarios admin:', e); }
+  try { await loadAccessLogsTable(); } catch(e) { console.error('Error cargando access logs:', e); }
   try { await updateCounters(); } catch(e) { console.error('Error actualizando contadores:', e); }
 }
 
@@ -1184,6 +1202,50 @@ function initUserMaintainer() {
         }
       };
     });
+  }
+}
+
+async function loadAccessLogsTable() {
+  const tbody = document.getElementById('access-logs-tbody');
+  if (!tbody) return;
+
+  try {
+    const res = await fetch('/tg-access-logs');
+    const data = await res.json();
+    
+    tbody.innerHTML = '';
+    if (!data.ok || !data.logs || data.logs.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No hay registros de acceso.</td></tr>';
+      return;
+    }
+
+    data.logs.forEach(log => {
+      const tr = document.createElement('tr');
+      const isSuccess = log.status === 'success';
+      const isBrute = log.status.includes('brute_force');
+      
+      let statusBadge = '';
+      if (isSuccess) {
+        statusBadge = `<span class="badge-status" style="background: rgba(0, 255, 136, 0.15); color: var(--neon-emerald); border: 1px solid var(--neon-emerald);">✅ Autorizado</span>`;
+      } else if (isBrute) {
+        statusBadge = `<span class="badge-status" style="background: rgba(255, 0, 127, 0.15); color: var(--neon-pink); border: 1px solid var(--neon-pink);">🚨 Bloqueo (Fuerza Bruta)</span>`;
+      } else {
+        statusBadge = `<span class="badge-status" style="background: rgba(255, 170, 0, 0.15); color: var(--neon-amber); border: 1px solid var(--neon-amber);">❌ Denegado (${escapeHtml(log.status)})</span>`;
+      }
+
+      tr.innerHTML = `
+        <td>#${log.id}</td>
+        <td><span style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(log.timestamp)}</span></td>
+        <td><strong style="color: #fff;">${escapeHtml(log.email || 'N/A')}</strong></td>
+        <td>${statusBadge}</td>
+        <td style="font-size: 0.8rem;">${escapeHtml(log.ip_address || 'Desconocida')}</td>
+        <td style="font-size: 0.75rem; color: var(--text-muted); max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${escapeHtml(log.user_agent || '')}">${escapeHtml(log.user_agent || 'N/A')}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch (e) {
+    console.error('[ADMIN] Error loading access logs:', e);
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--neon-pink);">Error al cargar los registros.</td></tr>';
   }
 }
 

@@ -241,6 +241,9 @@
       <button class="sidebar-btn" data-view="view-users">
         <i class="fa-solid fa-user-shield text-cyan"></i> Gestión de Usuarios Admin
       </button>
+      <button class="sidebar-btn" data-view="view-access-logs">
+        <i class="fa-solid fa-shield-halved text-emerald"></i> Seguridad y Accesos
+      </button>
       <button class="sidebar-btn" data-view="view-sec-generator">
         <i class="fa-solid fa-file-contract text-pink"></i> Generador de Cartas & PDFs
       </button>
@@ -737,6 +740,33 @@
             </thead>
             <tbody id="admin-users-tbody">
               <!-- Cargado dinámicamente desde db.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Vista 7.5: Registro de Accesos (Audit Logs) -->
+      <div class="admin-panel-view" id="view-access-logs" style="display: none;">
+        <h3 style="color: var(--neon-emerald); font-size: 1.2rem; margin-bottom: 1rem;">
+          <i class="fa-solid fa-shield-halved"></i> Registro de Seguridad y Accesos
+        </h3>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+          Monitoreo en tiempo real de todos los intentos de inicio de sesión (exitosos y fallidos).
+        </p>
+        <div style="overflow-x: auto;">
+          <table class="msg-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fecha/Hora</th>
+                <th>Usuario (Email)</th>
+                <th>Estado</th>
+                <th>Dirección IP</th>
+                <th>Navegador/Dispositivo</th>
+              </tr>
+            </thead>
+            <tbody id="access-logs-tbody">
+              <!-- Cargado dinámicamente -->
             </tbody>
           </table>
         </div>
