@@ -581,6 +581,22 @@ def set_config_kv(key, value):
         print(f"[TG-PROXY] Error guardando config_kv: {e}")
         return False
 
+active_2fa_codes = {}
+
+def send_telegram_generic(text):
+    payload = json.dumps({
+        'chat_id': TELEGRAM_CHAT_ID,
+        'text': text,
+        'parse_mode': 'HTML'
+    }).encode('utf-8')
+    req = urllib.request.Request(
+        f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage',
+        data=payload,
+        headers={'Content-Type': 'application/json'}
+    )
+    with urllib.request.urlopen(req, timeout=10) as res:
+        return json.loads(res.read())
+
 def send_telegram(name, email, subject, website, budget_text, message, phone='', contact_pref=''):
     now = get_chile_now_str()
     site_info = f"🌐 <b>Sitio Web / URL:</b> {escape_html(website)}\n" if website else ""
@@ -1328,6 +1344,60 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
                 return
+
+        if self.path == '/tg-send-2fa':
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                email = data.get('email', '').lower().strip()
+                if not email:
+                    raise ValueError("Falta email")
+                
+                import random
+                code = str(random.randint(10000, 99999))
+                active_2fa_codes[email] = code
+                
+                text = f"🔐 <b>CÓDIGO DE ACCESO (2FA)</b>\n\nAdmin: {email}\nTu código de verificación es: <b>{code}</b>\n\n<i>Este código es válido para un solo uso.</i>"
+                send_telegram_generic(text)
+                
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True}).encode())
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
+
+        if self.path == '/tg-verify-2fa':
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                email = data.get('email', '').lower().strip()
+                code = data.get('code', '').strip()
+                
+                if email in active_2fa_codes and active_2fa_codes[email] == code:
+                    del active_2fa_codes[email]
+                    self.send_response(200)
+                    self.send_cors_headers()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'ok': True}).encode())
+                else:
+                    raise ValueError("Código inválido o expirado")
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
 
         if self.path not in ['/tg-notify', '/api/notify']:
             self.send_response(404)

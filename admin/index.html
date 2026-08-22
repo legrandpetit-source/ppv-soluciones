@@ -171,7 +171,25 @@
         </div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.8rem;">
-          <i class="fa-solid fa-key"></i> Acceder a /admin
+          <i class="fa-solid fa-key"></i> Solicitar Acceso (Paso 1)
+        </button>
+      </form>
+
+      <!-- Formulario 2FA (Oculto por defecto) -->
+      <form id="form-admin-portal-2fa" style="display: none;">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; text-align: center;">
+          Se ha enviado un código de seguridad de 5 dígitos a Telegram (Bot). Introdúzcalo para continuar.
+        </p>
+        <div class="form-group">
+          <label for="portal-2fa-code">Código 2FA</label>
+          <input type="text" id="portal-2fa-code" class="form-control" placeholder="12345" required autocomplete="one-time-code" maxlength="5" style="text-align: center; font-size: 1.5rem; letter-spacing: 5px; font-family: var(--font-code);">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.8rem; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); border: none;">
+          <i class="fa-solid fa-shield-halved"></i> Verificar y Entrar
+        </button>
+        <button type="button" class="btn btn-outline" id="btn-back-to-login" style="width: 100%; margin-top: 0.5rem; border-color: var(--border-glass);">
+          <i class="fa-solid fa-arrow-left"></i> Volver
         </button>
       </form>
     </div>
@@ -1459,7 +1477,7 @@
 
   <!-- Scripts -->
   <script src="../db.js?v=20260812_01"></script>
-  <script src="admin.js?v=20260812_01"></script>
+  <script src="admin.js?v=20260822_02"></script>
 </body>
 <!--/email_off-->
 </html>

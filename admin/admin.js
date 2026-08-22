@@ -121,11 +121,7 @@ function initAuth() {
 
       // Verificación directa inmediata
       if (email === 'ppv@ppvsoluciones.cl' && pass === 'axeappv3878') {
-        sessionStorage.setItem('ppv_admin_logged', 'true');
-        sessionStorage.setItem('ppv_admin_email', email);
-        if (loginError) loginError.style.display = 'none';
-        showToast('¡Bienvenido al Panel de Administración!');
-        checkSession();
+        await initiate2FA(email);
         return;
       }
 
@@ -138,6 +134,10 @@ function initAuth() {
 
         let isDbUser = false;
         let isBlockedUser = false;
+        let dbUserName = '';
+        let dbUserRole = '';
+        let dbUserPhone = '';
+        
         if (window.portfolioDB && window.portfolioDB.db) {
           try {
             const dbUsers = await window.portfolioDB.getAllAdminUsers();
@@ -148,6 +148,9 @@ function initAuth() {
                   isBlockedUser = true;
                 } else {
                   isDbUser = true;
+                  dbUserName = found.name;
+                  dbUserRole = found.role;
+                  dbUserPhone = found.phone || '';
                 }
               }
             }
@@ -166,34 +169,119 @@ function initAuth() {
         }
 
         if (isMasterHash || isCustomCreds || isDbUser) {
-          sessionStorage.setItem('ppv_admin_logged', 'true');
-          sessionStorage.setItem('ppv_admin_email', email);
-          
-          if (isDbUser && window.portfolioDB) {
-            const dbUsers = await window.portfolioDB.getAllAdminUsers();
-            const found = dbUsers.find(u => u.email && u.email.toLowerCase() === email);
-            if (found) {
-              localStorage.setItem('ppv_admin_custom_email', found.email);
-              localStorage.setItem('ppv_admin_name', found.name);
-              localStorage.setItem('ppv_admin_role', found.role);
-              localStorage.setItem('ppv_admin_phone', found.phone || '');
-            }
-          } else if (email === 'ppv@ppvsoluciones.cl') {
-            localStorage.setItem('ppv_admin_custom_email', email);
-            localStorage.setItem('ppv_admin_name', 'Patricio Padilla');
-            localStorage.setItem('ppv_admin_role', 'CEO & Fundador');
-            localStorage.setItem('ppv_admin_phone', '+56 9 5704 0679');
-          }
-          
-          if (loginError) loginError.style.display = 'none';
-          showToast('¡Bienvenido al Panel de Administración!');
-          checkSession();
+          // Credenciales correctas -> Disparar 2FA
+          sessionStorage.setItem('pending_2fa_name', isDbUser ? dbUserName : 'Patricio Padilla');
+          sessionStorage.setItem('pending_2fa_role', isDbUser ? dbUserRole : 'CEO & Fundador');
+          sessionStorage.setItem('pending_2fa_phone', isDbUser ? dbUserPhone : '+56 9 5704 0679');
+          await initiate2FA(email);
         } else {
-          if (loginError) loginError.style.display = 'flex';
+          if (loginError) {
+            loginError.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <span>Credenciales incorrectas.</span>';
+            loginError.style.display = 'flex';
+          }
         }
       } catch (err) {
         console.error('[ADMIN] Error en validación de credenciales:', err);
-        if (loginError) loginError.style.display = 'flex';
+        if (loginError) {
+          loginError.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <span>Error de validación.</span>';
+          loginError.style.display = 'flex';
+        }
+      }
+    };
+  }
+
+  // --- LÓGICA DE 2FA ---
+  const form2FA = document.getElementById('form-admin-portal-2fa');
+  const btnBackLogin = document.getElementById('btn-back-to-login');
+  let currentLoginEmail = '';
+
+  async function initiate2FA(email) {
+    currentLoginEmail = email;
+    if (loginError) loginError.style.display = 'none';
+    const btnLogin = loginForm.querySelector('button[type="submit"]');
+    const originalText = btnLogin.innerHTML;
+    btnLogin.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+    btnLogin.disabled = true;
+
+    try {
+      const res = await fetch('/tg-send-2fa', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        loginForm.style.display = 'none';
+        form2FA.style.display = 'block';
+        document.getElementById('portal-2fa-code').focus();
+        showToast('Código enviado a Telegram');
+      } else {
+        throw new Error(data.error || 'Error enviando 2FA');
+      }
+    } catch (e) {
+      console.error(e);
+      if (loginError) {
+        loginError.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <span>Error al enviar el código 2FA. Verifique la conexión con el servidor.</span>';
+        loginError.style.display = 'flex';
+      }
+    } finally {
+      btnLogin.innerHTML = originalText;
+      btnLogin.disabled = false;
+    }
+  }
+
+  if (btnBackLogin) {
+    btnBackLogin.onclick = () => {
+      form2FA.style.display = 'none';
+      loginForm.style.display = 'block';
+      document.getElementById('portal-2fa-code').value = '';
+    };
+  }
+
+  if (form2FA) {
+    form2FA.onsubmit = async (e) => {
+      e.preventDefault();
+      const codeInput = document.getElementById('portal-2fa-code').value.trim();
+      const btnVerify = form2FA.querySelector('button[type="submit"]');
+      const originalText = btnVerify.innerHTML;
+      btnVerify.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verificando...';
+      btnVerify.disabled = true;
+      if (loginError) loginError.style.display = 'none';
+
+      try {
+        const res = await fetch('/tg-verify-2fa', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: currentLoginEmail, code: codeInput })
+        });
+        const data = await res.json();
+        
+        if (data.ok) {
+          // Login exitoso final
+          sessionStorage.setItem('ppv_admin_logged', 'true');
+          sessionStorage.setItem('ppv_admin_email', currentLoginEmail);
+          
+          localStorage.setItem('ppv_admin_custom_email', currentLoginEmail);
+          localStorage.setItem('ppv_admin_name', sessionStorage.getItem('pending_2fa_name') || 'Admin');
+          localStorage.setItem('ppv_admin_role', sessionStorage.getItem('pending_2fa_role') || 'Admin');
+          localStorage.setItem('ppv_admin_phone', sessionStorage.getItem('pending_2fa_phone') || '');
+          
+          showToast('¡Bienvenido al Panel de Administración!');
+          checkSession();
+          form2FA.style.display = 'none';
+          loginForm.style.display = 'block';
+          document.getElementById('portal-2fa-code').value = '';
+        } else {
+          throw new Error('Código incorrecto');
+        }
+      } catch (err) {
+        if (loginError) {
+          loginError.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <span>El código ingresado es incorrecto o ha expirado.</span>';
+          loginError.style.display = 'flex';
+        }
+      } finally {
+        btnVerify.innerHTML = originalText;
+        btnVerify.disabled = false;
       }
     };
   }
