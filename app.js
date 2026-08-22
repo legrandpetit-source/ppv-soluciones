@@ -532,17 +532,17 @@ async function loadServicesCalculator() {
 
   servicesData.forEach((service, index) => {
     const isSelected = index === 0; // Seleccionar el primero por defecto
-    const priceUFVal = service.priceUF !== undefined ? parseFloat(service.priceUF) : (parseFloat(service.priceUSD || 0) / 40.0);
+    const priceUFVal = service.priceUF !== undefined ? parseFloat(service.priceUF) : (parseFloat(service.priceUSD || service.price_usd || 0) / 40.0);
     const card = document.createElement('div');
     card.className = `option-card ${isSelected ? 'selected' : ''}`;
     card.dataset.priceUf = priceUFVal;
-    card.dataset.time = parseInt(service.timeDays, 10) || 1;
+    card.dataset.time = parseInt(service.timeDays || service.time_days, 10) || 1;
     card.dataset.id = service.id;
 
     card.innerHTML = `
       <div>
         <strong style="display: block; font-size: 1rem;">${escapeHtml(service.title)}</strong>
-        <span style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(service.desc)}</span>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(service.desc || service.description || '')}</span>
       </div>
       <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: ${isSelected ? '1' : '0.3'};"></i>
     `;
@@ -2198,8 +2198,11 @@ function initMaintainerServicesCRUD() {
     const serviceData = {
       title: document.getElementById('m-service-title').value.trim(),
       priceUSD: parseInt(document.getElementById('m-service-price').value, 10) || 0,
+      price_usd: parseInt(document.getElementById('m-service-price').value, 10) || 0,
       timeDays: document.getElementById('m-service-time').value.trim(),
+      time_days: document.getElementById('m-service-time').value.trim(),
       desc: document.getElementById('m-service-desc').value.trim(),
+      description: document.getElementById('m-service-desc').value.trim(),
       icon: 'fa-check'
     };
 
@@ -2242,9 +2245,9 @@ async function loadMaintainerServicesTable() {
     tr.innerHTML = `
       <td style="font-family: var(--font-code); color: var(--neon-cyan);">#${s.id}</td>
       <td><strong>${escapeHtml(s.title)}</strong></td>
-      <td style="color: var(--neon-emerald); font-weight: 700;">$${s.priceUSD} USD</td>
-      <td style="color: var(--neon-violet);">${escapeHtml(s.timeDays)}</td>
-      <td style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(s.desc)}</td>
+      <td style="color: var(--neon-emerald); font-weight: 700;">$${s.priceUSD || s.price_usd || 0} USD</td>
+      <td style="color: var(--neon-violet);">${escapeHtml(s.timeDays || s.time_days || '')}</td>
+      <td style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(s.desc || s.description || '')}</td>
       <td>
         <button class="btn btn-outline btn-edit-service" data-id="${s.id}" style="padding: 2px 6px; font-size: 0.75rem;">
           <i class="fa-solid fa-pen"></i>
@@ -2265,9 +2268,9 @@ async function loadMaintainerServicesTable() {
       if (target) {
         document.getElementById('m-service-id').value = target.id;
         document.getElementById('m-service-title').value = target.title;
-        document.getElementById('m-service-price').value = target.priceUSD;
-        document.getElementById('m-service-time').value = target.timeDays;
-        document.getElementById('m-service-desc').value = target.desc;
+        document.getElementById('m-service-price').value = target.priceUSD || target.price_usd || 0;
+        document.getElementById('m-service-time').value = target.timeDays || target.time_days || '';
+        document.getElementById('m-service-desc').value = target.desc || target.description || '';
         document.getElementById('service-form-title').innerHTML = `<i class="fa-solid fa-pen"></i> Editando Servicio #${target.id}`;
       }
     };
