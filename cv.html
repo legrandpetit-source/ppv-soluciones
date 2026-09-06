@@ -167,6 +167,30 @@
       background: rgba(0, 243, 255, 0.2);
     }
     
+    .project-link {
+      color: var(--neon-cyan);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .project-link:hover {
+      color: var(--neon-violet);
+      text-decoration: underline;
+      text-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
+    }
+    .project-link i {
+      font-size: 0.8em;
+      margin-left: 4px;
+    }
+    
+    @media print {
+      body { background: white !important; color: black !important; }
+      #main-header, #snake-bg, .contact-links { display: none !important; }
+      .cv-container { padding: 20px !important; }
+      .cv-section { border: 1px solid #ccc !important; box-shadow: none !important; }
+      .text-gradient { background: none !important; color: black !important; -webkit-text-fill-color: black !important; }
+      .text-cyan { color: #0056b3 !important; }
+    }
+    
     @media (max-width: 768px) {
       .cv-header { flex-direction: column; text-align: center; }
       .contact-links { justify-content: center; flex-wrap: wrap; }
@@ -197,6 +221,7 @@
         <h1 class="text-gradient">Patricio Padilla V.</h1>
         <h2>Full Stack Web Developer | Frontend & Backend</h2>
         <div class="contact-links">
+          <a href="assets/Patricio_Padilla_CV.pdf" download style="border-color: var(--neon-cyan); background: rgba(0, 243, 255, 0.05);"><i class="fas fa-file-pdf text-cyan"></i> Descargar CV</a>
           <a href="mailto:legrandpetit@gmail.com"><i class="fas fa-envelope"></i> Email</a>
           <a href="https://www.linkedin.com/in/patricio-padilla-8835972b7" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
           <a href="https://github.com/legrandpetit-source" target="_blank"><i class="fab fa-github"></i> GitHub</a>
@@ -239,11 +264,11 @@
         </div>
         <div class="timeline-content">
           <ul>
-            <li><strong>Origen Canino:</strong> Plataforma E-commerce completa con React y FastAPI. Lógica compleja de carrito, suscripciones, reglas de peso y panel admin propio.</li>
-            <li><strong>PPV Soluciones:</strong> Web corporativa optimizada para SEO, velocidad y alta conversión (Responsive Design y Dark Mode avanzado).</li>
-            <li><strong>Aurora Designs:</strong> Landing page inmersiva (CSS/SVG), efectos parallax y widgets interactivos para captación de leads.</li>
-            <li><strong>Campaña Dr. Jorge Castro:</strong> Plataforma solidaria con integración Mercado Pago, blog interactivo y muro de mensajes en tiempo real.</li>
-            <li><strong>Legrand Petit:</strong> Landing page interactiva y pasarela promocional con diseño de alta fidelidad.</li>
+            <li><strong><a href="https://origencanino.cl/" target="_blank" class="project-link">Origen Canino <i class="fas fa-external-link-alt"></i></a>:</strong> Plataforma E-commerce completa con React y FastAPI. Lógica compleja de carrito, suscripciones, reglas de peso y panel admin propio.</li>
+            <li><strong><a href="https://www.ppvsoluciones.cl/" target="_blank" class="project-link">PPV Soluciones <i class="fas fa-external-link-alt"></i></a>:</strong> Web corporativa optimizada para SEO, velocidad y alta conversión (Responsive Design y Dark Mode avanzado).</li>
+            <li><strong><a href="https://auroradesings.cl/" target="_blank" class="project-link">Aurora Designs <i class="fas fa-external-link-alt"></i></a>:</strong> Landing page inmersiva (CSS/SVG), efectos parallax y widgets interactivos para captación de leads.</li>
+            <li><strong><a href="https://jorgecastromdv.cl/" target="_blank" class="project-link">Campaña Dr. Jorge Castro <i class="fas fa-external-link-alt"></i></a>:</strong> Plataforma solidaria con integración Mercado Pago, blog interactivo y muro de mensajes en tiempo real.</li>
+            <li><strong><a href="https://www.legrandpetit.cl/" target="_blank" class="project-link">Legrand Petit <i class="fas fa-external-link-alt"></i></a>:</strong> Landing page interactiva y pasarela promocional con diseño de alta fidelidad.</li>
           </ul>
         </div>
       </div>
