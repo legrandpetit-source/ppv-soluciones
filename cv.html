@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Patricio Padilla | CV - Web Developer</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* CV Specific Styles */
+    .cv-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 120px 20px 80px;
+    }
+    .cv-header {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 50px;
+      flex-wrap: wrap;
+    }
+    .profile-img-container {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      padding: 6px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+      animation: pulse-glow 3s infinite alternate;
+    }
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 20px rgba(0, 243, 255, 0.3); }
+      100% { box-shadow: 0 0 40px rgba(168, 85, 247, 0.6); }
+    }
+    .profile-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: var(--bg-dark);
+      /* Make it cool: grayscale + high contrast, then color on hover */
+      filter: grayscale(80%) contrast(1.2) brightness(1.1);
+      transition: filter 0.5s ease;
+    }
+    .profile-img:hover {
+      filter: grayscale(0%) contrast(1) brightness(1);
+    }
+    .cv-title h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+    .cv-title h2 {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      font-family: var(--font-main);
+      font-weight: 400;
+    }
+    .contact-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .contact-links a {
+      color: var(--text-main);
+      background: var(--bg-card);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      border: 1px solid var(--border-glass);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .contact-links a:hover {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 15px var(--border-glow);
+      color: var(--neon-cyan);
+    }
+    
+    .cv-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 30px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cv-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 4px; height: 100%;
+      background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-violet));
+    }
+    .cv-section h3 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .timeline-item {
+      margin-bottom: 25px;
+      padding-bottom: 25px;
+      border-bottom: 1px solid var(--border-glass);
+    }
+    .timeline-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .timeline-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--neon-cyan);
+    }
+    .timeline-company {
+      font-weight: 500;
+      color: var(--text-main);
+    }
+    .timeline-date {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.05);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .timeline-content ul {
+      padding-left: 20px;
+      color: var(--text-subtle);
+    }
+    .timeline-content li {
+      margin-bottom: 8px;
+    }
+    
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .skill-tag {
+      background: rgba(0, 243, 255, 0.1);
+      color: var(--neon-cyan);
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
+    }
+    .skill-tag:hover {
+      background: rgba(0, 243, 255, 0.2);
+    }
+    
+    @media (max-width: 768px) {
+      .cv-header { flex-direction: column; text-align: center; }
+      .contact-links { justify-content: center; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background matches index.html -->
+  <canvas id="snake-bg" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; opacity: 0.7; pointer-events: none;"></canvas>
+
+  <header id="main-header">
+    <div class="nav-container-inner">
+      <div class="container nav-content">
+        <a href="/" class="logo" title="PPV Soluciones">
+          <span class="logo-text">PPV<span class="text-cyan">.</span></span>
+        </a>
+        <a href="/" class="btn btn-outline" style="margin-left: auto;">Volver al Inicio</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="cv-container">
+    <div class="cv-header">
+      <div class="profile-img-container">
+        <img src="assets/patricio-cv.webp" alt="Patricio Padilla" class="profile-img">
+      </div>
+      <div class="cv-title">
+        <h1 class="text-gradient">Patricio Padilla V.</h1>
+        <h2>Full Stack Web Developer | Frontend & Backend</h2>
+        <div class="contact-links">
+          <a href="mailto:legrandpetit@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+          <a href="https://www.linkedin.com/in/patricio-padilla-8835972b7" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+          <a href="https://github.com/legrandpetit-source" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="cv-section">
+      <h3><i class="fas fa-user-astronaut text-cyan"></i> Perfil Profesional</h3>
+      <p style="color: var(--text-subtle);">Desarrollador web Full-Stack con una sólida base técnica y de negocios. Combino una valiosa experiencia en TI corporativa (Telefónica, IBM) con habilidades modernas en desarrollo web (React, Python, Tailwind). Gracias a mis estudios en Procesos Industriales y Administración de Empresas, no solo escribo código, sino que entiendo las necesidades del negocio, optimizo procesos y entrego productos que generan valor real, como plataformas de e-commerce y sistemas de gestión hechos desde cero. Busco aportar esta visión integral en un equipo de desarrollo remoto.</p>
+    </div>
+
+    <div class="cv-section">
+      <h3><i class="fas fa-code text-cyan"></i> Habilidades Técnicas</h3>
+      <div class="skills-grid">
+        <span class="skill-tag">React.js</span>
+        <span class="skill-tag">JavaScript (ES6+)</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">FastAPI</span>
+        <span class="skill-tag">Node.js</span>
+        <span class="skill-tag">Tailwind CSS</span>
+        <span class="skill-tag">Framer Motion</span>
+        <span class="skill-tag">HTML5/CSS3</span>
+        <span class="skill-tag">RESTful APIs</span>
+        <span class="skill-tag">Git / GitHub</span>
+        <span class="skill-tag">Diseño UX/UI</span>
+      </div>
+    </div>
+
+    <div class="cv-section">
+      <h3><i class="fas fa-rocket text-cyan"></i> Experiencia Reciente (Desarrollo)</h3>
+      
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-title">Desarrollador Full-Stack (Independiente)</div>
+            <div class="timeline-company">Freelance / PPV Soluciones</div>
+          </div>
+          <div class="timeline-date">2023 - Presente</div>
+        </div>
+        <div class="timeline-content">
+          <ul>
+            <li><strong>Origen Canino:</strong> Plataforma E-commerce completa con React y FastAPI. Lógica compleja de carrito, suscripciones, reglas de peso y panel admin propio.</li>
+            <li><strong>PPV Soluciones:</strong> Web corporativa optimizada para SEO, velocidad y alta conversión (Responsive Design y Dark Mode avanzado).</li>
+            <li><strong>Aurora Designs:</strong> Landing page inmersiva (CSS/SVG), efectos parallax y widgets interactivos para captación de leads.</li>
+            <li><strong>Campaña Dr. Jorge Castro:</strong> Plataforma solidaria con integración Mercado Pago, blog interactivo y muro de mensajes en tiempo real.</li>
+            <li><strong>Legrand Petit:</strong> Landing page interactiva y pasarela promocional con diseño de alta fidelidad.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="cv-section">
+      <h3><i class="fas fa-server text-cyan"></i> Experiencia TI Corporativa</h3>
+      
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-title">Especialista Informático (Technical Support)</div>
+            <div class="timeline-company">IT Blue (Soporte IBM) - Clientes Minería y Banca</div>
+          </div>
+          <div class="timeline-date">Hasta 2009</div>
+        </div>
+        <div class="timeline-content">
+          <ul>
+            <li>Soporte y gestión de infraestructura tecnológica en entornos de alta exigencia y misión crítica.</li>
+            <li>Atención y resolución Nivel 1 y 2 para clientes mineros (Caserones, Candelaria, Centinela) e instituciones financieras (Caja Los Héroes).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-title">Especialista en Certificación Digital</div>
+            <div class="timeline-company">E-cert Chile (Cámara de Comercio de Santiago)</div>
+          </div>
+          <div class="timeline-date">2005 - 2007</div>
+        </div>
+        <div class="timeline-content">
+          <ul>
+            <li>Confección, emisión y validación de certificados digitales para empresas e instituciones.</li>
+            <li>Capacitación técnica a usuarios finales y validación del correcto funcionamiento de las plataformas criptográficas.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-title">Service Desk Nivel 1</div>
+            <div class="timeline-company">Telefónica Empresas</div>
+          </div>
+          <div class="timeline-date">2000 - 2003</div>
+        </div>
+        <div class="timeline-content">
+          <ul>
+            <li>Diagnóstico, atención y resolución remota de incidencias tecnológicas corporativas para clientes de Gobierno y Salud.</li>
+            <li>Escalamiento crítico y gestión de SLAs estrictos.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="cv-section">
+      <h3><i class="fas fa-graduation-cap text-cyan"></i> Formación Académica</h3>
+      <div class="timeline-item" style="border: none; padding: 0; margin: 0;">
+        <ul style="padding-left: 20px; color: var(--text-subtle);">
+          <li><strong>Ingeniería Informática</strong> (4 semestres completados) - Base en algoritmos, estructuras de datos y lógica de programación.</li>
+          <li><strong>Técnico en Procesos Industriales</strong></li>
+          <li><strong>Administración de Empresas</strong></li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+  
+  <script src="app_core.js"></script>
+</body>
+</html>
