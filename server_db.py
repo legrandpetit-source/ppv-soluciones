@@ -157,7 +157,8 @@ def init_database():
                 ('OrigenCanino SpA', 'Servicios Médicos Veterinarios & Salud Canina', 'Hardening Total de Ciberseguridad Ley N° 21.459 & Diagnóstico Técnico en Servidor Web', 'Ciberseguridad', 'https://origencanino.cl', '🛡️ Ciberseguridad Ley 21.459'),
                 ('Proyecto Vertical SpA', 'Construcción, Obras Civiles & Arquitectura', 'Plataforma Web App Cyberpunk Responsiva con Integración de Notificaciones Directas', 'Desarrollo Web', 'https://proyectovertical.cl', '💻 Web App & Automatización'),
                 ('Legrand Petit Importaciones', 'Comercio Exterior & Logística Internacional', 'Calculadora Interactiva de Presupuestos en Vivo & Canal de Telegram para Notificaciones de Leads', 'Automatización IA', 'https://legrandpetit.cl', '🤖 Automatización & Telegram'),
-                ('Aurora Designs', 'Agencia de Identidad Visual & Papelería Corporativa', 'Desarrollo Landing Page Responsiva con Efectos Visuales Avanzados (Glassmorphism & Animaciones)', 'Desarrollo Web', 'https://auroradesigns.cl', '💻 Landing Page & UI/UX')
+                ('Aurora Designs', 'Agencia de Identidad Visual & Papelería Corporativa', 'Desarrollo Landing Page Responsiva con Efectos Visuales Avanzados (Glassmorphism & Animaciones)', 'Desarrollo Web', 'https://auroradesigns.cl', '💻 Landing Page & UI/UX'),
+                ('TimbrApp', 'Fidelización Comercial & Ecosistema NFC B2B', 'Plataforma SaaS de Fidelización por Sellos NFC, CRM Multicanal, Sorteos y Ficha Médica/Adulto Mayor PWA', 'Desarrollo Web', 'https://timbraapp.cl', '📲 Web App & NFC IoT')
             ]
             cursor.executemany("""
                 INSERT INTO portfolio_clients (name, rubro, solution, category, website, badge)
@@ -212,7 +213,7 @@ def init_database():
                 'Patricio Padilla', 'CEO & Fundador — PPV Soluciones', 'ppv@ppvsoluciones.cl',
                 '508c6735f8ffe8058d263f1d92a453ba6265384efd0f4f1e85647955348098ed',
                 'c6902c662d2eddc4ae380748506f9ee26a600b3a6a685eafd4fb1ff11a418efb',
-                '+56 9 5704 0679', 'Administrador Principal', '03/08/2026'
+                '+56 9 4750 9070', 'Administrador Principal', '03/08/2026'
             )
             cursor.execute("""
                 INSERT INTO admin_users (name, role, email, emailHash, passHash, phone, userLevel, createdAt)

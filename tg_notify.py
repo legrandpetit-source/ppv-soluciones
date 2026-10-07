@@ -531,7 +531,7 @@ def get_issuer_config():
                 id INTEGER PRIMARY KEY CHECK (id = 1),
                 issuer_name TEXT DEFAULT 'Patricio Padilla',
                 issuer_role TEXT DEFAULT 'CEO & Fundador',
-                issuer_phone TEXT DEFAULT '+56 9 5704 0679',
+                issuer_phone TEXT DEFAULT '+56 9 4750 9070',
                 issuer_email TEXT DEFAULT 'contacto@ppvsoluciones.cl',
                 issuer_website TEXT DEFAULT 'https://ppvsoluciones.cl',
                 updated_at TEXT
@@ -543,10 +543,10 @@ def get_issuer_config():
             now_str = get_chile_now_str()
             cursor.execute('''
                 INSERT INTO issuer_config (id, issuer_name, issuer_role, issuer_phone, issuer_email, issuer_website, updated_at)
-                VALUES (1, 'Patricio Padilla', 'CEO & Fundador', '+56 9 5704 0679', 'contacto@ppvsoluciones.cl', 'https://ppvsoluciones.cl', ?)
+                VALUES (1, 'Patricio Padilla', 'CEO & Fundador', '+56 9 4750 9070', 'contacto@ppvsoluciones.cl', 'https://ppvsoluciones.cl', ?)
             ''', (now_str,))
             conn.commit()
-            row = ('Patricio Padilla', 'CEO & Fundador', '+56 9 5704 0679', 'contacto@ppvsoluciones.cl', 'https://ppvsoluciones.cl')
+            row = ('Patricio Padilla', 'CEO & Fundador', '+56 9 4750 9070', 'contacto@ppvsoluciones.cl', 'https://ppvsoluciones.cl')
         conn.close()
         return {
             'issuer_name': row[0],
@@ -560,7 +560,7 @@ def get_issuer_config():
         return {
             'issuer_name': 'Patricio Padilla',
             'issuer_role': 'CEO & Fundador',
-            'issuer_phone': '+56 9 5704 0679',
+            'issuer_phone': '+56 9 4750 9070',
             'issuer_email': 'contacto@ppvsoluciones.cl',
             'issuer_website': 'https://ppvsoluciones.cl'
         }
@@ -575,7 +575,7 @@ def save_issuer_config(name, role, phone, email, website):
                 id INTEGER PRIMARY KEY CHECK (id = 1),
                 issuer_name TEXT DEFAULT 'Patricio Padilla',
                 issuer_role TEXT DEFAULT 'CEO & Fundador',
-                issuer_phone TEXT DEFAULT '+56 9 5704 0679',
+                issuer_phone TEXT DEFAULT '+56 9 4750 9070',
                 issuer_email TEXT DEFAULT 'contacto@ppvsoluciones.cl',
                 issuer_website TEXT DEFAULT 'https://ppvsoluciones.cl',
                 updated_at TEXT
@@ -590,12 +590,12 @@ def save_issuer_config(name, role, phone, email, website):
                     issuer_name=?, issuer_role=?, issuer_phone=?, 
                     issuer_email=?, issuer_website=?, updated_at=?
                 WHERE id = 1
-            ''', (name or 'Patricio Padilla', role or 'CEO & Fundador', phone or '+56 9 5704 0679', email or 'contacto@ppvsoluciones.cl', website or 'https://ppvsoluciones.cl', now_str))
+            ''', (name or 'Patricio Padilla', role or 'CEO & Fundador', phone or '+56 9 4750 9070', email or 'contacto@ppvsoluciones.cl', website or 'https://ppvsoluciones.cl', now_str))
         else:
             cursor.execute('''
                 INSERT INTO issuer_config (id, issuer_name, issuer_role, issuer_phone, issuer_email, issuer_website, updated_at)
                 VALUES (1, ?, ?, ?, ?, ?, ?)
-            ''', (name or 'Patricio Padilla', role or 'CEO & Fundador', phone or '+56 9 5704 0679', email or 'contacto@ppvsoluciones.cl', website or 'https://ppvsoluciones.cl', now_str))
+            ''', (name or 'Patricio Padilla', role or 'CEO & Fundador', phone or '+56 9 4750 9070', email or 'contacto@ppvsoluciones.cl', website or 'https://ppvsoluciones.cl', now_str))
         conn.commit()
         conn.close()
         return True
@@ -871,7 +871,7 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 issuer_cfg = {
                     'issuer_name': str(data.get('issuer_name') or db_cfg.get('issuer_name') or 'Patricio Padilla').strip(),
                     'issuer_role': str(data.get('issuer_role') or db_cfg.get('issuer_role') or 'CEO & Fundador').strip(),
-                    'issuer_phone': str(data.get('issuer_phone') or db_cfg.get('issuer_phone') or '+56 9 5704 0679').strip(),
+                    'issuer_phone': str(data.get('issuer_phone') or db_cfg.get('issuer_phone') or '+56 9 4750 9070').strip(),
                     'issuer_email': str(data.get('issuer_email') or db_cfg.get('issuer_email') or 'contacto@ppvsoluciones.cl').strip(),
                     'issuer_website': str(data.get('issuer_website') or db_cfg.get('issuer_website') or 'https://ppvsoluciones.cl').strip()
                 }
@@ -940,7 +940,7 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 issuer_cfg = {
                     'issuer_name': str(data.get('issuer_name') or 'Patricio Padilla').strip(),
                     'issuer_role': str(data.get('issuer_role') or 'CEO & Fundador').strip(),
-                    'issuer_phone': str(data.get('issuer_phone') or '+56 9 5704 0679').strip(),
+                    'issuer_phone': str(data.get('issuer_phone') or '+56 9 4750 9070').strip(),
                     'issuer_email': str(data.get('issuer_email') or 'contacto@ppvsoluciones.cl').strip(),
                     'issuer_website': str(data.get('issuer_website') or 'https://ppvsoluciones.cl').strip()
                 }

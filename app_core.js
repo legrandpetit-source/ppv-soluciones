@@ -2572,7 +2572,7 @@ async function initVCardLogic() {
       name: 'Patricio Padilla',
       role: 'CEO & Fundador — PPV Soluciones',
       email: 'ppv@ppvsoluciones.cl',
-      phone: '+56 9 5704 0679',
+      phone: '+56 9 4750 9070',
       location: 'Santiago, Chile',
       desc: 'Especialista en Ciberseguridad Web, Hardening de Servidores Linux/Docker, Automatización de Procesos con IA (n8n) y Desarrollo de Software en Chile.'
     };

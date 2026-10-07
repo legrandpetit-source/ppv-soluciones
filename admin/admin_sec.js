@@ -185,7 +185,7 @@ function initAuth() {
           // Credenciales correctas -> Disparar 2FA
           sessionStorage.setItem('pending_2fa_name', isDbUser ? dbUserName : 'Patricio Padilla');
           sessionStorage.setItem('pending_2fa_role', isDbUser ? dbUserRole : 'CEO & Fundador');
-          sessionStorage.setItem('pending_2fa_phone', isDbUser ? dbUserPhone : '+56 9 5704 0679');
+          sessionStorage.setItem('pending_2fa_phone', isDbUser ? dbUserPhone : '+56 9 4750 9070');
           await initiate2FA(email);
         } else {
           if (loginError) {
@@ -1822,7 +1822,7 @@ function initVCardEditorMaintainer() {
         name: 'Patricio Padilla',
         role: 'CEO & Fundador — PPV Soluciones',
         email: 'ppv@ppvsoluciones.cl',
-        phone: '+56 9 5704 0679',
+        phone: '+56 9 4750 9070',
         location: 'Santiago, Chile',
         desc: 'Especialista en Ciberseguridad Web, Hardening de Servidores Linux/Docker, Automatización de Procesos con IA (n8n) y Desarrollo de Software en Chile.'
       };
