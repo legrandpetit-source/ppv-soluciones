@@ -337,7 +337,7 @@ def get_default_issuer_config():
     return {
         'issuer_name': 'Patricio Padilla',
         'issuer_role': 'CEO & Fundador',
-        'issuer_phone': '+56 9 4750 9070',
+        'issuer_phone': '+56 9 4760 9070',
         'issuer_email': 'contacto@ppvsoluciones.cl',
         'issuer_website': 'https://ppvsoluciones.cl'
     }
@@ -348,7 +348,7 @@ def generate_client_authorization_pdf(client_name, rut, domain, contact_person, 
     cfg = issuer_config or get_default_issuer_config()
     in_name = cfg.get('issuer_name') or 'Patricio Padilla'
     in_role = cfg.get('issuer_role') or 'CEO & Fundador'
-    in_phone = cfg.get('issuer_phone') or '+56 9 4750 9070'
+    in_phone = cfg.get('issuer_phone') or '+56 9 4760 9070'
     in_email = cfg.get('issuer_email') or 'contacto@ppvsoluciones.cl'
     in_website = cfg.get('issuer_website') or 'https://ppvsoluciones.cl'
     
@@ -410,7 +410,7 @@ def generate_client_audit_report_pdf(client_name, domain, plan_tier="$450 USD", 
     cfg = issuer_config or get_default_issuer_config()
     in_name = cfg.get('issuer_name') or 'Patricio Padilla'
     in_role = cfg.get('issuer_role') or 'CEO & Fundador'
-    in_phone = cfg.get('issuer_phone') or '+56 9 4750 9070'
+    in_phone = cfg.get('issuer_phone') or '+56 9 4760 9070'
     in_email = cfg.get('issuer_email') or 'contacto@ppvsoluciones.cl'
     in_website = cfg.get('issuer_website') or 'https://ppvsoluciones.cl'
     
@@ -470,7 +470,7 @@ def get_executive_summary_markdown(client_name, company_name, phone, email="", d
     cfg = issuer_config or get_default_issuer_config()
     in_name = cfg.get('issuer_name') or 'Patricio Padilla'
     in_role = cfg.get('issuer_role') or 'CEO & Fundador'
-    in_phone = cfg.get('issuer_phone') or '+56 9 4750 9070'
+    in_phone = cfg.get('issuer_phone') or '+56 9 4760 9070'
     in_email = cfg.get('issuer_email') or 'contacto@ppvsoluciones.cl'
     in_website = cfg.get('issuer_website') or 'https://ppvsoluciones.cl'
     
@@ -559,7 +559,7 @@ def get_ppv_company_presentation_markdown(client_name="", company_name="", phone
     cfg = issuer_config or get_default_issuer_config()
     in_name = cfg.get('issuer_name') or 'Patricio Padilla'
     in_role = cfg.get('issuer_role') or 'CEO & Fundador'
-    in_phone = cfg.get('issuer_phone') or '+56 9 4750 9070'
+    in_phone = cfg.get('issuer_phone') or '+56 9 4760 9070'
     in_email = cfg.get('issuer_email') or 'contacto@ppvsoluciones.cl'
     in_website = cfg.get('issuer_website') or 'https://ppvsoluciones.cl'
     

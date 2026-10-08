@@ -185,7 +185,7 @@ function initAuth() {
           // Credenciales correctas -> Disparar 2FA
           sessionStorage.setItem('pending_2fa_name', isDbUser ? dbUserName : 'Patricio Padilla');
           sessionStorage.setItem('pending_2fa_role', isDbUser ? dbUserRole : 'CEO & Fundador');
-          sessionStorage.setItem('pending_2fa_phone', isDbUser ? dbUserPhone : '+56 9 4750 9070');
+          sessionStorage.setItem('pending_2fa_phone', isDbUser ? dbUserPhone : '+56 9 4760 9070');
           await initiate2FA(email);
         } else {
           if (loginError) {
@@ -1072,6 +1072,26 @@ function initUserMaintainer() {
 
       await window.portfolioDB.saveAdminUser(userData);
 
+      // Si es el Administrador Principal o ID #1 (Patricio Padilla), sincronizar también perfil vCard en el sistema
+      if (userData.userLevel === 'Administrador Principal' || userData.id === 1) {
+        const vProfile = {
+          name: userData.name,
+          role: userData.role,
+          email: userData.email,
+          phone: userData.phone,
+          location: 'Santiago, Chile',
+          desc: 'Especialista en Ciberseguridad Web, Hardening de Servidores Linux/Docker, Automatización de Procesos con IA (n8n) y Desarrollo de Software en Chile.'
+        };
+        try {
+          if (window.portfolioDB && typeof window.portfolioDB.saveConfig === 'function') {
+            await window.portfolioDB.saveConfig('vcard_profile', vProfile);
+          }
+        } catch (e) {
+          console.warn('[ADMIN] No se pudo guardar vcard_profile en config:', e);
+        }
+        localStorage.setItem('ppv_vcard_profile', JSON.stringify(vProfile));
+      }
+
       // Sincronizar SIEMPRE la información del gestor activo en localStorage y servidor VPS
       // SOLO si el usuario editado es el mismo que está actualmente logueado
       const loggedEmail = sessionStorage.getItem('ppv_admin_email') || '';
@@ -1822,7 +1842,7 @@ function initVCardEditorMaintainer() {
         name: 'Patricio Padilla',
         role: 'CEO & Fundador — PPV Soluciones',
         email: 'ppv@ppvsoluciones.cl',
-        phone: '+56 9 4750 9070',
+        phone: '+56 9 4760 9070',
         location: 'Santiago, Chile',
         desc: 'Especialista en Ciberseguridad Web, Hardening de Servidores Linux/Docker, Automatización de Procesos con IA (n8n) y Desarrollo de Software en Chile.'
       };

@@ -2557,8 +2557,36 @@ async function initVCardLogic() {
   const btnCloseModal = document.getElementById('btn-close-vcard-modal');
 
   let profile = null;
-  if (window.portfolioDB) {
-    profile = await window.portfolioDB.getConfig('vcard_profile');
+
+  // 1. Prioridad: Obtener credenciales del Administrador Principal directamente del mantenedor
+  if (window.portfolioDB && typeof window.portfolioDB.getAllAdminUsers === 'function') {
+    try {
+      const adminUsers = await window.portfolioDB.getAllAdminUsers();
+      if (adminUsers && adminUsers.length > 0) {
+        const mainAdmin = adminUsers.find(u => u.userLevel === 'Administrador Principal') ||
+                          adminUsers.find(u => u.id === 1) ||
+                          adminUsers[0];
+        if (mainAdmin) {
+          profile = {
+            name: mainAdmin.name || 'Patricio Padilla',
+            role: mainAdmin.role || 'CEO & Fundador — PPV Soluciones',
+            email: mainAdmin.email || 'ppv@ppvsoluciones.cl',
+            phone: mainAdmin.phone || '+56 9 4760 9070',
+            location: 'Santiago, Chile',
+            desc: 'Especialista en Ciberseguridad Web, Hardening de Servidores Linux/Docker, Automatización de Procesos con IA (n8n) y Desarrollo de Software en Chile.'
+          };
+        }
+      }
+    } catch(e) {
+      console.warn('[PPV] No se pudo obtener usuario de mantenedor admin:', e);
+    }
+  }
+
+  // 2. Si no se obtuvo de admin_users, consultar vcard_profile
+  if (!profile && window.portfolioDB && typeof window.portfolioDB.getConfig === 'function') {
+    try {
+      profile = await window.portfolioDB.getConfig('vcard_profile');
+    } catch(e){}
   }
   if (!profile) {
     const local = localStorage.getItem('ppv_vcard_profile');
@@ -2567,15 +2595,35 @@ async function initVCardLogic() {
     }
   }
 
+  // 3. Fallback oficial garantizado
   if (!profile) {
     profile = {
       name: 'Patricio Padilla',
       role: 'CEO & Fundador — PPV Soluciones',
       email: 'ppv@ppvsoluciones.cl',
-      phone: '+56 9 4750 9070',
+      phone: '+56 9 4760 9070',
       location: 'Santiago, Chile',
       desc: 'Especialista en Ciberseguridad Web, Hardening de Servidores Linux/Docker, Automatización de Procesos con IA (n8n) y Desarrollo de Software en Chile.'
     };
+  }
+
+  const cleanPhone = (profile.phone || '').replace(/[^0-9]/g, '');
+  const vcardStr = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:PPV Soluciones\nTITLE:${profile.role}\nTEL;TYPE=CELL,VOICE:${profile.phone}\nEMAIL;TYPE=INTERNET,PREF:${profile.email}\nURL:https://ppvsoluciones.cl\nNOTE:${profile.desc || ''}\nEND:VCARD`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(vcardStr)}`;
+
+  // Actualizar Footer (Contacto Directo en pie de página) dinámicamente desde el mantenedor
+  const footerEmail = document.getElementById('footer-contact-email') || document.querySelector('footer a[href^="mailto:"]');
+  if (footerEmail) {
+    footerEmail.textContent = profile.email;
+    footerEmail.href = `mailto:${profile.email}`;
+  }
+  const footerPhone = document.getElementById('footer-contact-phone');
+  if (footerPhone) {
+    footerPhone.textContent = profile.phone;
+  }
+  const footerWaLink = document.getElementById('footer-contact-wa-link') || document.querySelector('footer a[href*="wa.me"]');
+  if (footerWaLink && cleanPhone) {
+    footerWaLink.href = `https://wa.me/${cleanPhone}`;
   }
 
   // Actualizar DOM en la tarjeta pública si existe
@@ -2602,17 +2650,14 @@ async function initVCardLogic() {
       avatarEl.textContent = initials || 'PP';
     }
 
-    const cleanPhone = profile.phone.replace(/[^0-9]/g, '');
     const waLink = vcardSection.querySelector('a[href*="wa.me"]');
     if (waLink && cleanPhone) waLink.href = `https://wa.me/${cleanPhone}`;
 
     const mailLink = vcardSection.querySelector('a[href*="mailto:"]');
     if (mailLink) mailLink.href = `mailto:${profile.email}`;
 
-    const vcardStr = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:PPV Soluciones\nTITLE:${profile.role}\nTEL;TYPE=CELL,VOICE:${profile.phone}\nEMAIL;TYPE=INTERNET,PREF:${profile.email}\nURL:https://ppvsoluciones.cl\nEND:VCARD`;
-
     if (qrImg) {
-      qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(vcardStr)}`;
+      qrImg.src = qrUrl;
     }
   }
 
@@ -2620,8 +2665,8 @@ async function initVCardLogic() {
   if (modalVCard) {
     const mName = modalVCard.querySelector('h3');
     const mRole = modalVCard.querySelector('p');
-    const mQR = modalVCard.querySelector('img');
-    const mWa = modalVCard.querySelector('a[href*="wa.me"], a.btn-secondary');
+    const mQR = document.getElementById('modal-vcard-qr-img') || modalVCard.querySelector('img');
+    const mWa = document.getElementById('modal-vcard-wa-link') || modalVCard.querySelector('a[href*="wa.me"], a.btn-secondary');
     const mMail = modalVCard.querySelector('a[href*="mailto:"], a.btn-vcard-email');
     const mAvatar = modalVCard.querySelector('div[style*="border-radius: 50%"]');
 
@@ -2632,7 +2677,6 @@ async function initVCardLogic() {
       mAvatar.textContent = initials || 'PP';
     }
 
-    const cleanPhone = profile.phone.replace(/[^0-9]/g, '');
     if (mWa && cleanPhone) {
       mWa.href = `https://wa.me/${cleanPhone}`;
     }
@@ -2640,14 +2684,12 @@ async function initVCardLogic() {
       mMail.href = `mailto:${profile.email}`;
     }
 
-    const vcardStr = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:PPV Soluciones\nTITLE:${profile.role}\nTEL;TYPE=CELL,VOICE:${profile.phone}\nEMAIL;TYPE=INTERNET,PREF:${profile.email}\nURL:https://ppvsoluciones.cl\nEND:VCARD`;
-
     if (mQR) {
-      mQR.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(vcardStr)}`;
+      mQR.src = qrUrl;
     }
   }
 
-  const currentVCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:PPV Soluciones\nTITLE:${profile.role}\nTEL;TYPE=CELL,VOICE:${profile.phone}\nEMAIL;TYPE=INTERNET,PREF:${profile.email}\nURL:https://ppvsoluciones.cl\nEND:VCARD`;
+  const currentVCardData = vcardStr;
 
   btnDownloadVCard.forEach(btn => {
     btn.onclick = (e) => {
