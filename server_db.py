@@ -158,7 +158,7 @@ def init_database():
                 ('Proyecto Vertical SpA', 'Construcción, Obras Civiles & Arquitectura', 'Plataforma Web App Cyberpunk Responsiva con Integración de Notificaciones Directas', 'Desarrollo Web', 'https://proyectovertical.cl', '💻 Web App & Automatización'),
                 ('Legrand Petit Importaciones', 'Comercio Exterior & Logística Internacional', 'Calculadora Interactiva de Presupuestos en Vivo & Canal de Telegram para Notificaciones de Leads', 'Automatización IA', 'https://legrandpetit.cl', '🤖 Automatización & Telegram'),
                 ('Aurora Designs', 'Agencia de Identidad Visual & Papelería Corporativa', 'Desarrollo Landing Page Responsiva con Efectos Visuales Avanzados (Glassmorphism & Animaciones)', 'Desarrollo Web', 'https://auroradesigns.cl', '💻 Landing Page & UI/UX'),
-                ('TimbrApp', 'Fidelización Comercial & Ecosistema NFC B2B', 'Plataforma SaaS de Fidelización por Sellos NFC, CRM Multicanal, Sorteos y Ficha Médica/Adulto Mayor PWA', 'Desarrollo Web', 'https://timbraapp.cl', '📲 Web App & NFC IoT')
+                ('TimbraApp', 'Fidelización Comercial & Ecosistema NFC B2B', 'Plataforma SaaS de Fidelización por Sellos NFC sin Fricción, CRM Multicanal con Segmentación Automática, Sorteos en Vivo y Tarjeta Digital PWA', 'Desarrollo Web', 'https://timbraapp.cl', '📲 Fidelización NFC & Web App')
             ]
             cursor.executemany("""
                 INSERT INTO portfolio_clients (name, rubro, solution, category, website, badge)
