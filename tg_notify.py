@@ -28,7 +28,7 @@ def load_env():
 load_env()
 
 # ── Configuración segura (desde .env o variables de entorno) ──────────────────
-TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '8623970624:AAHpuDjIr5gvSiSEAwdapx99EKZZzXEgD1c')
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '9019947730:AAEVD_Gfk8a1jIS31PdV1ZFYDTZNUnFMJfE')
 TELEGRAM_CHAT_ID   = os.environ.get('TELEGRAM_CHAT_ID', '1468481915')
 PORT               = int(os.environ.get('PORT', 9001))
 DB_PATH            = os.environ.get('DB_PATH', '/var/www/ppvsoluciones/ppv_database.sqlite')
@@ -648,16 +648,30 @@ def set_config_kv(key, value):
         print(f"[TG-PROXY] Error guardando config_kv: {e}")
         return False
 
+def get_current_telegram_token():
+    cfg = get_config_kv('telegram_config')
+    if cfg and isinstance(cfg, dict) and cfg.get('bot_token'):
+        return str(cfg['bot_token']).strip()
+    return os.environ.get('TELEGRAM_BOT_TOKEN', '9019947730:AAEVD_Gfk8a1jIS31PdV1ZFYDTZNUnFMJfE')
+
+def get_current_telegram_chat_id():
+    cfg = get_config_kv('telegram_config')
+    if cfg and isinstance(cfg, dict) and cfg.get('chat_id'):
+        return str(cfg['chat_id']).strip()
+    return os.environ.get('TELEGRAM_CHAT_ID', '1468481915')
+
 active_2fa_codes = {}
 
 def send_telegram_generic(text):
+    token = get_current_telegram_token()
+    chat_id = get_current_telegram_chat_id()
     payload = json.dumps({
-        'chat_id': TELEGRAM_CHAT_ID,
+        'chat_id': chat_id,
         'text': text,
         'parse_mode': 'HTML'
     }).encode('utf-8')
     req = urllib.request.Request(
-        f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage',
+        f'https://api.telegram.org/bot{token}/sendMessage',
         data=payload,
         headers={'Content-Type': 'application/json'}
     )
@@ -684,13 +698,15 @@ def send_telegram(name, email, subject, website, budget_text, message, phone='',
         f"📅 <b>Fecha & Hora (Chile):</b> <i>{now}</i>\n"
         f"🔒 <i>Origen: ppvsoluciones.cl</i>"
     )
+    token = get_current_telegram_token()
+    chat_id = get_current_telegram_chat_id()
     payload = json.dumps({
-        'chat_id': TELEGRAM_CHAT_ID,
+        'chat_id': chat_id,
         'text': text,
         'parse_mode': 'HTML'
     }).encode('utf-8')
     req = urllib.request.Request(
-        f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage',
+        f'https://api.telegram.org/bot{token}/sendMessage',
         data=payload,
         headers={'Content-Type': 'application/json'}
     )
@@ -805,6 +821,34 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps({'ok': False, 'error': 'Missing key'}).encode('utf-8'))
+            return
+
+        if self.path in ['/tg-telegram-config', '/api/telegram-config']:
+            token = get_current_telegram_token()
+            chat_id = get_current_telegram_chat_id()
+            bot_info = None
+            connected = False
+            try:
+                req = urllib.request.Request(f'https://api.telegram.org/bot{token}/getMe')
+                with urllib.request.urlopen(req, timeout=5) as res:
+                    tg_res = json.loads(res.read().decode('utf-8'))
+                    if tg_res.get('ok'):
+                        bot_info = tg_res.get('result')
+                        connected = True
+            except Exception as e:
+                bot_info = {'error': str(e)}
+
+            self.send_response(200)
+            self.send_cors_headers()
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                'ok': True,
+                'bot_token': token,
+                'chat_id': chat_id,
+                'connected': connected,
+                'bot': bot_info
+            }).encode('utf-8'))
             return
 
         self.send_response(404)
@@ -1506,6 +1550,120 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+            return
+
+        if self.path in ['/tg-save-telegram-config', '/api/save-telegram-config']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                new_token = str(data.get('bot_token', '')).strip()
+                new_chat_id = str(data.get('chat_id', '')).strip()
+
+                if not new_token:
+                    raise ValueError("El Token del bot no puede estar vacío")
+                if not new_chat_id:
+                    raise ValueError("El Chat ID no puede estar vacío")
+
+                # Validar con Telegram API
+                req = urllib.request.Request(f'https://api.telegram.org/bot{new_token}/getMe')
+                with urllib.request.urlopen(req, timeout=8) as res:
+                    tg_res = json.loads(res.read().decode('utf-8'))
+                    if not tg_res.get('ok'):
+                        raise ValueError("Telegram rechazó el Token: " + str(tg_res.get('description')))
+                    bot_data = tg_res.get('result', {})
+
+                # Guardar en config_kv
+                set_config_kv('telegram_config', {
+                    'bot_token': new_token,
+                    'chat_id': new_chat_id,
+                    'bot_username': bot_data.get('username', ''),
+                    'bot_name': bot_data.get('first_name', ''),
+                    'updated_at': get_chile_now_str()
+                })
+
+                # Persistir en archivo .env si existe
+                env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+                if os.path.exists(env_path):
+                    with open(env_path, 'r', encoding='utf-8') as f:
+                        lines = f.readlines()
+                    token_updated = False
+                    chat_updated = False
+                    new_lines = []
+                    for line in lines:
+                        if line.startswith('TELEGRAM_BOT_TOKEN='):
+                            new_lines.append(f"TELEGRAM_BOT_TOKEN={new_token}\n")
+                            token_updated = True
+                        elif line.startswith('TELEGRAM_CHAT_ID='):
+                            new_lines.append(f"TELEGRAM_CHAT_ID={new_chat_id}\n")
+                            chat_updated = True
+                        else:
+                            new_lines.append(line)
+                    if not token_updated:
+                        new_lines.append(f"TELEGRAM_BOT_TOKEN={new_token}\n")
+                    if not chat_updated:
+                        new_lines.append(f"TELEGRAM_CHAT_ID={new_chat_id}\n")
+                    with open(env_path, 'w', encoding='utf-8') as f:
+                        f.writelines(new_lines)
+
+                os.environ['TELEGRAM_BOT_TOKEN'] = new_token
+                os.environ['TELEGRAM_CHAT_ID'] = new_chat_id
+
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True, 'bot': bot_data, 'message': 'Configuración de Telegram guardada y verificada exitosamente.'}).encode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode('utf-8'))
+            return
+
+        if self.path in ['/tg-test-telegram', '/api/test-telegram']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length) if length > 0 else b'{}'
+                data = json.loads(body.decode('utf-8')) if body else {}
+                custom_msg = data.get('message')
+                now_str = get_chile_now_str()
+
+                token = get_current_telegram_token()
+                chat_id = get_current_telegram_chat_id()
+
+                text = custom_msg or (
+                    "🔔 <b>PRUEBA DE CONEXIÓN TELEGRAM - PPV SOLUCIONES</b>\n\n"
+                    "✅ El bot de Telegram está operativo y vinculado exitosamente al Panel Administrativo.\n\n"
+                    f"⏰ <b>Fecha y hora:</b> {now_str}\n"
+                    f"🛡️ <b>Servicios activos:</b> Códigos 2FA + Notificaciones de Contacto"
+                )
+
+                payload = json.dumps({
+                    'chat_id': chat_id,
+                    'text': text,
+                    'parse_mode': 'HTML'
+                }).encode('utf-8')
+                req = urllib.request.Request(
+                    f'https://api.telegram.org/bot{token}/sendMessage',
+                    data=payload,
+                    headers={'Content-Type': 'application/json'}
+                )
+                with urllib.request.urlopen(req, timeout=10) as res:
+                    tg_res = json.loads(res.read().decode('utf-8'))
+
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True, 'result': tg_res, 'message': 'Mensaje de prueba enviado exitosamente a tu Telegram.'}).encode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode('utf-8'))
             return
 
         if self.path not in ['/tg-notify', '/api/notify']:

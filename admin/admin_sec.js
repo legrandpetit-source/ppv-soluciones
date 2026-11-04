@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try { initQATestingSuiteMaintainer(); } catch(e){ console.error(e); }
   try { initCMMIGovernanceMaintainer(); } catch(e){ console.error(e); }
   try { initExecSummaryMaintainer(); } catch(e){ console.error(e); }
+  try { initTelegramBotMaintainer(); } catch(e){ console.error(e); }
 });
 
 /* --------------------------------------------------------------------------
@@ -332,6 +333,7 @@ async function refreshAllData() {
   try { await loadBlockedTable(); } catch(e) { console.error('Error cargando bloqueados:', e); }
   try { await loadAdminUsersTable(); } catch(e) { console.error('Error cargando usuarios admin:', e); }
   try { await loadAccessLogsTable(); } catch(e) { console.error('Error cargando access logs:', e); }
+  try { await loadTelegramBotMaintainer(); } catch(e) { console.error('Error cargando bot telegram:', e); }
   try { await updateCounters(); } catch(e) { console.error('Error actualizando contadores:', e); }
 }
 
@@ -2343,6 +2345,157 @@ function initExecSummaryMaintainer() {
     };
   }
 }
+
+/* --------------------------------------------------------------------------
+   MANTENEDOR DEL BOT DE TELEGRAM & SEGURIDAD 2FA
+   -------------------------------------------------------------------------- */
+async function loadTelegramBotMaintainer() {
+  const tokenInput = document.getElementById('cfg-tg-token');
+  const chatIdInput = document.getElementById('cfg-tg-chat-id');
+  const botNameDisplay = document.getElementById('tg-bot-name-display');
+  const botUserDisplay = document.getElementById('tg-bot-username-display');
+  const chatIdDisplay = document.getElementById('tg-chat-id-display');
+  const badge = document.getElementById('tg-connection-badge');
+  const chatLink = document.getElementById('tg-link-chat');
+
+  if (!tokenInput) return;
+
+  try {
+    const res = await fetch('/tg-telegram-config');
+    const data = await res.json();
+    if (data.ok) {
+      if (data.bot_token && !tokenInput.value) {
+        tokenInput.value = data.bot_token;
+      }
+      if (data.chat_id) {
+        if (!chatIdInput.value) chatIdInput.value = data.chat_id;
+        if (chatIdDisplay) chatIdDisplay.textContent = data.chat_id;
+      }
+
+      if (data.connected && data.bot) {
+        if (botNameDisplay) botNameDisplay.textContent = data.bot.first_name || 'ppvsoluciones';
+        if (botUserDisplay) {
+          botUserDisplay.textContent = data.bot.username ? `@${data.bot.username}` : '@ppvsoluciones_bot';
+        }
+        if (chatLink && data.bot.username) {
+          chatLink.href = `https://t.me/${data.bot.username}`;
+        }
+        if (badge) {
+          badge.style.background = 'rgba(0, 255, 136, 0.15)';
+          badge.style.color = 'var(--neon-emerald)';
+          badge.style.borderColor = 'rgba(0, 255, 136, 0.4)';
+          badge.innerHTML = '<i class="fa-solid fa-circle" style="font-size: 0.5rem; vertical-align: middle;"></i> En Línea / Conectado';
+        }
+      } else {
+        if (botNameDisplay) botNameDisplay.textContent = 'Token Inválido / Desconectado';
+        if (badge) {
+          badge.style.background = 'rgba(255, 0, 127, 0.15)';
+          badge.style.color = 'var(--neon-pink)';
+          badge.style.borderColor = 'rgba(255, 0, 127, 0.4)';
+          badge.innerHTML = '<i class="fa-solid fa-circle-exclamation" style="font-size: 0.5rem; vertical-align: middle;"></i> Desconectado';
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Error cargando configuración de Telegram:', err);
+  }
+}
+
+function initTelegramBotMaintainer() {
+  const form = document.getElementById('form-telegram-config');
+  const btnToggle = document.getElementById('btn-toggle-token-visibility');
+  const tokenInput = document.getElementById('cfg-tg-token');
+  const btnTest = document.getElementById('btn-tg-send-test');
+  const feedback = document.getElementById('tg-save-feedback');
+
+  if (btnToggle && tokenInput) {
+    btnToggle.onclick = () => {
+      const isPass = tokenInput.type === 'password';
+      tokenInput.type = isPass ? 'text' : 'password';
+      btnToggle.innerHTML = isPass ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>';
+    };
+  }
+
+  if (form) {
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const bot_token = tokenInput ? tokenInput.value.trim() : '';
+      const chat_id = document.getElementById('cfg-tg-chat-id')?.value.trim() || '';
+
+      if (!bot_token || !chat_id) {
+        showToast('⚠️ Por favor completa el Token y el Chat ID', true);
+        return;
+      }
+
+      const btnSubmit = document.getElementById('btn-save-tg-config');
+      if (btnSubmit) {
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando y Verificando...';
+      }
+
+      try {
+        const res = await fetch('/tg-save-telegram-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bot_token, chat_id })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          showToast('✅ ¡Bot de Telegram configurado y verificado con éxito!');
+          if (feedback) {
+            feedback.style.color = 'var(--neon-emerald)';
+            feedback.textContent = 'Configuración guardada y enlazada correctamente.';
+            setTimeout(() => { feedback.textContent = ''; }, 4000);
+          }
+          await loadTelegramBotMaintainer();
+        } else {
+          showToast(`❌ Error: ${data.error || 'No se pudo guardar la configuración'}`, true);
+          if (feedback) {
+            feedback.style.color = 'var(--neon-pink)';
+            feedback.textContent = data.error || 'Error de validación.';
+          }
+        }
+      } catch (err) {
+        console.error('Error guardando configuración de Telegram:', err);
+        showToast('❌ Error de red al contactar al servidor.', true);
+      } finally {
+        if (btnSubmit) {
+          btnSubmit.disabled = false;
+          btnSubmit.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar y Aplicar Credenciales';
+        }
+      }
+    };
+  }
+
+  if (btnTest) {
+    btnTest.onclick = async () => {
+      btnTest.disabled = true;
+      btnTest.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+      try {
+        const res = await fetch('/tg-test-telegram', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        });
+        const data = await res.json();
+        if (data.ok) {
+          showToast('🔔 ¡Mensaje de prueba enviado exitosamente a tu Telegram!');
+        } else {
+          showToast(`❌ Error: ${data.error || 'No se pudo enviar el mensaje'}`, true);
+        }
+      } catch (err) {
+        console.error('Error enviando mensaje de prueba:', err);
+        showToast('❌ Error de red al enviar prueba de Telegram.', true);
+      } finally {
+        btnTest.disabled = false;
+        btnTest.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar Prueba en Vivo';
+      }
+    };
+  }
+
+  loadTelegramBotMaintainer();
+}
+
 
 
 
