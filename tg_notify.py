@@ -7,6 +7,7 @@ Recibe datos del formulario de contacto/ciberseguridad, notifica via Telegram y 
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 import urllib.request
+import urllib.parse
 import os
 import sqlite3
 from datetime import datetime
@@ -804,7 +805,6 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
             return
 
         if self.path.startswith('/tg-get-config') or self.path.startswith('/api/get-config'):
-            import urllib.parse
             parsed_path = urllib.parse.urlparse(self.path)
             query = urllib.parse.parse_qs(parsed_path.query)
             key = query.get('key', [None])[0]
