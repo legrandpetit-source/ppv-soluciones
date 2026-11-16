@@ -1,1933 +1,1378 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="format-detection" content="telephone=no">
-  <title>PPV Soluciones | Ciberseguridad, Automatización & Desarrollo Web en Chile</title>
-  <meta name="description" content="Servicios de Ciberseguridad Web, Hardening de Servidores, Automatización de Procesos con IA y Desarrollo de Software en Chile. Entrega de informes PDF y resguardo legal Ley 21.459.">
+  <title>PPV Soluciones | Software a Medida, Apps & Automatización en Chile</title>
+  <meta name="description" content="Ingeniería de software a medida, desarrollo de aplicaciones web y móviles, sistemas de inventario y ERP con integración SII, y plataformas de logística en el eje San Antonio, Valparaíso y Santiago.">
   <link rel="canonical" href="https://ppvsoluciones.cl/">
   <meta name="robots" content="index, follow">
-  <meta name="keywords" content="ciberseguridad chile, auditoria de seguridad web, hardening servidor, automatizacion n8n, desarrollo web chile, ley 21459 delitos informaticos, ppv soluciones, patricio padilla">
+  <meta name="keywords" content="desarrollo de software chile, aplicaciones a medida santiago, software logistica san antonio valparaiso, sistema inventario lotes santiago, e-commerce rapido chile, boleta electronica sii software, fidelizacion nfc comercios, ppv soluciones, patricio padilla">
 
-  <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+  <!-- Open Graph / Meta Compartir -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ppvsoluciones.cl/">
-  <meta property="og:title" content="PPV Soluciones | Ciberseguridad, Automatización & Desarrollo Web">
-  <meta property="og:description" content="Servicios de Ciberseguridad Web, Hardening de Servidores, Automatización de Procesos con IA y Desarrollo Software en Chile. Diagnóstico PDF y Resguardo Legal Ley 21.459.">
-  <meta property="og:image" content="https://ppvsoluciones.cl/assets/og-preview.png">
-  <meta property="og:site_name" content="PPV Soluciones">
+  <meta property="og:title" content="PPV Soluciones | Software a Medida, Apps & Plataformas B2B">
+  <meta property="og:description" content="Creamos el software, la aplicación o la web que tu empresa necesita para crecer y automatizarse. Rendimiento extremo y tecnología en producción real en Chile.">
+  <meta property="og:image" content="https://ppvsoluciones.cl/assets/brand_option_1.png">
+  <meta property="og:site_name" content="PPV Soluciones Informáticas">
   <meta property="og:locale" content="es_CL">
 
   <!-- Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://ppvsoluciones.cl/">
-  <meta name="twitter:title" content="PPV Soluciones | Ciberseguridad & Automatización Web">
-  <meta name="twitter:description" content="Auditoría de Vulnerabilidades, Hardening de Servidores y Automatización Inteligente en Chile. CEO: Patricio Padilla.">
-  <meta name="twitter:image" content="https://ppvsoluciones.cl/assets/og-preview.png">
+  <meta name="twitter:title" content="PPV Soluciones | Ingeniería de Software & Automatización">
+  <meta name="twitter:description" content="Desarrollo de software a medida, apps multiplataforma, sistemas de inventario crítico y soluciones logísticas en Chile.">
+  <meta name="twitter:image" content="https://ppvsoluciones.cl/assets/brand_option_1.png">
 
-  <!-- JSON-LD Datos Estructurados Schema.org -->
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/ppv_logo.svg">
+  <link rel="alternate icon" href="assets/ppv_logo_2d_transparent.png">
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#07090E',
+            slateDark: '#0F172A',
+            slateCard: 'rgba(15, 23, 42, 0.65)',
+            cobalt: {
+              400: '#60A5FA',
+              500: '#3B82F6',
+              600: '#2563EB',
+              700: '#1D4ED8'
+            },
+            emeraldAccent: {
+              400: '#34D399',
+              500: '#10B981',
+              600: '#059669'
+            },
+            cyanAccent: {
+              400: '#22D3EE',
+              500: '#06B6D4'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "name": "PPV Soluciones",
+    "name": "PPV Soluciones Informáticas",
     "url": "https://ppvsoluciones.cl",
-    "image": "https://ppvsoluciones.cl/assets/og-preview.png",
-    "description": "Empresa especializada en Ciberseguridad Web, Hardening de Servidores, Automatización de Procesos y Desarrollo de Software Full-Stack en Chile.",
-    "email": "contacto@ppvsoluciones.cl",
+    "logo": "https://ppvsoluciones.cl/assets/ppv_logo.svg",
+    "image": "https://ppvsoluciones.cl/assets/brand_option_1.png",
+    "description": "Desarrollo de software a medida, aplicaciones web y móviles, páginas web de alta conversión, sistemas de inventario ERP con integración SII y soluciones logísticas en Chile.",
+    "telephone": "+56947609070",
     "founder": {
       "@type": "Person",
       "name": "Patricio Padilla",
-      "jobTitle": "CEO & Fundador"
+      "jobTitle": "Director de Ingeniería de Software"
     },
     "address": {
       "@type": "PostalAddress",
+      "addressRegion": "Valparaíso & Región Metropolitana",
       "addressCountry": "CL"
     },
-    "areaServed": "CL",
-    "priceRange": "$$",
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Catálogo de Servicios Digitales",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Diagnóstico de Ciberseguridad & Reporte PDF (Nivel 1)",
-            "description": "Auditoría pasiva/activa de vulnerabilidades web con entrega de informe ejecutivo PDF."
-          },
-          "price": "200.00",
-          "priceCurrency": "USD"
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Auditoría + Hardening & Parcheo Total (Nivel 2)",
-            "description": "Diagnóstico completo, creación de proxies backend, hashes SHA-256, security headers y carta legal Ley 21.459."
-          },
-          "price": "450.00",
-          "priceCurrency": "USD"
-        }
-      ]
-    }
+    "areaServed": [
+      "Santiago",
+      "Valparaíso",
+      "Viña del Mar",
+      "San Antonio",
+      "Algarrobo",
+      "El Quisco",
+      "Chile"
+    ],
+    "knowsAbout": [
+      "Desarrollo de Software a Medida",
+      "Diseño de Páginas Web Comerciales y E-commerce",
+      "Sistemas de Inventario y Control de Lotes ERP",
+      "Integración Facturación y Boleta Electrónica SII",
+      "Software de Logística, Transporte y Control de Patio",
+      "Sistemas de Fidelización con Tecnología NFC"
+    ],
+    "priceRange": "$$"
   }
   </script>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <link rel="stylesheet" href="styles.css?v=20260813_02">
+  <style>
+    /* Estilos Base Obsidian High-Tech */
+    body {
+      background-color: #07090E;
+      color: #E2E8F0;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar personalizada */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #07090E;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1E293B;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3B82F6;
+    }
+
+    /* Glassmorphism de ultra alta fidelidad */
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-panel-elevated {
+      background: rgba(17, 24, 39, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    /* Spotlight Card Effect (Linear / Stripe style) */
+    .spotlight-card {
+      position: relative;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .spotlight-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: radial-gradient(450px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(59, 130, 246, 0.35), transparent 70%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
+    .spotlight-card:hover {
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: 0 10px 30px -10px rgba(37, 99, 235, 0.15);
+      transform: translateY(-2px);
+    }
+
+    /* Gradiente de Texto Fluido */
+    .text-glow-gradient {
+      background: linear-gradient(135deg, #FFFFFF 30%, #93C5FD 70%, #6EE7B7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .text-cyan-gradient {
+      background: linear-gradient(135deg, #38BDF8 0%, #10B981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Botón Luminoso con Resplandor */
+    .btn-glow {
+      position: relative;
+      background: linear-gradient(135deg, #2563EB 0%, #10B981 100%);
+      box-shadow: 0 0 25px rgba(37, 99, 235, 0.4);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 35px rgba(16, 185, 129, 0.6);
+      transform: translateY(-2px) scale(1.01);
+    }
+
+    /* Ondas de Radiofrecuencia NFC */
+    @keyframes nfcPulse {
+      0% { transform: scale(0.6); opacity: 0.9; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+    .nfc-ring-1 { animation: nfcPulse 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite; }
+    .nfc-ring-2 { animation: nfcPulse 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s infinite; }
+    .nfc-ring-3 { animation: nfcPulse 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) 1.6s infinite; }
+
+    /* Indicador Circular SVG PageSpeed */
+    @keyframes circleFill {
+      from { stroke-dashoffset: 283; }
+      to { stroke-dashoffset: 0; }
+    }
+    .circle-animate {
+      stroke-dasharray: 283;
+      stroke-dashoffset: 0;
+      animation: circleFill 2s ease-out forwards;
+    }
+  </style>
 </head>
-<body>
-  <!-- Autonomous Snake Background -->
-  <canvas id="snake-bg" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; opacity: 0.7; pointer-events: none;"></canvas>
+<body class="bg-obsidian text-slate-200 antialiased selection:bg-cobalt-500 selection:text-white">
 
-  <!-- Navegación -->
-  <header id="main-header">
-    <div class="nav-container-inner">
-      <div class="container nav-content">
-        <a href="#" class="logo" title="PPV Soluciones">
-          <span class="logo-text">PPV<span class="text-cyan">.</span></span>
-        </a>
+  <!-- ========================================================================= -->
+  <!-- HERO CANVAS INTERACTIVO (Red de Nodos 60 FPS Estilo Antigravity)          -->
+  <!-- ========================================================================= -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <canvas id="hero-canvas" class="w-full h-full opacity-60"></canvas>
+  </div>
+
+  <!-- Contenedor Principal Por Encima del Canvas -->
+  <div class="relative z-10 flex flex-col min-h-screen">
+
+    <!-- ======================================================================= -->
+    <!-- NAVBAR (Fijo con Blur)                                                  -->
+    <!-- ======================================================================= -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/10 transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         
-        <!-- Menú Desktop -->
-        <ul class="nav-links">
-          <li class="dropdown">
-            <a href="#soluciones-rubro">Servicios <i class="fa-solid fa-chevron-down dropdown-icon"></i></a>
-            <ul class="dropdown-menu">
-              <li><a href="#soluciones-rubro">Soluciones por Rubro</a></li>
-              <li><a href="#auditoria-ciberseguridad" style="color: var(--neon-pink);"><i class="fa-solid fa-shield-halved"></i> Ciberseguridad</a></li>
-              <li><a href="#posicionamiento-web">Posicionamiento Web</a></li>
-              <li><a href="#qa-gobierno-ti" style="color: var(--neon-cyan);"><i class="fa-solid fa-vial-circle-check"></i> QA & Gobierno TI</a></li>
-              <li><a href="#formatos-web" style="color: var(--neon-cyan);"><i class="fa-solid fa-layer-group"></i> Tipos de Web</a></li>
-            </ul>
-          </li>
-          <li><a href="#demos-auto">Demos</a></li>
-          <li><a href="#habilidades">Matriz Técnica</a></li>
-          <li><a href="#clientes">Clientes</a></li>
-          <li><a href="#cotizador">Calculadora</a></li>
-          <li><a href="#contacto" style="color: #ffb703; font-weight: 600;"><i class="fa-solid fa-address-card"></i> Contacto & Tarjeta Digital</a></li>
-        </ul>
-        
-        <div class="nav-actions">
-          <div class="status-pill hide-mobile">
-            <span class="pulse-dot"></span>
-            <span>Disponible</span>
+        <!-- Logo con Símbolo Luminoso -->
+        <a href="#" class="flex items-center gap-3 group focus:outline-none" title="PPV Soluciones Informáticas">
+          <div class="relative w-10 h-10 rounded-xl bg-slate-900 border border-cobalt-500/40 flex items-center justify-center p-1.5 shadow-lg shadow-cobalt-500/20 group-hover:border-cobalt-400 transition-all">
+            <img src="assets/ppv_logo.svg" alt="PPV Logo" class="w-full h-full object-contain filter drop-shadow">
+            <span class="absolute -top-1 -right-1 flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500 border border-slate-900"></span>
+            </span>
           </div>
+          <div class="flex flex-col">
+            <span class="font-heading font-extrabold text-xl tracking-tight text-white flex items-center gap-1">
+              PPV<span class="text-cobalt-400">.</span><span class="text-xs uppercase tracking-widest font-mono text-emerald-400 font-semibold ml-1">Soluciones</span>
+            </span>
+            <span class="text-[10px] font-mono text-slate-400 tracking-wider">Ingeniería de Software B2B</span>
+          </div>
+        </a>
 
-          <!-- Botón Menú Móvil (Hamburguesa) -->
-          <button type="button" class="mobile-menu-toggle" id="btn-mobile-toggle" aria-label="Abrir Menú de Navegación">
-            <i class="fa-solid fa-bars"></i>
+        <!-- Enlaces Desktop -->
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+          <a href="#soluciones" class="hover:text-white transition-colors">Soluciones</a>
+          <a href="#rubros" class="hover:text-white transition-colors">Rubros</a>
+          <a href="#casos" class="hover:text-white transition-colors flex items-center gap-1.5">
+            <span>Casos en Producción</span>
+            <span class="px-1.5 py-0.5 text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded">En Vivo</span>
+          </a>
+          <a href="#diagnostico" class="hover:text-white transition-colors">Diagnóstico</a>
+        </nav>
+
+        <!-- CTA Navbar & Hamburguesa -->
+        <div class="flex items-center gap-4">
+          <a href="https://wa.me/56947609070?text=Hola%20Patricio,%20estuve%20revisando%20ppvsoluciones.cl%20y%20me%20gustar%C3%ADa%20conversar%20sobre%20un%20proyecto%20de%20software." 
+             target="_blank" 
+             rel="noopener noreferrer"
+             class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-slate-800/90 hover:bg-slate-700 border border-cobalt-500/40 hover:border-cobalt-400 transition-all shadow-sm">
+            <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
+            <span>Hablar con Ingeniería</span>
+            <i class="fa-solid fa-arrow-right text-[10px] text-slate-400"></i>
+          </a>
+
+          <!-- Botón Menú Móvil -->
+          <button id="mobile-menu-btn" class="md:hidden p-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none" aria-label="Abrir Menú">
+            <i class="fa-solid fa-bars text-xl"></i>
           </button>
         </div>
       </div>
-    </div>
-  </header>
 
-  <!-- Hero Section -->
-  <section class="hero" id="hero">
-    <div class="container hero-grid">
-      <div class="hero-text">
-        <div class="hero-tag" style="border-color: rgba(255,0,127,0.4); background: rgba(255,0,127,0.08); color: var(--neon-pink);">
-          <i class="fa-solid fa-shield-halved"></i> Ciberseguridad & Automatización de Software
+      <!-- Menú Móvil Dropdown -->
+      <div id="mobile-menu" class="hidden md:hidden glass-panel-elevated border-b border-white/10 px-4 pt-3 pb-6 space-y-3">
+        <a href="#soluciones" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Soluciones</a>
+        <a href="#rubros" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Rubros</a>
+        <a href="#casos" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Casos en Producción</a>
+        <a href="#diagnostico" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800">Diagnóstico</a>
+        <a href="https://wa.me/56947609070?text=Hola%20Patricio,%20estuve%20revisando%20ppvsoluciones.cl%20y%20me%20gustar%C3%ADa%20conversar%20sobre%20un%20proyecto%20de%20software." 
+           target="_blank" 
+           rel="noopener noreferrer"
+           class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-cobalt-600 to-emeraldAccent-600 shadow-lg">
+          <i class="fa-brands fa-whatsapp text-lg"></i>
+          <span>Hablar con Ingeniería por WhatsApp</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- ======================================================================= -->
+    <!-- SECCIÓN 1: HERO PRINCIPAL (Impacto en 3 Segundos)                       -->
+    <!-- ======================================================================= -->
+    <section class="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+        <!-- Badge Superior con Ping Activo -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-medium bg-slate-900/80 border border-cobalt-500/30 text-slate-300 shadow-inner mb-8">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emeraldAccent-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emeraldAccent-500"></span>
+          </span>
+          <span class="tracking-wide">DESARROLLO DE SOFTWARE, APPS Y PLATAFORMAS COMERCIALES</span>
+          <span class="text-slate-600 hidden sm:inline">|</span>
+          <span class="text-cobalt-400 hidden sm:inline">V REGIÓN & SANTIAGO</span>
         </div>
-        <h1>
-          Transformamos requerimientos en <span class="text-gradient">Automatización, Ciberseguridad & Software</span>
+
+        <!-- H1 Titular de Alto Calibre -->
+        <h1 class="font-heading font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight max-w-5xl mx-auto leading-[1.1] mb-6">
+          Creamos el <span class="text-glow-gradient">Software, la Aplicación o la Web</span> que tu negocio necesita para crecer y automatizarse.
         </h1>
-        <p>
-          En <strong>PPV Soluciones</strong> analizamos tu negocio, auditamos la seguridad de tu sitio web y ejecutamos la arquitectura técnica óptima mediante Automatización de Procesos, Ciberprotección y Desarrollo Full-Stack.
-        </p>
-        <div class="hero-ctas">
-          <button class="btn btn-primary" id="btn-hero-sec-audit" style="background: linear-gradient(135deg, var(--neon-pink), var(--neon-violet)); border: none;">
-            <i class="fa-solid fa-shield-halved"></i> Auditoría de Ciberseguridad
-          </button>
-          <button class="btn btn-secondary btn-open-vcard-modal" style="border-color: rgba(255, 183, 3, 0.6); color: #fff;">
-            <i class="fa-solid fa-qrcode" style="color: #ffb703;"></i> Tarjeta Digital QR
-          </button>
-          <a href="#demos-auto" class="btn btn-secondary">
-            <i class="fa-solid fa-rocket"></i> Ver Demos de Automatización
-          </a>
-        </div>
-        
-        <div class="hero-stats">
-          <div class="stat-item">
-            <div class="stat-number">100%</div>
-            <div class="stat-label">Adaptabilidad de Stack</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">24-48h</div>
-            <div class="stat-label">Prototipado Rápido</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">+$1,000</div>
-            <div class="stat-label">Valor Generado por Mes</div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Terminal simulada -->
-      <div class="hero-terminal">
-        <div class="terminal-window">
-          <div class="terminal-header">
-            <span class="terminal-dot dot-red"></span>
-            <span class="terminal-dot dot-yellow"></span>
-            <span class="terminal-dot dot-green"></span>
-            <span class="terminal-title">ppv_automation_engine.py</span>
-          </div>
-          <div class="terminal-body">
-            <p><span class="text-cyan">class</span> <span class="text-violet">PPVAutomationEngine</span>:</p>
-            <p>&nbsp;&nbsp;<span class="text-cyan">def</span> <span class="text-emerald">analyze_requirements</span>(self, prompt):</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;stack = self.select_optimal_stack(prompt)</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-cyan">return</span> {</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-amber">"architecture"</span>: <span class="text-emerald">"Serverless + Automated Workflows"</span>,</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-amber">"automation"</span>: <span class="text-emerald">"n8n + Webhook API"</span>,</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-amber">"status"</span>: <span class="text-cyan">"Ready to deploy"</span></p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
-            <br>
-            <p><span class="text-muted"># Ejecutando análisis en tiempo real...</span></p>
-            <p><span class="text-emerald">✓ Análisis completado: 0.04s. Solución de automatización lista.</span></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Sección: Soluciones por Rubro & Actividad Económica -->
-  <section id="soluciones-rubro" style="background: rgba(13, 17, 26, 0.4);">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle">Diagnóstico Personalizado de Automatización & Software</div>
-        <h2>¿A qué se dedica tu negocio o empresa?</h2>
-        <p>Selecciona tu rubro o escríbelo libremente para descubrir las soluciones tecnológicas de automatización fundamentales que PPV Soluciones puede construir para ti.</p>
-      </div>
-
-      <!-- Chips de Rubros Frecuentes -->
-      <div class="industry-selector">
-        <button class="industry-chip active" data-industry="dentista">
-          <i class="fa-solid fa-tooth text-cyan"></i> Clínica Dental / Odontología
-        </button>
-        <button class="industry-chip" data-industry="comidarapida">
-          <i class="fa-solid fa-burger text-amber"></i> Comida Rápida / Fast Food
-        </button>
-        <button class="industry-chip" data-industry="restaurante">
-          <i class="fa-solid fa-utensils text-emerald"></i> Restaurante & Gastronomía
-        </button>
-        <button class="industry-chip" data-industry="criador">
-          <i class="fa-solid fa-cat text-violet"></i> Criador Canino / Felino (Pedigríes)
-        </button>
-        <button class="industry-chip" data-industry="veterinaria">
-          <i class="fa-solid fa-paw text-emerald"></i> Clínica Veterinaria
-        </button>
-        <button class="industry-chip" data-industry="ecommerce">
-          <i class="fa-solid fa-cart-shopping text-amber"></i> Ecommerce & Tiendas Online
-        </button>
-        <button class="industry-chip" data-industry="abogado">
-          <i class="fa-solid fa-scale-balanced text-cyan"></i> Estudio Jurídico / Abogados
-        </button>
-        <button class="industry-chip" data-industry="seguridad">
-          <i class="fa-solid fa-shield-halved text-pink"></i> Ciberseguridad & Auditoría Web
-        </button>
-      </div>
-
-      <!-- Buscador de Rubro Libre -->
-      <form class="industry-search-box" id="form-industry-search">
-        <input type="text" id="input-custom-industry" class="form-control" placeholder="O escribe tu rubro (ej. Taller Mecánico, Restaurante, Gimnasio...)" autocomplete="off">
-        <button type="submit" class="btn btn-primary" style="white-space: nowrap;">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Analizar & Automatizar
-        </button>
-      </form>
-
-      <!-- Resultado Dinámico de Solución Recomendada -->
-      <div class="industry-result-card" id="industry-result-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 1rem;">
-          <div>
-            <span class="text-cyan" style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase;" id="res-industry-tag">Rubro Seleccionado: Clínica Dental</span>
-            <h3 style="font-size: 1.5rem; color: #fff; margin-top: 4px;" id="res-industry-title">Sistema de Gestión Clínica & Recordatorios Automáticos de Citas</h3>
-          </div>
-          <span class="status-pill" style="font-size: 0.8rem;" id="res-industry-time">
-            <i class="fa-solid fa-clock"></i> Tiempo estimado: 3 a 5 días
-          </span>
-        </div>
-
-        <div class="industry-features-list" id="res-industry-features">
-          <!-- Dinámico -->
-        </div>
-
-        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0, 243, 255, 0.05); padding: 1rem; border-radius: var(--radius-md); border: 1px solid rgba(0, 243, 255, 0.2);">
-          <div>
-            <strong style="color: var(--neon-cyan); font-size: 0.95rem;">Impacto Estimado en tu Negocio:</strong>
-            <p style="font-size: 0.85rem; color: var(--text-muted);" id="res-industry-impact">Reduce inasistencias en un 45% y automatiza el historial clínico de pacientes.</p>
-          </div>
-          <a href="#contacto" class="btn btn-primary" id="btn-request-industry-solution" style="padding: 0.6rem 1.2rem; font-size: 0.85rem;">
-            <i class="fa-solid fa-paper-plane"></i> Solicitar esta Solución
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Sección Destacada: Ciberseguridad, Hardening & Resguardo Legal -->
-  <section id="auditoria-ciberseguridad" style="background: radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.08) 0%, rgba(7, 9, 14, 0.95) 70%); border-top: 1px solid rgba(255, 0, 127, 0.2); border-bottom: 1px solid rgba(255, 0, 127, 0.2); padding: 4.5rem 0;">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle" style="color: var(--neon-pink); border-color: rgba(255,0,127,0.3); background: rgba(255,0,127,0.1);">
-          <i class="fa-solid fa-shield-halved"></i> Diagnóstico & Ciberprotección Profesional
-        </div>
-        <h2>Auditoría de Ciberseguridad Web & Hardening de Servidor</h2>
-        <p>Evaluamos y fortificamos la infraestructura de tu sitio web para prevenir filtraciones de datos, contraseñas expuestas y hackeos, entregando informes PDF firmados y resguardo bajo la <strong>Ley N° 21.459 de Delitos Informáticos en Chile</strong>.</p>
-      </div>
-
-      <!-- Banner Educativo: ¿Por qué es vital proteger tu sitio web? -->
-      <div style="background: linear-gradient(135deg, rgba(255,0,127,0.08), rgba(112,0,255,0.08)); border: 1px solid rgba(255,0,127,0.3); border-radius: var(--radius-lg); padding: 1.8rem; margin-bottom: 2.5rem;">
-        <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
-          <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255,0,127,0.2); border: 1px solid var(--neon-pink); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--neon-pink); flex-shrink: 0;">
-            <i class="fa-solid fa-door-open"></i>
-          </div>
-          <div>
-            <h3 style="font-size: 1.25rem; color: #fff; margin: 0;">Un sitio web desprotegido es como dejar la puerta de tu empresa abierta de par en par</h3>
-            <span style="font-size: 0.82rem; color: var(--neon-pink); font-weight: 600;">Concientización & Resguardo Digital para Empresas</span>
-          </div>
-        </div>
-
-        <p style="font-size: 0.88rem; color: #d0d5e2; line-height: 1.6; margin-bottom: 1.2rem;">
-          Muchos dueños de empresas desconocen que al construir un sitio web sin blindaje técnico, están exponiendo involuntariamente su negocio. Dejar tokens de API, contraseñas o datos en el código público del navegador permite que cualquiera pueda acceder a la información, suplantar la identidad de tu empresa o provocar filtraciones de datos. En <strong>PPV Soluciones</strong> nuestro objetivo es educar, proteger y brindar un respaldo sólido a las empresas para evitar delitos informáticos y pérdidas económicas.
+        <!-- Subtítulo de Conversión Real -->
+        <p class="max-w-3xl mx-auto text-base sm:text-lg md:text-xl text-slate-400 leading-relaxed font-normal mb-10">
+          Desde páginas web comerciales que captan clientes todos los días, hasta aplicaciones a medida, sistemas de inventario y plataformas operativas complejas. Transformamos tus procesos manuales en tecnología propia, rápida y rentable.
         </p>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
-          <div style="background: rgba(7,9,14,0.65); padding: 1rem; border-radius: var(--radius-md); border-left: 3px solid var(--neon-pink);">
-            <strong style="color: #fff; font-size: 0.9rem; display: block; margin-bottom: 0.3rem;"><i class="fa-solid fa-key text-pink"></i> Keys & Tokens Expuestos</strong>
-            <span style="font-size: 0.8rem; color: var(--text-muted);">Cualquier usuario puede abrir la consola del navegador y copiar llaves secretas o accesos a bases de datos.</span>
-          </div>
-
-          <div style="background: rgba(7,9,14,0.65); padding: 1rem; border-radius: var(--radius-md); border-left: 3px solid var(--neon-amber);">
-            <strong style="color: #fff; font-size: 0.9rem; display: block; margin-bottom: 0.3rem;"><i class="fa-solid fa-masks-theater text-amber"></i> Suplantación & Spam</strong>
-            <span style="font-size: 0.8rem; color: var(--text-muted);">Sin límites de seguridad, bots maliciosos pueden enviar spam masivo a tu nombre y saturar tus canales de atención.</span>
-          </div>
-
-          <div style="background: rgba(7,9,14,0.65); padding: 1rem; border-radius: var(--radius-md); border-left: 3px solid var(--neon-cyan);">
-            <strong style="color: #fff; font-size: 0.9rem; display: block; margin-bottom: 0.3rem;"><i class="fa-solid fa-scale-balanced text-cyan"></i> Responsabilidad Ley 21.459</strong>
-            <span style="font-size: 0.8rem; color: var(--text-muted);">Las filtraciones de datos de clientes dañan la reputación de tu marca y conllevan sanciones legales en Chile.</span>
-          </div>
-        </div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; margin-bottom: 2.5rem;">
-        <div class="glass-card" style="border-color: rgba(255,0,127,0.3); background: rgba(13,17,26,0.6);">
-          <div style="font-size: 2rem; color: var(--neon-pink); margin-bottom: 0.8rem;"><i class="fa-solid fa-bug"></i></div>
-          <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.5rem;">1. Análisis de Vulnerabilidades</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Detección de tokens API expuestos en código cliente, contraseñas en texto plano, CORS permisivo y bypass de administración.</p>
+        <!-- Botones CTA Principales -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto mb-16">
+          <a href="#diagnostico" 
+             class="btn-glow w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl text-sm font-semibold text-white tracking-wide">
+            <i class="fa-brands fa-whatsapp text-lg"></i>
+            <span>Cotizar mi Proyecto por WhatsApp</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </a>
+          <a href="#soluciones" 
+             class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-sm font-semibold text-slate-300 hover:text-white glass-panel hover:bg-slate-800/80 transition-all">
+            <span>Explorar Soluciones</span>
+            <i class="fa-solid fa-chevron-down text-xs text-slate-500"></i>
+          </a>
         </div>
 
-        <div class="glass-card" style="border-color: rgba(112,0,255,0.3); background: rgba(13,17,26,0.6);">
-          <div style="font-size: 2rem; color: var(--neon-violet); margin-bottom: 0.8rem;"><i class="fa-solid fa-user-shield"></i></div>
-          <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.5rem;">2. Hardening & Proxy Backend</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Creación de proxies seguros en servidor para proteger tokens de WhatsApp/Telegram, hashes SHA-256 y bloqueo de accesos no autorizados.</p>
-        </div>
-
-        <div class="glass-card" style="border-color: rgba(0,243,255,0.3); background: rgba(13,17,26,0.6);">
-          <div style="font-size: 2rem; color: var(--neon-cyan); margin-bottom: 0.8rem;"><i class="fa-solid fa-lock"></i></div>
-          <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.5rem;">3. HTTP Security Headers</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Configuración de Content Security Policy (CSP), HSTS, X-Frame-Options (anti-clickjacking) y ocultación de versión del servidor web.</p>
-        </div>
-
-        <div class="glass-card" style="border-color: rgba(0,255,136,0.3); background: rgba(13,17,26,0.6);">
-          <div style="font-size: 2rem; color: var(--neon-emerald); margin-bottom: 0.8rem;"><i class="fa-solid fa-file-signature"></i></div>
-          <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.5rem;">4. Informe PDF & Resguardo Legal</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Entrega de informe ejecutivo PDF en tu escritorio + Carta de Autorización y Exención de Responsabilidad conforme a Ley 21.459.</p>
-        </div>
-      </div>
-
-      <!-- Niveles de Servicio -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
-        
-        <!-- Nivel 1: Solo Diagnóstico -->
-        <div class="glass-card" style="border-color: rgba(0, 243, 255, 0.4); background: rgba(13,17,26,0.85); display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
-              <span class="status-pill" style="border-color: var(--neon-cyan); color: var(--neon-cyan); font-size: 0.75rem;">
-                NIVEL 1 — EVALUACIÓN
-              </span>
-              <span class="price-level-1-display" style="color: var(--neon-cyan); font-weight: 700; font-size: 1.25rem;">5,0 UF</span>
+        <!-- Barra de Autoridad (4 Columnas de Rendimiento Técnico) -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto text-left">
+          
+          <div class="glass-panel p-4 sm:p-5 rounded-2xl border border-white/5 hover:border-cobalt-500/30 transition-all">
+            <div class="w-8 h-8 rounded-lg bg-cobalt-500/10 border border-cobalt-500/20 flex items-center justify-center text-cobalt-400 mb-3">
+              <i class="fa-solid fa-sliders text-sm"></i>
             </div>
-            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.6rem;">Diagnóstico & Reporte Ejecutivo PDF</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">
-              Ideal para evaluar el estado actual de tu sitio sin intervenir tu código ni servidor.
-            </p>
-            <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0; font-size: 0.85rem; color: #d0d5e2;">
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-cyan"></i> Análisis pasivo/activo de vulnerabilidades</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-cyan"></i> Chequeo de credenciales expuestas & CORS</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-cyan"></i> Verificación de HTTP Security Headers</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-cyan"></i> <strong>Entrega de Informe PDF</strong> con hallazgos</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-clock text-emerald"></i> Plazo de entrega: <strong>2 días hábiles</strong></li>
-            </ul>
+            <div class="font-heading font-bold text-white text-base sm:text-lg">100% A Medida</div>
+            <div class="text-xs text-slate-400 mt-1">Sin plantillas rígidas ni costos mensuales abusivos.</div>
           </div>
-          <button class="btn btn-outline btn-sec-tier" data-tier="200" style="width: 100%; border-color: var(--neon-cyan); color: var(--neon-cyan);">
-            <i class="fa-solid fa-file-pdf"></i> Solicitar Solo Diagnóstico (5,0 UF)
-          </button>
+
+          <div class="glass-panel p-4 sm:p-5 rounded-2xl border border-white/5 hover:border-emeraldAccent-500/30 transition-all">
+            <div class="w-8 h-8 rounded-lg bg-emeraldAccent-500/10 border border-emeraldAccent-500/20 flex items-center justify-center text-emeraldAccent-400 mb-3">
+              <i class="fa-solid fa-bolt text-sm"></i>
+            </div>
+            <div class="font-heading font-bold text-white text-base sm:text-lg">Menos de 1 Segundo</div>
+            <div class="text-xs text-slate-400 mt-1">Velocidad extrema de carga y respuesta de servidores.</div>
+          </div>
+
+          <div class="glass-panel p-4 sm:p-5 rounded-2xl border border-white/5 hover:border-cyanAccent-500/30 transition-all">
+            <div class="w-8 h-8 rounded-lg bg-cyanAccent-500/10 border border-cyanAccent-500/20 flex items-center justify-center text-cyanAccent-400 mb-3">
+              <i class="fa-solid fa-network-wired text-sm"></i>
+            </div>
+            <div class="font-heading font-bold text-white text-base sm:text-lg">Integración Total</div>
+            <div class="text-xs text-slate-400 mt-1">Ventas, inventario, pagos y boletas SII en un solo flujo.</div>
+          </div>
+
+          <div class="glass-panel p-4 sm:p-5 rounded-2xl border border-white/5 hover:border-cobalt-500/30 transition-all">
+            <div class="w-8 h-8 rounded-lg bg-cobalt-500/10 border border-cobalt-500/20 flex items-center justify-center text-cobalt-400 mb-3">
+              <i class="fa-solid fa-location-dot text-sm"></i>
+            </div>
+            <div class="font-heading font-bold text-white text-base sm:text-lg">Presencia Directa</div>
+            <div class="text-xs text-slate-400 mt-1">Litoral Central, San Antonio, Valparaíso y RM.</div>
+          </div>
+
         </div>
 
-        <!-- Nivel 2: Auditoría + Hardening Total (Recomendado) -->
-        <div class="glass-card" style="border-color: var(--neon-pink); background: linear-gradient(145deg, rgba(255,0,127,0.1), rgba(13,17,26,0.9)); display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; gap: 0.5rem;">
-              <span class="status-pill" style="border-color: var(--neon-pink); color: var(--neon-pink); font-size: 0.75rem;">
-                NIVEL 2 — LLAVE EN MANO
-              </span>
-              <div style="text-align: right;">
-                <span style="background: linear-gradient(135deg, var(--neon-pink), #e11d48); color: #fff; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; display: inline-block; margin-bottom: 0.3rem; letter-spacing: 0.5px; box-shadow: 0 0 10px rgba(255,0,127,0.4);">
-                  <i class="fa-solid fa-fire"></i> MÁS POPULAR
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- SECCIÓN 2: BENTO GRID DE SOLUCIONES (Las 4 Líneas de Acción)            -->
+    <!-- ======================================================================= -->
+    <section id="soluciones" class="py-24 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-cobalt-500/10 text-cobalt-400 border border-cobalt-500/30 mb-4">
+            <i class="fa-solid fa-cubes-stacked text-xs"></i>
+            <span>CAPACIDADES DE INGENIERÍA</span>
+          </div>
+          <h2 class="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-white tracking-tight mb-4">
+            Ingeniería versátil para problemas reales de negocio
+          </h2>
+          <p class="text-slate-400 text-base sm:text-lg">
+            No vendemos plantillas genéricas. Diseñamos activos tecnológicos propietarios que ahorran horas de trabajo y multiplican tus ventas.
+          </p>
+        </div>
+
+        <!-- Bento Grid Asimétrico con Spotlight Hover -->
+        <div id="bento-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          <!-- BLOQUE 1: Apps Web y Móviles a Medida (Col Span 2) -->
+          <div class="spotlight-card md:col-span-2 p-6 sm:p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-3 py-1 rounded-md text-xs font-mono font-semibold bg-cobalt-500/10 text-cobalt-400 border border-cobalt-500/30">
+                  DESARROLLO MULTIPLATAFORMA
                 </span>
-                <div class="price-level-2-display" style="color: var(--neon-pink); font-weight: 800; font-size: 1.35rem; line-height: 1.2;">11,0 UF</div>
+                <span class="text-xs font-mono text-emeraldAccent-400 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emeraldAccent-400 animate-ping"></span>
+                  <span>Sync 12ms</span>
+                </span>
               </div>
+              <h3 class="font-heading font-bold text-2xl sm:text-3xl text-white mb-3">
+                Aplicaciones Web y Móviles a Medida
+              </h3>
+              <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                ¿Tienes un modelo de negocio único o un proceso interno que ningún software enlatado resuelve? Desarrollamos aplicaciones desde cero para celulares, tablets y computadores, diseñadas exactamente para la forma en que trabaja tu empresa.
+              </p>
             </div>
-            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.6rem;">Auditoría + Hardening & Parcheo Total</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">
-              Diagnóstico completo + Corrección de código y blindaje en tu servidor de principio a fin.
-            </p>
-            <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0; font-size: 0.85rem; color: #fff;">
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-pink"></i> <strong>Todo lo incluido en Nivel 1</strong></li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-pink"></i> Parcheo de credenciales & hashes SHA-256</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-pink"></i> Creación de <strong>Proxy Backend</strong> para ocultar tokens</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-pink"></i> Configuración de <strong>Security Headers en Servidor</strong></li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-pink"></i> <strong>Carta de Resguardo Legal</strong> (Ley N° 21.459)</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-clock text-emerald"></i> Plazo de entrega: <strong>4 días hábiles</strong></li>
-            </ul>
-          </div>
-          <button class="btn btn-primary btn-sec-tier" data-tier="450" style="width: 100%; background: linear-gradient(135deg, var(--neon-pink), var(--neon-violet)); border: none;">
-            <i class="fa-solid fa-shield-halved"></i> Solicitar Auditoría + Solución (11,0 UF)
-          </button>
-        </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- Sección: Posicionamiento Web Efectivo, Visibilidad & Garantías -->
-  <section id="posicionamiento-web">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle">Impacto Digital & Garantías de Rendimiento</div>
-        <h2>Posicionamiento Web Efectivo & Visibilidad de Marca</h2>
-        <p>Un sitio web extraordinario solo cumple su objetivo si tus clientes lo encuentran fácilmente. En PPV Soluciones garantizamos arquitectura SEO de alta velocidad e indexación en motores de búsqueda.</p>
-      </div>
-
-      <!-- Métricas Clave de Garantía -->
-      <div class="seo-metrics-bar">
-        <div class="metric-box">
-          <div class="metric-value">&lt; 1.0s</div>
-          <div class="metric-label">Tiempo de Carga de Página</div>
-        </div>
-        <div class="metric-box">
-          <div class="metric-value">95%+</div>
-          <div class="metric-label">Score en Google PageSpeed</div>
-        </div>
-        <div class="metric-box">
-          <div class="metric-value">100%</div>
-          <div class="metric-label">Indexación en Buscadores</div>
-        </div>
-        <div class="metric-box">
-          <div class="metric-value">SSL 256-bit</div>
-          <div class="metric-label">Seguridad & Cifrado de Datos</div>
-        </div>
-      </div>
-
-      <!-- Grid de Garantías de Posicionamiento -->
-      <div class="guarantee-grid">
-        <!-- Garantía 1: Indexación & SEO Técnico -->
-        <div class="guarantee-card">
-          <div class="guarantee-badge">
-            <i class="fa-solid fa-shield-check"></i> Garantía SEO Técnico
-          </div>
-          <h3 style="font-size: 1.2rem; color: #fff; margin-bottom: 0.6rem;">Indexación & Estructura Semántica</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">
-            Construimos cada proyecto con HTML5 semántico, OpenGraph para redes sociales y Sitemap XML configurado para que Google, Bing y los motores de búsqueda indexen tu sitio web prioritariamente.
-          </p>
-        </div>
-
-        <!-- Garantía 2: Visibilidad de Marca & Posicionamiento Local -->
-        <div class="guarantee-card">
-          <div class="guarantee-badge">
-            <i class="fa-solid fa-eye"></i> Visibilidad de Marca
-          </div>
-          <h3 style="font-size: 1.2rem; color: #fff; margin-bottom: 0.6rem;">Presencia Digital Destacada</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">
-            Diseñamos interfaces con identidad de marca memorable, tarjetas para redes sociales y optimización para búsquedas locales (Google Business / Google Maps) para dominar tu rubro.
-          </p>
-        </div>
-
-        <!-- Garantía 3: Velocidad Ultra-Rápida (Core Web Vitals) -->
-        <div class="guarantee-card">
-          <div class="guarantee-badge">
-            <i class="fa-solid fa-bolt"></i> Rendimiento Garantizado
-          </div>
-          <h3 style="font-size: 1.2rem; color: #fff; margin-bottom: 0.6rem;">Carga en Menos de 1 Segundo</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">
-            La velocidad es el factor #1 de conversión y ranking en Google. Código limpio sin librerías pesadas innecesarias para asegurar una experiencia instantánea en móviles y notebooks.
-          </p>
-        </div>
-
-        <!-- Garantía 4: Adaptabilidad & Seguridad SSL -->
-        <div class="guarantee-card">
-          <div class="guarantee-badge">
-            <i class="fa-solid fa-lock"></i> Seguridad & Responsivo
-          </div>
-          <h3 style="font-size: 1.2rem; color: #fff; margin-bottom: 0.6rem;">Mobile-First & Cifrado Seguro</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">
-            Certificado SSL HTTPS incluido, protección de formularios contra spam/robots y diseño responsivo fluido que transmite máxima confianza a tus clientes potenciales.
-          </p>
-        </div>
-      </div>
-
-      <!-- CTA de Auditoría de Posicionamiento -->
-      <div style="margin-top: 2.2rem; background: rgba(0, 243, 255, 0.04); border: 1px solid rgba(0, 243, 255, 0.2); padding: 1.5rem; border-radius: var(--radius-lg); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <strong style="color: var(--neon-cyan); font-size: 1.1rem; display: block;">¿Ya tienes un sitio web y quieres saber cómo mejorar su posicionamiento?</strong>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Solicita un diagnóstico gratuito de visibilidad de marca y velocidad de tu sitio actual.</p>
-        </div>
-        <a href="#contacto" class="btn btn-primary" id="btn-request-seo-audit">
-          <i class="fa-solid fa-chart-pie"></i> Solicitar Auditoría SEO Gratuita
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Nueva Sección: Aseguramiento de Calidad (QA), Gobierno TI CMMI & Consultoría Especializada -->
-  <section id="qa-gobierno-ti" style="background: radial-gradient(circle at 50% 100%, rgba(0, 243, 255, 0.06) 0%, rgba(7, 9, 14, 0.95) 70%); border-top: 1px solid rgba(0, 243, 255, 0.15); padding: 4.5rem 0;">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle" style="color: var(--neon-cyan); border-color: rgba(0, 243, 255, 0.3); background: rgba(0, 243, 255, 0.08);">
-          <i class="fa-solid fa-vial-circle-check"></i> Excelencia Operativa & Calidad de Software
-        </div>
-        <h2>Aseguramiento de Calidad (QA), Gobierno TI & Certificación de Procesos</h2>
-        <p>Acompañamos a instituciones y empresas corporativas en el control riguroso de calidad de software y la elaboración de políticas de gobierno alineadas a estándares internacionales.</p>
-      </div>
-
-      <div class="guarantee-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-        <!-- Servicio 1: QA & Testing de Software -->
-        <div class="glass-card" style="border-color: rgba(0, 243, 255, 0.3); background: rgba(13, 17, 26, 0.85); display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <span class="status-pill" style="border-color: var(--neon-cyan); color: var(--neon-cyan); font-size: 0.75rem;">
-                <i class="fa-solid fa-microscope"></i> CALIDAD DE SOFTWARE
-              </span>
-              <span style="color: var(--neon-cyan); font-size: 0.8rem; font-weight: 700; background: rgba(0,243,255,0.1); padding: 4px 8px; border-radius: 6px;">
-                Cotización por Horas / UF
-              </span>
-            </div>
-            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.6rem;">Aseguramiento de Calidad (QA & Testing)</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">
-              Pruebas funcionales, automatización de tests de estrés y validación de historias de usuario pre-entrega a producción.
-            </p>
-            <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0; font-size: 0.85rem; color: #d0d5e2;">
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-cyan"></i> Pruebas funcionales de estrés y regresión</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-cyan"></i> Automatización de pruebas de interfaz (UI/API)</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-cyan"></i> Matriz de trazabilidad y reporte de defectos</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-clock text-emerald"></i> Modalidad: <strong>Bolsa de Horas de Ingeniería (UF)</strong></li>
-            </ul>
-          </div>
-          <a href="#contacto" class="btn btn-outline" style="width: 100%; border-color: var(--neon-cyan); color: var(--neon-cyan); text-align: center;">
-            <i class="fa-solid fa-comments"></i> Consultar Disponibilidad de QA
-          </a>
-        </div>
-
-        <!-- Servicio 2: Gobierno TI & Políticas CMMI -->
-        <div class="glass-card" style="border-color: rgba(112, 0, 255, 0.4); background: linear-gradient(145deg, rgba(112,0,255,0.08), rgba(13,17,26,0.9)); display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <span class="status-pill" style="border-color: var(--neon-violet); color: var(--neon-violet); font-size: 0.75rem;">
-                <i class="fa-solid fa-award"></i> ESTÁNDAR CORPORATIVO
-              </span>
-              <span style="color: var(--neon-violet); font-size: 0.8rem; font-weight: 700; background: rgba(112,0,255,0.15); padding: 4px 8px; border-radius: 6px;">
-                Evaluación Personalizada
-              </span>
-            </div>
-            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.6rem;">Políticas de Gobierno TI & Estándar CMMI</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">
-              Documentación técnica avanzada, diseño de procesos de ingeniería y políticas alineadas a CMMI Nivel 5 e ISO 27001.
-            </p>
-            <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0; font-size: 0.85rem; color: #fff;">
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-violet"></i> Manuales de arquitectura y documentación técnica</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-violet"></i> Modelamiento de procesos de desarrollo de alta madurez</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check text-violet"></i> Políticas de continuidad operacional y resguardo TI</li>
-              <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-clock text-emerald"></i> Entregable: <strong>Auditoría & Carpeta de Documentación CMMI</strong></li>
-            </ul>
-          </div>
-          <a href="#contacto" class="btn btn-primary" style="width: 100%; background: linear-gradient(135deg, var(--neon-violet), #9333ea); border: none; text-align: center;">
-            <i class="fa-solid fa-file-contract"></i> Solicitar Asesoría en Gobierno TI
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-
-  <!-- Matriz de Capacidades Técnicas -->
-  <section id="habilidades" style="background: rgba(13, 17, 26, 0.4);">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle">Stack de Tecnologías</div>
-        <h2>Matriz de Capacidades Técnicas</h2>
-        <p>Herramientas y tecnologías seleccionadas para entregar soluciones de alta velocidad y precisión.</p>
-      </div>
-
-      <div class="expertise-grid" style="margin-bottom: 3rem; grid-template-columns: 1fr 1fr;">
-        <div class="glass-card expertise-card">
-          <div class="expertise-icon">
-            <i class="fa-solid fa-diagram-project text-violet"></i>
-          </div>
-          <h3>Análisis Estructurado de Problemas</h3>
-          <p>Nuestra fortaleza principal es traducir una necesidad abstracta de negocio en una especificación técnica clara. Tú defines la meta y el presupuesto; nosotros estructuramos los requerimientos y el plan paso a paso.</p>
-          <div class="expertise-tags">
-            <span class="tag">Arquitectura de Software</span>
-            <span class="tag">Desglose de Tareas</span>
-            <span class="tag">Lógica de Negocio</span>
-          </div>
-        </div>
-        <div class="glass-card expertise-card">
-          <div class="expertise-icon">
-            <i class="fa-solid fa-code text-emerald"></i>
-          </div>
-          <h3>Dominio de Lenguajes según Necesidad</h3>
-          <p>No estamos atados a un solo framework. Si el cliente requiere Python para Automatización, JavaScript/Node para servidores rápidos, React para la web o SQL para bases de datos, utilizamos la tecnología ideal sin fricción.</p>
-          <div class="expertise-tags">
-            <span class="tag">Python</span>
-            <span class="tag">JavaScript / TypeScript</span>
-            <span class="tag">SQL & NoSQL</span>
-            <span class="tag">APIs & Webhooks</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="skills-filter">
-        <button class="filter-btn active" data-filter="all">Todos</button>
-        <button class="filter-btn" data-filter="ai">Automatización & APIs</button>
-        <button class="filter-btn" data-filter="web">Full-Stack Web</button>
-        <button class="filter-btn" data-filter="auto">Flujos n8n / Make</button>
-        <button class="filter-btn" data-filter="db">Bases de Datos & Data</button>
-      </div>
-
-      <div class="skills-grid" id="skills-grid-container">
-        <!-- Las cards se llenarán dinámicamente con JS -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Demos Interactivos de Automatización -->
-  <section id="demos-auto">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle">Demostración Práctica</div>
-        <h2>Demos Interactivos de Automatización en Vivo</h2>
-        <p>Prueba el funcionamiento en tiempo real de soluciones desarrolladas con automatizaciones de procesos.</p>
-      </div>
-
-      <div class="demo-container">
-        <div class="demo-tabs">
-          <button class="demo-tab active" data-target="panel-chatbot">
-            <i class="fa-solid fa-comments text-cyan"></i> 1. Bot & Asistente Automatizado
-          </button>
-          <button class="demo-tab" data-target="panel-workflow">
-            <i class="fa-solid fa-network-wired text-violet"></i> 2. Flujo de Automatización (n8n)
-          </button>
-          <button class="demo-tab" data-target="panel-code-eval">
-            <i class="fa-solid fa-laptop-code text-emerald"></i> 3. Evaluador de Código
-          </button>
-          <button class="demo-tab" data-target="panel-meeting-agreement">
-            <i class="fa-solid fa-file-signature text-amber"></i> 4. Minuta de Reunión & Firma Digital
-          </button>
-        </div>
-
-        <!-- Demo 1: Bot de Respuesta -->
-        <div class="demo-panel active" id="panel-chatbot">
-          <div style="margin-bottom: 0.8rem; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h4 style="font-size: 1rem; color: var(--neon-cyan);">Simulador de Asistente Automatizado Personalizado</h4>
-              <p style="font-size: 0.8rem; color: var(--text-muted);">Interactúa con el sistema configurado para responder preguntas técnicas o de soporte.</p>
-            </div>
-            <select id="chat-role-select" class="form-control" style="width: 230px; font-size: 0.8rem; padding: 0.4rem 0.6rem;">
-              <option value="tech">Rol: Consultor en Automatización</option>
-              <option value="support">Rol: Soporte Atencional 24/7</option>
-              <option value="data">Rol: Analista de Procesos</option>
-            </select>
-          </div>
-
-          <div class="chat-window">
-            <div class="chat-messages" id="chat-messages-box">
-              <div class="message ai">
-                <div class="msg-avatar"><i class="fa-solid fa-robot"></i></div>
-                <div class="msg-bubble">
-                  ¡Hola! Soy el asistente de automatización de PPV Soluciones. Puedo ayudarte a responder consultas sobre integraciones de API, automatización de procesos o evaluación de código. ¿En qué trabajaremos hoy?
+            <!-- Micro-Visualizador: Mockup Abstracto de Sincronización en Nube -->
+            <div class="rounded-xl bg-slate-950/80 border border-white/10 p-4 font-mono text-xs shadow-inner">
+              <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-3">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                  <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                  <span class="w-3 h-3 rounded-full bg-emeraldAccent-500/80"></span>
+                  <span class="text-slate-400 ml-2 text-[11px]">live_event_bus.sync</span>
+                </div>
+                <div class="flex items-center gap-2 text-[11px] text-slate-400">
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-cobalt-300">Desktop ⇄ App Móvil</span>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-300">
+                <div class="bg-slate-900/60 p-2.5 rounded-lg border border-white/5 flex items-center justify-between">
+                  <span>Terminal Operador Terreno:</span>
+                  <span class="text-emeraldAccent-400 font-semibold">En línea (PWA)</span>
+                </div>
+                <div class="bg-slate-900/60 p-2.5 rounded-lg border border-white/5 flex items-center justify-between">
+                  <span>Base de Datos Central:</span>
+                  <span class="text-cobalt-400 font-semibold">PostgreSQL TLS 1.3</span>
                 </div>
               </div>
             </div>
-
-            <form class="chat-input-area" id="chat-form">
-              <input type="text" id="chat-input" placeholder="Escribe un mensaje o pregunta sobre el proyecto..." required autocomplete="off">
-              <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem;">
-                <i class="fa-solid fa-paper-plane"></i>
-              </button>
-            </form>
           </div>
-        </div>
 
-        <!-- Demo 2: Workflow Canvas -->
-        <div class="demo-panel" id="panel-workflow">
-          <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+          <!-- BLOQUE 2: Páginas Web & E-Commerce (Col Span 1) -->
+          <div class="spotlight-card p-6 sm:p-8 flex flex-col justify-between">
             <div>
-              <h4 style="font-size: 1rem; color: var(--neon-violet);">Visualizador de Flujos n8n / Make + APIs</h4>
-              <p style="font-size: 0.8rem; color: var(--text-muted);">Simulación gráfica de cómo se procesa un webhook entrante mediante automatización y se almacena en la DB.</p>
-            </div>
-            <button class="btn btn-secondary" id="btn-run-workflow" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
-              <i class="fa-solid fa-play"></i> Simular Ejecución
-            </button>
-          </div>
-
-          <div class="canvas-container" style="height: 300px;">
-            <div class="connector-line">
-              <div class="flow-packet" id="workflow-packet"></div>
+              <span class="inline-block px-3 py-1 rounded-md text-xs font-mono font-semibold bg-emeraldAccent-500/10 text-emeraldAccent-400 border border-emeraldAccent-500/30 mb-4">
+                VENTAS & GOOGLE
+              </span>
+              <h3 class="font-heading font-bold text-xl sm:text-2xl text-white mb-3">
+                Páginas Web & E-Commerce
+              </h3>
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                Dejamos atrás las páginas web que solo sirven de adorno. Sitios comerciales optimizados para liderar en Google y tiendas online con pagos, stock y boletas SII automáticas.
+              </p>
             </div>
 
-            <div class="node">
-              <i class="fa-solid fa-bolt text-amber" style="font-size: 1.3rem; margin-bottom: 4px;"></i>
-              <div class="node-title">1. Webhook Input</div>
-              <div class="node-sub">Formulario o API Externa</div>
-            </div>
-
-            <div class="node">
-              <i class="fa-solid fa-gears text-cyan" style="font-size: 1.3rem; margin-bottom: 4px;"></i>
-              <div class="node-title">2. Motor de Automatización</div>
-              <div class="node-sub">Procesamiento & Enriquecimiento</div>
-            </div>
-
-            <div class="node">
-              <i class="fa-solid fa-database text-emerald" style="font-size: 1.3rem; margin-bottom: 4px;"></i>
-              <div class="node-title">3. Database Output</div>
-              <div class="node-sub">Storage & Notificación</div>
+            <!-- Micro-Visualizador: Score Google PageSpeed 100/100 Animado -->
+            <div class="rounded-xl bg-slate-950/80 border border-white/10 p-4 text-center">
+              <div class="relative w-20 h-20 mx-auto mb-2 flex items-center justify-center">
+                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" stroke="#1E293B" stroke-width="8" fill="none"></circle>
+                  <circle cx="50" cy="50" r="45" stroke="#10B981" stroke-width="8" stroke-linecap="round" fill="none" class="circle-animate"></circle>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center font-heading font-extrabold text-white text-lg">
+                  100
+                  <span class="text-[9px] font-mono text-emeraldAccent-400 font-normal">/ 100</span>
+                </div>
+              </div>
+              <div class="text-xs font-mono text-slate-300 font-medium">Google PageSpeed Score</div>
+              <div class="text-[10px] text-emeraldAccent-400 font-mono mt-0.5">Indexación inmediata garantizada</div>
             </div>
           </div>
-          <div id="workflow-log" style="margin-top: 0.8rem; font-family: var(--font-code); font-size: 0.8rem; color: var(--neon-emerald);">
-            [Estado]: Listo para iniciar simulación...
-          </div>
-        </div>
 
-        <!-- Demo 3: Code Evaluator -->
-        <div class="demo-panel" id="panel-code-eval">
-          <div style="margin-bottom: 1rem;">
-            <h4 style="font-size: 1rem; color: var(--neon-emerald);">Optimizador & Evaluador de Código Automatizado</h4>
-            <p style="font-size: 0.8rem; color: var(--text-muted);">Compara código legacy sin optimizar versus la respuesta refinada con mejores prácticas de seguridad y automatización.</p>
-          </div>
-
-          <div class="code-eval-grid">
-            <div class="code-box" style="height: 280px;">
-              <h4>❌ Código Legacy (Inseguro y Lento)</h4>
-              <pre><code class="language-python" style="color: #f87171;"># Sin manejo de errores ni tipos
-def get_user_data(user_id):
-    import sqlite3
-    conn = sqlite3.connect('app.db')
-    cursor = conn.cursor()
-    # Vulnerable a SQL Injection
-    query = "SELECT * FROM users WHERE id=" + str(user_id)
-    res = cursor.execute(query).fetchall()
-    return res</code></pre>
-            </div>
-
-            <div class="code-box" style="height: 280px;">
-              <h4>✅ Código Optimizado & Automatizado (Clean Code & Safe)</h4>
-              <pre><code class="language-python" style="color: #4ade80;">from typing import Optional, Dict, Any
-import sqlite3
-import logging
-
-def get_user_data(user_id: int) -> Optional[Dict[str, Any]]:
-    """Obtiene datos de usuario usando consultas preparadas seguras."""
-    try:
-        with sqlite3.connect('app.db') as conn:
-            cursor = conn.cursor()
-            query = "SELECT id, name, email FROM users WHERE id = ?"
-            cursor.execute(query, (user_id,))
-            row = cursor.fetchone()
-            return {"id": row[0], "name": row[1], "email": row[2]} if row else None
-    except sqlite3.Error as err:
-        logging.error(f"Database error for user {user_id}: {err}")
-        return None</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <!-- Demo 4: Agendador de Videollamadas Propia, Minuta de Reunión & Firma Digital -->
-        <div class="demo-panel" id="panel-meeting-agreement">
-          <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <!-- BLOQUE 3: ERP, Inventario Crítico & Fidelización Física (Col Span 1) -->
+          <div class="spotlight-card p-6 sm:p-8 flex flex-col justify-between">
             <div>
-              <h4 style="font-size: 1rem; color: var(--neon-amber);">
-                <i class="fa-solid fa-video text-amber"></i> Sala de Videollamada Propia (Nativa WebRTC) ➔ Minuta ➔ Firma Digital
-              </h4>
-              <p style="font-size: 0.8rem; color: var(--text-muted);">
-                Sistema 100% desarrollado a medida sin servicios externos: agendamiento, controles de micrófono/cámara en vivo, resumen de acuerdos y estampa de firma.
-              </p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn-primary" id="btn-start-native-call" style="font-size: 0.78rem; padding: 4px 12px;">
-                <i class="fa-solid fa-play"></i> Iniciar Videollamada Propia
-              </button>
-            </div>
-          </div>
-
-          <!-- Componente 1: Sala de Videollamada Nativa (WebRTC) -->
-          <div class="webrtc-room-container" id="webrtc-room-box">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-              <span class="status-pill" style="font-size: 0.75rem; background: rgba(0, 243, 255, 0.1); border-color: rgba(0, 243, 255, 0.4); color: var(--neon-cyan);">
-                <span class="pulse-dot" style="background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan);"></span>
-                <span id="call-status-label">SALA ACTIVA: PPV-NATIVE-MEET #101</span>
+              <span class="inline-block px-3 py-1 rounded-md text-xs font-mono font-semibold bg-cyanAccent-500/10 text-cyanAccent-400 border border-cyanAccent-500/30 mb-4">
+                CONTROL & RETENCIÓN
               </span>
-              <span style="font-family: var(--font-code); font-size: 0.8rem; color: var(--neon-emerald);" id="call-timer-display">
-                ⏱️ Tiempo en Vivo: 00:00
-              </span>
-            </div>
-
-            <div class="webrtc-video-grid">
-              <video id="webrtc-video-element" class="webrtc-video-element" autoplay playsinline muted></video>
-              <div class="webrtc-avatar-off" id="webrtc-avatar-placeholder" style="display: none;">
-                <i class="fa-solid fa-user-slash"></i>
-                <span style="font-size: 0.85rem;">Cámara Desactivada por el Usuario</span>
-              </div>
-
-              <!-- Barra Flotante de Controles Nativa -->
-              <div class="webrtc-controls-bar">
-                <button type="button" class="webrtc-btn" id="btn-toggle-mic" title="Silenciar / Activar Micrófono">
-                  <i class="fa-solid fa-microphone"></i>
-                </button>
-                <button type="button" class="webrtc-btn" id="btn-toggle-cam" title="Encender / Apagar Cámara">
-                  <i class="fa-solid fa-video"></i>
-                </button>
-                <button type="button" class="webrtc-btn" id="btn-share-screen" title="Compartir Pantalla">
-                  <i class="fa-solid fa-desktop"></i>
-                </button>
-                <button type="button" class="webrtc-btn btn-end-call" id="btn-end-call">
-                  <i class="fa-solid fa-phone-slash"></i> Finalizar Reunión & Generar Minuta
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Documento de Minuta & Lienzo de Firma Digital -->
-          <div class="agreement-doc-box" id="agreement-doc-container">
-            <div class="agreement-header">
-              <div>
-                <span style="color: var(--neon-cyan); font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">ACTA OFICIAL DE REUNIÓN & ACUERDO DE PROYECTO</span>
-                <h3 style="font-size: 1.2rem; color: #fff; margin-top: 2px;">PPV Soluciones & Cliente</h3>
-              </div>
-              <div class="agreement-stamp" id="doc-stamp-status">
-                <i class="fa-solid fa-clock"></i> Pendiente de Firma
-              </div>
-            </div>
-
-            <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
-              <p style="margin-bottom: 0.6rem;">
-                <strong style="color: #fff;">1. Resumen Ejecutivo de la Reunión Nativa:</strong> Se concluyó la sesión mediante nuestro sistema de videollamada nativa. Transcripción y acuerdos procesados sin depender de terceros.
+              <h3 class="font-heading font-bold text-xl sm:text-2xl text-white mb-3">
+                Gestión ERP & Fidelización
+              </h3>
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                Reemplaza el caos de las planillas. Núcleos de control para producción por lotes, descuento inteligente de stock, alertas de recompra y fidelización física mediante dispositivos NFC de contacto instantáneo (sin códigos QR).
               </p>
-              <p style="margin-bottom: 0.6rem;">
-                <strong style="color: var(--neon-cyan);">2. Acuerdos & Alcance del Proyecto:</strong>
-              </p>
-              <ul style="margin-left: 1.2rem; margin-bottom: 0.8rem; color: #e2e8f0;">
-                <li>Desarrollo de aplicación web responsiva con motor de automatización y base de datos.</li>
-                <li>Integración de sistema de videollamada nativa 100% propio (WebRTC/MediaDevices).</li>
-                <li>Entrega de prototipo funcional en 48 horas con periodo de garantía de 30 días.</li>
-              </ul>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: rgba(0, 243, 255, 0.04); padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(0, 243, 255, 0.2);">
-                <div>
-                  <span style="font-size: 0.75rem; color: var(--text-muted);">Inversión Acordada:</span>
-                  <div style="font-size: 1.2rem; font-weight: 700; color: var(--neon-emerald);">$450 USD + IVA</div>
+            </div>
+
+            <!-- Micro-Visualizador: Simulador de Contacto NFC y Precisión -->
+            <div class="rounded-xl bg-slate-950/80 border border-white/10 p-4">
+              <div class="flex items-center gap-4 mb-3">
+                <div class="relative w-12 h-12 rounded-xl bg-cyanAccent-500/10 border border-cyanAccent-500/30 flex items-center justify-center text-cyanAccent-400 flex-shrink-0">
+                  <i class="fa-solid fa-rss text-lg transform rotate-45"></i>
+                  <span class="absolute inset-0 rounded-xl border border-cyanAccent-400 nfc-ring-1"></span>
+                  <span class="absolute inset-0 rounded-xl border border-cyanAccent-400 nfc-ring-2"></span>
                 </div>
                 <div>
-                  <span style="font-size: 0.75rem; color: var(--text-muted);">Plazo de Entrega:</span>
-                  <div style="font-size: 1.2rem; font-weight: 700; color: var(--neon-violet);">4 Días Hábiles</div>
+                  <div class="text-xs font-heading font-bold text-white">Validación Sin Contacto</div>
+                  <div class="text-[11px] font-mono text-emeraldAccent-400">Lectura instantánea: 0.4s</div>
+                </div>
+              </div>
+              <div class="space-y-1.5">
+                <div class="flex justify-between text-[11px] font-mono text-slate-400">
+                  <span>Precisión de Inventario:</span>
+                  <span class="text-cyanAccent-300 font-semibold">99.9%</span>
+                </div>
+                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                  <div class="bg-gradient-to-r from-cobalt-500 to-cyanAccent-400 h-full rounded-full" style="width: 99.9%"></div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Lienzo de Firma Digital (Signature Canvas) -->
-            <div class="signature-pad-container">
-              <label style="font-size: 0.85rem; color: var(--neon-cyan); font-weight: 700; display: block;">
-                <i class="fa-solid fa-pen-nib"></i> Estampa tu Firma Digital sobre el Lienzo Inferior:
-              </label>
-              <canvas id="signature-canvas" class="signature-canvas" width="500" height="160"></canvas>
-              
-              <div style="display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;">
-                <button type="button" class="btn btn-outline" id="btn-clear-signature" style="padding: 4px 12px; font-size: 0.78rem;">
-                  <i class="fa-solid fa-eraser"></i> Limpiar Firma
-                </button>
-                <button type="button" class="btn btn-primary" id="btn-confirm-signature" style="padding: 4px 16px; font-size: 0.78rem;">
-                  <i class="fa-solid fa-file-contract"></i> Confirmar & Firmar Acta
-                </button>
+          <!-- BLOQUE 4: Operaciones en Terreno, Flotas & Logística (Col Span 2) -->
+          <div class="spotlight-card md:col-span-2 p-6 sm:p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-3 py-1 rounded-md text-xs font-mono font-semibold bg-cobalt-500/10 text-cobalt-400 border border-cobalt-500/30">
+                  TRAZABILIDAD EN TIEMPO REAL
+                </span>
+                <span class="text-xs font-mono text-slate-400">
+                  Eje San Antonio ⇄ Valparaíso ⇄ Santiago
+                </span>
+              </div>
+              <h3 class="font-heading font-bold text-2xl sm:text-3xl text-white mb-3">
+                Operaciones en Terreno, Flotas y Logística
+              </h3>
+              <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                Ubicados estratégicamente entre San Antonio, Valparaíso y Santiago, desarrollamos herramientas de alta velocidad para operaciones en movimiento: control de acceso en patio, evidencia fotográfica inmutable de carga en ruta y eliminación total de llamadas de seguimiento.
+              </p>
+            </div>
+
+            <!-- Micro-Visualizador: Línea de Tiempo Luminosa de Ruta -->
+            <div class="rounded-xl bg-slate-950/80 border border-white/10 p-4">
+              <div class="grid grid-cols-3 gap-2 text-center font-mono text-xs">
+                <div class="p-2.5 rounded-lg bg-slate-900 border border-cobalt-500/30">
+                  <div class="text-[10px] text-slate-400 mb-1">HITO 1</div>
+                  <div class="font-bold text-white flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-warehouse text-cobalt-400 text-xs"></i>
+                    <span>Patio / Origen</span>
+                  </div>
+                  <div class="text-[10px] text-emeraldAccent-400 mt-1">Acreditado 0 papeles</div>
+                </div>
+
+                <div class="p-2.5 rounded-lg bg-slate-900 border border-emeraldAccent-500/30">
+                  <div class="text-[10px] text-slate-400 mb-1">HITO 2</div>
+                  <div class="font-bold text-white flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-truck-fast text-emeraldAccent-400 text-xs"></i>
+                    <span>Ruta 78 / 68</span>
+                  </div>
+                  <div class="text-[10px] text-cyanAccent-400 mt-1">GPS & Sello Digital</div>
+                </div>
+
+                <div class="p-2.5 rounded-lg bg-slate-900 border border-cyanAccent-500/30">
+                  <div class="text-[10px] text-slate-400 mb-1">HITO 3</div>
+                  <div class="font-bold text-white flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-receipt text-cyanAccent-400 text-xs"></i>
+                    <span>Liquidación</span>
+                  </div>
+                  <div class="text-[10px] text-emeraldAccent-400 mt-1">POD Directo a SII</div>
+                </div>
               </div>
             </div>
-
-            <!-- Resultado de Documento Firmado -->
-            <div id="signed-result-box" style="display: none; margin-top: 1.2rem; background: rgba(0, 255, 136, 0.05); border: 1px solid var(--neon-emerald); padding: 1rem; border-radius: 8px; text-align: center;">
-              <h4 style="color: var(--neon-emerald); font-size: 1rem; margin-bottom: 0.4rem;">
-                <i class="fa-solid fa-circle-check"></i> Documento Firmado Digitalmente con Éxito
-              </h4>
-              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.8rem;">
-                Hash de Autenticidad SHA-256: <code style="color: var(--neon-cyan);" id="signed-doc-hash">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</code>
-              </p>
-              <button class="btn btn-secondary" id="btn-download-signed-pdf" style="padding: 4px 16px; font-size: 0.78rem;">
-                <i class="fa-solid fa-file-pdf"></i> Descargar Acta Firmada (PDF)
-              </button>
-            </div>
           </div>
+
         </div>
+
       </div>
-    </div>
-  </section>
+    </section>
 
-    <!-- Sección: Formatos y Estructuras Web -->
-  <section id="formatos-web" style="background: rgba(7, 9, 14, 0.6); border-top: 1px solid var(--border-glow); border-bottom: 1px solid var(--border-glow); padding: 4rem 0;">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle" style="color: var(--neon-cyan);">
-          <i class="fa-solid fa-layer-group"></i> Arquitectura & Tipos de Sitios Web
-        </div>
-        <h2>Formatos de Desarrollo Web & Presupuestos en UF</h2>
-        <p>Elige el tipo de sitio web que mejor se adapte al objetivo comercial de tu empresa: captar clientes, vender productos o posicionar tu marca en Google.</p>
-      </div>
-
-      <div class="format-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-        <!-- Card 1: Landing Page -->
-        <div class="format-card" style="display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 2px 0 var(--neon-cyan), 0 10px 30px rgba(0,0,0,0.5);">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
-              <span class="badge-status" style="background: rgba(0, 243, 255, 0.1); color: var(--neon-cyan); font-size: 0.75rem;">
-                🎯 Ideal para Ads / Anuncios
-              </span>
-              <span style="font-size: 0.9rem; font-weight: 800; color: #ffb703; padding: 4px 10px; border-radius: 6px; background: linear-gradient(135deg, rgba(255,183,3,0.15), rgba(255,183,3,0.05));">4 - 12 UF</span>
-            </div>
-            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
-              <i class="fa-solid fa-bullseye text-cyan"></i> Landing Page
-            </h3>
-            <p style="font-size: 0.82rem; color: var(--neon-cyan); font-weight: 600; margin-bottom: 0.8rem;">Página de Aterrizaje de Alta Conversión</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
-              Diseñada sin distracciones con un único objetivo: que el visitante compre una oferta, llame por teléfono o deje sus datos en un formulario.
-            </p>
-            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.8rem;">
-              <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">Rango CLP Estimado (+ IVA):</strong>
-              <span style="color: var(--neon-emerald); font-weight: 700; font-size: 0.95rem;">~ $160.000 – $480.000 CLP + IVA</span>
-            </div>
+    <!-- ======================================================================= -->
+    <!-- SECCIÓN 3: SELECTOR INTERACTIVO POR RUBROS ("¿Cuál es tu sector?")      -->
+    <!-- ======================================================================= -->
+    <section id="rubros" class="py-24 bg-slateDark/40 border-y border-white/5 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-emeraldAccent-500/10 text-emeraldAccent-400 border border-emeraldAccent-500/30 mb-4">
+            <i class="fa-solid fa-crosshairs text-xs"></i>
+            <span>ENFOQUE POR INDUSTRIA</span>
           </div>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <button class="btn btn-outline btn-open-format-preview" data-format="landing" style="width: 100%; border-color: var(--neon-cyan); color: var(--neon-cyan); font-size: 0.82rem;">
-              <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
-            </button>
-            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Landing Page (4-12 UF)" data-budget="4-12 UF" style="width: 100%; font-size: 0.82rem;">
-              <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 2: Sitio One-Page -->
-        <div class="format-card" style="display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 2px 0 var(--neon-emerald), 0 10px 30px rgba(0,0,0,0.5);">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
-              <span class="badge-status" style="background: rgba(0, 255, 136, 0.1); color: var(--neon-emerald); font-size: 0.75rem;">
-                ⚡ Freelancers & PYMEs
-              </span>
-              <span style="font-size: 0.9rem; font-weight: 800; color: #ffb703; padding: 4px 10px; border-radius: 6px; background: linear-gradient(135deg, rgba(255,183,3,0.15), rgba(255,183,3,0.05));">6 - 20 UF</span>
-            </div>
-            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
-              <i class="fa-solid fa-bolt text-emerald"></i> Sitio "One-Page"
-            </h3>
-            <p style="font-size: 0.82rem; color: var(--neon-emerald); font-weight: 600; margin-bottom: 0.8rem;">Página Única con Desplazamiento Ágil</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
-              Toda la información condensada en una sola vista continua. El menú desplaza suavemente al usuario hacia la sección seleccionada.
-            </p>
-            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.8rem;">
-              <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">Rango CLP Estimado (+ IVA):</strong>
-              <span style="color: var(--neon-emerald); font-weight: 700; font-size: 0.95rem;">~ $240.000 – $800.000 CLP + IVA</span>
-            </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <button class="btn btn-outline btn-open-format-preview" data-format="onepage" style="width: 100%; border-color: var(--neon-emerald); color: var(--neon-emerald); font-size: 0.82rem;">
-              <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
-            </button>
-            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Sitio One-Page (6-20 UF)" data-budget="6-20 UF" style="width: 100%; font-size: 0.82rem;">
-              <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 3: Sitio Web Corporativo -->
-        <div class="format-card" style="display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 2px 0 var(--neon-violet), 0 10px 30px rgba(0,0,0,0.5);">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
-              <span class="badge-status" style="background: rgba(139, 92, 246, 0.1); color: var(--neon-violet); font-size: 0.75rem;">
-                🏢 Marcas & Empresas
-              </span>
-              <span style="font-size: 0.9rem; font-weight: 800; color: #ffb703; padding: 4px 10px; border-radius: 6px; background: linear-gradient(135deg, rgba(255,183,3,0.15), rgba(255,183,3,0.05));">12 - 38 UF</span>
-            </div>
-            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
-              <i class="fa-solid fa-building text-violet"></i> Sitio Corporativo
-            </h3>
-            <p style="font-size: 0.82rem; color: var(--neon-violet); font-weight: 600; margin-bottom: 0.8rem;">Carta de Presentación Multi-Página</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
-              Estructura corporativa con páginas internas (Nosotros, Servicios, Proyectos, Contacto) optimizadas para el posicionamiento en Google.
-            </p>
-            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.8rem;">
-              <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">Rango CLP Estimado (+ IVA):</strong>
-              <span style="color: var(--neon-emerald); font-weight: 700; font-size: 0.95rem;">~ $480.000 – $1.500.000 CLP + IVA</span>
-            </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <button class="btn btn-outline btn-open-format-preview" data-format="corporate" style="width: 100%; border-color: var(--neon-violet); color: var(--neon-violet); font-size: 0.82rem;">
-              <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
-            </button>
-            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Sitio Corporativo (12-38 UF)" data-budget="12-38 UF" style="width: 100%; font-size: 0.82rem;">
-              <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 4: Tienda Online (E-commerce) -->
-        <div class="format-card" style="display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 2px 0 var(--neon-pink), 0 10px 30px rgba(0,0,0,0.5);">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
-              <span class="badge-status" style="background: rgba(255, 0, 127, 0.1); color: var(--neon-pink); font-size: 0.75rem;">
-                🛒 Ventas Automáticas
-              </span>
-              <span style="font-size: 0.9rem; font-weight: 800; color: #ffb703; padding: 4px 10px; border-radius: 6px; background: linear-gradient(135deg, rgba(255,183,3,0.15), rgba(255,183,3,0.05));">25 - 100+ UF</span>
-            </div>
-            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
-              <i class="fa-solid fa-cart-shopping text-pink"></i> Tienda Online (E-commerce)
-            </h3>
-            <p style="font-size: 0.82rem; color: var(--neon-pink); font-weight: 600; margin-bottom: 0.8rem;">Plataforma de Venta Automatizada</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
-              Catálogo de productos, carrito de compras, pasarela de pago automatizada (Webpay / Tarjetas) e integración de inventario.
-            </p>
-            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.8rem;">
-              <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">Rango CLP Estimado (+ IVA):</strong>
-              <span style="color: var(--neon-emerald); font-weight: 700; font-size: 0.95rem;">~ $1.000.000 – $4.000.000+ CLP + IVA</span>
-            </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <button class="btn btn-outline btn-open-format-preview" data-format="ecommerce" style="width: 100%; border-color: var(--neon-pink); color: var(--neon-pink); font-size: 0.82rem;">
-              <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
-            </button>
-            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Tienda E-commerce (25-100+ UF)" data-budget="25-100+ UF" style="width: 100%; font-size: 0.82rem;">
-              <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 5: Blog o Portal de Contenidos -->
-        <div class="format-card" style="display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 2px 0 var(--neon-amber), 0 10px 30px rgba(0,0,0,0.5);">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
-              <span class="badge-status" style="background: rgba(255, 183, 3, 0.1); color: var(--neon-amber); font-size: 0.75rem;">
-                📰 Noticias & Artículos
-              </span>
-              <span style="font-size: 0.9rem; font-weight: 800; color: #ffb703; padding: 4px 10px; border-radius: 6px; background: linear-gradient(135deg, rgba(255,183,3,0.15), rgba(255,183,3,0.05));">8 - 20 UF</span>
-            </div>
-            <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.4rem;">
-              <i class="fa-solid fa-newspaper" style="color: #ffb703;"></i> Blog o Portal de Noticias
-            </h3>
-            <p style="font-size: 0.82rem; color: #ffb703; font-weight: 600; margin-bottom: 0.8rem;">Publicación de Artículos & Estrategia</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
-              Sitio enfocado en publicar artículos, guías y noticias ordenados cronológicamente por categorías para atraer clientes de forma orgánica.
-            </p>
-            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.8rem;">
-              <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">Rango CLP Estimado (+ IVA):</strong>
-              <span style="color: var(--neon-emerald); font-weight: 700; font-size: 0.95rem;">~ $320.000 – $800.000 CLP + IVA</span>
-            </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <button class="btn btn-outline btn-open-format-preview" data-format="blog" style="width: 100%; border-color: #ffb703; color: #ffb703; font-size: 0.82rem;">
-              <i class="fa-solid fa-eye"></i> Ver Ejemplo & Estructura
-            </button>
-            <a href="#contacto" class="btn btn-primary btn-select-format" data-subject="Cotización de Blog / Portal de Noticias (8-20 UF)" data-budget="8-20 UF" style="width: 100%; font-size: 0.82rem;">
-              <i class="fa-solid fa-paper-plane"></i> Cotizar este Formato
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-<!-- Calculadora de Presupuesto -->
-  <section id="servicios" style="background: rgba(13, 17, 26, 0.4);">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle">Cotización Transparente</div>
-        <h2>Calculadora de Presupuesto Estimado</h2>
-        <p>Selecciona los módulos que necesita tu proyecto para obtener un estimado de inversión y tiempo de desarrollo.</p>
-      </div>
-
-      <div class="calc-grid">
-        <div class="calc-options">
-          <div class="option-card selected" data-price="350" data-time="3 días">
-            <div>
-              <strong style="display: block; font-size: 1rem;">Sistema de Automatización & Bot Básico</strong>
-              <span style="font-size: 0.8rem; color: var(--text-muted);">Asistente web inteligente conectado a tus datos y APIs.</span>
-            </div>
-            <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem;"></i>
-          </div>
-
-          <div class="option-card" data-price="450" data-time="4 días">
-            <div>
-              <strong style="display: block; font-size: 1rem;">Flujo de Automatización n8n / Make</strong>
-              <span style="font-size: 0.8rem; color: var(--text-muted);">Conexión de CRM, Email, Bases de datos y procesos en segundo plano.</span>
-            </div>
-            <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: 0.3;"></i>
-          </div>
-
-          <div class="option-card" data-price="600" data-time="5 días">
-            <div>
-              <strong style="display: block; font-size: 1rem;">Desarrollo Web App Completo</strong>
-              <span style="font-size: 0.8rem; color: var(--text-muted);">Aplicación Frontend + Backend responsiva con diseño Cyberpunk/Glassmorphism.</span>
-            </div>
-            <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: 0.3;"></i>
-          </div>
-
-          <div class="option-card" data-price="200" data-time="2 días">
-            <div>
-              <strong style="display: block; font-size: 1rem;">Diagnóstico de Ciberseguridad & Reporte PDF (Nivel 1)</strong>
-              <span style="font-size: 0.8rem; color: var(--text-muted);">Auditoría de vulnerabilidades, chequeo de credenciales expuestas y entrega de informe PDF.</span>
-            </div>
-            <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: 0.3;"></i>
-          </div>
-
-          <div class="option-card" data-price="450" data-time="4 días">
-            <div>
-              <strong style="display: block; font-size: 1rem;">Auditoría + Hardening & Parcheo Total (Nivel 2 Llave en Mano)</strong>
-              <span style="font-size: 0.8rem; color: var(--text-muted);">Diagnóstico + Proxy backend seguro, hashes SHA-256, headers HTTP y carta legal Ley 21.459.</span>
-            </div>
-            <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: 0.3;"></i>
-          </div>
-
-          <div class="option-card" data-price="250" data-time="2 días">
-            <div>
-              <strong style="display: block; font-size: 1rem;">Optimización & Evaluación de Código Automatizado</strong>
-              <span style="font-size: 0.8rem; color: var(--text-muted);">Auditoría de rendimiento, refactorización y pruebas unitarias de código existente.</span>
-            </div>
-            <i class="fa-solid fa-circle-check text-cyan" style="font-size: 1.2rem; opacity: 0.3;"></i>
-          </div>
-        </div>
-
-        <div class="calc-summary">
-          <h3 style="color: var(--text-muted); font-size: 1rem;">Presupuesto Estimado (Ajuste Diario UF)</h3>
-          <div class="total-price" id="calc-total-usd" style="font-size: 2.2rem; margin: 0.6rem 0;">8,5 UF</div>
-          <p style="color: var(--neon-emerald); font-weight: 600; font-size: 0.9rem; margin-bottom: 1.2rem;">
-            <i class="fa-solid fa-clock"></i> Tiempo estimado de entrega: <span id="calc-total-time">3 días</span>
+          <h2 class="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-white tracking-tight mb-4">
+            Soluciones adaptadas a la realidad de tu industria
+          </h2>
+          <p class="text-slate-400 text-base sm:text-lg">
+            Selecciona tu sector para ver cómo impactamos tu operación diaria sin revelar tu ventaja competitiva.
           </p>
-          <div style="font-size: 0.75rem; color: var(--neon-amber, #ffb703); margin-bottom: 1rem;" class="uf-rate-display">
-            <i class="fa-solid fa-chart-line"></i> 1 UF = $40.844 CLP (Oficial Banco Central)
-          </div>
-          <button class="btn btn-primary" id="btn-calc-request-modal" style="width: 100%;">
-            <i class="fa-solid fa-paper-plane"></i> Solicitar este Proyecto
-          </button>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Sección de Clientes & Casos de Éxito -->
-  <section id="clientes" style="background: rgba(5,7,12,0.85); border-top: 1px solid rgba(0,243,255,0.15); padding: 5rem 0;">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-subtitle" style="color: var(--neon-cyan);">Confianza & Resultados</div>
-        <h2 style="font-size: 2.2rem;">Nuestros Clientes & Casos de Éxito</h2>
-        <p>Conoce las empresas que han confiado en PPV Soluciones para fortalecer su ciberseguridad, automatizar sus procesos y posicionar sus servicios en la web.</p>
-      </div>
-
-      <!-- Filtros por categoría -->
-      <div style="display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
-        <button type="button" class="btn btn-outline client-filter-btn active" data-filter="all" style="font-size: 0.82rem; padding: 6px 14px; border-color: var(--neon-cyan); color: var(--neon-cyan);">
-          Todos los Casos
-        </button>
-        <button type="button" class="btn btn-outline client-filter-btn" data-filter="Ciberseguridad" style="font-size: 0.82rem; padding: 6px 14px; border-color: rgba(255,0,127,0.4); color: var(--text-muted);">
-          🛡️ Ciberseguridad
-        </button>
-        <button type="button" class="btn btn-outline client-filter-btn" data-filter="Desarrollo Web" style="font-size: 0.82rem; padding: 6px 14px; border-color: rgba(0,243,255,0.4); color: var(--text-muted);">
-          💻 Desarrollo Web
-        </button>
-        <button type="button" class="btn btn-outline client-filter-btn" data-filter="Automatización IA" style="font-size: 0.82rem; padding: 6px 14px; border-color: rgba(157,78,221,0.4); color: var(--text-muted);">
-          🤖 Automatización IA
-        </button>
-      </div>
-
-      <!-- Grid dinámico de clientes -->
-      <div id="clients-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
-        <!-- Se renderiza dinámicamente desde db.js -->
-      </div>
-  
-
-  <!-- Modal Contacto -->
-  <div class="modal-overlay" id="modal-contacto">
-    <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto; background: var(--bg-card); border: 1px solid var(--border-glow);">
-      <button class="modal-close" id="btn-close-contacto">&times;</button>
-      <div class="section-header" style="margin-bottom: 1.5rem;">
-        <div class="section-subtitle">Conectemos</div>
-        <h2 style="font-size: 1.8rem; color: #fff;">Contacto Directo</h2>
-        <p style="font-size: 0.9rem; color: var(--text-muted);">Envía tu propuesta o consulta. Cada mensaje se almacena de forma segura.</p>
-      </div>
-
-      <div class="glass-card" style="margin-bottom: 1rem; border: none; background: transparent; padding: 0;">
-        <form id="contact-form">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
-            <div class="form-group">
-              <label for="contact-name">Tu Nombre / Empresa</label>
-              <input type="text" id="contact-name" class="form-control" placeholder="nombre" maxlength="120" autocomplete="name" required>
-            </div>
-            <div class="form-group">
-              <label for="contact-email">Correo Electrónico</label>
-              <input type="email" id="contact-email" class="form-control" placeholder="correo" maxlength="180" autocomplete="email" required>
-            </div>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
-            <div class="form-group">
-              <label for="contact-phone"><i class="fa-solid fa-phone" style="color: var(--neon-cyan);"></i> Teléfono / WhatsApp *</label>
-              <input type="tel" id="contact-phone" class="form-control" placeholder="+56 9 1234 5678" maxlength="30" autocomplete="tel" required>
-            </div>
-            <div class="form-group">
-              <label for="contact-pref"><i class="fa-solid fa-comments" style="color: var(--neon-emerald);"></i> ¿Cómo te gustaría que te contactemos? *</label>
-              <select id="contact-pref" class="form-control">
-                <option value="WhatsApp">🟢 WhatsApp (Mensaje / Audio)</option>
-                <option value="Llamada">📞 Llamada Telefónica Directa</option>
-                <option value="Correo">📧 Correo Electrónico</option>
-                <option value="Telegram">💬 Telegram</option>
-              </select>
-            </div>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
-            <div class="form-group">
-              <label for="contact-subject">Asunto del Proyecto</label>
-              <input type="text" id="contact-subject" class="form-control" placeholder="Ej. Automatización de CRM" maxlength="200" required>
-            </div>
-            <div class="form-group">
-              <label for="contact-budget">Presupuesto Estimado (UF)</label>
-              <select id="contact-budget" class="form-control">
-                <option value="4-12 UF">4 - 12 UF (~ $160.000 - $480.000 CLP + IVA) — Landing Page</option>
-                <option value="6-20 UF">6 - 20 UF (~ $240.000 - $800.000 CLP + IVA) — Sitio One-Page</option>
-                <option value="8-20 UF">8 - 20 UF (~ $320.000 - $800.000 CLP + IVA) — Blog / Portal</option>
-                <option value="12-38 UF">12 - 38 UF (~ $480.000 - $1.500.000 CLP + IVA) — Sitio Corporativo</option>
-                <option value="25-100+ UF">25 - 100+ UF (~ $1.000.000 - $4.000.000+ CLP + IVA) — Tienda E-commerce</option>
-                <option value="Por Definir">Por Definir / Consulta General</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="contact-message">Detalles del Proyecto o Consulta</label>
-            <textarea id="contact-message" class="form-control" style="min-height: 90px;" placeholder="Describe brevemente tus objetivos..." maxlength="2000" required></textarea>
-          </div>
-
-          <button type="submit" id="btn-submit-contacto" class="btn btn-primary" style="width: 100%;">
-            <i class="fa-solid fa-paper-plane"></i> Enviar Mensaje
+        <!-- Botones de Pestañas (Tabs) -->
+        <div class="flex flex-wrap items-center justify-center gap-3 mb-10 max-w-4xl mx-auto">
+          <button class="tab-btn active px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all border flex items-center gap-2"
+                  data-tab="tab-comercio">
+            <i class="fa-solid fa-store text-emeraldAccent-400"></i>
+            <span>Comercio, Gastronomía & Retail</span>
           </button>
           
-          <button type="button" class="btn btn-open-vcard-modal" onclick="document.getElementById('modal-contacto').classList.remove('active'); document.getElementById('modal-contacto').style.display='none';" style="width: 100%; margin-top: 1rem; background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan);">
-            <i class="fa-solid fa-qrcode"></i> Abrir Tarjeta Digital
+          <button class="tab-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all border flex items-center gap-2"
+                  data-tab="tab-servicios">
+            <i class="fa-solid fa-user-doctor text-cobalt-400"></i>
+            <span>Servicios, Clínicas & Profesionales</span>
           </button>
-        </form>
-      </div>
-    </div>
-  </div>
 
-  <!-- Modal Admin Login: Puerta de Entrada Administrativa -->
-  <div class="modal-overlay" id="modal-admin-login">
-    <div class="login-box">
-      <button class="modal-close" id="btn-close-login-modal">&times;</button>
-      <div class="login-header">
-        <i class="fa-solid fa-lock text-cyan"></i>
-        <h3 style="font-size: 1.4rem; color: var(--text-main);">Acceso de Administración</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted);">Ingresa tus credenciales para gestionar el sitio.</p>
-      </div>
-
-      <div class="login-error-alert" id="login-error-msg">
-        <i class="fa-solid fa-triangle-exclamation"></i> <span>Credenciales incorrectas.</span>
-      </div>
-
-      <form id="form-admin-login">
-        <div class="form-group">
-          <label for="admin-email">Correo Administrativo</label>
-          <input type="email" id="admin-email" class="form-control" placeholder="correo" required autocomplete="username">
-        </div>
-
-        <div class="form-group">
-          <label for="admin-password">Contraseña</label>
-          <div class="pass-wrapper">
-            <input type="password" id="admin-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
-            <button type="button" class="btn-toggle-pass" id="btn-toggle-admin-pass" title="Mostrar/ocultar contraseña">
-              <i class="fa-solid fa-eye"></i>
-            </button>
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.8rem;">
-          <i class="fa-solid fa-key"></i> Iniciar Sesión
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Acceso Seguro a Videollamada (Correo + Clave Aleatoria) -->
-  <div class="modal-overlay" id="modal-video-access">
-    <div class="login-box" style="max-width: 460px;">
-      <button class="modal-close" id="btn-close-access-modal">&times;</button>
-      <div class="login-header">
-        <i class="fa-solid fa-user-shield text-cyan"></i>
-        <h3 style="font-size: 1.4rem; color: #fff;" id="access-modal-title">Acceso Seguro a la Sala Virtual</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted);" id="access-modal-subtitle">Ingresa con tu correo y genera una clave aleatoria para unirte.</p>
-      </div>
-
-      <!-- Banner de Enlace de Invitación -->
-      <div id="invitation-alert-banner" style="display: none; margin-bottom: 1rem; background: rgba(0, 243, 255, 0.08); border: 1px solid var(--neon-cyan); padding: 0.8rem; border-radius: 8px;">
-        <span style="font-size: 0.82rem; color: var(--neon-cyan); font-weight: 700; display: block; margin-bottom: 2px;">
-          <i class="fa-solid fa-envelope-open-text"></i> ¡Invitación Válida Detectada!
-        </span>
-        <span style="font-size: 0.78rem; color: #fff;" id="invitation-banner-text">
-          Has sido invitado a la sala privada. Clave verificada automáticamente.
-        </span>
-      </div>
-
-      <form id="form-video-room-login">
-        <div class="form-group">
-          <label for="room-user-name">Tu Nombre Completo / Empresa</label>
-          <input type="text" id="room-user-name" class="form-control" placeholder="Ingresa tu Nombre completo" required>
-        </div>
-
-        <div class="form-group">
-          <label for="room-user-email">Correo Electrónico de Contacto</label>
-          <input type="email" id="room-user-email" class="form-control" placeholder="ejemplo@correo.com" required autocomplete="email">
-        </div>
-
-        <div class="form-group">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <label for="room-access-pass">Clave de Acceso a la Reunión</label>
-            <button type="button" class="btn btn-outline" id="btn-gen-random-pass" style="font-size: 0.72rem; padding: 2px 6px; color: var(--neon-cyan); border-color: rgba(0, 243, 255, 0.4);">
-              <i class="fa-solid fa-dice"></i> Generar Clave Aleatoria
-            </button>
-          </div>
-          <div class="pass-wrapper" style="margin-top: 4px;">
-            <input type="text" id="room-access-pass" class="form-control" placeholder="PPV-MEET-8942-X7" required style="font-family: var(--font-code); color: var(--neon-emerald); font-weight: 700;">
-            <button type="button" class="btn-toggle-pass" id="btn-copy-access-pass" title="Copiar Clave">
-              <i class="fa-solid fa-copy"></i>
-            </button>
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 8px; margin-top: 0.8rem;">
-          <button type="submit" class="btn btn-primary" style="flex-grow: 1;">
-            <i class="fa-solid fa-door-open"></i> Abrir Sala Virtual
+          <button class="tab-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all border flex items-center gap-2"
+                  data-tab="tab-productores">
+            <i class="fa-solid fa-boxes-packing text-cyanAccent-400"></i>
+            <span>Productores, Distribuidoras & Bodegas</span>
           </button>
-          <button type="button" class="btn btn-outline" id="btn-copy-direct-invite-link" title="Copiar Link Directo de Invitación" style="font-size: 0.78rem; padding: 0 10px; border-color: rgba(0, 255, 136, 0.4); color: var(--neon-emerald);">
-            <i class="fa-solid fa-link"></i> Copiar Link
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
 
-  <!-- Modal Pop-Up: Sala de Videollamada Flotante con Layout Switcher & Resize -->
-  <div class="modal-overlay" id="modal-webrtc-room">
-    <div class="modal-content webrtc-popup-content">
-      <button class="modal-close" id="btn-close-popup-room">&times;</button>
-      
-      <!-- Pop-Up Toolbar de Layout & Controles -->
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 10px;">
-        <div>
-          <h3 style="color: var(--neon-cyan); font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
-            <i class="fa-solid fa-video text-amber"></i> Sala Virtual Privada - Reunión en Vivo
-          </h3>
-          <span style="font-size: 0.8rem; color: var(--text-muted);" id="popup-participant-email">Participante: cliente@empresa.com</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <span class="status-pill" style="font-size: 0.75rem; background: rgba(0, 255, 136, 0.1); border-color: rgba(0, 255, 136, 0.4); color: var(--neon-emerald);">
-            <span class="pulse-dot"></span>
-            <span>TRANSMITIENDO EN VIVO</span>
-          </span>
-          <span style="font-family: var(--font-code); font-size: 0.82rem; color: var(--neon-cyan);" id="popup-timer-display">
-            ⏱️ 00:00
-          </span>
-        </div>
-      </div>
-
-      <!-- Barra de Herramientas para Organizar, Formato 16:9 / 9:16 & Multiconferencia -->
-      <div class="popup-toolbar">
-        <!-- Selector de Organización de Recuadros (Layouts) -->
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Organizar:</span>
-          <button type="button" class="btn btn-outline layout-btn active" data-layout="mode-split" title="Vista Lado a Lado" style="padding: 3px 8px; font-size: 0.75rem;">
-            <i class="fa-solid fa-table-columns"></i> Grid
-          </button>
-          <button type="button" class="btn btn-outline layout-btn" data-layout="mode-focus" title="Vista Enfoque (Principal + PIP)" style="padding: 3px 8px; font-size: 0.75rem;">
-            <i class="fa-solid fa-expand"></i> Enfoque
-          </button>
-          <button type="button" class="btn btn-outline layout-btn" data-layout="mode-stacked" title="Vista Apilada" style="padding: 3px 8px; font-size: 0.75rem;">
-            <i class="fa-solid fa-bars"></i> Apilado
+          <button class="tab-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all border flex items-center gap-2"
+                  data-tab="tab-transporte">
+            <i class="fa-solid fa-anchor text-cobalt-400"></i>
+            <span>Transporte, Patio & Logística Portuaria</span>
           </button>
         </div>
 
-        <!-- Selector de Formato de Pantalla (16:9 PC vs 9:16 Celular) -->
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Formato:</span>
-          <button type="button" class="btn btn-outline aspect-btn active" data-aspect="aspect-16-9" id="btn-aspect-169" title="Formato 16:9 (Computador / Horizontal)" style="padding: 3px 8px; font-size: 0.75rem;">
-            <i class="fa-solid fa-desktop"></i> 16:9 PC
-          </button>
-          <button type="button" class="btn btn-outline aspect-btn" data-aspect="aspect-9-16" id="btn-aspect-916" title="Formato 9:16 (Celular / Vertical)" style="padding: 3px 8px; font-size: 0.75rem;">
-            <i class="fa-solid fa-mobile-screen-button"></i> 9:16 Celular
-          </button>
-        </div>
-
-        <!-- Botón Multiconferencia: Sumar 3º, 4º o 5º Participante -->
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <button type="button" class="btn btn-primary" id="btn-add-guest-participant" style="padding: 3px 10px; font-size: 0.75rem; background: linear-gradient(135deg, #7000ff, #00f3ff); border: none;">
-            <i class="fa-solid fa-user-plus"></i> + Sumar Invitado
-          </button>
-        </div>
-
-        <!-- Ajuste de Tamaño de Recuadros (Resize) -->
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Tamaño:</span>
-          <button type="button" class="btn btn-outline" id="btn-resize-shrink" style="padding: 3px 8px; font-size: 0.75rem;" title="Achicar Recuadros">
-            <i class="fa-solid fa-minus"></i>
-          </button>
-          <input type="range" id="slider-video-height" min="200" max="550" value="320" style="width: 70px; accent-color: var(--neon-cyan); cursor: pointer;">
-          <button type="button" class="btn btn-outline" id="btn-resize-grow" style="padding: 3px 8px; font-size: 0.75rem;" title="Agrandar Recuadros">
-            <i class="fa-solid fa-plus"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Rejilla de Recuadros de Video del Pop-Up (Multiconferencia) -->
-      <div class="video-layout-grid mode-split" id="popup-video-grid" style="height: 320px;">
-        <!-- Recuadro 1: Tu Cámara Local (Host Principal) -->
-        <div class="video-card-wrapper" id="wrapper-video-local">
-          <div class="video-box-card" id="card-video-local">
-            <span class="speaking-badge" id="badge-speaking-local">
-              <i class="fa-solid fa-volume-high text-cyan"></i> Hablando...
-            </span>
-            <video id="popup-video-local" autoplay playsinline muted></video>
-            <div class="webrtc-avatar-off" id="popup-local-avatar" style="display: none;">
-              <i class="fa-solid fa-user-slash"></i>
-              <span style="font-size: 0.8rem;">Cámara Apagada</span>
-            </div>
-          </div>
-          <div class="video-card-footer">
-            <span class="participant-name-highlight">
-              <i class="fa-solid fa-crown text-amber"></i> <span id="label-host-name">Patricio Legrand</span>
-            </span>
-            <span class="participant-role-tag">Host Principal</span>
-          </div>
-        </div>
-
-        <!-- Recuadro 2: Cámara del Invitado / Cliente -->
-        <div class="video-card-wrapper" id="wrapper-video-remote">
-          <div class="video-box-card" id="card-video-remote">
-            <button type="button" class="btn-remove-guest" title="Expulsar / Quitar Invitado de la Sala" onclick="removeGuestCard('wrapper-video-remote')">
-              <i class="fa-solid fa-xmark"></i>
-            </button>
-            <span class="speaking-badge" id="badge-speaking-remote" style="border-color: var(--neon-emerald); color: var(--neon-emerald);">
-              <i class="fa-solid fa-volume-high text-emerald"></i> Hablando...
-            </span>
-            
-            <div class="remote-guest-container" id="popup-remote-guest-box">
-              <div class="guest-wave-avatar" id="remote-avatar-circle">
-                <i class="fa-solid fa-user-tie"></i>
+        <!-- Contenedores de Contenido de los Tabs -->
+        <div class="max-w-4xl mx-auto">
+          
+          <!-- TAB 1: COMERCIO & RETAIL -->
+          <div id="tab-comercio" class="tab-content block glass-panel-elevated p-8 rounded-3xl border border-white/10 shadow-2xl">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-emeraldAccent-500/10 border border-emeraldAccent-500/30 flex items-center justify-center text-emeraldAccent-400">
+                <i class="fa-solid fa-shop text-lg"></i>
               </div>
-              <canvas id="remote-voice-canvas" width="300" height="80" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; opacity: 0.6;"></canvas>
+              <h3 class="font-heading font-bold text-2xl text-white">Multiplica la recompra y automatiza cada venta.</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+              <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-emeraldAccent-400 font-heading font-bold text-base mb-2">Fidelización sin fricción</div>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Tótems físicos de contacto directo en tu mostrador para capturar datos de clientes, entregar beneficios y activar sorteos sin depender de apps ni códigos QR lentos.
+                </p>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-cobalt-400 font-heading font-bold text-base mb-2">E-commerce que no falla</div>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Catálogos ultra rápidos con control de stock real, pasarelas de pago blindadas y emisión automática de boletas electrónicas en el SII.
+                </p>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-cyanAccent-400 font-heading font-bold text-base mb-2">Reactivación inteligente</div>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Alertas predictivas para que tus clientes vuelvan a comprar en el momento exacto en que su consumo habitual se está agotando.
+                </p>
+              </div>
             </div>
           </div>
-          <div class="video-card-footer">
-            <span class="participant-name-highlight">
-              <i class="fa-solid fa-user text-violet"></i> <span id="remote-guest-name">Ing. Felipe Riquelme</span>
-            </span>
-            <span class="participant-role-tag" style="border-color: rgba(0, 255, 136, 0.4); color: var(--neon-emerald);" id="remote-user-status">
-              Cliente Conectado
-            </span>
+
+          <!-- TAB 2: SERVICIOS & CLÍNICAS -->
+          <div id="tab-servicios" class="tab-content hidden glass-panel-elevated p-8 rounded-3xl border border-white/10 shadow-2xl">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-cobalt-500/10 border border-cobalt-500/30 flex items-center justify-center text-cobalt-400">
+                <i class="fa-solid fa-stethoscope text-lg"></i>
+              </div>
+              <h3 class="font-heading font-bold text-2xl text-white">Convierte visitantes en clientes agendados todos los días.</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+              <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-cobalt-400 font-heading font-bold text-base mb-2">Presencia web dominante</div>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Sitios de alta estética que proyectan autoridad médica, legal o corporativa inmediata y capturan búsquedas orgánicas en Google.
+                </p>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-emeraldAccent-400 font-heading font-bold text-base mb-2">Agendamiento autónomo</div>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Embudos interactivos que filtran al cliente ideal, capturan el requerimiento y lo envían estructurado directo a tu WhatsApp.
+                </p>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-cyanAccent-400 font-heading font-bold text-base mb-2">Portales privados</div>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Áreas seguras para pacientes o clientes con historial de atención, fichas clínicas digitales y gestión documental protegida en la nube.
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Barra Flotante de Controles en la Ventana Pop-Up -->
-      <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 1.2rem; background: rgba(13, 17, 26, 0.95); border: 1px solid var(--border-glow); padding: 0.8rem 1.5rem; border-radius: 50px;">
-        <button type="button" class="webrtc-btn" id="btn-popup-mic" title="Silenciar / Activar Micrófono">
-          <i class="fa-solid fa-microphone"></i>
-        </button>
-        <button type="button" class="webrtc-btn" id="btn-popup-cam" title="Encender / Apagar Cámara">
-          <i class="fa-solid fa-video"></i>
-        </button>
-        <button type="button" class="webrtc-btn" id="btn-popup-share" title="Compartir Pantalla">
-          <i class="fa-solid fa-desktop"></i>
-        </button>
-        <button type="button" class="webrtc-btn btn-end-call" id="btn-popup-end" style="padding: 0 1.4rem;">
-          <i class="fa-solid fa-phone-slash"></i> Finalizar Reunión & Generar Minuta
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="modal-kit-freelance">
-    <div class="modal-content" style="max-width: 800px;">
-      <button class="modal-close" id="btn-close-kit-modal">&times;</button>
-      <h3 style="color: var(--neon-violet); font-size: 1.3rem; margin-bottom: 0.4rem;">
-        <i class="fa-solid fa-briefcase"></i> Kit Freelance & Postulaciones
-      </h3>
-      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.2rem;">
-        Copia directamente estas descripciones de perfil y propuestas diseñadas para convertir clientes.
-      </p>
-
-      <div style="display: flex; flex-direction: column; gap: 1rem;">
-        <div class="glass-card" style="padding: 1rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <strong style="color: var(--neon-cyan);">1. Descripción de Perfil (Upwork / Fiverr)</strong>
-            <button class="btn btn-outline copy-btn" data-copy="profile-text" style="padding: 3px 8px; font-size: 0.75rem;">
-              <i class="fa-solid fa-copy"></i> Copiar
-            </button>
+          <!-- TAB 3: PRODUCTORES & BODEGAS -->
+          <div id="tab-productores" class="tab-content hidden glass-panel-elevated p-8 rounded-3xl border border-white/10 shadow-2xl">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-cyanAccent-500/10 border border-cyanAccent-500/30 flex items-center justify-center text-cyanAccent-400">
+                <i class="fa-solid fa-industry text-lg"></i>
+              </div>
+              <h3 class="font-heading font-bold text-2xl text-white">Trazabilidad exacta desde la materia prima hasta el despacho.</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+              <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-cyanAccent-400 font-heading font-bold text-base mb-2">Control por Lotes y Fechas</div>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Descuento automático de inventario, trazabilidad de recetas o insumos, cálculo de mermas y generación dinámica de etiquetas regulatorias.
+                </p>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-emeraldAccent-400 font-heading font-bold text-base mb-2">Protección de Margen</div>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Alertas tempranas y automáticas cuando el stock disponible se acerca a umbrales críticos de operación o encarecimiento de insumos.
+                </p>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-cobalt-400 font-heading font-bold text-base mb-2">Sincronización Tributaria</div>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Cierre de pedidos conectado directamente con facturación, guías de despacho electrónicas y control de cobranza.
+                </p>
+              </div>
+            </div>
           </div>
-          <pre id="profile-text" style="font-family: var(--font-main); font-size: 0.8rem; color: var(--text-muted); white-space: pre-wrap; background: #080b12; padding: 0.8rem; border-radius: 6px;">
-PPV Soluciones | Full-Stack & Process Automation Specialist
 
-We analyze business needs and architect efficient technical solutions using Modern Web Stack and Automation APIs (n8n, Make, Python, Webhooks).
-
-What we do for you:
-- Build Custom Workflow Automations & Integrations.
-- Automate repetitive tasks with n8n/Make and webhooks.
-- Create high-converting Web Applications (Frontend & Backend).
-- Refactor and optimize existing codebase with unit testing.
-
-Let's discuss your project goals today!
-          </pre>
-        </div>
-
-        <div class="glass-card" style="padding: 1rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <strong style="color: var(--neon-emerald);">2. Propuesta Ganadora de Proyecto (Proposal Copy)</strong>
-            <button class="btn btn-outline copy-btn" data-copy="proposal-text" style="padding: 3px 8px; font-size: 0.75rem;">
-              <i class="fa-solid fa-copy"></i> Copiar
-            </button>
+          <!-- TAB 4: TRANSPORTE & LOGÍSTICA PORTUARIA -->
+          <div id="tab-transporte" class="tab-content hidden glass-panel-elevated p-8 rounded-3xl border border-white/10 shadow-2xl">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-cobalt-500/10 border border-cobalt-500/30 flex items-center justify-center text-cobalt-400">
+                <i class="fa-solid fa-ship text-lg"></i>
+              </div>
+              <h3 class="font-heading font-bold text-2xl text-white">Velocidad en terreno para el corredor San Antonio – Valparaíso – RM.</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+              <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-cobalt-400 font-heading font-bold text-base mb-2">Patio sin Papel</div>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Acreditación rápida de unidades y choferes en portería, registro fotográfico inmutable del estado de contenedores o carga y fin de las filas.
+                </p>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-cyanAccent-400 font-heading font-bold text-base mb-2">Cero "Llamitis" de Clientes</div>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Portales de seguimiento con link privado y notificaciones automáticas por WhatsApp en cada hito del viaje, liberando tu teléfono.
+                </p>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-emeraldAccent-400 font-heading font-bold text-base mb-2">Liquidación Acelerada</div>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Del cierre de ruta con comprobante digital firmado en pantalla a la pre-facturación y cobro en cuestión de segundos.
+                </p>
+              </div>
+            </div>
           </div>
-          <pre id="proposal-text" style="font-family: var(--font-main); font-size: 0.8rem; color: var(--text-muted); white-space: pre-wrap; background: #080b12; padding: 0.8rem; border-radius: 6px;">
-Hi [Client Name],
 
-I read your project requirements regarding [Briefly state project goal]. At PPV Soluciones, we can build this automation solution efficiently using [Python/JS/n8n/Webhooks].
-
-Our proposed 3-step action plan:
-1. Requirements Analysis & Architecture: Map out data flow and select optimal tools.
-2. Prototype Development: Build a functional demo within 48 hours for your review.
-3. Final Deployment & Documentation: Secure API keys, test edge cases, and deliver clean code.
-
-You can test our live automation demos directly on our interactive portfolio: [Link]
-
-We are ready to start immediately. Let's schedule a quick chat!
-
-Best regards,
-PPV Soluciones
-          </pre>
         </div>
+
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Menú Desplegable Móvil Overlay (Full Screen Cyberpunk Drawer) -->
-  <div class="mobile-nav-drawer" id="mobile-nav-drawer" style="display: none;">
-    <div class="mobile-drawer-header">
-      <a href="#" class="logo" style="margin: 0; text-decoration: none;">
-        <span class="logo-text" style="color: white !important;">PPV<span class="text-cyan">.</span></span>
-      </a>
-      <button type="button" class="mobile-drawer-close" id="btn-mobile-close" aria-label="Cerrar Menú">
-        <i class="fa-solid fa-xmark"></i> <span>Cerrar</span>
-      </button>
-    </div>
-
-    <div class="mobile-drawer-body">
-      <ul class="mobile-nav-list" style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem; list-style: none;">
-        <li style="font-weight: 700; color: #fff; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">Servicios:</li>
-        <li style="padding-left: 1rem;"><a href="#soluciones-rubro" style="color: #a1a1aa; text-decoration: none; font-size: 1.1rem;">Soluciones por Rubro</a></li>
-        <li style="padding-left: 1rem;"><a href="#auditoria-ciberseguridad" style="color: #a1a1aa; text-decoration: none; font-size: 1.1rem;">Ciberseguridad</a></li>
-        <li style="padding-left: 1rem;"><a href="#posicionamiento-web" style="color: #a1a1aa; text-decoration: none; font-size: 1.1rem;">Posicionamiento Web</a></li>
-        <li style="padding-left: 1rem;"><a href="#qa-gobierno-ti" style="color: #a1a1aa; text-decoration: none; font-size: 1.1rem;">QA & Gobierno TI</a></li>
-        <li style="padding-left: 1rem;"><a href="#formatos-web" style="color: #a1a1aa; text-decoration: none; font-size: 1.1rem;">Tipos de Web</a></li>
-        <hr style="border-color: rgba(255,255,255,0.1); margin: 0.5rem 0;">
-        <li><a href="#demos-auto" style="color: #fff; text-decoration: none; font-weight: 600; font-size: 1.1rem;">Demos</a></li>
-        <li><a href="#habilidades" style="color: #fff; text-decoration: none; font-weight: 600; font-size: 1.1rem;">Matriz Técnica</a></li>
-        <li><a href="#clientes" style="color: #fff; text-decoration: none; font-weight: 600; font-size: 1.1rem;">Clientes</a></li>
-        <li><a href="#cotizador" style="color: #fff; text-decoration: none; font-weight: 600; font-size: 1.1rem;">Calculadora</a></li>
-        <hr style="border-color: rgba(255,255,255,0.1); margin: 0.5rem 0;">
-        <li><a href="#contacto" style="color: #ffb703; text-decoration: none; font-weight: 600; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-address-card"></i> Contacto & Tarjeta Digital</a></li>
-      </ul>
-
-      <!-- Status Pill Móvil -->
-      <div id="mobile-status-cta" style="display: flex !important; align-items: center; justify-content: center; width: 100%; margin-top: 1rem; margin-bottom: 1.5rem; flex-shrink: 0;">
-        <div class="status-pill" style="padding: 8px 20px; font-size: 1.05rem; border-color: #ffb703; color: #ffb703;">
-          <span class="pulse-dot" style="background: #ffb703; box-shadow: 0 0 10px #ffb703;"></span>
-          <span style="font-weight: 700;">¡Pocos Cupos Disponibles!</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer Cyberpunk -->
-  <footer style="background: rgba(13, 17, 26, 0.9); border-top: 1px solid var(--border-glass); padding: 3rem 0 2rem 0; margin-top: 4rem; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
-    <div class="container">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+    <!-- ======================================================================= -->
+    <!-- SECCIÓN 4: ECOSISTEMA EN PRODUCCIÓN (Casos Reales de Ingeniería PPV)    -->
+    <!-- ======================================================================= -->
+    <section id="casos" class="py-24 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <!-- Columna 1: Branding -->
-        <div>
-          <a href="#" class="logo" title="PPV Soluciones" style="margin-bottom: 1rem; display: inline-block; text-decoration: none;">
-            <span class="logo-text">PPV<span class="text-cyan">.</span></span>
-          </a>
-          <p style="font-size: 0.9rem; color: #a1a1aa; line-height: 1.6; max-width: 300px;">
-            Impulsamos tu negocio con <strong>Ciberseguridad Web</strong>, <strong>Automatización con IA</strong> y <strong>Desarrollo Full-Stack</strong>. Soluciones tecnológicas seguras y escalables desde Chile.
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-cobalt-500/10 text-cobalt-400 border border-cobalt-500/30 mb-4">
+            <i class="fa-solid fa-server text-xs"></i>
+            <span>GARANTÍA DE COMBATE</span>
+          </div>
+          <h2 class="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-white tracking-tight mb-4">
+            Tecnología propia operando en el mundo real
+          </h2>
+          <p class="text-slate-400 text-base sm:text-lg">
+            No solo desarrollamos para terceros; creamos, poseemos y operamos nuestras propias plataformas comerciales en Chile. Esa es tu mayor garantía técnica.
           </p>
         </div>
 
-        <!-- Columna 2: Enlaces Rápidos -->
-        <div>
-          <h4 style="color: #fff; font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 1rem;">Enlaces Rápidos</h4>
-          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem;">
-            <li><a href="#soluciones-rubro" style="color: #a1a1aa; text-decoration: none; font-size: 0.9rem; transition: color 0.3s;">Soluciones por Rubro</a></li>
-            <li><a href="#formatos-web" style="color: #a1a1aa; text-decoration: none; font-size: 0.9rem; transition: color 0.3s;">Desarrollo Web</a></li>
-            <li><a href="#servicios" style="color: #a1a1aa; text-decoration: none; font-size: 0.9rem; transition: color 0.3s;">Cotizador Online</a></li>
-            <li><a href="#contacto" class="btn-open-contacto-modal" style="color: var(--neon-cyan); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;">Contactar Soporte</a></li>
-          </ul>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-        <!-- Columna 3: Contacto -->
-        <div>
-          <h4 style="color: #fff; font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 1rem;">Contacto Directo</h4>
-          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.8rem;">
-            <li style="color: #a1a1aa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
-              <i class="fa-solid fa-envelope" style="color: var(--neon-pink);"></i> <a id="footer-contact-email" href="mailto:ppv@ppvsoluciones.cl" style="color: inherit; text-decoration: none;">ppv@ppvsoluciones.cl</a>
-            </li>
-            <li style="color: #a1a1aa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
-              <a id="footer-contact-wa-link" href="https://wa.me/56947609070" target="_blank" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
-                <i class="fa-brands fa-whatsapp" style="color: var(--neon-emerald);" title="WhatsApp"></i>
-                <i class="fa-brands fa-telegram" style="color: var(--neon-cyan);" title="Telegram"></i>
-                <span id="footer-contact-phone">+56 9 4760 9070</span>
+          <!-- CASO 1: TIMBRAPP -->
+          <div class="glass-panel p-8 rounded-3xl border border-white/10 hover:border-emeraldAccent-500/40 transition-all flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <span class="px-3 py-1 rounded-lg text-xs font-mono font-semibold bg-emeraldAccent-500/10 text-emeraldAccent-400 border border-emeraldAccent-500/30">
+                  SAAS & HARDWARE NFC
+                </span>
+                <span class="text-xs font-mono text-slate-500 group-hover:text-emeraldAccent-400 transition-colors">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </span>
+              </div>
+              <h3 class="font-heading font-bold text-2xl text-white mb-2">Timbrapp</h3>
+              <p class="text-xs font-mono text-emeraldAccent-400 mb-4">https://timbrapp.cl</p>
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                Ecosistema de fidelización comercial 100% sin contacto para locales físicos. Integra hardware acrílico NFC con arquitectura en la nube de alta velocidad, directorio geolocalizado y captura inteligente de clientes.
+              </p>
+            </div>
+            <div>
+              <div class="border-t border-white/10 pt-4 flex items-center justify-between text-xs font-mono text-slate-400">
+                <span>Estado: En Producción</span>
+                <span class="text-emeraldAccent-400 font-bold">● Activo 24/7</span>
+              </div>
+              <a href="https://timbrapp.cl" target="_blank" rel="noopener noreferrer" 
+                 class="mt-4 inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-white/10 transition-all">
+                <span>Visitar Plataforma</span>
+                <i class="fa-solid fa-arrow-right text-[10px]"></i>
               </a>
-            </li>
-            <li style="color: #a1a1aa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
-              <i class="fa-solid fa-location-dot" style="color: var(--neon-cyan);"></i> Chile (Atención Remota)
-            </li>
-          </ul>
+            </div>
+          </div>
+
+          <!-- CASO 2: ORIGEN CANINO -->
+          <div class="glass-panel p-8 rounded-3xl border border-white/10 hover:border-cobalt-500/40 transition-all flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <span class="px-3 py-1 rounded-lg text-xs font-mono font-semibold bg-cobalt-500/10 text-cobalt-400 border border-cobalt-500/30">
+                  ERP LOTES & E-COMMERCE
+                </span>
+                <span class="text-xs font-mono text-slate-500 group-hover:text-cobalt-400 transition-colors">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </span>
+              </div>
+              <h3 class="font-heading font-bold text-2xl text-white mb-2">Origen Canino</h3>
+              <p class="text-xs font-mono text-cobalt-400 mb-4">https://origencanino.cl</p>
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                Plataforma integral de comercio electrónico e inventario industrial. Opera con trazabilidad estricta por lotes FIFO, etiquetado dinámico bajo norma SAG/AAFCO, motor de costeo de mermas y emisión tributaria automática.
+              </p>
+            </div>
+            <div>
+              <div class="border-t border-white/10 pt-4 flex items-center justify-between text-xs font-mono text-slate-400">
+                <span>Estado: En Producción</span>
+                <span class="text-cobalt-400 font-bold">● Activo 24/7</span>
+              </div>
+              <a href="https://origencanino.cl" target="_blank" rel="noopener noreferrer" 
+                 class="mt-4 inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-white/10 transition-all">
+                <span>Visitar Plataforma</span>
+                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- CASO 3: LEGRAND PETIT & AURA DESIGN -->
+          <div class="glass-panel p-8 rounded-3xl border border-white/10 hover:border-cyanAccent-500/40 transition-all flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <span class="px-3 py-1 rounded-lg text-xs font-mono font-semibold bg-cyanAccent-500/10 text-cyanAccent-400 border border-cyanAccent-500/30">
+                  ARQUITECTURA WEB & SEO
+                </span>
+                <span class="text-xs font-mono text-slate-500 group-hover:text-cyanAccent-400 transition-colors">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </span>
+              </div>
+              <h3 class="font-heading font-bold text-2xl text-white mb-2">Legrand Petit</h3>
+              <p class="text-xs font-mono text-cyanAccent-400 mb-4">https://legrandpetit.cl</p>
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                Plataformas digitales diseñadas bajo estándares extremos de velocidad, experiencia de usuario y posicionamiento orgánico dominante en Google Chile, con módulos de trazabilidad legal y contratos en Skia.
+              </p>
+            </div>
+            <div>
+              <div class="border-t border-white/10 pt-4 flex items-center justify-between text-xs font-mono text-slate-400">
+                <span>Estado: En Producción</span>
+                <span class="text-cyanAccent-400 font-bold">● Activo 24/7</span>
+              </div>
+              <a href="https://legrandpetit.cl" target="_blank" rel="noopener noreferrer" 
+                 class="mt-4 inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-white/10 transition-all">
+                <span>Visitar Plataforma</span>
+                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </a>
+            </div>
+          </div>
+
         </div>
 
       </div>
+    </section>
 
-      <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 1rem;">
-        <div style="color: rgba(255,255,255,0.4); font-size: 0.8rem; text-align: center;">
-          &copy; 2026 PPV Soluciones. Todos los derechos reservados.
+    <!-- ======================================================================= -->
+    <!-- SECCIÓN 5: LANZADOR INTERACTIVO DE PROYECTOS (Captación a WhatsApp)     -->
+    <!-- ======================================================================= -->
+    <section id="diagnostico" class="py-24 relative overflow-hidden">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Contenedor Destacado con Borde Iluminado -->
+        <div class="glass-panel-elevated p-8 sm:p-12 rounded-3xl border border-cobalt-500/30 shadow-2xl relative">
+          
+          <div class="text-center max-w-2xl mx-auto mb-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-cobalt-500/10 text-cobalt-400 border border-cobalt-500/30 mb-4">
+              <i class="fa-solid fa-bolt text-xs"></i>
+              <span>LANZADOR TÉCNICO DIRECTO</span>
+            </div>
+            <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white tracking-tight mb-3">
+              ¿Listo para construir o escalar tu sistema?
+            </h2>
+            <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
+              Selecciona qué necesitas resolver hoy y conversemos directamente sin intermediarios. Por confidencialidad competitiva, las demostraciones de arquitectura se realizan en sesión técnica privada.
+            </p>
+          </div>
+
+          <!-- Selector en 2 Pasos (Sin recarga de página) -->
+          <div class="space-y-8">
+            
+            <!-- PASO 1 -->
+            <div>
+              <label class="block text-xs font-mono uppercase tracking-wider text-slate-300 font-semibold mb-3 flex items-center gap-2">
+                <span class="w-5 h-5 rounded-full bg-cobalt-600 text-white flex items-center justify-center text-[10px]">1</span>
+                <span>¿Qué área quieres potenciar en tu empresa?</span>
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="area-selector">
+                <button type="button" class="launcher-pill active p-3.5 rounded-xl text-xs sm:text-sm font-medium text-left border transition-all flex items-center gap-3"
+                        data-area="Página Web Comercial / E-Commerce">
+                  <i class="fa-solid fa-globe text-cobalt-400"></i>
+                  <span>Página Web Comercial / E-Commerce</span>
+                </button>
+                <button type="button" class="launcher-pill p-3.5 rounded-xl text-xs sm:text-sm font-medium text-left border transition-all flex items-center gap-3"
+                        data-area="Aplicación Web o Móvil a Medida">
+                  <i class="fa-solid fa-mobile-screen text-emeraldAccent-400"></i>
+                  <span>Aplicación Web o Móvil a Medida</span>
+                </button>
+                <button type="button" class="launcher-pill p-3.5 rounded-xl text-xs sm:text-sm font-medium text-left border transition-all flex items-center gap-3"
+                        data-area="Sistema de Inventario, Lotes o SII">
+                  <i class="fa-solid fa-boxes-stacked text-cyanAccent-400"></i>
+                  <span>Sistema de Inventario, Lotes o SII</span>
+                </button>
+                <button type="button" class="launcher-pill p-3.5 rounded-xl text-xs sm:text-sm font-medium text-left border transition-all flex items-center gap-3"
+                        data-area="Software Logístico / Control en Terreno">
+                  <i class="fa-solid fa-truck-ramp-box text-cobalt-400"></i>
+                  <span>Software Logístico / Control en Terreno</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- PASO 2 -->
+            <div>
+              <label class="block text-xs font-mono uppercase tracking-wider text-slate-300 font-semibold mb-3 flex items-center gap-2">
+                <span class="w-5 h-5 rounded-full bg-emeraldAccent-600 text-white flex items-center justify-center text-[10px]">2</span>
+                <span>¿Cuál es tu prioridad principal hoy?</span>
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="priority-selector">
+                <button type="button" class="priority-pill active p-3 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2"
+                        data-priority="Captar más clientes y vender más">
+                  <i class="fa-solid fa-arrow-trend-up text-emeraldAccent-400"></i>
+                  <span>Captar más clientes y vender más</span>
+                </button>
+                <button type="button" class="priority-pill p-3 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2"
+                        data-priority="Eliminar planillas manuales y errores">
+                  <i class="fa-solid fa-file-excel text-red-400"></i>
+                  <span>Eliminar planillas manuales y errores</span>
+                </button>
+                <button type="button" class="priority-pill p-3 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2"
+                        data-priority="Crear un producto o plataforma desde cero">
+                  <i class="fa-solid fa-rocket text-cyanAccent-400"></i>
+                  <span>Crear un producto o SaaS desde cero</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- CAMPO OPCIONAL: Nombre o Empresa -->
+            <div>
+              <label for="client-name" class="block text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold mb-2">
+                Tu Nombre o Empresa (Opcional):
+              </label>
+              <input type="text" id="client-name" 
+                     placeholder="Ej: Distribuidora del Puerto / Carlos González"
+                     class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-white/10 text-white text-sm focus:outline-none focus:border-cobalt-500 font-sans transition-all">
+            </div>
+
+            <!-- CAJA DE PREVISUALIZACIÓN DEL MENSAJE WHATSAPP -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-white/10 font-mono text-xs">
+              <div class="text-slate-400 text-[11px] mb-1 flex items-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-emeraldAccent-400"></i>
+                <span>Mensaje que se enviará al WhatsApp del Ingeniero (+56 9 4760 9070):</span>
+              </div>
+              <div id="whatsapp-preview" class="text-emeraldAccent-300 italic py-1 break-words">
+                "Hola Patricio, revisé ppvsoluciones.cl. Mi empresa necesita Página Web Comercial / E-Commerce enfocado en Captar más clientes y vender más. Me gustaría agendar una sesión privada para revisar mi caso."
+              </div>
+            </div>
+
+            <!-- BOTÓN DE ACCIÓN FINAL A WHATSAPP -->
+            <div>
+              <a id="btn-submit-whatsapp" 
+                 href="#" 
+                 target="_blank" 
+                 rel="noopener noreferrer"
+                 class="btn-glow w-full flex items-center justify-center gap-3 py-4 rounded-xl text-sm sm:text-base font-semibold text-white tracking-wide shadow-xl">
+                <i class="fa-brands fa-whatsapp text-xl"></i>
+                <span>Iniciar Conversación Técnica por WhatsApp</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+              </a>
+              <div class="text-center text-[11px] font-mono text-slate-500 mt-2.5">
+                Respuesta directa por Patricio Padilla (CEO & Fundador) • Sin intermediarios ni bots comerciales
+              </div>
+            </div>
+
+          </div>
+
         </div>
+
       </div>
-    </div>
-  </footer>
+    </section>
 
-  <!-- Modal 1: Solicitud Específica de Auditoría de Ciberseguridad & Resguardo Legal -->
-  <div class="modal-overlay" id="modal-security-audit">
-    <div class="modal-content" style="max-width: 580px; border-color: var(--neon-pink);">
-      <button class="modal-close" id="btn-close-sec-modal"><i class="fa-solid fa-xmark"></i></button>
-      
-      <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem;">
-        <div style="width: 42px; height: 42px; border-radius: 50%; background: rgba(255,0,127,0.15); border: 1px solid var(--neon-pink); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--neon-pink);">
-          <i class="fa-solid fa-shield-halved"></i>
+    <!-- ======================================================================= -->
+    <!-- FOOTER CORPORATIVO Y SELLO DE SEGURIDAD                                 -->
+    <!-- ======================================================================= -->
+    <footer class="border-t border-white/10 bg-slateDark/70 pt-16 pb-12 text-sm text-slate-400">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          
+          <!-- Columna 1: Identidad -->
+          <div class="md:col-span-2">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-8 h-8 rounded-lg bg-slate-900 border border-cobalt-500/40 flex items-center justify-center p-1">
+                <img src="assets/ppv_logo.svg" alt="PPV Logo" class="w-full h-full object-contain">
+              </div>
+              <span class="font-heading font-extrabold text-xl text-white">PPV Soluciones</span>
+            </div>
+            <p class="text-slate-400 text-xs sm:text-sm max-w-md leading-relaxed mb-4">
+              Ingeniería de software a medida, aplicaciones multiplataforma y automatización de procesos B2B. Diseñamos activos tecnológicos propietarios que generan ventaja competitiva real.
+            </p>
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono bg-slate-900 border border-white/10 text-slate-300">
+              <i class="fa-solid fa-location-dot text-cobalt-400"></i>
+              <span>Valparaíso (Algarrobo, San Antonio) & Santiago de Chile</span>
+            </div>
+          </div>
+
+          <!-- Columna 2: Plataformas Activas -->
+          <div>
+            <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider mb-4">Ecosistema PPV</h4>
+            <ul class="space-y-2 text-xs font-mono">
+              <li>
+                <a href="https://timbrapp.cl" target="_blank" rel="noopener noreferrer" class="hover:text-emeraldAccent-400 transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-rss text-[10px] text-emeraldAccent-400"></i>
+                  <span>Timbrapp (NFC)</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://origencanino.cl" target="_blank" rel="noopener noreferrer" class="hover:text-cobalt-400 transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-dna text-[10px] text-cobalt-400"></i>
+                  <span>Origen Canino (ERP)</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://legrandpetit.cl" target="_blank" rel="noopener noreferrer" class="hover:text-cyanAccent-400 transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-shield text-[10px] text-cyanAccent-400"></i>
+                  <span>Legrand Petit (Legal)</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Columna 3: Contacto Técnico Directo -->
+          <div>
+            <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider mb-4">Contacto Directo</h4>
+            <ul class="space-y-2.5 text-xs text-slate-300">
+              <li class="flex items-center gap-2">
+                <i class="fa-brands fa-whatsapp text-emeraldAccent-400"></i>
+                <a href="https://wa.me/56947609070" class="hover:text-white font-mono">+56 9 4760 9070</a>
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-envelope text-cobalt-400"></i>
+                <a href="mailto:contacto@ppvsoluciones.cl" class="hover:text-white font-mono">contacto@ppvsoluciones.cl</a>
+              </li>
+              <li class="text-[11px] text-slate-500 font-mono mt-3">
+                Atención remota a todo Chile y presencial en V Región y RM.
+              </li>
+            </ul>
+          </div>
+
         </div>
-        <div>
-          <h3 style="font-size: 1.25rem; color: #fff; margin: 0;">Auditoría de Ciberseguridad & Hardening Web</h3>
-          <span id="sec-modal-header-badge" style="font-size: 0.8rem; color: var(--neon-emerald); font-weight: 600;">
-            <i class="fa-solid fa-tag"></i> Inversión: $450 USD + IVA | <i class="fa-solid fa-clock"></i> Plazo de Entrega: 4 días
-          </span>
+
+        <!-- Sello de Seguridad y Copyright -->
+        <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
+          <div class="flex items-center gap-2 text-center md:text-left">
+            <i class="fa-solid fa-shield-halved text-emeraldAccent-400 text-sm"></i>
+            <span>Infraestructura desplegada sobre servidores Linux endurecidos, TLS 1.3 y arquitectura optimizada para operaciones críticas.</span>
+          </div>
+          <div>
+            &copy; 2026 PPV Soluciones Informáticas. Todos los derechos reservados.
+          </div>
         </div>
+
       </div>
+    </footer>
 
-      <form id="form-security-audit-modal">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
-          <div class="form-group">
-            <label for="sec-modal-name">Tu Nombre / Empresa</label>
-            <input type="text" id="sec-modal-name" class="form-control" placeholder="nombre" maxlength="120" required>
-          </div>
-          <div class="form-group">
-            <label for="sec-modal-email">Correo Electrónico</label>
-            <input type="email" id="sec-modal-email" class="form-control" placeholder="correo" maxlength="180" required>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
-          <div class="form-group">
-            <label for="sec-modal-phone"><i class="fa-solid fa-phone" style="color: var(--neon-cyan);"></i> Teléfono / WhatsApp *</label>
-            <input type="tel" id="sec-modal-phone" class="form-control" placeholder="+56 9 1234 5678" maxlength="30" required>
-          </div>
-          <div class="form-group">
-            <label for="sec-modal-contact-pref"><i class="fa-solid fa-comments" style="color: var(--neon-emerald);"></i> ¿Cómo te gustaría que te contactemos? *</label>
-            <select id="sec-modal-contact-pref" class="form-control" style="padding: 0.5rem; font-size: 0.82rem;">
-              <option value="WhatsApp">🟢 WhatsApp (Mensaje / Audio)</option>
-              <option value="Llamada">📞 Llamada Telefónica Directa</option>
-              <option value="Correo">📧 Correo Electrónico</option>
-              <option value="Telegram">💬 Telegram</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 0.8rem;">
-          <label style="color: #fff; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.4rem; display: block;">Nivel de Servicio Requerido:</label>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
-            <label style="display: flex; align-items: center; gap: 0.5rem; background: rgba(0,243,255,0.06); padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(0,243,255,0.3); cursor: pointer; font-size: 0.78rem; color: #fff;">
-              <input type="radio" name="sec_tier" id="radio-tier-200" value="200" style="accent-color: var(--neon-cyan);">
-              <span><strong>Nivel 1:</strong> Solo Diagnóstico PDF ($200 USD + IVA)</span>
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,0,127,0.06); padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,0,127,0.3); cursor: pointer; font-size: 0.78rem; color: #fff;">
-              <input type="radio" name="sec_tier" id="radio-tier-450" value="450" checked style="accent-color: var(--neon-pink);">
-              <span><strong>Nivel 2:</strong> Hardening Total ($450 USD + IVA)</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="sec-modal-website"><i class="fa-solid fa-globe" style="color: var(--neon-pink);"></i> Sitio Web / URL a Auditar *</label>
-          <input type="text" id="sec-modal-website" class="form-control" placeholder="https://sitio.com" maxlength="150" required>
-        </div>
-
-        <div class="form-group">
-          <label for="sec-modal-message">Observaciones o Áreas Específicas de Interés</label>
-          <textarea id="sec-modal-message" class="form-control" style="min-height: 65px;" placeholder="Detalla los requerimientos o áreas a revisar..." maxlength="1500" required></textarea>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 0.8rem; background: rgba(255,0,127,0.06); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,0,127,0.25);">
-          <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-size: 0.77rem; color: #d0d5e2; line-height: 1.4;">
-            <input type="checkbox" id="sec-modal-terms" style="margin-top: 2px; accent-color: var(--neon-pink);" required>
-            <span>
-              <strong>Declaración Jurada & Resguardo Legal (Ley N° 21.459 en Chile):</strong> Declaro ser el propietario legítimo o contar con autorización explícita para solicitar diagnósticos y ciberseguridad sobre la URL indicada.
-            </span>
-          </label>
-        </div>
-
-        <!-- Próximos Pasos -->
-        <div style="background: rgba(0, 243, 255, 0.05); padding: 0.75rem 0.9rem; border-radius: var(--radius-sm); border: 1px solid rgba(0, 243, 255, 0.2); margin-bottom: 1.1rem; font-size: 0.77rem; color: #d0d5e2; line-height: 1.4;">
-          <div style="color: var(--neon-cyan); font-weight: 700; margin-bottom: 0.2rem; display: flex; align-items: center; gap: 0.4rem;">
-            <i class="fa-solid fa-envelope-open-text"></i> ¿Qué ocurre al enviar tu solicitud? (Próximos Pasos)
-          </div>
-          <span>En un plazo máximo de <strong>2 a 4 horas hábiles</strong> recibirás un correo oficial desde <strong>contacto@ppvsoluciones.cl</strong> con el documento PDF adjunto para validar el inicio del servicio.</span>
-        </div>
-
-        <button type="submit" id="btn-sec-modal-submit" class="btn btn-primary" style="width: 100%; background: linear-gradient(135deg, var(--neon-pink), var(--neon-violet)); border: none;">
-          <i class="fa-solid fa-shield-halved"></i> Enviar Solicitud & Aceptar Hardening ($450 USD + IVA)
-        </button>
-      </form>
-    </div>
   </div>
 
-  <!-- Modal 2: Solicitud Rápida Contextual por Servicio -->
-  <div class="modal-overlay" id="modal-service-request">
-    <div class="modal-content" style="max-width: 540px; border-color: var(--neon-cyan);">
-      <button class="modal-close" id="btn-close-service-modal"><i class="fa-solid fa-xmark"></i></button>
-
-      <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
-        <div style="width: 42px; height: 42px; border-radius: 50%; background: rgba(0,243,255,0.15); border: 1px solid var(--neon-cyan); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--neon-cyan);">
-          <i class="fa-solid fa-paper-plane"></i>
-        </div>
-        <div>
-          <h3 style="font-size: 1.2rem; color: #fff; margin: 0;" id="modal-req-title">Solicitud de Servicio</h3>
-          <span style="font-size: 0.8rem; color: var(--neon-cyan);" id="modal-req-subtitle">Cotización & Diagnóstico Directo</span>
-        </div>
-      </div>
-
-      <form id="form-service-request-modal">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
-          <div class="form-group">
-            <label for="req-modal-name">Tu Nombre / Empresa</label>
-            <input type="text" id="req-modal-name" class="form-control" placeholder="nombre" maxlength="120" required>
-          </div>
-          <div class="form-group">
-            <label for="req-modal-email">Correo Electrónico</label>
-            <input type="email" id="req-modal-email" class="form-control" placeholder="correo" maxlength="180" required>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
-          <div class="form-group">
-            <label for="req-modal-phone"><i class="fa-solid fa-phone" style="color: var(--neon-cyan);"></i> Teléfono / WhatsApp *</label>
-            <input type="tel" id="req-modal-phone" class="form-control" placeholder="+56 9 1234 5678" maxlength="30" required>
-          </div>
-          <div class="form-group">
-            <label for="req-modal-contact-pref"><i class="fa-solid fa-comments" style="color: var(--neon-emerald);"></i> ¿Cómo te gustaría que te contactemos? *</label>
-            <select id="req-modal-contact-pref" class="form-control" style="padding: 0.5rem; font-size: 0.82rem;">
-              <option value="WhatsApp">🟢 WhatsApp (Mensaje / Audio)</option>
-              <option value="Llamada">📞 Llamada Telefónica Directa</option>
-              <option value="Correo">📧 Correo Electrónico</option>
-              <option value="Telegram">💬 Telegram</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="req-modal-subject">Servicio / Módulo Seleccionado</label>
-          <input type="text" id="req-modal-subject" class="form-control" readonly style="background: rgba(255,255,255,0.05); color: var(--neon-cyan); font-weight: 600;">
-        </div>
-
-        <div class="form-group">
-          <label for="req-modal-message">Detalle del Requerimiento o Consulta</label>
-          <textarea id="req-modal-message" class="form-control" style="min-height: 85px;" placeholder="Cuéntanos brevemente sobre tu proyecto..." maxlength="1500" required></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%;">
-          <i class="fa-solid fa-paper-plane"></i> Enviar Solicitud Rápida
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal: Tarjeta Digital Ejecutiva & Código QR -->
-  <div class="modal-overlay" id="modal-vcard">
-    <div class="modal-content" style="max-width: 480px; border-color: var(--neon-cyan); text-align: center; padding: 2rem; border-radius: var(--radius-lg);">
-      <button class="modal-close" id="btn-close-vcard-modal"><i class="fa-solid fa-xmark"></i></button>
-
-      <div style="width: 65px; height: 65px; border-radius: 50%; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem auto; font-size: 1.6rem; font-weight: 800; color: #fff; box-shadow: 0 0 15px rgba(0,243,255,0.4); border: 2px solid var(--neon-cyan);">
-        PP
-      </div>
-
-      <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 0.2rem;">Patricio Padilla</h3>
-      <p style="font-size: 0.85rem; color: var(--neon-cyan); font-weight: 600; margin-bottom: 1rem;">CEO & Fundador — PPV Soluciones</p>
-
-      <div style="background: #ffffff; padding: 12px; border-radius: 12px; display: inline-block; box-shadow: 0 0 20px rgba(0,243,255,0.3); margin-bottom: 1rem;">
-        <img id="modal-vcard-qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3APadilla%3BPatricio%0AFN%3APatricio+Padilla%0AORG%3APPV+Soluciones%0ATITLE%3ACEO+%26+Fundador%0ATEL%3BTYPE%3DCELL%2CVOICE%3A%2B56947609070%0AEMAIL%3Appv%40ppvsoluciones.cl%0AURL%3Ahttps%3A%2F%2Fppvsoluciones.cl%0ANOTE%3ACiberseguridad+Web%2C+Hardening+de+Servidores+y+Automatizacion+de+Software+en+Chile.%0AEND%3AVCARD" alt="QR Contacto Patricio Padilla" style="width: 200px; height: 200px; display: block;">
-      </div>
-
-      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.2rem;">
-        Apunta la cámara de tu smartphone para añadir automáticamente a Patricio Padilla a tu agenda telefónica.
-      </p>
-
-      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
-        <button class="btn btn-primary btn-download-vcard" style="width: 100%; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet)); border: none;">
-          <i class="fa-solid fa-file-arrow-down"></i> Descargar Contacto Directo (.vcf)
-        </button>
-        <a id="modal-vcard-wa-link" href="https://wa.me/56947609070" target="_blank" class="btn btn-secondary" style="width: 100%; border-color: #10b981; color: #10b981;">
-          <i class="fa-brands fa-whatsapp"></i> Chat Directo en WhatsApp
-        </a>
-        <a href="mailto:ppv@ppvsoluciones.cl" class="btn btn-outline btn-vcard-email" style="width: 100%; border-color: rgba(255,255,255,0.2); color: #fff;">
-          <i class="fa-solid fa-paper-plane"></i> Enviar Correo Electrónico
-        </a>
-        <a href="#contacto" onclick="document.getElementById('modal-vcard').classList.remove('active'); document.getElementById('modal-vcard').style.display='none';" class="btn" style="width: 100%; border: 1px solid #ffb703; color: #ffb703; background: transparent;">
-          <i class="fa-solid fa-envelope"></i> Formulario de Contacto
-        </a>
-      </div>
-    </div>
-  </div>
-
-    <!-- Modal: Ejemplo & Estructura Visual de Formatos Web -->
-  <div class="modal-overlay" id="modal-format-preview">
-    <div class="modal-content" style="max-width: 780px; max-height: 90vh; overflow-y: auto; background: var(--bg-card); border: 1px solid var(--border-glow); padding: 2rem;">
-      <button class="modal-close" id="btn-close-format-modal">&times;</button>
-      <div id="format-modal-body">
-        <!-- Contenido inyectado dinámicamente por app.js -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast Notification -->
-  <div class="toast" id="global-toast">
-    <i class="fa-solid fa-circle-check text-emerald" style="font-size: 1.1rem;"></i>
-    <span id="toast-message">¡Mensaje enviado con éxito!</span>
-  </div>
-
-  <!-- Scripts compartidos -->
-  <script src="db.js?v=20260812_01"></script>
-  <script src="app_core.js?v=20260822_02"></script>
-  
-  <!-- Efecto de Escritura de Terminal -->
+  <!-- ========================================================================= -->
+  <!-- MOTOR JS NATIVO: CANVAS 60 FPS, SPOTLIGHT, TABS & LANZADOR WHATSAPP       -->
+  <!-- ========================================================================= -->
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const terminal = document.querySelector('.terminal-body');
-      if (!terminal) return;
-      
-      // Fijar el alto exacto antes de vaciarlo para evitar redimensionamiento
-      terminal.style.minHeight = terminal.getBoundingClientRect().height + "px";
-      
-      const lines = Array.from(terminal.children);
-      terminal.innerHTML = '';
-      
-      let currentLineIdx = 0;
-      
-      function typeLine() {
-        if (currentLineIdx >= lines.length) {
-          return; // Finaliza y no hace bucle
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // -----------------------------------------------------------------------
+      // 1. MOTOR CANVAS INTERACTIVO (Hero Node & Gravity Network a 60 FPS)
+      // -----------------------------------------------------------------------
+      const canvas = document.getElementById('hero-canvas');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        let mouse = { x: -1000, y: -1000, radius: 180 };
+        const particleCount = Math.min(window.innerWidth < 768 ? 40 : 80, 85);
+
+        function resize() {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
         }
-        
-        const originalLine = lines[currentLineIdx];
-        const newLine = document.createElement(originalLine.tagName);
-        
-        for (let i = 0; i < originalLine.attributes.length; i++) {
-          newLine.setAttribute(originalLine.attributes[i].name, originalLine.attributes[i].value);
-        }
-        
-        terminal.appendChild(newLine);
-        
-        if (originalLine.tagName.toLowerCase() === 'br') {
-            currentLineIdx++;
-            setTimeout(typeLine, 50);
-            return;
-        }
-        
-        const nodes = Array.from(originalLine.childNodes);
-        let currentNodeIdx = 0;
-        
-        function typeNode() {
-          if (currentNodeIdx >= nodes.length) {
-            currentLineIdx++;
-            setTimeout(typeLine, 100);
-            return;
+        window.addEventListener('resize', resize);
+        resize();
+
+        window.addEventListener('mousemove', (e) => {
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+        });
+
+        window.addEventListener('mouseout', () => {
+          mouse.x = -1000;
+          mouse.y = -1000;
+        });
+
+        class Particle {
+          constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.7;
+            this.vy = (Math.random() - 0.5) * 0.7;
+            this.radius = Math.random() * 2 + 1;
+            // Alternancia de colores cobalto y esmeralda
+            this.color = Math.random() > 0.4 ? 'rgba(59, 130, 246, ' : 'rgba(16, 185, 129, ';
+            this.baseAlpha = Math.random() * 0.5 + 0.3;
           }
-          
-          const node = nodes[currentNodeIdx];
-          
-          if (node.nodeType === Node.TEXT_NODE) {
-            const text = node.textContent;
-            let charIdx = 0;
-            const textNode = document.createTextNode('');
-            newLine.appendChild(textNode);
-            
-            function typeChar() {
-              if (charIdx < text.length) {
-                textNode.textContent += text[charIdx];
-                charIdx++;
-                setTimeout(typeChar, 20 + Math.random() * 20);
-              } else {
-                currentNodeIdx++;
-                typeNode();
-              }
+
+          update() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Rebote elástico suave en bordes
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+
+            // Reacción gravitatoria al mouse
+            const dx = mouse.x - this.x;
+            const dy = mouse.y - this.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < mouse.radius) {
+              const force = (mouse.radius - dist) / mouse.radius;
+              const angle = Math.atan2(dy, dx);
+              this.x += Math.cos(angle) * force * 1.5;
+              this.y += Math.sin(angle) * force * 1.5;
             }
-            typeChar();
-            
-          } else if (node.nodeType === Node.ELEMENT_NODE) {
-            const clone = node.cloneNode(false);
-            newLine.appendChild(clone);
-            const text = node.textContent;
-            let charIdx = 0;
-            
-            function typeCharElem() {
-              if (charIdx < text.length) {
-                clone.textContent += text[charIdx];
-                charIdx++;
-                setTimeout(typeCharElem, 20 + Math.random() * 20);
-              } else {
-                currentNodeIdx++;
-                typeNode();
-              }
-            }
-            typeCharElem();
+          }
+
+          draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color + this.baseAlpha + ')';
+            ctx.fill();
           }
         }
-        
-        typeNode();
+
+        for (let i = 0; i < particleCount; i++) {
+          particles.push(new Particle());
+        }
+
+        let animationFrameId;
+        function animate() {
+          ctx.clearRect(0, 0, width, height);
+
+          // Dibujar líneas entre nodos cercanos
+          const maxDist = 130;
+          for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+
+            for (let j = i + 1; j < particles.length; j++) {
+              const dx = particles[i].x - particles[j].x;
+              const dy = particles[i].y - particles[j].y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+
+              if (dist < maxDist) {
+                const alpha = (1 - dist / maxDist) * 0.25;
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+              }
+            }
+
+            // Conexión extra eléctrica con el mouse
+            const dmx = mouse.x - particles[i].x;
+            const dmy = mouse.y - particles[i].y;
+            const mouseDist = Math.sqrt(dmx * dmx + dmy * dmy);
+            if (mouseDist < mouse.radius) {
+              const alpha = (1 - mouseDist / mouse.radius) * 0.4;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(mouse.x, mouse.y);
+              ctx.strokeStyle = `rgba(16, 185, 129, ${alpha})`;
+              ctx.lineWidth = 1.2;
+              ctx.stroke();
+            }
+          }
+
+          animationFrameId = requestAnimationFrame(animate);
+        }
+
+        // Respetar visibilidad de pestaña para ahorro de CPU
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            cancelAnimationFrame(animationFrameId);
+          } else {
+            animationFrameId = requestAnimationFrame(animate);
+          }
+        });
+
+        animate();
       }
-      
-      setTimeout(typeLine, 1000);
+
+      // -----------------------------------------------------------------------
+      // 2. SPOTLIGHT CARD EFFECT (Linear / Stripe Gradient Follower)
+      // -----------------------------------------------------------------------
+      const spotlightCards = document.querySelectorAll('.spotlight-card');
+      spotlightCards.forEach((card) => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+        });
+      });
+
+      // -----------------------------------------------------------------------
+      // 3. SELECTOR DE TABS INTERACTIVO POR RUBROS
+      // -----------------------------------------------------------------------
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      // Estilos activos e inactivos de Tabs
+      const activeTabClasses = ['bg-slate-800', 'text-white', 'border-cobalt-500/60', 'shadow-lg'];
+      const inactiveTabClasses = ['bg-slate-900/40', 'text-slate-400', 'border-white/5', 'hover:border-white/20', 'hover:text-slate-200'];
+
+      function setTabState(button, isActive) {
+        if (isActive) {
+          button.classList.add(...activeTabClasses);
+          button.classList.remove(...inactiveTabClasses);
+        } else {
+          button.classList.remove(...activeTabClasses);
+          button.classList.add(...inactiveTabClasses);
+        }
+      }
+
+      // Inicializar estilos de tabs
+      tabButtons.forEach((btn, index) => {
+        setTabState(btn, index === 0);
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-tab');
+
+          tabButtons.forEach(b => setTabState(b, false));
+          setTabState(btn, true);
+
+          tabContents.forEach(content => {
+            if (content.id === targetId) {
+              content.classList.remove('hidden');
+              content.classList.add('block');
+            } else {
+              content.classList.add('hidden');
+              content.classList.remove('block');
+            }
+          });
+        });
+      });
+
+      // -----------------------------------------------------------------------
+      // 4. LANZADOR INTERACTIVO DE PROYECTOS (Lógica WhatsApp Dinámica)
+      // -----------------------------------------------------------------------
+      let selectedArea = 'Página Web Comercial / E-Commerce';
+      let selectedPriority = 'Captar más clientes y vender más';
+      const clientNameInput = document.getElementById('client-name');
+      const previewBox = document.getElementById('whatsapp-preview');
+      const btnSubmit = document.getElementById('btn-submit-whatsapp');
+
+      function updateWhatsAppLink() {
+        const clientName = clientNameInput.value.trim();
+        const intro = clientName ? `Hola Patricio, soy de ${clientName} y revisé ppvsoluciones.cl.` : `Hola Patricio, revisé ppvsoluciones.cl.`;
+        const fullMessage = `${intro} Mi empresa necesita *${selectedArea}* enfocado en *${selectedPriority}*. Me gustaría agendar una sesión técnica privada para evaluar mi caso.`;
+
+        previewBox.textContent = `"${fullMessage}"`;
+        const encoded = encodeURIComponent(fullMessage);
+        btnSubmit.href = `https://wa.me/56947609070?text=${encoded}`;
+      }
+
+      // Selector de Área (Paso 1)
+      const areaPills = document.querySelectorAll('#area-selector .launcher-pill');
+      areaPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          areaPills.forEach(p => {
+            p.classList.remove('border-cobalt-500', 'bg-cobalt-500/20', 'text-white');
+            p.classList.add('border-white/10', 'bg-slate-900/60', 'text-slate-300');
+          });
+          pill.classList.remove('border-white/10', 'bg-slate-900/60', 'text-slate-300');
+          pill.classList.add('border-cobalt-500', 'bg-cobalt-500/20', 'text-white');
+          selectedArea = pill.getAttribute('data-area');
+          updateWhatsAppLink();
+        });
+      });
+      // Inicializar estilo del primer botón de área
+      if (areaPills.length > 0) {
+        areaPills[0].classList.add('border-cobalt-500', 'bg-cobalt-500/20', 'text-white');
+      }
+
+      // Selector de Prioridad (Paso 2)
+      const priorityPills = document.querySelectorAll('#priority-selector .priority-pill');
+      priorityPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          priorityPills.forEach(p => {
+            p.classList.remove('border-emeraldAccent-500', 'bg-emeraldAccent-500/20', 'text-white');
+            p.classList.add('border-white/10', 'bg-slate-900/60', 'text-slate-300');
+          });
+          pill.classList.remove('border-white/10', 'bg-slate-900/60', 'text-slate-300');
+          pill.classList.add('border-emeraldAccent-500', 'bg-emeraldAccent-500/20', 'text-white');
+          selectedPriority = pill.getAttribute('data-priority');
+          updateWhatsAppLink();
+        });
+      });
+      // Inicializar estilo del primer botón de prioridad
+      if (priorityPills.length > 0) {
+        priorityPills[0].classList.add('border-emeraldAccent-500', 'bg-emeraldAccent-500/20', 'text-white');
+      }
+
+      if (clientNameInput) {
+        clientNameInput.addEventListener('input', updateWhatsAppLink);
+      }
+      updateWhatsAppLink();
+
+      // -----------------------------------------------------------------------
+      // 5. MENÚ MÓVIL TOGGLE
+      // -----------------------------------------------------------------------
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileLinks = document.querySelectorAll('.mobile-link');
+
+      if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+          });
+        });
+      }
+
     });
   </script>
 </body>
