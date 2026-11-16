@@ -89,6 +89,37 @@ Para transformar `ppvsoluciones.cl` en una máquina de atracción y conversión 
 * **Cuerpo de Texto:** `'Inter'` (400/500).
 * **Badges & Datos Técnicos:** `'JetBrains Mono'`.
 
+### 3.4. MOTOR VISUAL Y EFECTOS CAUTIVADORES (EXPERIENCIA "ANTIGRAVITY / SILICON VALLEY")
+Para que el sitio no sea estático, plano ni aburrido, y transmita al instante la sensación de ingeniería de software de élite mundial, se integran 5 mecanismos visuales hipnóticos y ultra fluidos:
+
+1. **Interactive Node & Gravity Network (Hero Canvas a 60 FPS):**
+   - Un elemento `<canvas>` que cubre el fondo del Hero.
+   - Nodos (partículas luminosas en cobalto y esmeralda) interconectados mediante líneas tenues de datos que calculan distancias euclidianas dinámicas.
+   - **Física de atracción/repulsión elástica:** Al mover el mouse, los nodos cercanos se curvan suavemente hacia el cursor o se repelen como un campo de fuerza gravitatorio (idéntico a la experiencia inmersiva de sitios como *Antigravity, Stripe Press o GitHub Next*).
+   - **Modo Móvil Autónomo:** En pantallas táctiles sin puntero, las partículas no se quedan quietas: ejecutan un patrón cinético de deriva orgánica continua con pulsos de luz que viajan a lo largo de las conexiones como paquetes de datos en una red de fibra óptica.
+
+2. **Spotlight Radial Glow en Bento Cards (Efecto Linear):**
+   - Las tarjetas del Bento Grid tienen un fondo de cristal oscuro mate (`rgba(15, 23, 42, 0.65)`).
+   - Mediante un listener ultraliviano de `mousemove`, cada tarjeta calcula las coordenadas relativas `(e.clientX, e.clientY)`.
+   - Se proyecta un gradiente radial invisible que solo se ilumina en la posición exacta del cursor:
+     `radial-gradient(400px circle at ${x}px ${y}px, rgba(59, 130, 246, 0.18), transparent 80%)`.
+   - El borde exterior de 1px reacciona con una máscara de gradiente idéntica, dando la ilusión óptica de que el cursor sostiene una linterna azulada detrás del cristal.
+
+3. **Los 4 Micro-Visualizadores Vivos (Interactive Live Widgets en Tarjetas):**
+   - En lugar de tarjetas con texto plano estático, cada bloque Bento incorpora un widget vivo en CSS/SVG acelerado por hardware:
+     * **Widget 1 (Desarrollo Multiplataforma):** Mini-interfaz abstracta con switch táctil *"Desktop ⇄ Móvil"* y un indicador de latencia en vivo que oscila suavemente: `🟢 Sincronización en Nube: 12ms`.
+     * **Widget 2 (Web & E-Commerce):** Indicador velocímetro circular animado que se llena al 100% al entrar en pantalla con el sello `Google PageSpeed 100/100` y una curva SVG de conversión ascendente con gradiente verde esmeralda.
+     * **Widget 3 (ERP, Lotes & Fidelización NFC):** Simulador de onda de radiofrecuencia (tres anillos concéntricos en pulso) simulando el toque de un chip físico en 0.4s, junto con una barra de stock FIFO que descuenta un insumo en vivo.
+     * **Widget 4 (Logística & Patio Eje San Antonio – RM):** Línea de tiempo luminosa continua con 3 hitos en vivo: `[Patio / Origen] ──▶ [Ruta 78 / 68 Activa] ──▶ [Liquidación Digital Inmediata]`.
+
+4. **Tipografía con Resplandor y Badges de Telemetría:**
+   - El titular H1 lleva un gradiente fluido de texto que refleja la luz ambiental (`linear-gradient(135deg, #FFFFFF 40%, #93C5FD 70%, #6EE7B7 100%)`).
+   - Todos los badges de estado llevan un punto verde esmeralda con animación `animate-ping` intermitente (`<span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>`), comunicando que las plataformas están activas y monitoreadas en tiempo real 24/7.
+
+5. **Cero Penalización de Carga (100/100 PageSpeed Garantizado):**
+   - **Regla Estricta:** Cero librerías externas de animación 3D pesadas (prohibido Three.js o dependencias de 600 KB).
+   - Todo se construye con la API nativa de **HTML5 Canvas 2D**, `requestAnimationFrame` con limitador de refresco a pantalla, y CSS moderno (`transform`, `opacity`, `backdrop-filter`) que la GPU del celular y computador procesa a 60 FPS sin gastar batería ni retrasar la carga del DOM.
+
 ---
 
 ## 4. ESTRUCTURA COMPLETA DEL SITIO WEB (LAS 5 SECCIONES)
@@ -329,3 +360,4 @@ El despliegue del nuevo sitio web se ejecuta siguiendo el flujo automatizado:
    - Verificación de HTTP 200 en `https://ppvsoluciones.cl/`.
    - Verificación de Schema.org y metadatos con `curl -s https://ppvsoluciones.cl/ | grep -i "ProfessionalService"`.
    - Verificación de `robots.txt` y `sitemap.xml`.
+
