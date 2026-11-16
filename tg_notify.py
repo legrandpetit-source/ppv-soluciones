@@ -10,6 +10,9 @@ import urllib.request
 import urllib.parse
 import os
 import sqlite3
+import threading
+import re
+import time
 from datetime import datetime
 try:
     from zoneinfo import ZoneInfo
@@ -274,6 +277,95 @@ def init_admin_access_logs_db():
         conn.close()
     except Exception as e:
         print(f"[TG-PROXY] DB admin_access_logs Init Error: {e}")
+
+def init_chat_tables():
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=5)
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS chat_sessions (
+                session_id TEXT PRIMARY KEY,
+                name TEXT,
+                phone TEXT,
+                created_at TEXT
+            )
+        ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS chat_messages (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                session_id TEXT,
+                sender TEXT,
+                text TEXT,
+                timestamp TEXT
+            )
+        ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS telegram_message_mapping (
+                message_id INTEGER PRIMARY KEY,
+                session_id TEXT
+            )
+        ''')
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"[TG-PROXY] Error init_chat_tables: {e}")
+
+def telegram_polling_worker():
+    """Lee actualizaciones del bot de Telegram para procesar respuestas del asesor al chat web."""
+    last_update_id = 0
+    init_chat_tables()
+    print("[TG-PROXY] Iniciando worker de Telegram para chat en vivo...")
+    while True:
+        try:
+            token = get_current_telegram_token()
+            if not token:
+                time.sleep(5)
+                continue
+            url = f"https://api.telegram.org/bot{token}/getUpdates?offset={last_update_id + 1}&timeout=10"
+            req = urllib.request.Request(url, headers={'Content-Type': 'application/json'})
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                data = json.loads(resp.read().decode('utf-8'))
+                if data.get('ok') and data.get('result'):
+                    for update in data['result']:
+                        last_update_id = max(last_update_id, update.get('update_id', 0))
+                        msg = update.get('message')
+                        if not msg or 'text' not in msg:
+                            continue
+                        
+                        text = msg.get('text', '').strip()
+                        reply_to = msg.get('reply_to_message')
+                        session_id = None
+                        
+                        conn = sqlite3.connect(DB_PATH, timeout=5)
+                        cur = conn.cursor()
+
+                        if reply_to:
+                            reply_msg_id = reply_to.get('message_id')
+                            cur.execute('SELECT session_id FROM telegram_message_mapping WHERE message_id=?', (reply_msg_id,))
+                            row = cur.fetchone()
+                            if row:
+                                session_id = row[0]
+                            else:
+                                match = re.search(r'Ref:\s*([\w\-]+)', reply_to.get('text', ''))
+                                if match:
+                                    session_id = match.group(1)
+                        
+                        if not session_id:
+                            match = re.search(r'Ref:\s*([\w\-]+)', text)
+                            if match:
+                                session_id = match.group(1)
+                                text = re.sub(r'Ref:\s*[\w\-]+', '', text).strip()
+
+                        if session_id and text:
+                            cur.execute('INSERT INTO chat_messages (session_id, sender, text, timestamp) VALUES (?, ?, ?, ?)',
+                                        (session_id, 'admin', text, get_chile_now_str()))
+                            conn.commit()
+                            print(f"[TG-PROXY] Respuesta del asesor guardada para sesión {session_id}: {text[:30]}")
+                        
+                        conn.close()
+        except Exception as e:
+            time.sleep(3)
+        time.sleep(2)
 
 def log_admin_access(email, status, ip_address, user_agent):
     init_admin_access_logs_db()
@@ -849,6 +941,33 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 'connected': connected,
                 'bot': bot_info
             }).encode('utf-8'))
+            return
+
+        if self.path.startswith('/tg-chat-messages') or self.path.startswith('/api/chat/messages'):
+            try:
+                parsed = urllib.parse.urlparse(self.path)
+                params = urllib.parse.parse_qs(parsed.query)
+                session_id = params.get('session_id', [''])[0]
+
+                init_chat_tables()
+                conn = sqlite3.connect(DB_PATH, timeout=5)
+                cur = conn.cursor()
+                cur.execute('SELECT id, sender, text, timestamp FROM chat_messages WHERE session_id=? ORDER BY id ASC', (session_id,))
+                rows = cur.fetchall()
+                conn.close()
+
+                messages = [{'id': r[0], 'sender': r[1], 'text': r[2], 'timestamp': r[3]} for r in rows]
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True, 'messages': messages}).encode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode('utf-8'))
             return
 
         self.send_response(404)
@@ -1666,6 +1785,63 @@ class TelegramProxyHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode('utf-8'))
             return
 
+        if self.path in ['/tg-chat-send', '/api/chat/send']:
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                data = json.loads(body.decode('utf-8'))
+                name = str(data.get('name', 'Visitante')).strip()[:100]
+                phone = str(data.get('phone', '')).strip()[:50]
+                message = str(data.get('message', '')).strip()[:2000]
+                session_id = str(data.get('sessionId', 'general')).strip()[:100]
+
+                if not message:
+                    raise ValueError("Mensaje vacío")
+
+                init_chat_tables()
+                conn = sqlite3.connect(DB_PATH, timeout=5)
+                cur = conn.cursor()
+                now_str = get_chile_now_str()
+                cur.execute('INSERT OR IGNORE INTO chat_sessions (session_id, name, phone, created_at) VALUES (?, ?, ?, ?)',
+                            (session_id, name, phone, now_str))
+                cur.execute('INSERT INTO chat_messages (session_id, sender, text, timestamp) VALUES (?, ?, ?, ?)',
+                            (session_id, 'user', message, now_str))
+                conn.commit()
+
+                # Send Telegram message
+                text = (
+                    f"💬 <b>[CHAT ASESORÍA PPV]</b>\n\n"
+                    f"👤 <b>Nombre:</b> {escape_html(name)}\n"
+                    f"📱 <b>Contacto:</b> {escape_html(phone)}\n"
+                    f"💬 <b>Mensaje:</b> <i>\"{escape_html(message)}\"</i>\n"
+                    f"🕒 <b>Hora:</b> {now_str}\n\n"
+                    f"Ref: {session_id}"
+                )
+                token = get_current_telegram_token()
+                chat_id = get_current_telegram_chat_id()
+                payload = json.dumps({'chat_id': chat_id, 'text': text, 'parse_mode': 'HTML'}).encode('utf-8')
+                req = urllib.request.Request(f'https://api.telegram.org/bot{token}/sendMessage', data=payload, headers={'Content-Type': 'application/json'})
+                with urllib.request.urlopen(req, timeout=10) as res:
+                    res_data = json.loads(res.read().decode('utf-8'))
+                    tg_msg_id = res_data.get('result', {}).get('message_id')
+                    if tg_msg_id:
+                        cur.execute('INSERT OR REPLACE INTO telegram_message_mapping (message_id, session_id) VALUES (?, ?)', (tg_msg_id, session_id))
+                        conn.commit()
+                conn.close()
+
+                self.send_response(200)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': True, 'session_id': session_id}).encode('utf-8'))
+            except Exception as e:
+                self.send_response(400)
+                self.send_cors_headers()
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode('utf-8'))
+            return
+
         if self.path not in ['/tg-notify', '/api/notify']:
             self.send_response(404)
             self.end_headers()
@@ -1870,6 +2046,9 @@ def update_message_field(msg_id, field_name, value):
         return False
 
 def run():
+    init_chat_tables()
+    tg_thread = threading.Thread(target=telegram_polling_worker, daemon=True)
+    tg_thread.start()
     server = HTTPServer(('0.0.0.0', PORT), TelegramProxyHandler)
     print(f"🔐 Telegram Proxy & Server DB API escuchando en 0.0.0.0:{PORT}...")
     server.serve_forever()

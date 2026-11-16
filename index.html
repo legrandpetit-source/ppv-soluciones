@@ -28,8 +28,10 @@
   <meta name="twitter:image" content="https://ppvsoluciones.cl/assets/brand_option_1.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="assets/ppv_logo.svg">
-  <link rel="alternate icon" href="assets/ppv_logo_2d_transparent.png">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261116">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png?v=20261116">
+  <link rel="shortcut icon" href="favicon.ico?v=20261116">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20261116">
 
   <!-- Google Fonts Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -255,7 +257,7 @@
   <!-- BOTÓN FLOTANTE ESTILO TIMBRAAPP: "¿Dudas? Habla con un asesor"            -->
   <!-- ========================================================================= -->
   <div id="floating-chat-pill" 
-       class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-slate-900/95 hover:bg-slate-800 text-white font-medium text-xs shadow-2xl shadow-cyan-500/30 border border-cyan-500/40 hover:border-cyan-400 transition-all group backdrop-blur-md">
+       class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-slate-900/95 hover:bg-slate-800 text-white font-medium text-xs shadow-2xl shadow-cyan-500/30 border border-cyan-500/40 hover:border-cyan-400 transition-all group backdrop-blur-md cursor-pointer select-none">
     <span class="relative flex h-2.5 w-2.5">
       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
       <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
@@ -264,69 +266,94 @@
     <span class="tracking-wide">¿Dudas? Habla con un asesor</span>
   </div>
 
-  <!-- MODAL / POPUP DE ASESORÍA EN VIVO (Conexión a Telegram Bot) -->
-  <div id="chat-modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden">
-    <div class="w-full max-w-md glass-panel-elevated rounded-3xl border border-sky-500/40 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-      
-      <!-- Header Modal -->
-      <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-slate-950/70">
-        <div class="flex items-center gap-2.5">
-          <span class="font-heading font-black text-xl text-white">PPV<span class="text-[#00f3ff]">.</span></span>
-          <div class="flex flex-col">
-            <span class="text-xs font-heading font-bold text-white">Asesoría Técnica Directa</span>
-            <span class="text-[10px] font-mono text-emeraldAccent-400 flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-emeraldAccent-400 animate-ping"></span>
-              <span>En línea (Respuesta rápida)</span>
-            </span>
-          </div>
+  <!-- ========================================================================= -->
+  <!-- WIDGET DE CHAT EN VIVO BIDIRECCIONAL (Estilo TimbraApp / Legrand Petit)   -->
+  <!-- ========================================================================= -->
+  <div id="live-chat-widget" 
+       class="fixed bottom-6 right-6 z-50 w-[94vw] sm:w-[380px] h-[520px] max-h-[85vh] glass-panel-elevated rounded-3xl border border-cyan-500/40 shadow-2xl overflow-hidden flex flex-col hidden animate-in fade-in zoom-in-95 duration-200">
+    
+    <!-- Chat Header -->
+    <div class="px-5 py-3.5 border-b border-white/10 flex items-center justify-between bg-slate-950/90 backdrop-blur-md select-none">
+      <div class="flex items-center gap-2.5">
+        <span class="font-heading font-black text-xl text-white">PPV<span class="text-[#00f3ff]">.</span></span>
+        <div class="flex flex-col">
+          <span class="text-xs font-heading font-bold text-white leading-tight">Asesoría Técnica Directa</span>
+          <span class="text-[10px] font-mono text-emeraldAccent-400 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emeraldAccent-400 animate-ping"></span>
+            <span>En línea (Respuesta rápida)</span>
+          </span>
         </div>
-        <button id="close-modal-btn" class="text-slate-400 hover:text-white p-1 text-base focus:outline-none" aria-label="Cerrar ventana">
+      </div>
+      <div class="flex items-center gap-1">
+        <button id="minimize-chat-btn" class="text-slate-400 hover:text-white p-1 text-xs focus:outline-none" title="Minimizar">
+          <i class="fa-solid fa-minus"></i>
+        </button>
+        <button id="close-chat-btn" class="text-slate-400 hover:text-white p-1 text-sm focus:outline-none" title="Cerrar">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
+    </div>
 
-      <!-- Formulario Asesoría -->
-      <div class="p-5 space-y-3.5">
-        <p class="text-xs text-slate-300 leading-relaxed">
-          Escribe tu consulta y el equipo de ingeniería responderá directamente a tu celular vía Telegram o correo.
+    <!-- Vista 1: Formulario Inicial de Ingreso al Chat -->
+    <div id="chat-auth-view" class="p-6 flex-1 flex flex-col justify-center space-y-4 bg-slate-900/70">
+      <div class="text-center space-y-1.5">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl shadow-lg shadow-cyan-500/20">
+          <i class="fa-solid fa-comments"></i>
+        </div>
+        <h4 class="font-heading font-bold text-base text-white">Inicia una Conversación</h4>
+        <p class="text-xs text-slate-300 leading-relaxed max-w-xs mx-auto">
+          Habla con nuestro equipo de ingeniería para cotizar o resolver tus dudas en tiempo real.
         </p>
-
-        <div>
-          <label class="block text-[11px] font-mono text-slate-400 mb-1">Tu Nombre o Empresa:</label>
-          <input type="text" id="modal-name" placeholder="Ej: Carlos González / Transporte del Sol"
-                 class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white text-xs focus:outline-none focus:border-sky-500 font-sans">
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-mono text-slate-400 mb-1">Teléfono (+56 9...) o Correo:</label>
-          <input type="text" id="modal-contact" placeholder="Ej: +56 9 1234 5678 o correo@empresa.com"
-                 class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white text-xs focus:outline-none focus:border-sky-500 font-sans">
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-mono text-slate-400 mb-1">¿Qué proyecto o duda tienes?:</label>
-          <textarea id="modal-msg" rows="3" placeholder="Ej: Necesito cotizar un software de inventario para mi bodega..."
-                    class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white text-xs focus:outline-none focus:border-sky-500 font-sans"></textarea>
-        </div>
-
-        <div id="modal-feedback" class="hidden p-2.5 rounded-xl text-xs font-mono"></div>
-
-        <div class="pt-1 flex flex-col gap-2">
-          <button id="modal-send-btn" type="button" 
-                  class="btn-glow-primary w-full py-2.5 rounded-xl text-xs font-semibold text-white tracking-wide flex items-center justify-center gap-2 cursor-pointer shadow-lg">
-            <i class="fa-regular fa-paper-plane"></i>
-            <span>Conectar con un Asesor Técnico</span>
-          </button>
-          
-          <a href="https://t.me/ppvsoluciones_bot" target="_blank" rel="noopener noreferrer"
-             class="w-full py-2 rounded-xl text-[11px] font-mono text-slate-400 hover:text-white bg-slate-900/80 hover:bg-slate-800 border border-white/10 flex items-center justify-center gap-2 transition-all">
-            <i class="fa-brands fa-telegram text-sky-400 text-sm"></i>
-            <span>Abrir directamente en Telegram (@ppvsoluciones_bot)</span>
-          </a>
-        </div>
       </div>
 
+      <form id="chat-start-form" class="space-y-3 pt-1">
+        <div>
+          <label class="block text-[11px] font-mono text-slate-400 mb-1">Tu Nombre o Empresa:</label>
+          <input type="text" id="chat-user-name" required placeholder="Ej: Patricio / Agro del Mar"
+                 class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-white/10 text-white text-xs focus:outline-none focus:border-cyan-400 font-sans transition-all">
+        </div>
+        <div>
+          <label class="block text-[11px] font-mono text-slate-400 mb-1">Teléfono o WhatsApp (+56 9...):</label>
+          <input type="tel" id="chat-user-phone" required placeholder="+56 9 XXXX XXXX"
+                 class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-white/10 text-white text-xs focus:outline-none focus:border-cyan-400 font-sans transition-all">
+        </div>
+        <button type="submit" 
+                class="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-emeraldAccent-500 text-white font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-all shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 mt-2">
+          <span>Comenzar Chat con Asesor</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </form>
     </div>
+
+    <!-- Vista 2: Mensajes del Chat en Vivo (Feed Bidireccional) -->
+    <div id="chat-messages-view" class="flex-1 flex flex-col hidden bg-slate-950/80 overflow-hidden">
+      <div id="chat-messages-container" class="flex-1 p-4 overflow-y-auto space-y-3.5 scroll-smooth">
+        <!-- Burbujas inyectadas por JS -->
+      </div>
+
+      <!-- Indicador Escribiendo -->
+      <div id="chat-typing-indicator" class="hidden px-4 py-1 text-[10px] font-mono text-emeraldAccent-400 flex items-center gap-1.5 italic">
+        <span>Asesor respondiendo</span>
+        <span class="flex gap-0.5">
+          <span class="w-1 h-1 bg-emeraldAccent-400 rounded-full animate-bounce"></span>
+          <span class="w-1 h-1 bg-emeraldAccent-400 rounded-full animate-bounce [animation-delay:150ms]"></span>
+          <span class="w-1 h-1 bg-emeraldAccent-400 rounded-full animate-bounce [animation-delay:300ms]"></span>
+        </span>
+      </div>
+
+      <!-- Barra de Envío -->
+      <form id="chat-send-form" class="p-3 border-t border-white/10 bg-slate-950/95 flex items-center gap-2">
+        <input type="text" id="chat-input" placeholder="Escribe un mensaje..."
+               autocomplete="off"
+               class="flex-1 px-3.5 py-2.5 rounded-full bg-slate-900 border border-white/10 text-white text-xs focus:outline-none focus:border-cyan-400 font-sans">
+        <button type="submit" id="chat-send-btn"
+                class="w-10 h-10 rounded-full bg-gradient-to-r from-sky-500 to-emeraldAccent-500 text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-cyan-500/30 flex-shrink-0"
+                aria-label="Enviar mensaje">
+          <i class="fa-solid fa-paper-plane text-xs ml-0.5"></i>
+        </button>
+      </form>
+    </div>
+
   </div>
 
   <!-- Contenedor Principal Por Encima del Canvas -->
@@ -359,20 +386,9 @@
           <a href="#diagnostico" class="hover:text-white transition-colors">Diagnóstico</a>
         </nav>
 
-        <!-- CTA Navbar: Teléfono & WhatsApp + Botón Asesor -->
-        <div class="flex items-center gap-3">
-          
-          <!-- Teléfono & WhatsApp Directo Oficial -->
-          <a href="tel:+56947609070" 
-             title="Llamar o contactar por WhatsApp"
-             class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-200 bg-slate-900/90 hover:bg-slate-800 border border-emeraldAccent-500/40 hover:border-emeraldAccent-400 transition-all shadow-sm">
-            <i class="fa-solid fa-phone text-emeraldAccent-400 text-xs"></i>
-            <i class="fa-brands fa-whatsapp text-emeraldAccent-400 text-sm"></i>
-            <span class="font-mono text-[11px]">+56 9 4760 9070</span>
-          </a>
-
-          <!-- Botón Menú Móvil -->
-          <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none" aria-label="Abrir Menú">
+        <!-- Botón Menú Móvil (Solo visible en pantallas pequeñas) -->
+        <div class="flex items-center md:hidden">
+          <button id="mobile-menu-btn" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none" aria-label="Abrir Menú">
             <i class="fa-solid fa-bars text-lg"></i>
           </button>
         </div>
@@ -384,11 +400,6 @@
         <a href="#rubros" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Rubros</a>
         <a href="#casos" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Casos en Producción</a>
         <a href="#diagnostico" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Diagnóstico</a>
-        <a href="tel:+56947609070" class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-slate-900 border border-emeraldAccent-500/40">
-          <i class="fa-solid fa-phone text-emeraldAccent-400"></i>
-          <i class="fa-brands fa-whatsapp text-emeraldAccent-400"></i>
-          <span>Llamar o WhatsApp: +56 9 4760 9070</span>
-        </a>
       </div>
     </header>
 
@@ -1184,12 +1195,9 @@
           <div>
             <h4 class="font-heading font-bold text-white text-xs uppercase tracking-wider mb-2.5">Contacto Directo</h4>
             <ul class="space-y-1.5 text-xs text-slate-300">
-              <li>
-                <a href="tel:+56947609070" class="hover:text-emeraldAccent-400 font-mono flex items-center gap-2 transition-colors">
-                  <i class="fa-solid fa-phone text-emeraldAccent-400 text-xs"></i>
-                  <i class="fa-brands fa-whatsapp text-emeraldAccent-400 text-sm"></i>
-                  <span>+56 9 4760 9070</span>
-                </a>
+              <li class="font-mono flex items-center gap-2 text-slate-300">
+                <i class="fa-solid fa-phone text-slate-400 text-xs"></i>
+                <span>+56 9 4760 9070</span>
               </li>
               <li>
                 <a href="https://t.me/ppvsoluciones_bot" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 font-mono flex items-center gap-2 transition-colors">
@@ -1450,31 +1458,194 @@
       });
 
       // -----------------------------------------------------------------------
-      // 4. WIDGET FLOTANTE "¿DUDAS? HABLA CON UN ASESOR" + DRAG & MODAL
+      // 4. LIVE CHAT WIDGET BIDIRECCIONAL (Estilo TimbraApp / Legrand Petit)
       // -----------------------------------------------------------------------
       const chatPill = document.getElementById('floating-chat-pill');
-      const chatModal = document.getElementById('chat-modal');
-      const closeModalBtn = document.getElementById('close-modal-btn');
+      const chatWidget = document.getElementById('live-chat-widget');
+      const closeChatBtn = document.getElementById('close-chat-btn');
+      const minimizeChatBtn = document.getElementById('minimize-chat-btn');
       const heroAdvisorBtn = document.getElementById('hero-advisor-btn');
 
-      function openModal() {
-        if (chatModal) chatModal.classList.remove('hidden');
+      const chatAuthView = document.getElementById('chat-auth-view');
+      const chatMessagesView = document.getElementById('chat-messages-view');
+      const chatStartForm = document.getElementById('chat-start-form');
+      const chatUserNameInput = document.getElementById('chat-user-name');
+      const chatUserPhoneInput = document.getElementById('chat-user-phone');
+
+      const chatMessagesContainer = document.getElementById('chat-messages-container');
+      const chatSendForm = document.getElementById('chat-send-form');
+      const chatInput = document.getElementById('chat-input');
+      const chatTypingIndicator = document.getElementById('chat-typing-indicator');
+
+      let sessionId = localStorage.getItem('ppv_chat_sessionId') || '';
+      let userName = localStorage.getItem('ppv_chat_name') || '';
+      let userPhone = localStorage.getItem('ppv_chat_phone') || '';
+      let chatMessages = [];
+      try {
+        chatMessages = JSON.parse(localStorage.getItem('ppv_chat_messages') || '[]');
+      } catch (e) {
+        chatMessages = [];
       }
-      function closeModal() {
-        if (chatModal) chatModal.classList.add('hidden');
+      let pollingInterval = null;
+
+      function openLiveChat() {
+        if (chatWidget) chatWidget.classList.remove('hidden');
+        if (chatPill) chatPill.classList.add('hidden');
+        if (sessionId && userName) {
+          showMessagesView();
+        } else {
+          showAuthView();
+        }
       }
 
-      if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-      if (heroAdvisorBtn) heroAdvisorBtn.addEventListener('click', openModal);
+      function closeLiveChat() {
+        if (chatWidget) chatWidget.classList.add('hidden');
+        if (chatPill) chatPill.classList.remove('hidden');
+      }
 
-      // Cerrar modal al hacer clic afuera
-      if (chatModal) {
-        chatModal.addEventListener('click', (e) => {
-          if (e.target === chatModal) closeModal();
+      function showAuthView() {
+        if (chatAuthView) chatAuthView.classList.remove('hidden');
+        if (chatMessagesView) chatMessagesView.classList.add('hidden');
+        if (chatUserNameInput && userName) chatUserNameInput.value = userName;
+        if (chatUserPhoneInput && userPhone) chatUserPhoneInput.value = userPhone;
+      }
+
+      function showMessagesView() {
+        if (chatAuthView) chatAuthView.classList.add('hidden');
+        if (chatMessagesView) chatMessagesView.classList.remove('hidden');
+        renderChatMessages();
+        startPolling();
+        if (chatInput) setTimeout(() => chatInput.focus(), 150);
+      }
+
+      function renderChatMessages() {
+        if (!chatMessagesContainer) return;
+        chatMessagesContainer.innerHTML = '';
+
+        if (chatMessages.length === 0) {
+          const welcomeMsg = {
+            id: 'welcome',
+            sender: 'admin',
+            text: `¡Hola ${userName || ''}! Soy del equipo de ingeniería de PPV Soluciones. ¿En qué te podemos ayudar hoy?`,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          };
+          chatMessages.push(welcomeMsg);
+          localStorage.setItem('ppv_chat_messages', JSON.stringify(chatMessages));
+        }
+
+        chatMessages.forEach(msg => {
+          const bubble = document.createElement('div');
+          const isUser = msg.sender === 'user';
+          bubble.className = `flex flex-col max-w-[85%] ${isUser ? 'ml-auto items-end' : 'mr-auto items-start'}`;
+
+          const content = document.createElement('div');
+          content.className = isUser
+            ? 'p-3 rounded-2xl rounded-tr-sm bg-gradient-to-r from-sky-500 to-emerald-500 text-white text-xs leading-relaxed shadow-md'
+            : 'p-3 rounded-2xl rounded-tl-sm bg-slate-800/90 border border-white/10 text-slate-100 text-xs leading-relaxed shadow-md';
+          content.textContent = msg.text;
+
+          const meta = document.createElement('span');
+          meta.className = 'text-[9px] font-mono text-slate-400 mt-1 px-1';
+          meta.textContent = msg.timestamp || '';
+
+          bubble.appendChild(content);
+          bubble.appendChild(meta);
+          chatMessagesContainer.appendChild(bubble);
+        });
+
+        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+      }
+
+      function startPolling() {
+        if (pollingInterval) clearInterval(pollingInterval);
+        pollingInterval = setInterval(async () => {
+          if (!sessionId) return;
+          try {
+            const res = await fetch(`/tg-chat-messages?session_id=${encodeURIComponent(sessionId)}`);
+            const data = await res.json();
+            if (data.ok && Array.isArray(data.messages)) {
+              let updated = false;
+              data.messages.forEach(serverMsg => {
+                const exists = chatMessages.some(m => m.id === serverMsg.id || (m.sender === serverMsg.sender && m.text === serverMsg.text));
+                if (!exists) {
+                  chatMessages.push({
+                    id: serverMsg.id,
+                    sender: serverMsg.sender,
+                    text: serverMsg.text,
+                    timestamp: serverMsg.timestamp ? serverMsg.timestamp.split(' ').slice(-1)[0] : ''
+                  });
+                  updated = true;
+                }
+              });
+              if (updated) {
+                localStorage.setItem('ppv_chat_messages', JSON.stringify(chatMessages));
+                renderChatMessages();
+              }
+            }
+          } catch (e) {
+            // Silencioso ante errores momentáneos
+          }
+        }, 3000);
+      }
+
+      if (closeChatBtn) closeChatBtn.addEventListener('click', closeLiveChat);
+      if (minimizeChatBtn) minimizeChatBtn.addEventListener('click', closeLiveChat);
+      if (heroAdvisorBtn) heroAdvisorBtn.addEventListener('click', openLiveChat);
+
+      if (chatStartForm) {
+        chatStartForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          userName = chatUserNameInput.value.trim();
+          userPhone = chatUserPhoneInput.value.trim();
+          if (!userName || !userPhone) return;
+
+          if (!sessionId) {
+            sessionId = 'ppv_' + Math.random().toString(36).substring(2, 10);
+          }
+          localStorage.setItem('ppv_chat_sessionId', sessionId);
+          localStorage.setItem('ppv_chat_name', userName);
+          localStorage.setItem('ppv_chat_phone', userPhone);
+
+          showMessagesView();
         });
       }
 
-      // Drag and drop para mover la píldora flotante si el usuario desea moverla
+      if (chatSendForm) {
+        chatSendForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const text = chatInput.value.trim();
+          if (!text) return;
+
+          const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const userMsg = {
+            id: Date.now(),
+            sender: 'user',
+            text: text,
+            timestamp: nowStr
+          };
+          chatMessages.push(userMsg);
+          localStorage.setItem('ppv_chat_messages', JSON.stringify(chatMessages));
+          renderChatMessages();
+          chatInput.value = '';
+
+          try {
+            await fetch('/tg-chat-send', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: userName,
+                phone: userPhone,
+                message: text,
+                sessionId: sessionId
+              })
+            });
+          } catch (err) {
+            console.error('Error enviando mensaje de chat:', err);
+          }
+        });
+      }
+
+      // Drag and drop para la píldora flotante
       if (chatPill) {
         let isDragging = false;
         let startX, startY, origX, origY;
@@ -1504,12 +1675,11 @@
 
         window.addEventListener('mouseup', () => {
           if (isDragging && !hasMoved) {
-            openModal();
+            openLiveChat();
           }
           isDragging = false;
         });
 
-        // Soporte táctil en móviles
         chatPill.addEventListener('touchstart', (e) => {
           isDragging = true;
           hasMoved = false;
@@ -1535,61 +1705,9 @@
 
         window.addEventListener('touchend', () => {
           if (isDragging && !hasMoved) {
-            openModal();
+            openLiveChat();
           }
           isDragging = false;
-        });
-      }
-
-      // Envío desde el Modal de Asesoría
-      const modalSendBtn = document.getElementById('modal-send-btn');
-      const modalName = document.getElementById('modal-name');
-      const modalContact = document.getElementById('modal-contact');
-      const modalMsg = document.getElementById('modal-msg');
-      const modalFeedback = document.getElementById('modal-feedback');
-
-      if (modalSendBtn) {
-        modalSendBtn.addEventListener('click', async () => {
-          const name = modalName ? modalName.value.trim() : '';
-          const contact = modalContact ? modalContact.value.trim() : '';
-          const msg = modalMsg ? modalMsg.value.trim() : '';
-
-          if (!name || !contact || !msg) {
-            if (modalFeedback) {
-              modalFeedback.className = 'p-2.5 rounded-xl text-xs font-mono bg-red-500/20 border border-red-500/40 text-red-300 block mb-2';
-              modalFeedback.textContent = 'Por favor completa tu nombre, contacto y mensaje.';
-            }
-            return;
-          }
-
-          modalSendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Enviando al asesor...</span>';
-          modalSendBtn.disabled = true;
-
-          try {
-            await fetch('/tg-notify', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                name: name,
-                email: contact.includes('@') ? contact : 'ppv@ppvsoluciones.cl',
-                phone: contact,
-                subject: 'Consulta Asesor Técnico PPV',
-                message: msg
-              })
-            }).catch(e => console.log('Background notify:', e));
-
-            if (modalFeedback) {
-              modalFeedback.className = 'p-2.5 rounded-xl text-xs font-mono bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 block mb-2';
-              modalFeedback.innerHTML = '<i class="fa-solid fa-check mr-1.5"></i> ¡Consulta enviada! Te responderemos en breve a tu contacto.';
-            }
-          } catch (e) {
-            console.error(e);
-          } finally {
-            setTimeout(() => {
-              modalSendBtn.innerHTML = '<i class="fa-solid fa-check mr-1.5"></i><span>Consulta Enviada</span>';
-              modalSendBtn.disabled = false;
-            }, 800);
-          }
         });
       }
 
@@ -1690,7 +1808,7 @@
 
             if (feedbackBox) {
               feedbackBox.className = 'p-3 rounded-xl text-xs font-mono bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 block mb-3';
-              feedbackBox.innerHTML = '<i class="fa-solid fa-check mr-1.5"></i> Requerimiento enviado al servidor. Abriendo Telegram con @ppvsoluciones_bot...';
+              feedbackBox.innerHTML = '<i class="fa-solid fa-check mr-1.5"></i> ¡Requerimiento recibido con éxito! El equipo de ingeniería te responderá a la brevedad.';
             }
           } catch (error) {
             console.error('Error al notificar:', error);
@@ -1698,7 +1816,6 @@
             setTimeout(() => {
               btnSubmit.innerHTML = originalBtnHTML;
               btnSubmit.disabled = false;
-              window.open('https://t.me/ppvsoluciones_bot', '_blank');
             }, 600);
           }
         });
