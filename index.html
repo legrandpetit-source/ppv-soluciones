@@ -7,6 +7,7 @@
   <title>PPV Soluciones | Software a Medida, Apps, Desktop & Automatización</title>
   <meta name="description" content="Ingeniería de software a medida, desarrollo de aplicaciones web, móviles y de escritorio para Linux y Windows, sistemas de inventario y plataformas logísticas. Cobertura en Chile y clientes internacionales.">
   <link rel="canonical" href="https://ppvsoluciones.cl/">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="https://ppvsoluciones.cl/sitemap.xml">
   <meta name="robots" content="index, follow">
   <meta name="keywords" content="desarrollo de software chile, aplicaciones a medida, software escritorio linux, aplicaciones multiplataforma, software logistica chile, sistema inventario lotes, e-commerce rapido chile, fidelizacion nfc comercios, ppv soluciones, patricio padilla">
 
@@ -88,6 +89,7 @@
     "logo": "https://ppvsoluciones.cl/assets/ppv_logo.svg",
     "image": "https://ppvsoluciones.cl/assets/brand_option_1.png",
     "description": "Desarrollo de software a medida, aplicaciones web, móviles y de escritorio para Linux y Windows, sistemas de inventario y plataformas logísticas en Chile y el mundo.",
+    "telephone": "+56947609070",
     "email": "ppv@ppvsoluciones.cl",
     "founder": {
       "@type": "Person",
@@ -149,7 +151,7 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .glass-panel-elevated {
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(15, 23, 42, 0.88);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -197,20 +199,15 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .text-cyber-gradient {
-      background: linear-gradient(135deg, #00f3ff 0%, #a855f7 50%, #ff007f 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
 
-    /* Botón Luminoso Telegram */
-    .btn-tg-glow {
+    /* Botón Luminoso Asesor */
+    .btn-glow-primary {
       position: relative;
       background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 50%, #00f3ff 100%);
       box-shadow: 0 0 25px rgba(14, 165, 233, 0.45);
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .btn-tg-glow:hover {
+    .btn-glow-primary:hover {
       box-shadow: 0 0 35px rgba(0, 243, 255, 0.7);
       transform: translateY(-2px) scale(1.01);
     }
@@ -233,6 +230,16 @@
       stroke-dashoffset: 0;
       animation: circleFill 2s ease-out forwards;
     }
+
+    /* Widget flotante Draggable */
+    #floating-chat-pill {
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+    #floating-chat-pill:active {
+      cursor: grabbing;
+    }
   </style>
 </head>
 <body class="bg-obsidian text-slate-200 antialiased selection:bg-neonCyan selection:text-black">
@@ -244,26 +251,91 @@
     <canvas id="hero-canvas" class="w-full h-full opacity-85"></canvas>
   </div>
 
-  <!-- Botón Flotante Directo a Telegram -->
-  <a href="https://t.me/ppvsoluciones_bot" 
-     target="_blank" 
-     rel="noopener noreferrer"
-     class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold text-xs shadow-2xl shadow-sky-500/50 hover:scale-105 hover:shadow-cyanAccent-500/70 transition-all border border-white/20 group">
+  <!-- ========================================================================= -->
+  <!-- BOTÓN FLOTANTE ESTILO TIMBRAAPP: "¿Dudas? Habla con un asesor"            -->
+  <!-- ========================================================================= -->
+  <div id="floating-chat-pill" 
+       class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-slate-900/95 hover:bg-slate-800 text-white font-medium text-xs shadow-2xl shadow-cyan-500/30 border border-cyan-500/40 hover:border-cyan-400 transition-all group backdrop-blur-md">
     <span class="relative flex h-2.5 w-2.5">
       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
       <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
     </span>
-    <i class="fa-brands fa-telegram text-lg text-white"></i>
-    <span class="font-mono tracking-wide">Hablar con Patricio</span>
-  </a>
+    <i class="fa-regular fa-comment-dots text-emerald-400 text-sm"></i>
+    <span class="tracking-wide">¿Dudas? Habla con un asesor</span>
+  </div>
+
+  <!-- MODAL / POPUP DE ASESORÍA EN VIVO (Conexión a Telegram Bot) -->
+  <div id="chat-modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden">
+    <div class="w-full max-w-md glass-panel-elevated rounded-3xl border border-sky-500/40 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Header Modal -->
+      <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-slate-950/70">
+        <div class="flex items-center gap-2.5">
+          <span class="font-heading font-black text-xl text-white">PPV<span class="text-[#00f3ff]">.</span></span>
+          <div class="flex flex-col">
+            <span class="text-xs font-heading font-bold text-white">Asesoría Técnica Directa</span>
+            <span class="text-[10px] font-mono text-emeraldAccent-400 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emeraldAccent-400 animate-ping"></span>
+              <span>En línea (Respuesta rápida)</span>
+            </span>
+          </div>
+        </div>
+        <button id="close-modal-btn" class="text-slate-400 hover:text-white p-1 text-base focus:outline-none" aria-label="Cerrar ventana">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Formulario Asesoría -->
+      <div class="p-5 space-y-3.5">
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Escribe tu consulta y el equipo de ingeniería responderá directamente a tu celular vía Telegram o correo.
+        </p>
+
+        <div>
+          <label class="block text-[11px] font-mono text-slate-400 mb-1">Tu Nombre o Empresa:</label>
+          <input type="text" id="modal-name" placeholder="Ej: Carlos González / Transporte del Sol"
+                 class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white text-xs focus:outline-none focus:border-sky-500 font-sans">
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-mono text-slate-400 mb-1">Teléfono (+56 9...) o Correo:</label>
+          <input type="text" id="modal-contact" placeholder="Ej: +56 9 1234 5678 o correo@empresa.com"
+                 class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white text-xs focus:outline-none focus:border-sky-500 font-sans">
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-mono text-slate-400 mb-1">¿Qué proyecto o duda tienes?:</label>
+          <textarea id="modal-msg" rows="3" placeholder="Ej: Necesito cotizar un software de inventario para mi bodega..."
+                    class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white text-xs focus:outline-none focus:border-sky-500 font-sans"></textarea>
+        </div>
+
+        <div id="modal-feedback" class="hidden p-2.5 rounded-xl text-xs font-mono"></div>
+
+        <div class="pt-1 flex flex-col gap-2">
+          <button id="modal-send-btn" type="button" 
+                  class="btn-glow-primary w-full py-2.5 rounded-xl text-xs font-semibold text-white tracking-wide flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+            <i class="fa-regular fa-paper-plane"></i>
+            <span>Conectar con un Asesor Técnico</span>
+          </button>
+          
+          <a href="https://t.me/ppvsoluciones_bot" target="_blank" rel="noopener noreferrer"
+             class="w-full py-2 rounded-xl text-[11px] font-mono text-slate-400 hover:text-white bg-slate-900/80 hover:bg-slate-800 border border-white/10 flex items-center justify-center gap-2 transition-all">
+            <i class="fa-brands fa-telegram text-sky-400 text-sm"></i>
+            <span>Abrir directamente en Telegram (@ppvsoluciones_bot)</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- Contenedor Principal Por Encima del Canvas -->
   <div class="relative z-10 flex flex-col min-h-screen">
 
     <!-- ======================================================================= -->
-    <!-- NAVBAR (Fijo con Blur y Logo Oficial PPV.)                              -->
+    <!-- NAVBAR (Fijo con Blur, Logo Oficial PPV. & Teléfono / WhatsApp)         -->
     <!-- ======================================================================= -->
-    <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/10 transition-all duration-300">
+    <header class="fixed top-0 left-0 right-0 z-40 glass-panel border-b border-white/10 transition-all duration-300">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         
         <!-- Logo Oficial PPV. (Tipografía Blanca + Punto Cian Eléctrico) -->
@@ -287,15 +359,16 @@
           <a href="#diagnostico" class="hover:text-white transition-colors">Diagnóstico</a>
         </nav>
 
-        <!-- CTA Navbar & Hamburguesa -->
+        <!-- CTA Navbar: Teléfono & WhatsApp + Botón Asesor -->
         <div class="flex items-center gap-3">
-          <a href="https://t.me/ppvsoluciones_bot" 
-             target="_blank" 
-             rel="noopener noreferrer"
-             class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-white bg-slate-900/90 hover:bg-slate-800 border border-sky-500/50 hover:border-sky-400 transition-all shadow-sm">
-            <i class="fa-brands fa-telegram text-sky-400 text-sm"></i>
-            <span>Telegram Bot</span>
-            <i class="fa-solid fa-arrow-right text-[10px] text-slate-400"></i>
+          
+          <!-- Teléfono & WhatsApp Directo Oficial -->
+          <a href="tel:+56947609070" 
+             title="Llamar o contactar por WhatsApp"
+             class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-200 bg-slate-900/90 hover:bg-slate-800 border border-emeraldAccent-500/40 hover:border-emeraldAccent-400 transition-all shadow-sm">
+            <i class="fa-solid fa-phone text-emeraldAccent-400 text-xs"></i>
+            <i class="fa-brands fa-whatsapp text-emeraldAccent-400 text-sm"></i>
+            <span class="font-mono text-[11px]">+56 9 4760 9070</span>
           </a>
 
           <!-- Botón Menú Móvil -->
@@ -311,12 +384,10 @@
         <a href="#rubros" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Rubros</a>
         <a href="#casos" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Casos en Producción</a>
         <a href="#diagnostico" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Diagnóstico</a>
-        <a href="https://t.me/ppvsoluciones_bot" 
-           target="_blank" 
-           rel="noopener noreferrer"
-           class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-sky-600 to-blue-600 shadow-lg">
-          <i class="fa-brands fa-telegram text-base"></i>
-          <span>Contactar por Telegram (@ppvsoluciones_bot)</span>
+        <a href="tel:+56947609070" class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-slate-900 border border-emeraldAccent-500/40">
+          <i class="fa-solid fa-phone text-emeraldAccent-400"></i>
+          <i class="fa-brands fa-whatsapp text-emeraldAccent-400"></i>
+          <span>Llamar o WhatsApp: +56 9 4760 9070</span>
         </a>
       </div>
     </header>
@@ -324,11 +395,11 @@
     <!-- ======================================================================= -->
     <!-- SECCIÓN 1: HERO PRINCIPAL (Compacto & Contundente)                      -->
     <!-- ======================================================================= -->
-    <section class="relative pt-28 pb-12 md:pt-36 md:pb-16 overflow-hidden">
+    <section class="relative pt-24 pb-8 md:pt-32 md:pb-12 overflow-hidden">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
         <!-- Badge Superior con Ping Activo -->
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-slate-900/90 border border-sky-500/40 text-slate-300 shadow-inner mb-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-slate-900/90 border border-sky-500/40 text-slate-300 shadow-inner mb-5">
           <span class="relative flex h-2 w-2">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emeraldAccent-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-emeraldAccent-500"></span>
@@ -339,62 +410,62 @@
         </div>
 
         <!-- H1 Titular de Alto Calibre -->
-        <h1 class="font-heading font-black text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight max-w-5xl mx-auto leading-[1.1] mb-5">
+        <h1 class="font-heading font-black text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight max-w-5xl mx-auto leading-[1.1] mb-4">
           Creamos el <span class="text-glow-gradient">Software, la Aplicación o la Web</span> que tu negocio necesita para crecer y automatizarse.
         </h1>
 
         <!-- Subtítulo de Conversión Real -->
-        <p class="max-w-3xl mx-auto text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed font-normal mb-8">
+        <p class="max-w-3xl mx-auto text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed font-normal mb-6">
           Desde páginas web comerciales y aplicaciones a medida para teléfonos y computadores (Linux y Windows), hasta sistemas de inventario y plataformas operativas de alta velocidad. Transformamos tus procesos manuales en tecnología propia, rápida y rentable.
         </p>
 
         <!-- Botones CTA Principales -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 max-w-md mx-auto mb-12">
-          <a href="#diagnostico" 
-             class="btn-tg-glow w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl text-xs sm:text-sm font-semibold text-white tracking-wide">
-            <i class="fa-brands fa-telegram text-lg"></i>
-            <span>Cotizar Proyecto por Telegram</span>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto mb-10">
+          <button id="hero-advisor-btn" type="button"
+             class="btn-glow-primary w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-xl text-xs sm:text-sm font-semibold text-white tracking-wide cursor-pointer">
+            <i class="fa-regular fa-comment-dots text-base"></i>
+            <span>Hablar con un Asesor Técnico</span>
             <i class="fa-solid fa-arrow-right text-[10px]"></i>
-          </a>
+          </button>
           <a href="#soluciones" 
-             class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:text-white glass-panel hover:bg-slate-800/80 transition-all">
+             class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:text-white glass-panel hover:bg-slate-800/80 transition-all">
             <span>Explorar Soluciones</span>
             <i class="fa-solid fa-chevron-down text-xs text-slate-500"></i>
           </a>
         </div>
 
         <!-- Barra de Autoridad (4 Columnas de Rendimiento Técnico) -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 max-w-5xl mx-auto text-left">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-5xl mx-auto text-left">
           
-          <div class="glass-panel p-4 rounded-xl border border-white/5 hover:border-sky-500/30 transition-all">
+          <div class="glass-panel p-3.5 rounded-xl border border-white/5 hover:border-sky-500/30 transition-all">
             <div class="w-7 h-7 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 mb-2">
               <i class="fa-solid fa-sliders text-xs"></i>
             </div>
-            <div class="font-heading font-bold text-white text-sm sm:text-base">100% A Medida</div>
+            <div class="font-heading font-bold text-white text-xs sm:text-sm">100% A Medida</div>
             <div class="text-[11px] text-slate-400 mt-0.5">Sin plantillas rígidas ni licencias mensuales abusivas.</div>
           </div>
 
-          <div class="glass-panel p-4 rounded-xl border border-white/5 hover:border-emeraldAccent-500/30 transition-all">
+          <div class="glass-panel p-3.5 rounded-xl border border-white/5 hover:border-emeraldAccent-500/30 transition-all">
             <div class="w-7 h-7 rounded-lg bg-emeraldAccent-500/10 border border-emeraldAccent-500/20 flex items-center justify-center text-emeraldAccent-400 mb-2">
               <i class="fa-solid fa-bolt text-xs"></i>
             </div>
-            <div class="font-heading font-bold text-white text-sm sm:text-base">Menos de 1 Segundo</div>
+            <div class="font-heading font-bold text-white text-xs sm:text-sm">Menos de 1 Segundo</div>
             <div class="text-[11px] text-slate-400 mt-0.5">Velocidad extrema de carga y respuesta de servidores.</div>
           </div>
 
-          <div class="glass-panel p-4 rounded-xl border border-white/5 hover:border-neonCyan/30 transition-all">
+          <div class="glass-panel p-3.5 rounded-xl border border-white/5 hover:border-neonCyan/30 transition-all">
             <div class="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-neonCyan mb-2">
               <i class="fa-solid fa-display text-xs"></i>
             </div>
-            <div class="font-heading font-bold text-white text-sm sm:text-base">Web, Móvil & Linux</div>
+            <div class="font-heading font-bold text-white text-xs sm:text-sm">Web, Móvil & Linux</div>
             <div class="text-[11px] text-slate-400 mt-0.5">Desarrollo multiplataforma y software de escritorio nativo.</div>
           </div>
 
-          <div class="glass-panel p-4 rounded-xl border border-white/5 hover:border-sky-500/30 transition-all">
+          <div class="glass-panel p-3.5 rounded-xl border border-white/5 hover:border-sky-500/30 transition-all">
             <div class="w-7 h-7 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 mb-2">
               <i class="fa-solid fa-earth-americas text-xs"></i>
             </div>
-            <div class="font-heading font-bold text-white text-sm sm:text-base">Chile & Global</div>
+            <div class="font-heading font-bold text-white text-xs sm:text-sm">Chile & Global</div>
             <div class="text-[11px] text-slate-400 mt-0.5">Atención en V Región, RM y pagos internacionales.</div>
           </div>
 
@@ -406,29 +477,29 @@
     <!-- ======================================================================= -->
     <!-- SECCIÓN 2: BENTO GRID DE SOLUCIONES (Las 4 Líneas de Acción)            -->
     <!-- ======================================================================= -->
-    <section id="soluciones" class="py-12 md:py-16 relative">
+    <section id="soluciones" class="py-8 md:py-10 relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-3xl mx-auto mb-10">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-sky-500/10 text-sky-400 border border-sky-500/30 mb-3">
+        <div class="text-center max-w-3xl mx-auto mb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-sky-500/10 text-sky-400 border border-sky-500/30 mb-2">
             <i class="fa-solid fa-cubes-stacked text-xs"></i>
             <span>CAPACIDADES DE INGENIERÍA</span>
           </div>
-          <h2 class="font-heading font-extrabold text-2xl sm:text-3xl md:text-4xl text-white tracking-tight mb-3">
+          <h2 class="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight mb-2">
             Ingeniería versátil para problemas reales de negocio
           </h2>
-          <p class="text-slate-400 text-xs sm:text-sm md:text-base">
+          <p class="text-slate-400 text-xs sm:text-sm">
             Diseñamos activos tecnológicos propietarios que ahorran horas de trabajo manual y multiplican tus ventas.
           </p>
         </div>
 
         <!-- Bento Grid Asimétrico con Spotlight Hover -->
-        <div id="bento-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div id="bento-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
           <!-- BLOQUE 1: Apps Web, Móviles y de Escritorio Linux (Col Span 2) -->
-          <div class="spotlight-card md:col-span-2 p-6 sm:p-7 flex flex-col justify-between">
+          <div class="spotlight-card md:col-span-2 p-5 sm:p-6 flex flex-col justify-between">
             <div>
-              <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center justify-between mb-2.5">
                 <span class="px-2.5 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/30">
                   DESARROLLO MULTIPLATAFORMA & DESKTOP
                 </span>
@@ -437,17 +508,17 @@
                   <span>Sync 12ms</span>
                 </span>
               </div>
-              <h3 class="font-heading font-bold text-xl sm:text-2xl text-white mb-2">
+              <h3 class="font-heading font-bold text-lg sm:text-xl text-white mb-1.5">
                 Aplicaciones Web, Móviles y Software de Escritorio Linux
               </h3>
-              <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-5">
+              <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
                 ¿Tienes un modelo de negocio propio o un proceso interno que ningún software del mercado resuelve? Desarrollamos aplicaciones a medida para celulares, navegadores y computadores (Linux, Windows y macOS), incluyendo sistemas de respaldo autónomos y paneles de control offline.
               </p>
             </div>
 
             <!-- Micro-Visualizador: Mockup Abstracto de Sincronización en Nube -->
-            <div class="rounded-xl bg-slate-950/90 border border-white/10 p-3.5 font-mono text-xs shadow-inner">
-              <div class="flex items-center justify-between border-b border-white/10 pb-2 mb-2.5">
+            <div class="rounded-xl bg-slate-950/90 border border-white/10 p-3 font-mono text-xs shadow-inner">
+              <div class="flex items-center justify-between border-b border-white/10 pb-2 mb-2">
                 <div class="flex items-center gap-1.5">
                   <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
                   <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
@@ -459,11 +530,11 @@
                 </div>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-300 text-[11px]">
-                <div class="bg-slate-900/60 p-2 rounded-lg border border-white/5 flex items-center justify-between">
+                <div class="bg-slate-900/60 p-1.5 rounded-lg border border-white/5 flex items-center justify-between">
                   <span>Terminal Operador Terreno:</span>
                   <span class="text-emeraldAccent-400 font-semibold">En línea (PWA)</span>
                 </div>
-                <div class="bg-slate-900/60 p-2 rounded-lg border border-white/5 flex items-center justify-between">
+                <div class="bg-slate-900/60 p-1.5 rounded-lg border border-white/5 flex items-center justify-between">
                   <span>Base de Datos Central:</span>
                   <span class="text-sky-400 font-semibold">PostgreSQL TLS 1.3</span>
                 </div>
@@ -472,55 +543,55 @@
           </div>
 
           <!-- BLOQUE 2: Páginas Web & E-Commerce (Col Span 1) -->
-          <div class="spotlight-card p-6 sm:p-7 flex flex-col justify-between">
+          <div class="spotlight-card p-5 sm:p-6 flex flex-col justify-between">
             <div>
-              <span class="inline-block px-2.5 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-emeraldAccent-500/10 text-emeraldAccent-400 border border-emeraldAccent-500/30 mb-3">
+              <span class="inline-block px-2.5 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-emeraldAccent-500/10 text-emeraldAccent-400 border border-emeraldAccent-500/30 mb-2.5">
                 VENTAS & GOOGLE
               </span>
-              <h3 class="font-heading font-bold text-lg sm:text-xl text-white mb-2">
+              <h3 class="font-heading font-bold text-lg sm:text-xl text-white mb-1.5">
                 Páginas Web & E-Commerce
               </h3>
-              <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-5">
+              <p class="text-slate-300 text-xs leading-relaxed mb-4">
                 Dejamos atrás las páginas web que solo sirven de adorno. Sitios comerciales optimizados para liderar en Google y tiendas online con pagos rápidos, stock en tiempo real y facturación integrada.
               </p>
             </div>
 
             <!-- Micro-Visualizador: Score Google PageSpeed 100/100 Animado -->
-            <div class="rounded-xl bg-slate-950/90 border border-white/10 p-3 text-center">
-              <div class="relative w-16 h-16 mx-auto mb-1.5 flex items-center justify-center">
+            <div class="rounded-xl bg-slate-950/90 border border-white/10 p-2.5 text-center">
+              <div class="relative w-14 h-14 mx-auto mb-1 flex items-center justify-center">
                 <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                   <circle cx="50" cy="50" r="45" stroke="#1E293B" stroke-width="8" fill="none"></circle>
                   <circle cx="50" cy="50" r="45" stroke="#10B981" stroke-width="8" stroke-linecap="round" fill="none" class="circle-animate"></circle>
                 </svg>
-                <div class="absolute inset-0 flex flex-col items-center justify-center font-heading font-extrabold text-white text-base">
+                <div class="absolute inset-0 flex flex-col items-center justify-center font-heading font-extrabold text-white text-sm">
                   100
                   <span class="text-[8px] font-mono text-emeraldAccent-400 font-normal">/ 100</span>
                 </div>
               </div>
-              <div class="text-[11px] font-mono text-slate-300 font-medium">Google PageSpeed Score</div>
+              <div class="text-[10px] font-mono text-slate-300 font-medium">Google PageSpeed Score</div>
               <div class="text-[9px] text-emeraldAccent-400 font-mono">Indexación inmediata garantizada</div>
             </div>
           </div>
 
           <!-- BLOQUE 3: ERP, Inventario Crítico & Fidelización Física (Col Span 1) -->
-          <div class="spotlight-card p-6 sm:p-7 flex flex-col justify-between">
+          <div class="spotlight-card p-5 sm:p-6 flex flex-col justify-between">
             <div>
-              <span class="inline-block px-2.5 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-cyanAccent-500/10 text-cyanAccent-400 border border-cyanAccent-500/30 mb-3">
+              <span class="inline-block px-2.5 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-cyanAccent-500/10 text-cyanAccent-400 border border-cyanAccent-500/30 mb-2.5">
                 CONTROL & RETENCIÓN
               </span>
-              <h3 class="font-heading font-bold text-lg sm:text-xl text-white mb-2">
+              <h3 class="font-heading font-bold text-lg sm:text-xl text-white mb-1.5">
                 Gestión ERP & Fidelización
               </h3>
-              <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-5">
+              <p class="text-slate-300 text-xs leading-relaxed mb-4">
                 Reemplaza el caos de las planillas. Núcleos de control para producción por lotes, descuento inteligente de stock, alertas de recompra y fidelización física mediante dispositivos NFC de contacto instantáneo (sin códigos QR).
               </p>
             </div>
 
             <!-- Micro-Visualizador: Simulador de Contacto NFC y Precisión -->
-            <div class="rounded-xl bg-slate-950/90 border border-white/10 p-3">
-              <div class="flex items-center gap-3 mb-2.5">
-                <div class="relative w-10 h-10 rounded-xl bg-cyanAccent-500/10 border border-cyanAccent-500/30 flex items-center justify-center text-cyanAccent-400 flex-shrink-0">
-                  <i class="fa-solid fa-rss text-base transform rotate-45"></i>
+            <div class="rounded-xl bg-slate-950/90 border border-white/10 p-2.5">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="relative w-9 h-9 rounded-xl bg-cyanAccent-500/10 border border-cyanAccent-500/30 flex items-center justify-center text-cyanAccent-400 flex-shrink-0">
+                  <i class="fa-solid fa-rss text-sm transform rotate-45"></i>
                   <span class="absolute inset-0 rounded-xl border border-cyanAccent-400 nfc-ring-1"></span>
                   <span class="absolute inset-0 rounded-xl border border-cyanAccent-400 nfc-ring-2"></span>
                 </div>
@@ -542,9 +613,9 @@
           </div>
 
           <!-- BLOQUE 4: Operaciones en Terreno, Flotas & Logística (Col Span 2) -->
-          <div class="spotlight-card md:col-span-2 p-6 sm:p-7 flex flex-col justify-between">
+          <div class="spotlight-card md:col-span-2 p-5 sm:p-6 flex flex-col justify-between">
             <div>
-              <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center justify-between mb-2.5">
                 <span class="px-2.5 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/30">
                   TRAZABILIDAD EN TIEMPO REAL
                 </span>
@@ -552,16 +623,16 @@
                   Eje San Antonio ⇄ Valparaíso ⇄ Santiago
                 </span>
               </div>
-              <h3 class="font-heading font-bold text-xl sm:text-2xl text-white mb-2">
+              <h3 class="font-heading font-bold text-lg sm:text-xl text-white mb-1.5">
                 Operaciones en Terreno, Flotas y Logística
               </h3>
-              <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-5">
+              <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
                 Herramientas de alta velocidad para operaciones en movimiento: control de acceso en patio, evidencia fotográfica inmutable de carga en ruta y eliminación total de llamadas de seguimiento.
               </p>
             </div>
 
             <!-- Micro-Visualizador: Línea de Tiempo Luminosa de Ruta -->
-            <div class="rounded-xl bg-slate-950/90 border border-white/10 p-3">
+            <div class="rounded-xl bg-slate-950/90 border border-white/10 p-2.5">
               <div class="grid grid-cols-3 gap-2 text-center font-mono text-xs">
                 <div class="p-2 rounded-lg bg-slate-900 border border-sky-500/30">
                   <div class="text-[9px] text-slate-400 mb-0.5">HITO 1</div>
@@ -599,17 +670,17 @@
     </section>
 
     <!-- ======================================================================= -->
-    <!-- SECCIÓN 3: SELECTOR INTERACTIVO POR RUBROS ("¿Cuál es tu sector?")      -->
+    <!-- SECCIÓN 3: SELECTOR INTERACTIVO POR RUBROS (Espaciado Compactado)       -->
     <!-- ======================================================================= -->
-    <section id="rubros" class="py-12 md:py-16 bg-slateDark/60 border-y border-white/5 relative">
+    <section id="rubros" class="pt-8 pb-5 md:pt-10 md:pb-6 bg-slateDark/60 border-y border-white/5 relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-3xl mx-auto mb-10">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-emeraldAccent-500/10 text-emeraldAccent-400 border border-emeraldAccent-500/30 mb-3">
+        <div class="text-center max-w-3xl mx-auto mb-6">
+          <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full text-xs font-mono bg-emeraldAccent-500/10 text-emeraldAccent-400 border border-emeraldAccent-500/30 mb-2">
             <i class="fa-solid fa-crosshairs text-xs"></i>
             <span>ENFOQUE POR INDUSTRIA</span>
           </div>
-          <h2 class="font-heading font-extrabold text-2xl sm:text-3xl md:text-4xl text-white tracking-tight mb-2">
+          <h2 class="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight mb-1.5">
             Soluciones adaptadas a la realidad de tu industria
           </h2>
           <p class="text-slate-400 text-xs sm:text-sm">
@@ -618,26 +689,26 @@
         </div>
 
         <!-- Botones de Pestañas (Tabs) -->
-        <div class="flex flex-wrap items-center justify-center gap-2.5 mb-8 max-w-4xl mx-auto">
-          <button class="tab-btn active px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border flex items-center gap-2"
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-5 max-w-4xl mx-auto">
+          <button class="tab-btn active px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all border flex items-center gap-2"
                   data-tab="tab-comercio">
             <i class="fa-solid fa-store text-emeraldAccent-400"></i>
             <span>Comercio & Retail</span>
           </button>
           
-          <button class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border flex items-center gap-2"
+          <button class="tab-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all border flex items-center gap-2"
                   data-tab="tab-servicios">
             <i class="fa-solid fa-user-doctor text-sky-400"></i>
             <span>Servicios & Clínicas</span>
           </button>
 
-          <button class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border flex items-center gap-2"
+          <button class="tab-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all border flex items-center gap-2"
                   data-tab="tab-productores">
             <i class="fa-solid fa-boxes-packing text-cyanAccent-400"></i>
             <span>Productores & Bodegas</span>
           </button>
 
-          <button class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border flex items-center gap-2"
+          <button class="tab-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all border flex items-center gap-2"
                   data-tab="tab-transporte">
             <i class="fa-solid fa-anchor text-sky-400"></i>
             <span>Transporte & Patio Logístico</span>
@@ -648,28 +719,28 @@
         <div class="max-w-4xl mx-auto">
           
           <!-- TAB 1: COMERCIO & RETAIL -->
-          <div id="tab-comercio" class="tab-content block glass-panel-elevated p-6 sm:p-7 rounded-3xl border border-white/10 shadow-2xl">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-9 h-9 rounded-xl bg-emeraldAccent-500/10 border border-emeraldAccent-500/30 flex items-center justify-center text-emeraldAccent-400">
-                <i class="fa-solid fa-shop text-base"></i>
+          <div id="tab-comercio" class="tab-content block glass-panel-elevated p-5 sm:p-6 rounded-3xl border border-white/10 shadow-2xl">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-8 h-8 rounded-xl bg-emeraldAccent-500/10 border border-emeraldAccent-500/30 flex items-center justify-center text-emeraldAccent-400">
+                <i class="fa-solid fa-shop text-sm"></i>
               </div>
-              <h3 class="font-heading font-bold text-xl sm:text-2xl text-white">Multiplica la recompra y automatiza cada venta.</h3>
+              <h3 class="font-heading font-bold text-lg sm:text-xl text-white">Multiplica la recompra y automatiza cada venta.</h3>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
-              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-white/5">
-                <div class="text-emeraldAccent-400 font-heading font-bold text-sm mb-1.5">Fidelización sin fricción</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 mt-4">
+              <div class="p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-emeraldAccent-400 font-heading font-bold text-xs sm:text-sm mb-1">Fidelización sin fricción</div>
                 <p class="text-slate-300 text-xs leading-relaxed">
                   Tótems físicos de contacto directo en tu mostrador para capturar datos de clientes, entregar beneficios y activar sorteos sin depender de apps ni códigos QR lentos.
                 </p>
               </div>
-              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-white/5">
-                <div class="text-sky-400 font-heading font-bold text-sm mb-1.5">E-commerce que no falla</div>
+              <div class="p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-sky-400 font-heading font-bold text-xs sm:text-sm mb-1">E-commerce que no falla</div>
                 <p class="text-slate-300 text-xs leading-relaxed">
                   Catálogos ultra rápidos con control de stock real, pasarelas de pago blindadas y emisión automática de comprobantes.
                 </p>
               </div>
-              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-white/5">
-                <div class="text-cyanAccent-400 font-heading font-bold text-sm mb-1.5">Reactivación inteligente</div>
+              <div class="p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-cyanAccent-400 font-heading font-bold text-xs sm:text-sm mb-1">Reactivación inteligente</div>
                 <p class="text-slate-300 text-xs leading-relaxed">
                   Alertas automáticas para que tus clientes vuelvan a comprar en el momento exacto en que su consumo habitual se está agotando.
                 </p>
@@ -678,28 +749,28 @@
           </div>
 
           <!-- TAB 2: SERVICIOS & CLÍNICAS -->
-          <div id="tab-servicios" class="tab-content hidden glass-panel-elevated p-6 sm:p-7 rounded-3xl border border-white/10 shadow-2xl">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400">
-                <i class="fa-solid fa-stethoscope text-base"></i>
+          <div id="tab-servicios" class="tab-content hidden glass-panel-elevated p-5 sm:p-6 rounded-3xl border border-white/10 shadow-2xl">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400">
+                <i class="fa-solid fa-stethoscope text-sm"></i>
               </div>
-              <h3 class="font-heading font-bold text-xl sm:text-2xl text-white">Convierte visitantes en clientes agendados todos los días.</h3>
+              <h3 class="font-heading font-bold text-lg sm:text-xl text-white">Convierte visitantes en clientes agendados todos los días.</h3>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
-              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-white/5">
-                <div class="text-sky-400 font-heading font-bold text-sm mb-1.5">Presencia web dominante</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 mt-4">
+              <div class="p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-sky-400 font-heading font-bold text-xs sm:text-sm mb-1">Presencia web dominante</div>
                 <p class="text-slate-300 text-xs leading-relaxed">
                   Sitios de alta estética que proyectan autoridad médica, legal o corporativa inmediata y capturan búsquedas orgánicas en Google.
                 </p>
               </div>
-              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-white/5">
-                <div class="text-emeraldAccent-400 font-heading font-bold text-sm mb-1.5">Agendamiento autónomo</div>
+              <div class="p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-emeraldAccent-400 font-heading font-bold text-xs sm:text-sm mb-1">Agendamiento autónomo</div>
                 <p class="text-slate-300 text-xs leading-relaxed">
                   Embudos interactivos que filtran al cliente ideal, capturan el requerimiento y lo envían estructurado directo a tu chat de atención.
                 </p>
               </div>
-              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-white/5">
-                <div class="text-cyanAccent-400 font-heading font-bold text-sm mb-1.5">Portales privados</div>
+              <div class="p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-cyanAccent-400 font-heading font-bold text-xs sm:text-sm mb-1">Portales privados</div>
                 <p class="text-slate-300 text-xs leading-relaxed">
                   Áreas seguras para pacientes o clientes con historial de atención, fichas clínicas digitales y gestión documental protegida en la nube.
                 </p>
@@ -708,28 +779,28 @@
           </div>
 
           <!-- TAB 3: PRODUCTORES & BODEGAS -->
-          <div id="tab-productores" class="tab-content hidden glass-panel-elevated p-6 sm:p-7 rounded-3xl border border-white/10 shadow-2xl">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-9 h-9 rounded-xl bg-cyanAccent-500/10 border border-cyanAccent-500/30 flex items-center justify-center text-cyanAccent-400">
-                <i class="fa-solid fa-industry text-base"></i>
+          <div id="tab-productores" class="tab-content hidden glass-panel-elevated p-5 sm:p-6 rounded-3xl border border-white/10 shadow-2xl">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-8 h-8 rounded-xl bg-cyanAccent-500/10 border border-cyanAccent-500/30 flex items-center justify-center text-cyanAccent-400">
+                <i class="fa-solid fa-industry text-sm"></i>
               </div>
-              <h3 class="font-heading font-bold text-xl sm:text-2xl text-white">Trazabilidad exacta desde la materia prima hasta el despacho.</h3>
+              <h3 class="font-heading font-bold text-lg sm:text-xl text-white">Trazabilidad exacta desde la materia prima hasta el despacho.</h3>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
-              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-white/5">
-                <div class="text-cyanAccent-400 font-heading font-bold text-sm mb-1.5">Control por Lotes y Fechas</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 mt-4">
+              <div class="p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-cyanAccent-400 font-heading font-bold text-xs sm:text-sm mb-1">Control por Lotes y Fechas</div>
                 <p class="text-slate-300 text-xs leading-relaxed">
                   Descuento automático de inventario, trazabilidad de recetas o insumos, cálculo de mermas y generación dinámica de etiquetas técnicas.
                 </p>
               </div>
-              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-white/5">
-                <div class="text-emeraldAccent-400 font-heading font-bold text-sm mb-1.5">Protección de Margen</div>
+              <div class="p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-emeraldAccent-400 font-heading font-bold text-xs sm:text-sm mb-1">Protección de Margen</div>
                 <p class="text-slate-300 text-xs leading-relaxed">
                   Alertas tempranas y automáticas cuando el stock disponible se acerca a umbrales críticos de operación o encarecimiento de insumos.
                 </p>
               </div>
-              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-white/5">
-                <div class="text-sky-400 font-heading font-bold text-sm mb-1.5">Gestión de Despacho</div>
+              <div class="p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-sky-400 font-heading font-bold text-xs sm:text-sm mb-1">Gestión de Despacho</div>
                 <p class="text-slate-300 text-xs leading-relaxed">
                   Cierre de pedidos conectado directamente con control de inventario, comprobantes de entrega y liquidación rápida.
                 </p>
@@ -738,28 +809,28 @@
           </div>
 
           <!-- TAB 4: TRANSPORTE & LOGÍSTICA PORTUARIA -->
-          <div id="tab-transporte" class="tab-content hidden glass-panel-elevated p-6 sm:p-7 rounded-3xl border border-white/10 shadow-2xl">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400">
-                <i class="fa-solid fa-ship text-base"></i>
+          <div id="tab-transporte" class="tab-content hidden glass-panel-elevated p-5 sm:p-6 rounded-3xl border border-white/10 shadow-2xl">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400">
+                <i class="fa-solid fa-ship text-sm"></i>
               </div>
-              <h3 class="font-heading font-bold text-xl sm:text-2xl text-white">Velocidad en terreno para el corredor San Antonio – Valparaíso – RM.</h3>
+              <h3 class="font-heading font-bold text-lg sm:text-xl text-white">Velocidad en terreno para el corredor San Antonio – Valparaíso – RM.</h3>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
-              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-white/5">
-                <div class="text-sky-400 font-heading font-bold text-sm mb-1.5">Patio sin Papel</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 mt-4">
+              <div class="p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-sky-400 font-heading font-bold text-xs sm:text-sm mb-1">Patio sin Papel</div>
                 <p class="text-slate-300 text-xs leading-relaxed">
                   Acreditación rápida de unidades y choferes en portería, registro fotográfico inmutable del estado de contenedores o carga y fin de las filas.
                 </p>
               </div>
-              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-white/5">
-                <div class="text-cyanAccent-400 font-heading font-bold text-sm mb-1.5">Cero "Llamitis" de Clientes</div>
+              <div class="p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-cyanAccent-400 font-heading font-bold text-xs sm:text-sm mb-1">Cero "Llamitis" de Clientes</div>
                 <p class="text-slate-300 text-xs leading-relaxed">
                   Portales de seguimiento con link privado y notificaciones automáticas por Telegram en cada hito del viaje, liberando tu teléfono.
                 </p>
               </div>
-              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-white/5">
-                <div class="text-emeraldAccent-400 font-heading font-bold text-sm mb-1.5">Liquidación Acelerada</div>
+              <div class="p-3 rounded-2xl bg-slate-900/60 border border-white/5">
+                <div class="text-emeraldAccent-400 font-heading font-bold text-xs sm:text-sm mb-1">Liquidación Acelerada</div>
                 <p class="text-slate-300 text-xs leading-relaxed">
                   Del cierre de ruta con comprobante digital firmado en pantalla a la pre-facturación y cobro en cuestión de segundos.
                 </p>
@@ -773,17 +844,17 @@
     </section>
 
     <!-- ======================================================================= -->
-    <!-- SECCIÓN 4: ECOSISTEMA EN PRODUCCIÓN (Casos Reales de Ingeniería PPV)    -->
+    <!-- SECCIÓN 4: ECOSISTEMA EN PRODUCCIÓN (Espacio Superior Reducido al 50%)  -->
     <!-- ======================================================================= -->
-    <section id="casos" class="py-12 md:py-16 relative">
+    <section id="casos" class="pt-5 pb-8 md:pt-6 md:pb-10 relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-3xl mx-auto mb-10">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-sky-500/10 text-sky-400 border border-sky-500/30 mb-3">
+        <div class="text-center max-w-3xl mx-auto mb-6">
+          <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full text-xs font-mono bg-sky-500/10 text-sky-400 border border-sky-500/30 mb-2">
             <i class="fa-solid fa-server text-xs"></i>
             <span>GARANTÍA DE COMBATE</span>
           </div>
-          <h2 class="font-heading font-extrabold text-2xl sm:text-3xl md:text-4xl text-white tracking-tight mb-2">
+          <h2 class="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight mb-1.5">
             Tecnología propia operando en el mundo real
           </h2>
           <p class="text-slate-400 text-xs sm:text-sm">
@@ -791,32 +862,32 @@
           </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
           <!-- CASO 1: TIMBRAAPP -->
-          <div class="glass-panel p-6 rounded-2xl border border-white/10 hover:border-emeraldAccent-500/40 transition-all flex flex-col justify-between group">
+          <div class="glass-panel p-5 rounded-2xl border border-white/10 hover:border-emeraldAccent-500/40 transition-all flex flex-col justify-between group">
             <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-emeraldAccent-500/10 text-emeraldAccent-400 border border-emeraldAccent-500/30">
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-emeraldAccent-500/10 text-emeraldAccent-400 border border-emeraldAccent-500/30">
                   FIDELIZACIÓN NFC
                 </span>
                 <span class="text-xs font-mono text-slate-500 group-hover:text-emeraldAccent-400 transition-colors">
                   <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </span>
               </div>
-              <h3 class="font-heading font-bold text-xl text-white mb-1">TimbraApp</h3>
-              <p class="text-[11px] font-mono text-emeraldAccent-400 mb-3">timbraapp.cl</p>
-              <p class="text-slate-300 text-xs leading-relaxed mb-4">
+              <h3 class="font-heading font-bold text-lg text-white mb-0.5">TimbraApp</h3>
+              <p class="text-[11px] font-mono text-emeraldAccent-400 mb-2">timbraapp.cl</p>
+              <p class="text-slate-300 text-xs leading-relaxed mb-3">
                 Ecosistema de fidelización comercial 100% sin contacto para locales físicos. Integra hardware acrílico NFC con arquitectura en la nube de alta velocidad y captura de clientes sin apps ni QR.
               </p>
             </div>
             <div>
-              <div class="border-t border-white/10 pt-3 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <div class="border-t border-white/10 pt-2.5 flex items-center justify-between text-[11px] font-mono text-slate-400">
                 <span>Producción Real</span>
                 <span class="text-emeraldAccent-400 font-bold">● Activo 24/7</span>
               </div>
               <a href="https://timbraapp.cl" target="_blank" rel="noopener noreferrer" 
-                 class="mt-3 inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-white/10 transition-all">
+                 class="mt-2.5 inline-flex items-center justify-center gap-1.5 w-full py-1.5 rounded-xl text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-white/10 transition-all">
                 <span>Visitar Plataforma</span>
                 <i class="fa-solid fa-arrow-right text-[9px]"></i>
               </a>
@@ -824,29 +895,29 @@
           </div>
 
           <!-- CASO 2: ORIGEN CANINO -->
-          <div class="glass-panel p-6 rounded-2xl border border-white/10 hover:border-sky-500/40 transition-all flex flex-col justify-between group">
+          <div class="glass-panel p-5 rounded-2xl border border-white/10 hover:border-sky-500/40 transition-all flex flex-col justify-between group">
             <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/30">
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/30">
                   ERP LOTES & TIENDA
                 </span>
                 <span class="text-xs font-mono text-slate-500 group-hover:text-sky-400 transition-colors">
                   <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </span>
               </div>
-              <h3 class="font-heading font-bold text-xl text-white mb-1">Origen Canino</h3>
-              <p class="text-[11px] font-mono text-sky-400 mb-3">origencanino.cl</p>
-              <p class="text-slate-300 text-xs leading-relaxed mb-4">
+              <h3 class="font-heading font-bold text-lg text-white mb-0.5">Origen Canino</h3>
+              <p class="text-[11px] font-mono text-sky-400 mb-2">origencanino.cl</p>
+              <p class="text-slate-300 text-xs leading-relaxed mb-3">
                 Plataforma integral de comercio electrónico e inventario industrial. Opera con trazabilidad estricta por lotes FIFO, costeo de mermas de recetas y despacho automatizado.
               </p>
             </div>
             <div>
-              <div class="border-t border-white/10 pt-3 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <div class="border-t border-white/10 pt-2.5 flex items-center justify-between text-[11px] font-mono text-slate-400">
                 <span>Producción Real</span>
                 <span class="text-sky-400 font-bold">● Activo 24/7</span>
               </div>
               <a href="https://origencanino.cl" target="_blank" rel="noopener noreferrer" 
-                 class="mt-3 inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-white/10 transition-all">
+                 class="mt-2.5 inline-flex items-center justify-center gap-1.5 w-full py-1.5 rounded-xl text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-white/10 transition-all">
                 <span>Visitar Plataforma</span>
                 <i class="fa-solid fa-arrow-right text-[9px]"></i>
               </a>
@@ -854,29 +925,29 @@
           </div>
 
           <!-- CASO 3: LEGRAND PETIT -->
-          <div class="glass-panel p-6 rounded-2xl border border-white/10 hover:border-cyanAccent-500/40 transition-all flex flex-col justify-between group">
+          <div class="glass-panel p-5 rounded-2xl border border-white/10 hover:border-cyanAccent-500/40 transition-all flex flex-col justify-between group">
             <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-cyanAccent-500/10 text-cyanAccent-400 border border-cyanAccent-500/30">
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-cyanAccent-500/10 text-cyanAccent-400 border border-cyanAccent-500/30">
                   WEB & LEGAL CANINO
                 </span>
                 <span class="text-xs font-mono text-slate-500 group-hover:text-cyanAccent-400 transition-colors">
                   <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </span>
               </div>
-              <h3 class="font-heading font-bold text-xl text-white mb-1">Legrand Petit</h3>
-              <p class="text-[11px] font-mono text-cyanAccent-400 mb-3">legrandpetit.cl</p>
-              <p class="text-slate-300 text-xs leading-relaxed mb-4">
+              <h3 class="font-heading font-bold text-lg text-white mb-0.5">Legrand Petit</h3>
+              <p class="text-[11px] font-mono text-cyanAccent-400 mb-2">legrandpetit.cl</p>
+              <p class="text-slate-300 text-xs leading-relaxed mb-3">
                 Plataforma digital con módulos de trazabilidad sanitaria oficial, generación de contratos según Ley 21.020 y pedigríes interactivos con velocidad extrema de renderizado.
               </p>
             </div>
             <div>
-              <div class="border-t border-white/10 pt-3 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <div class="border-t border-white/10 pt-2.5 flex items-center justify-between text-[11px] font-mono text-slate-400">
                 <span>Producción Real</span>
                 <span class="text-cyanAccent-400 font-bold">● Activo 24/7</span>
               </div>
               <a href="https://legrandpetit.cl" target="_blank" rel="noopener noreferrer" 
-                 class="mt-3 inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-white/10 transition-all">
+                 class="mt-2.5 inline-flex items-center justify-center gap-1.5 w-full py-1.5 rounded-xl text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-white/10 transition-all">
                 <span>Visitar Plataforma</span>
                 <i class="fa-solid fa-arrow-right text-[9px]"></i>
               </a>
@@ -884,29 +955,29 @@
           </div>
 
           <!-- CASO 4: AURORA DESIGN -->
-          <div class="glass-panel p-6 rounded-2xl border border-white/10 hover:border-purple-500/40 transition-all flex flex-col justify-between group">
+          <div class="glass-panel p-5 rounded-2xl border border-white/10 hover:border-purple-500/40 transition-all flex flex-col justify-between group">
             <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/30">
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/30">
                   DISEÑO & BRANDING WEB
                 </span>
                 <span class="text-xs font-mono text-slate-500 group-hover:text-purple-400 transition-colors">
                   <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </span>
               </div>
-              <h3 class="font-heading font-bold text-xl text-white mb-1">Aurora Design</h3>
-              <p class="text-[11px] font-mono text-purple-400 mb-3">auroradesings.cl</p>
-              <p class="text-slate-300 text-xs leading-relaxed mb-4">
+              <h3 class="font-heading font-bold text-lg text-white mb-0.5">Aurora Design</h3>
+              <p class="text-[11px] font-mono text-purple-400 mb-2">auroradesings.cl</p>
+              <p class="text-slate-300 text-xs leading-relaxed mb-3">
                 Estudio de diseño digital y arquitectura web de alta estética. Creación de plataformas exclusivas, identidades de marca y experiencias visuales inmersivas en Chile.
               </p>
             </div>
             <div>
-              <div class="border-t border-white/10 pt-3 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <div class="border-t border-white/10 pt-2.5 flex items-center justify-between text-[11px] font-mono text-slate-400">
                 <span>Producción Real</span>
                 <span class="text-purple-400 font-bold">● Activo 24/7</span>
               </div>
               <a href="https://auroradesings.cl/" target="_blank" rel="noopener noreferrer" 
-                 class="mt-3 inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-white/10 transition-all">
+                 class="mt-2.5 inline-flex items-center justify-center gap-1.5 w-full py-1.5 rounded-xl text-xs font-semibold text-white bg-slate-800/80 hover:bg-slate-700 border border-white/10 transition-all">
                 <span>Visitar Plataforma</span>
                 <i class="fa-solid fa-arrow-right text-[9px]"></i>
               </a>
@@ -921,18 +992,18 @@
     <!-- ======================================================================= -->
     <!-- SECCIÓN 5: LANZADOR INTERACTIVO DE PROYECTOS (Integración Bot Telegram)  -->
     <!-- ======================================================================= -->
-    <section id="diagnostico" class="py-12 md:py-16 relative overflow-hidden">
+    <section id="diagnostico" class="py-8 md:py-12 relative overflow-hidden">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Contenedor Destacado con Borde Iluminado -->
-        <div class="glass-panel-elevated p-6 sm:p-10 rounded-3xl border border-sky-500/30 shadow-2xl relative">
+        <div class="glass-panel-elevated p-5 sm:p-8 rounded-3xl border border-sky-500/30 shadow-2xl relative">
           
-          <div class="text-center max-w-2xl mx-auto mb-8">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-sky-500/10 text-sky-400 border border-sky-500/30 mb-3">
+          <div class="text-center max-w-2xl mx-auto mb-6">
+            <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full text-xs font-mono bg-sky-500/10 text-sky-400 border border-sky-500/30 mb-2">
               <i class="fa-brands fa-telegram text-xs"></i>
               <span>CANAL DIRECTO TELEGRAM (@ppvsoluciones_bot)</span>
             </div>
-            <h2 class="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight mb-2">
+            <h2 class="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight mb-1.5">
               ¿Listo para construir o escalar tu sistema?
             </h2>
             <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
@@ -941,31 +1012,31 @@
           </div>
 
           <!-- Selector en 2 Pasos (Sin recarga de página) -->
-          <div class="space-y-6">
+          <div class="space-y-5">
             
             <!-- PASO 1 -->
             <div>
-              <label class="block text-xs font-mono uppercase tracking-wider text-slate-300 font-semibold mb-2.5 flex items-center gap-2">
+              <label class="block text-xs font-mono uppercase tracking-wider text-slate-300 font-semibold mb-2 flex items-center gap-2">
                 <span class="w-4 h-4 rounded-full bg-sky-600 text-white flex items-center justify-center text-[10px]">1</span>
                 <span>¿Qué área quieres potenciar en tu empresa?</span>
               </label>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="area-selector">
-                <button type="button" class="launcher-pill active p-3 rounded-xl text-xs sm:text-sm font-medium text-left border transition-all flex items-center gap-2.5"
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="area-selector">
+                <button type="button" class="launcher-pill active p-2.5 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2.5"
                         data-area="Página Web Comercial / E-Commerce">
                   <i class="fa-solid fa-globe text-sky-400"></i>
                   <span>Página Web Comercial / E-Commerce</span>
                 </button>
-                <button type="button" class="launcher-pill p-3 rounded-xl text-xs sm:text-sm font-medium text-left border transition-all flex items-center gap-2.5"
+                <button type="button" class="launcher-pill p-2.5 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2.5"
                         data-area="Aplicación Web o Móvil a Medida">
                   <i class="fa-solid fa-mobile-screen text-emeraldAccent-400"></i>
                   <span>Aplicación Web o Móvil a Medida</span>
                 </button>
-                <button type="button" class="launcher-pill p-3 rounded-xl text-xs sm:text-sm font-medium text-left border transition-all flex items-center gap-2.5"
+                <button type="button" class="launcher-pill p-2.5 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2.5"
                         data-area="Software de Escritorio, Linux o Multiplataforma">
                   <i class="fa-solid fa-desktop text-neonCyan"></i>
                   <span>Software de Escritorio, Linux o Multiplataforma</span>
                 </button>
-                <button type="button" class="launcher-pill p-3 rounded-xl text-xs sm:text-sm font-medium text-left border transition-all flex items-center gap-2.5"
+                <button type="button" class="launcher-pill p-2.5 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2.5"
                         data-area="Sistema de Inventario, Lotes o Logística">
                   <i class="fa-solid fa-boxes-stacked text-purple-400"></i>
                   <span>Sistema de Inventario, Lotes o Logística</span>
@@ -975,22 +1046,22 @@
 
             <!-- PASO 2 -->
             <div>
-              <label class="block text-xs font-mono uppercase tracking-wider text-slate-300 font-semibold mb-2.5 flex items-center gap-2">
+              <label class="block text-xs font-mono uppercase tracking-wider text-slate-300 font-semibold mb-2 flex items-center gap-2">
                 <span class="w-4 h-4 rounded-full bg-emeraldAccent-600 text-white flex items-center justify-center text-[10px]">2</span>
                 <span>¿Cuál es tu prioridad principal hoy?</span>
               </label>
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5" id="priority-selector">
-                <button type="button" class="priority-pill active p-2.5 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2"
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2" id="priority-selector">
+                <button type="button" class="priority-pill active p-2 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2"
                         data-priority="Captar más clientes y vender más">
                   <i class="fa-solid fa-arrow-trend-up text-emeraldAccent-400"></i>
                   <span>Captar clientes y vender más</span>
                 </button>
-                <button type="button" class="priority-pill p-2.5 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2"
+                <button type="button" class="priority-pill p-2 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2"
                         data-priority="Eliminar planillas manuales y errores">
                   <i class="fa-solid fa-file-excel text-red-400"></i>
                   <span>Eliminar planillas y errores</span>
                 </button>
-                <button type="button" class="priority-pill p-2.5 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2"
+                <button type="button" class="priority-pill p-2 rounded-xl text-xs font-medium text-left border transition-all flex items-center gap-2"
                         data-priority="Crear un producto o software desde cero">
                   <i class="fa-solid fa-rocket text-cyanAccent-400"></i>
                   <span>Crear software desde cero</span>
@@ -999,27 +1070,27 @@
             </div>
 
             <!-- CAMPOS DE CONTACTO: Nombre y Correo/Teléfono -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <div>
                 <label for="client-name" class="block text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold mb-1">
                   Tu Nombre o Empresa:
                 </label>
                 <input type="text" id="client-name" 
                        placeholder="Ej: Distribuidora del Puerto / Carlos"
-                       class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-white/10 text-white text-xs focus:outline-none focus:border-sky-500 font-sans transition-all">
+                       class="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-white/10 text-white text-xs focus:outline-none focus:border-sky-500 font-sans transition-all">
               </div>
               <div>
                 <label for="client-contact" class="block text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold mb-1">
-                  Tu Correo o Usuario Telegram:
+                  Tu Teléfono (+56 9...) o Correo:
                 </label>
                 <input type="text" id="client-contact" 
-                       placeholder="Ej: carlos@empresa.com / @carlos"
-                       class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-white/10 text-white text-xs focus:outline-none focus:border-sky-500 font-sans transition-all">
+                       placeholder="Ej: +56 9 1234 5678 o carlos@empresa.com"
+                       class="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-white/10 text-white text-xs focus:outline-none focus:border-sky-500 font-sans transition-all">
               </div>
             </div>
 
             <!-- CAJA DE PREVISUALIZACIÓN DEL MENSAJE TELEGRAM -->
-            <div class="p-3.5 rounded-xl bg-slate-950 border border-white/10 font-mono text-xs">
+            <div class="p-3 rounded-xl bg-slate-950 border border-white/10 font-mono text-xs">
               <div class="text-slate-400 text-[10px] mb-1 flex items-center gap-1.5">
                 <i class="fa-brands fa-telegram text-sky-400"></i>
                 <span>Mensaje directo al Telegram de Ingeniería:</span>
@@ -1030,19 +1101,19 @@
             </div>
 
             <!-- MENSAJE DE CONFIRMACIÓN DINÁMICO -->
-            <div id="submit-feedback" class="hidden p-3 rounded-xl text-xs font-mono"></div>
+            <div id="submit-feedback" class="hidden p-2.5 rounded-xl text-xs font-mono"></div>
 
             <!-- BOTÓN DE ACCIÓN FINAL A TELEGRAM -->
             <div>
               <button id="btn-submit-telegram" 
                       type="button"
-                      class="btn-tg-glow w-full flex items-center justify-center gap-2.5 py-3.5 rounded-xl text-xs sm:text-sm font-semibold text-white tracking-wide shadow-xl cursor-pointer">
-                <i class="fa-brands fa-telegram text-lg"></i>
+                      class="btn-glow-primary w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs sm:text-sm font-semibold text-white tracking-wide shadow-xl cursor-pointer">
+                <i class="fa-brands fa-telegram text-base"></i>
                 <span>Enviar Requerimiento a Telegram (@ppvsoluciones_bot)</span>
                 <i class="fa-solid fa-arrow-right text-[10px]"></i>
               </button>
               <div class="text-center text-[10px] font-mono text-slate-500 mt-2">
-                Respuesta directa por Patricio Padilla (CEO & Fundador) vía Telegram • Base de datos segura TLS 1.3
+                Respuesta directa por el equipo de ingeniería vía Telegram • Base de datos segura TLS 1.3
               </div>
             </div>
 
@@ -1054,22 +1125,22 @@
     </section>
 
     <!-- ======================================================================= -->
-    <!-- FOOTER CORPORATIVO Y SELLO DE SEGURIDAD                                 -->
+    <!-- FOOTER CORPORATIVO Y SELLO DE SEGURIDAD (Con Padding Inferior Anti-Tape) -->
     <!-- ======================================================================= -->
-    <footer class="border-t border-white/10 bg-slateDark/90 pt-10 pb-8 text-xs text-slate-400">
+    <footer class="border-t border-white/10 bg-slateDark/95 pt-8 pb-20 sm:pb-24 text-xs text-slate-400 relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           
           <!-- Columna 1: Identidad -->
           <div class="md:col-span-2">
-            <div class="flex items-center gap-2.5 mb-2.5">
+            <div class="flex items-center gap-2.5 mb-2">
               <span class="font-heading font-black text-2xl tracking-tighter text-white">PPV<span class="text-[#00f3ff] text-3xl font-black leading-none drop-shadow-[0_0_8px_#00f3ff]">.</span></span>
               <span class="text-[10px] uppercase tracking-widest font-mono text-emeraldAccent-400 font-semibold border-l border-white/15 pl-2">
                 Soluciones
               </span>
             </div>
-            <p class="text-slate-400 text-xs max-w-md leading-relaxed mb-3">
+            <p class="text-slate-400 text-xs max-w-md leading-relaxed mb-2.5">
               Ingeniería de software a medida, aplicaciones web, móviles y de escritorio Linux/Windows. Diseñamos activos tecnológicos propietarios que generan ventaja operativa real.
             </p>
             <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg text-[11px] font-mono bg-slate-900 border border-white/10 text-slate-300">
@@ -1080,10 +1151,10 @@
 
           <!-- Columna 2: Plataformas Activas -->
           <div>
-            <h4 class="font-heading font-bold text-white text-xs uppercase tracking-wider mb-3">Ecosistema PPV</h4>
+            <h4 class="font-heading font-bold text-white text-xs uppercase tracking-wider mb-2.5">Ecosistema PPV</h4>
             <ul class="space-y-1.5 text-xs font-mono">
               <li>
-                <a href="https://timbrapp.cl" target="_blank" rel="noopener noreferrer" class="hover:text-emeraldAccent-400 transition-colors flex items-center gap-1.5">
+                <a href="https://timbraapp.cl" target="_blank" rel="noopener noreferrer" class="hover:text-emeraldAccent-400 transition-colors flex items-center gap-1.5">
                   <i class="fa-solid fa-rss text-[9px] text-emeraldAccent-400"></i>
                   <span>TimbraApp (NFC)</span>
                 </a>
@@ -1109,19 +1180,30 @@
             </ul>
           </div>
 
-          <!-- Columna 3: Contacto Técnico Directo -->
+          <!-- Columna 3: Contacto Técnico Directo (Teléfono, WhatsApp, Telegram, Correo) -->
           <div>
-            <h4 class="font-heading font-bold text-white text-xs uppercase tracking-wider mb-3">Contacto Directo</h4>
-            <ul class="space-y-2 text-xs text-slate-300">
-              <li class="flex items-center gap-2">
-                <i class="fa-brands fa-telegram text-sky-400"></i>
-                <a href="https://t.me/ppvsoluciones_bot" target="_blank" rel="noopener noreferrer" class="hover:text-white font-mono">@ppvsoluciones_bot</a>
+            <h4 class="font-heading font-bold text-white text-xs uppercase tracking-wider mb-2.5">Contacto Directo</h4>
+            <ul class="space-y-1.5 text-xs text-slate-300">
+              <li>
+                <a href="tel:+56947609070" class="hover:text-emeraldAccent-400 font-mono flex items-center gap-2 transition-colors">
+                  <i class="fa-solid fa-phone text-emeraldAccent-400 text-xs"></i>
+                  <i class="fa-brands fa-whatsapp text-emeraldAccent-400 text-sm"></i>
+                  <span>+56 9 4760 9070</span>
+                </a>
               </li>
-              <li class="flex items-center gap-2">
-                <i class="fa-solid fa-envelope text-neonCyan"></i>
-                <a href="mailto:ppv@ppvsoluciones.cl" class="hover:text-white font-mono">ppv@ppvsoluciones.cl</a>
+              <li>
+                <a href="https://t.me/ppvsoluciones_bot" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 font-mono flex items-center gap-2 transition-colors">
+                  <i class="fa-brands fa-telegram text-sky-400 text-sm"></i>
+                  <span>@ppvsoluciones_bot</span>
+                </a>
               </li>
-              <li class="text-[10px] text-slate-500 font-mono mt-2">
+              <li>
+                <a href="mailto:ppv@ppvsoluciones.cl" class="hover:text-neonCyan font-mono flex items-center gap-2 transition-colors">
+                  <i class="fa-solid fa-envelope text-neonCyan text-xs"></i>
+                  <span>ppv@ppvsoluciones.cl</span>
+                </a>
+              </li>
+              <li class="text-[10px] text-slate-500 font-mono pt-1">
                 Chile: Algarrobo, San Antonio, Santiago. Internacional: Worldwide.
               </li>
             </ul>
@@ -1129,13 +1211,13 @@
 
         </div>
 
-        <!-- Sello de Seguridad y Copyright -->
-        <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] font-mono text-slate-500">
+        <!-- Sello de Seguridad y Copyright Libre de Obstáculos -->
+        <div class="border-t border-white/10 pt-5 flex flex-col md:flex-row items-center justify-between gap-2.5 text-[11px] font-mono text-slate-400">
           <div class="flex items-center gap-2 text-center md:text-left">
             <i class="fa-solid fa-shield-halved text-emeraldAccent-400 text-xs"></i>
             <span>Servidores Linux endurecidos, TLS 1.3 y arquitectura optimizada para operaciones críticas.</span>
           </div>
-          <div>
+          <div class="text-slate-300 font-semibold tracking-wide">
             &copy; 2026 PPV Soluciones Informáticas. Todos los derechos reservados.
           </div>
         </div>
@@ -1146,7 +1228,7 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- MOTOR JS NATIVO: CANVAS CYBERPUNK 60 FPS, SPOTLIGHT, TABS & BOT TELEGRAM   -->
+  <!-- MOTOR JS NATIVO: CANVAS CYBERPUNK 60 FPS, DRAGGABLE PILL, MODAL & TABS    -->
   <!-- ========================================================================= -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -1162,7 +1244,6 @@
         let mouse = { x: -1000, y: -1000, radius: 220 };
         const particleCount = Math.min(window.innerWidth < 768 ? 55 : 100, 110);
 
-        // Paleta Cyberpunk rica y viva
         const cyberpunkColors = [
           'rgba(0, 243, 255, ',   // Neón Cyan
           'rgba(255, 0, 127, ',   // Neón Magenta / Fucsia
@@ -1197,7 +1278,6 @@
             this.y = Math.random() * height;
             this.vx = (Math.random() - 0.5) * 0.9;
             this.vy = (Math.random() - 0.5) * 0.9;
-            // Variedad de tamaños: puntos grandes y chicos
             this.size = Math.random() * 3.5 + 1.2;
             this.color = cyberpunkColors[Math.floor(Math.random() * cyberpunkColors.length)];
             this.baseAlpha = Math.random() * 0.55 + 0.45;
@@ -1211,11 +1291,9 @@
             this.y += this.vy;
             this.pulsePhase += this.pulseSpeed;
 
-            // Rebote elástico
             if (this.x < 0 || this.x > width) this.vx *= -1;
             if (this.y < 0 || this.y > height) this.vy *= -1;
 
-            // Reacción gravitatoria elástica al puntero
             const dx = mouse.x - this.x;
             const dy = mouse.y - this.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
@@ -1238,7 +1316,6 @@
               ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
               ctx.fill();
             } else if (this.shape === 'diamond') {
-              // Rombo Cyberpunk
               ctx.beginPath();
               ctx.moveTo(this.x, this.y - this.size * 1.4);
               ctx.lineTo(this.x + this.size * 1.4, this.y);
@@ -1247,7 +1324,6 @@
               ctx.closePath();
               ctx.fill();
             } else if (this.shape === 'cross') {
-              // Cruz de datos / Estrella de 4 puntas
               const arm = this.size * 1.6;
               ctx.beginPath();
               ctx.moveTo(this.x - arm, this.y);
@@ -1256,7 +1332,6 @@
               ctx.lineTo(this.x, this.y + arm);
               ctx.stroke();
             } else if (this.shape === 'ring') {
-              // Anillo concéntrico
               ctx.beginPath();
               ctx.arc(this.x, this.y, this.size * 1.3, 0, Math.PI * 2);
               ctx.stroke();
@@ -1277,7 +1352,6 @@
             particles[i].update();
             particles[i].draw();
 
-            // Conexiones de red entre nodos
             for (let j = i + 1; j < particles.length; j++) {
               const dx = particles[i].x - particles[j].x;
               const dy = particles[i].y - particles[j].y;
@@ -1294,7 +1368,6 @@
               }
             }
 
-            // Rayos de enlace con el mouse
             const dmx = mouse.x - particles[i].x;
             const dmy = mouse.y - particles[i].y;
             const mouseDist = Math.sqrt(dmx * dmx + dmy * dmy);
@@ -1377,7 +1450,151 @@
       });
 
       // -----------------------------------------------------------------------
-      // 4. LANZADOR INTERACTIVO DE PROYECTOS & BOT TELEGRAM DIRECTO
+      // 4. WIDGET FLOTANTE "¿DUDAS? HABLA CON UN ASESOR" + DRAG & MODAL
+      // -----------------------------------------------------------------------
+      const chatPill = document.getElementById('floating-chat-pill');
+      const chatModal = document.getElementById('chat-modal');
+      const closeModalBtn = document.getElementById('close-modal-btn');
+      const heroAdvisorBtn = document.getElementById('hero-advisor-btn');
+
+      function openModal() {
+        if (chatModal) chatModal.classList.remove('hidden');
+      }
+      function closeModal() {
+        if (chatModal) chatModal.classList.add('hidden');
+      }
+
+      if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+      if (heroAdvisorBtn) heroAdvisorBtn.addEventListener('click', openModal);
+
+      // Cerrar modal al hacer clic afuera
+      if (chatModal) {
+        chatModal.addEventListener('click', (e) => {
+          if (e.target === chatModal) closeModal();
+        });
+      }
+
+      // Drag and drop para mover la píldora flotante si el usuario desea moverla
+      if (chatPill) {
+        let isDragging = false;
+        let startX, startY, origX, origY;
+        let hasMoved = false;
+
+        chatPill.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          hasMoved = false;
+          startX = e.clientX;
+          startY = e.clientY;
+          const rect = chatPill.getBoundingClientRect();
+          origX = rect.left;
+          origY = rect.top;
+          e.preventDefault();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          const dx = e.clientX - startX;
+          const dy = e.clientY - startY;
+          if (Math.abs(dx) > 3 || Math.abs(dy) > 3) hasMoved = true;
+          chatPill.style.left = `${origX + dx}px`;
+          chatPill.style.top = `${origY + dy}px`;
+          chatPill.style.right = 'auto';
+          chatPill.style.bottom = 'auto';
+        });
+
+        window.addEventListener('mouseup', () => {
+          if (isDragging && !hasMoved) {
+            openModal();
+          }
+          isDragging = false;
+        });
+
+        // Soporte táctil en móviles
+        chatPill.addEventListener('touchstart', (e) => {
+          isDragging = true;
+          hasMoved = false;
+          const touch = e.touches[0];
+          startX = touch.clientX;
+          startY = touch.clientY;
+          const rect = chatPill.getBoundingClientRect();
+          origX = rect.left;
+          origY = rect.top;
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+          if (!isDragging) return;
+          const touch = e.touches[0];
+          const dx = touch.clientX - startX;
+          const dy = touch.clientY - startY;
+          if (Math.abs(dx) > 3 || Math.abs(dy) > 3) hasMoved = true;
+          chatPill.style.left = `${origX + dx}px`;
+          chatPill.style.top = `${origY + dy}px`;
+          chatPill.style.right = 'auto';
+          chatPill.style.bottom = 'auto';
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => {
+          if (isDragging && !hasMoved) {
+            openModal();
+          }
+          isDragging = false;
+        });
+      }
+
+      // Envío desde el Modal de Asesoría
+      const modalSendBtn = document.getElementById('modal-send-btn');
+      const modalName = document.getElementById('modal-name');
+      const modalContact = document.getElementById('modal-contact');
+      const modalMsg = document.getElementById('modal-msg');
+      const modalFeedback = document.getElementById('modal-feedback');
+
+      if (modalSendBtn) {
+        modalSendBtn.addEventListener('click', async () => {
+          const name = modalName ? modalName.value.trim() : '';
+          const contact = modalContact ? modalContact.value.trim() : '';
+          const msg = modalMsg ? modalMsg.value.trim() : '';
+
+          if (!name || !contact || !msg) {
+            if (modalFeedback) {
+              modalFeedback.className = 'p-2.5 rounded-xl text-xs font-mono bg-red-500/20 border border-red-500/40 text-red-300 block mb-2';
+              modalFeedback.textContent = 'Por favor completa tu nombre, contacto y mensaje.';
+            }
+            return;
+          }
+
+          modalSendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Enviando al asesor...</span>';
+          modalSendBtn.disabled = true;
+
+          try {
+            await fetch('/tg-notify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: name,
+                email: contact.includes('@') ? contact : 'ppv@ppvsoluciones.cl',
+                phone: contact,
+                subject: 'Consulta Asesor Técnico PPV',
+                message: msg
+              })
+            }).catch(e => console.log('Background notify:', e));
+
+            if (modalFeedback) {
+              modalFeedback.className = 'p-2.5 rounded-xl text-xs font-mono bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 block mb-2';
+              modalFeedback.innerHTML = '<i class="fa-solid fa-check mr-1.5"></i> ¡Consulta enviada! Te responderemos en breve a tu contacto.';
+            }
+          } catch (e) {
+            console.error(e);
+          } finally {
+            setTimeout(() => {
+              modalSendBtn.innerHTML = '<i class="fa-solid fa-check mr-1.5"></i><span>Consulta Enviada</span>';
+              modalSendBtn.disabled = false;
+            }, 800);
+          }
+        });
+      }
+
+      // -----------------------------------------------------------------------
+      // 5. LANZADOR INTERACTIVO DE PROYECTOS & BOT TELEGRAM DIRECTO
       // -----------------------------------------------------------------------
       let selectedArea = 'Página Web Comercial / E-Commerce';
       let selectedPriority = 'Captar más clientes y vender más';
@@ -1409,7 +1626,6 @@
         }
       }
 
-      // Selector de Área (Paso 1)
       const areaPills = document.querySelectorAll('#area-selector .launcher-pill');
       areaPills.forEach(pill => {
         pill.addEventListener('click', () => {
@@ -1427,7 +1643,6 @@
         areaPills[0].classList.add('border-sky-500', 'bg-sky-500/20', 'text-white');
       }
 
-      // Selector de Prioridad (Paso 2)
       const priorityPills = document.querySelectorAll('#priority-selector .priority-pill');
       priorityPills.forEach(pill => {
         pill.addEventListener('click', () => {
@@ -1449,7 +1664,6 @@
       if (clientContactInput) clientContactInput.addEventListener('input', updateTelegramPreview);
       updateTelegramPreview();
 
-      // Envío Dinámico: Notifica al Backend por /tg-notify y abre el Bot de Telegram
       if (btnSubmit) {
         btnSubmit.addEventListener('click', async (e) => {
           e.preventDefault();
@@ -1457,13 +1671,11 @@
           const name = clientNameInput ? clientNameInput.value.trim() || 'Cliente Web PPV' : 'Cliente Web PPV';
           const contact = clientContactInput ? clientContactInput.value.trim() : '';
 
-          // Estado cargando en botón
           const originalBtnHTML = btnSubmit.innerHTML;
           btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Enviando requerimiento a Telegram...</span>';
           btnSubmit.disabled = true;
 
           try {
-            // Envío al backend proxy de Telegram en el servidor
             await fetch('/tg-notify', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -1476,7 +1688,6 @@
               })
             }).catch(err => console.log('Envío background:', err));
 
-            // Feedback exitoso
             if (feedbackBox) {
               feedbackBox.className = 'p-3 rounded-xl text-xs font-mono bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 block mb-3';
               feedbackBox.innerHTML = '<i class="fa-solid fa-check mr-1.5"></i> Requerimiento enviado al servidor. Abriendo Telegram con @ppvsoluciones_bot...';
@@ -1487,7 +1698,6 @@
             setTimeout(() => {
               btnSubmit.innerHTML = originalBtnHTML;
               btnSubmit.disabled = false;
-              // Abrir chat directo con el Bot de Telegram de Patricio
               window.open('https://t.me/ppvsoluciones_bot', '_blank');
             }, 600);
           }
@@ -1495,7 +1705,7 @@
       }
 
       // -----------------------------------------------------------------------
-      // 5. MENÚ MÓVIL TOGGLE
+      // 6. MENÚ MÓVIL TOGGLE
       // -----------------------------------------------------------------------
       const mobileBtn = document.getElementById('mobile-menu-btn');
       const mobileMenu = document.getElementById('mobile-menu');
