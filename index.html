@@ -145,12 +145,12 @@
       background: #00f3ff;
     }
 
-    /* Glassmorphism de alta fidelidad */
+    /* Glassmorphism de alta fidelidad holográfico */
     .glass-panel {
-      background: rgba(15, 23, 42, 0.70);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(10, 15, 26, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.10);
     }
     .glass-panel-elevated {
       background: rgba(15, 23, 42, 0.88);
@@ -509,39 +509,47 @@
           </a>
         </div>
 
-        <!-- Barra de Autoridad (4 Columnas de Rendimiento Técnico) -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-5xl mx-auto text-left">
+        <!-- Barra de Autoridad (HUD Holográfico Ultra-Aireado) -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 max-w-5xl mx-auto text-left">
           
-          <div class="glass-panel p-3.5 rounded-xl border border-white/5 hover:border-sky-500/30 transition-all">
-            <div class="w-7 h-7 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 mb-2">
-              <i class="fa-solid fa-sliders text-xs"></i>
+          <div class="p-2.5 sm:p-3.5 rounded-xl border border-white/10 bg-slate-950/25 backdrop-blur-[4px] hover:border-sky-400/40 hover:bg-slate-900/35 transition-all group">
+            <div class="flex items-center gap-2 mb-1 sm:mb-2">
+              <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400 text-xs shadow-sm shadow-sky-500/20 group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-sliders text-[10px] sm:text-xs"></i>
+              </div>
+              <div class="font-heading font-bold text-white text-xs sm:text-sm">100% A Medida</div>
             </div>
-            <div class="font-heading font-bold text-white text-xs sm:text-sm">100% A Medida</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Sin plantillas rígidas ni licencias mensuales abusivas.</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-300 leading-snug">Sin plantillas rígidas ni licencias abusivas.</div>
           </div>
 
-          <div class="glass-panel p-3.5 rounded-xl border border-white/5 hover:border-emeraldAccent-500/30 transition-all">
-            <div class="w-7 h-7 rounded-lg bg-emeraldAccent-500/10 border border-emeraldAccent-500/20 flex items-center justify-center text-emeraldAccent-400 mb-2">
-              <i class="fa-solid fa-bolt text-xs"></i>
+          <div class="p-2.5 sm:p-3.5 rounded-xl border border-white/10 bg-slate-950/25 backdrop-blur-[4px] hover:border-emeraldAccent-500/40 hover:bg-slate-900/35 transition-all group">
+            <div class="flex items-center gap-2 mb-1 sm:mb-2">
+              <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-emeraldAccent-500/15 border border-emeraldAccent-500/30 flex items-center justify-center text-emeraldAccent-400 text-xs shadow-sm shadow-emeraldAccent-500/20 group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-bolt text-[10px] sm:text-xs"></i>
+              </div>
+              <div class="font-heading font-bold text-white text-xs sm:text-sm">Menos de 1 Segundo</div>
             </div>
-            <div class="font-heading font-bold text-white text-xs sm:text-sm">Menos de 1 Segundo</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Velocidad extrema de carga y respuesta de servidores.</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-300 leading-snug">Velocidad extrema de carga y respuesta.</div>
           </div>
 
-          <div class="glass-panel p-3.5 rounded-xl border border-white/5 hover:border-neonCyan/30 transition-all">
-            <div class="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-neonCyan mb-2">
-              <i class="fa-solid fa-display text-xs"></i>
+          <div class="p-2.5 sm:p-3.5 rounded-xl border border-white/10 bg-slate-950/25 backdrop-blur-[4px] hover:border-neonCyan/40 hover:bg-slate-900/35 transition-all group">
+            <div class="flex items-center gap-2 mb-1 sm:mb-2">
+              <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-neonCyan text-xs shadow-sm shadow-cyan-500/20 group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-display text-[10px] sm:text-xs"></i>
+              </div>
+              <div class="font-heading font-bold text-white text-xs sm:text-sm">Web, Móvil & Linux</div>
             </div>
-            <div class="font-heading font-bold text-white text-xs sm:text-sm">Web, Móvil & Linux</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Desarrollo multiplataforma y software de escritorio nativo.</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-300 leading-snug">Multiplataforma y software de escritorio nativo.</div>
           </div>
 
-          <div class="glass-panel p-3.5 rounded-xl border border-white/5 hover:border-sky-500/30 transition-all">
-            <div class="w-7 h-7 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 mb-2">
-              <i class="fa-solid fa-earth-americas text-xs"></i>
+          <div class="p-2.5 sm:p-3.5 rounded-xl border border-white/10 bg-slate-950/25 backdrop-blur-[4px] hover:border-sky-400/40 hover:bg-slate-900/35 transition-all group">
+            <div class="flex items-center gap-2 mb-1 sm:mb-2">
+              <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400 text-xs shadow-sm shadow-sky-500/20 group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-earth-americas text-[10px] sm:text-xs"></i>
+              </div>
+              <div class="font-heading font-bold text-white text-xs sm:text-sm">Chile & Global</div>
             </div>
-            <div class="font-heading font-bold text-white text-xs sm:text-sm">Chile & Global</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Atención en V Región, RM y pagos internacionales.</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-300 leading-snug">Atención V Región, RM y clientes internacionales.</div>
           </div>
 
         </div>
@@ -1004,7 +1012,7 @@
             <div>
               <div class="flex items-center justify-between mb-3">
                 <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-cyanAccent-500/10 text-cyanAccent-400 border border-cyanAccent-500/30">
-                  WEB & LEGAL CANINO
+                  WEB
                 </span>
                 <span class="text-xs font-mono text-slate-500 group-hover:text-cyanAccent-400 transition-colors">
                   <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -1314,7 +1322,7 @@
         let width, height;
         let particles = [];
         let mouse = { x: -1000, y: -1000, radius: 220 };
-        const particleCount = Math.min(window.innerWidth < 768 ? 55 : 100, 110);
+        const particleCount = Math.min(window.innerWidth < 768 ? 65 : 105, 115);
 
         const cyberpunkColors = [
           'rgba(0, 243, 255, ',   // Neón Cyan
@@ -1343,6 +1351,28 @@
           mouse.x = -1000;
           mouse.y = -1000;
         });
+
+        // Soporte Táctil en Móvil (Touch Events)
+        window.addEventListener('touchstart', (e) => {
+          if (e.touches && e.touches[0]) {
+            mouse.x = e.touches[0].clientX;
+            mouse.y = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+          if (e.touches && e.touches[0]) {
+            mouse.x = e.touches[0].clientX;
+            mouse.y = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => {
+          setTimeout(() => {
+            mouse.x = -1000;
+            mouse.y = -1000;
+          }, 600);
+        }, { passive: true });
 
         class CyberParticle {
           constructor() {
@@ -1381,7 +1411,9 @@
             const currentAlpha = Math.min(1, this.baseAlpha + Math.sin(this.pulsePhase) * 0.25);
             ctx.fillStyle = this.color + currentAlpha + ')';
             ctx.strokeStyle = this.color + currentAlpha + ')';
-            ctx.lineWidth = 1.2;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = this.color + '0.7)';
+            ctx.lineWidth = 1.3;
 
             if (this.shape === 'circle') {
               ctx.beginPath();
@@ -1389,10 +1421,10 @@
               ctx.fill();
             } else if (this.shape === 'diamond') {
               ctx.beginPath();
-              ctx.moveTo(this.x, this.y - this.size * 1.4);
-              ctx.lineTo(this.x + this.size * 1.4, this.y);
-              ctx.lineTo(this.x, this.y + this.size * 1.4);
-              ctx.lineTo(this.x - this.size * 1.4, this.y);
+              ctx.moveTo(this.x, this.y - this.size * 1.5);
+              ctx.lineTo(this.x + this.size * 1.5, this.y);
+              ctx.lineTo(this.x, this.y + this.size * 1.5);
+              ctx.lineTo(this.x - this.size * 1.5, this.y);
               ctx.closePath();
               ctx.fill();
             } else if (this.shape === 'cross') {
@@ -1408,6 +1440,7 @@
               ctx.arc(this.x, this.y, this.size * 1.3, 0, Math.PI * 2);
               ctx.stroke();
             }
+            ctx.shadowBlur = 0;
           }
         }
 
@@ -1419,7 +1452,7 @@
         function animate() {
           ctx.clearRect(0, 0, width, height);
 
-          const maxDist = 140;
+          const maxDist = 150;
           for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw();
@@ -1430,12 +1463,15 @@
               const dist = Math.sqrt(dx * dx + dy * dy);
 
               if (dist < maxDist) {
-                const alpha = (1 - dist / maxDist) * 0.35;
+                const alpha = (1 - dist / maxDist) * 0.65;
+                const grad = ctx.createLinearGradient(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
+                grad.addColorStop(0, particles[i].color + alpha + ')');
+                grad.addColorStop(1, particles[j].color + alpha + ')');
                 ctx.beginPath();
                 ctx.moveTo(particles[i].x, particles[i].y);
                 ctx.lineTo(particles[j].x, particles[j].y);
-                ctx.strokeStyle = `rgba(0, 243, 255, ${alpha})`;
-                ctx.lineWidth = 0.9;
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = 1.1;
                 ctx.stroke();
               }
             }
