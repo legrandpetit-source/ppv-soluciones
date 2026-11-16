@@ -242,6 +242,38 @@
     #floating-chat-pill:active {
       cursor: grabbing;
     }
+
+    /* Header Flotante Redondeado al hacer Scroll */
+    #main-header {
+      transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #navbar-container {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #main-header.scrolled {
+      top: 12px;
+    }
+    #main-header.scrolled #navbar-container {
+      max-width: 960px;
+      width: 94%;
+      border-radius: 9999px;
+      height: 52px;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      background: rgba(10, 15, 26, 0.90);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.8), 0 0 25px -5px rgba(0, 243, 255, 0.15);
+    }
+    #main-header.scrolled #mobile-menu {
+      border-radius: 1.5rem;
+      margin-top: 0.5rem;
+      width: 94%;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
   </style>
 </head>
 <body class="bg-obsidian text-slate-200 antialiased selection:bg-neonCyan selection:text-black">
@@ -360,10 +392,10 @@
   <div class="relative z-10 flex flex-col min-h-screen">
 
     <!-- ======================================================================= -->
-    <!-- NAVBAR (Fijo con Blur, Logo Oficial PPV. & Teléfono / WhatsApp)         -->
+    <!-- NAVBAR (Fijo con Blur, Logo Oficial PPV. & Menú Flotante en Scroll)     -->
     <!-- ======================================================================= -->
-    <header class="fixed top-0 left-0 right-0 z-40 glass-panel border-b border-white/10 transition-all duration-300">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300">
+      <div id="navbar-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between glass-panel border-b border-white/10">
         
         <!-- Logo Oficial PPV. (Tipografía Blanca + Punto Cian Eléctrico) -->
         <a href="#" class="flex items-center gap-2.5 group focus:outline-none" title="PPV Soluciones Informáticas">
@@ -1012,7 +1044,7 @@
           <div class="text-center max-w-2xl mx-auto mb-6">
             <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full text-xs font-mono bg-sky-500/10 text-sky-400 border border-sky-500/30 mb-2">
               <i class="fa-brands fa-telegram text-xs"></i>
-              <span>CANAL DIRECTO TELEGRAM (@ppvsoluciones_bot)</span>
+              <span>CANAL DIRECTO TELEGRAM (@ppvsoluciones)</span>
             </div>
             <h2 class="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight mb-1.5">
               ¿Listo para construir o escalar tu sistema?
@@ -1120,7 +1152,7 @@
                       type="button"
                       class="btn-glow-primary w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs sm:text-sm font-semibold text-white tracking-wide shadow-xl cursor-pointer">
                 <i class="fa-brands fa-telegram text-base"></i>
-                <span>Enviar Requerimiento a Telegram (@ppvsoluciones_bot)</span>
+                <span>Enviar Requerimiento a Telegram (@ppvsoluciones)</span>
                 <i class="fa-solid fa-arrow-right text-[10px]"></i>
               </button>
               <div class="text-center text-[10px] font-mono text-slate-500 mt-2">
@@ -1200,9 +1232,9 @@
                 <span>+56 9 4760 9070</span>
               </li>
               <li>
-                <a href="https://t.me/ppvsoluciones_bot" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 font-mono flex items-center gap-2 transition-colors">
+                <a href="https://t.me/ppvsoluciones" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 font-mono flex items-center gap-2 transition-colors">
                   <i class="fa-brands fa-telegram text-sky-400 text-sm"></i>
-                  <span>@ppvsoluciones_bot</span>
+                  <span>@ppvsoluciones</span>
                 </a>
               </li>
               <li>
@@ -1839,6 +1871,21 @@
           });
         });
       }
+
+      // -----------------------------------------------------------------------
+      // 7. HEADER FLOTANTE REDONDEADO EN SCROLL (Efecto Cápsula / Píldora)
+      // -----------------------------------------------------------------------
+      const mainHeader = document.getElementById('main-header');
+      function handleHeaderScroll() {
+        if (!mainHeader) return;
+        if (window.scrollY > 30) {
+          mainHeader.classList.add('scrolled');
+        } else {
+          mainHeader.classList.remove('scrolled');
+        }
+      }
+      window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+      handleHeaderScroll();
 
     });
   </script>
