@@ -36,88 +36,55 @@
   <!-- Google Fonts Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800;900&family=Space+Grotesk:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
 
   <!-- FontAwesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Tailwind CSS Play CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            obsidian: '#07090E',
-            slateDark: '#0B1120',
-            slateCard: 'rgba(15, 23, 42, 0.70)',
-            neonCyan: '#00f3ff',
-            neonMagenta: '#ff007f',
-            neonViolet: '#a855f7',
-            cobalt: {
-              400: '#60A5FA',
-              500: '#3B82F6',
-              600: '#2563EB',
-              700: '#1D4ED8'
-            },
-            emeraldAccent: {
-              400: '#34D399',
-              500: '#10B981',
-              600: '#059669'
-            },
-            cyanAccent: {
-              400: '#22D3EE',
-              500: '#06B6D4'
-            }
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            heading: ['Plus Jakarta Sans', 'Space Grotesk', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace']
-          }
-        }
-      }
-    }
-  </script>
+  <!-- Tailwind CSS Compilado Estático (PageSpeed 100/100) -->
+  <link rel="stylesheet" href="assets/css/tailwind.min.css?v=20261116">
 
-  <!-- Schema.org JSON-LD -->
+  <!-- Schema.org JSON-LD (Ecosistema Cruzado Oficial) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
+    "@id": "https://ppvsoluciones.cl/#organization",
     "name": "PPV Soluciones Informáticas",
-    "url": "https://ppvsoluciones.cl",
+    "url": "https://ppvsoluciones.cl/",
     "logo": "https://ppvsoluciones.cl/assets/ppv_logo.svg",
     "image": "https://ppvsoluciones.cl/assets/brand_option_1.png",
-    "description": "Desarrollo de software a medida, aplicaciones web, móviles y de escritorio para Linux y Windows, sistemas de inventario y plataformas logísticas en Chile y el mundo.",
+    "description": "Ingeniería de software a medida, desarrollo de aplicaciones web, móviles y de escritorio para Linux y Windows, sistemas de inventario por lotes y plataformas logísticas en Chile y el mundo.",
     "telephone": "+56947609070",
     "email": "ppv@ppvsoluciones.cl",
+    "priceRange": "$$",
     "founder": {
       "@type": "Person",
-      "name": "Patricio Padilla",
-      "jobTitle": "Director de Ingeniería de Software"
+      "name": "Patricio Padilla Valenzuela",
+      "jobTitle": "Director de Ingeniería y Arquitecto de Sistemas"
     },
     "address": {
       "@type": "PostalAddress",
-      "addressRegion": "Valparaíso, Santiago & Clientes Internacionales",
+      "addressLocality": "Algarrobo / Valparaíso",
+      "addressRegion": "Valparaíso y Región Metropolitana",
       "addressCountry": "CL"
     },
-    "areaServed": [
-      "Chile",
-      "América Latina",
-      "Estados Unidos",
-      "Global / Worldwide"
+    "areaServed": ["CL", "LatAm", "US", "Global"],
+    "sameAs": [
+      "https://t.me/ppvsoluciones",
+      "https://timbraapp.cl",
+      "https://origencanino.cl",
+      "https://legrandpetit.cl",
+      "https://auroradesings.cl/"
     ],
     "knowsAbout": [
       "Desarrollo de Software a Medida",
-      "Aplicaciones Web, Móviles y de Escritorio Linux",
-      "Diseño de Páginas Web Comerciales y E-commerce",
-      "Sistemas de Inventario y Control de Lotes",
-      "Software de Logística, Transporte y Control de Patio",
-      "Sistemas de Fidelización con Tecnología NFC"
-    ],
-    "priceRange": "$$"
+      "Aplicaciones de Escritorio Nativas para Linux y Multiplataforma",
+      "Sistemas ERP de Inventario FIFO y Control de Lotes",
+      "Software de Logística, Control de Patio y Transporte en Ruta",
+      "Fidelización Comercial sin Contacto mediante Hardware NFC",
+      "Comercio Electrónico de Alto Rendimiento"
+    ]
   }
   </script>
 
@@ -150,14 +117,14 @@
       background: rgba(10, 15, 26, 0.25);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .glass-panel-elevated {
       background: rgba(10, 15, 26, 0.32);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -167,7 +134,7 @@
       background: rgba(10, 15, 26, 0.28);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 1.25rem;
       overflow: hidden;
       transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, background 0.35s ease;
@@ -332,111 +299,9 @@
   <!-- HERO CANVAS CYBERPUNK A 60 FPS (Estrellas, Rombos, Cruces & Partículas)   -->
   <!-- ========================================================================= -->
   <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-    <canvas id="hero-canvas" class="w-full h-full opacity-85"></canvas>
+    <canvas id="hero-canvas" class="w-full h-full opacity-85" aria-hidden="true"></canvas>
   </div>
 
-  <!-- ========================================================================= -->
-  <!-- BOTÓN FLOTANTE ESTILO TIMBRAAPP: "¿Dudas? Habla con un asesor"            -->
-  <!-- ========================================================================= -->
-  <div id="floating-chat-pill" 
-       class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-slate-900/95 hover:bg-slate-800 text-white font-medium text-xs shadow-2xl shadow-cyan-500/30 border border-cyan-500/40 hover:border-cyan-400 transition-all group backdrop-blur-md cursor-pointer select-none">
-    <span class="relative flex h-2.5 w-2.5">
-      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
-    </span>
-    <i class="fa-regular fa-comment-dots text-emerald-400 text-sm"></i>
-    <span class="tracking-wide">¿Dudas? Habla con un asesor</span>
-  </div>
-
-  <!-- ========================================================================= -->
-  <!-- WIDGET DE CHAT EN VIVO BIDIRECCIONAL (Estilo TimbraApp / Legrand Petit)   -->
-  <!-- ========================================================================= -->
-  <div id="live-chat-widget" 
-       class="fixed bottom-6 right-6 z-50 w-[94vw] sm:w-[380px] h-[520px] max-h-[85vh] glass-panel-elevated rounded-3xl border border-cyan-500/40 shadow-2xl overflow-hidden flex flex-col hidden animate-in fade-in zoom-in-95 duration-200">
-    
-    <!-- Chat Header -->
-    <div class="px-5 py-3.5 border-b border-white/10 flex items-center justify-between bg-slate-950/90 backdrop-blur-md select-none">
-      <div class="flex items-center gap-2.5">
-        <span class="font-heading font-black text-xl text-white">PPV<span class="text-[#00f3ff]">.</span></span>
-        <div class="flex flex-col">
-          <span class="text-xs font-heading font-bold text-white leading-tight">Asesoría Técnica Directa</span>
-          <span class="text-[10px] font-mono text-emeraldAccent-400 flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-emeraldAccent-400 animate-ping"></span>
-            <span>En línea (Respuesta rápida)</span>
-          </span>
-        </div>
-      </div>
-      <div class="flex items-center gap-1">
-        <button id="minimize-chat-btn" class="text-slate-400 hover:text-white p-1 text-xs focus:outline-none" title="Minimizar">
-          <i class="fa-solid fa-minus"></i>
-        </button>
-        <button id="close-chat-btn" class="text-slate-400 hover:text-white p-1 text-sm focus:outline-none" title="Cerrar">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Vista 1: Formulario Inicial de Ingreso al Chat -->
-    <div id="chat-auth-view" class="p-6 flex-1 flex flex-col justify-center space-y-4 bg-slate-900/70">
-      <div class="text-center space-y-1.5">
-        <div class="w-12 h-12 mx-auto rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl shadow-lg shadow-cyan-500/20">
-          <i class="fa-solid fa-comments"></i>
-        </div>
-        <h4 class="font-heading font-bold text-base text-white">Inicia una Conversación</h4>
-        <p class="text-xs text-slate-300 leading-relaxed max-w-xs mx-auto">
-          Habla con nuestro equipo de ingeniería para cotizar o resolver tus dudas en tiempo real.
-        </p>
-      </div>
-
-      <form id="chat-start-form" class="space-y-3 pt-1">
-        <div>
-          <label class="block text-[11px] font-mono text-slate-400 mb-1">Tu Nombre o Empresa:</label>
-          <input type="text" id="chat-user-name" required placeholder="Ej: Patricio / Agro del Mar"
-                 class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-white/10 text-white text-xs focus:outline-none focus:border-cyan-400 font-sans transition-all">
-        </div>
-        <div>
-          <label class="block text-[11px] font-mono text-slate-400 mb-1">Teléfono o WhatsApp (+56 9...):</label>
-          <input type="tel" id="chat-user-phone" required placeholder="+56 9 XXXX XXXX"
-                 class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-white/10 text-white text-xs focus:outline-none focus:border-cyan-400 font-sans transition-all">
-        </div>
-        <button type="submit" 
-                class="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-emeraldAccent-500 text-white font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-all shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 mt-2">
-          <span>Comenzar Chat con Asesor</span>
-          <i class="fa-solid fa-arrow-right text-xs"></i>
-        </button>
-      </form>
-    </div>
-
-    <!-- Vista 2: Mensajes del Chat en Vivo (Feed Bidireccional) -->
-    <div id="chat-messages-view" class="flex-1 flex flex-col hidden bg-slate-950/80 overflow-hidden">
-      <div id="chat-messages-container" class="flex-1 p-4 overflow-y-auto space-y-3.5 scroll-smooth">
-        <!-- Burbujas inyectadas por JS -->
-      </div>
-
-      <!-- Indicador Escribiendo -->
-      <div id="chat-typing-indicator" class="hidden px-4 py-1 text-[10px] font-mono text-emeraldAccent-400 flex items-center gap-1.5 italic">
-        <span>Asesor respondiendo</span>
-        <span class="flex gap-0.5">
-          <span class="w-1 h-1 bg-emeraldAccent-400 rounded-full animate-bounce"></span>
-          <span class="w-1 h-1 bg-emeraldAccent-400 rounded-full animate-bounce [animation-delay:150ms]"></span>
-          <span class="w-1 h-1 bg-emeraldAccent-400 rounded-full animate-bounce [animation-delay:300ms]"></span>
-        </span>
-      </div>
-
-      <!-- Barra de Envío -->
-      <form id="chat-send-form" class="p-3 border-t border-white/10 bg-slate-950/95 flex items-center gap-2">
-        <input type="text" id="chat-input" placeholder="Escribe un mensaje..."
-               autocomplete="off"
-               class="flex-1 px-3.5 py-2.5 rounded-full bg-slate-900 border border-white/10 text-white text-xs focus:outline-none focus:border-cyan-400 font-sans">
-        <button type="submit" id="chat-send-btn"
-                class="w-10 h-10 rounded-full bg-gradient-to-r from-sky-500 to-emeraldAccent-500 text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-cyan-500/30 flex-shrink-0"
-                aria-label="Enviar mensaje">
-          <i class="fa-solid fa-paper-plane text-xs ml-0.5"></i>
-        </button>
-      </form>
-    </div>
-
-  </div>
 
   <!-- Contenedor Principal Por Encima del Canvas -->
   <div class="relative z-10 flex flex-col min-h-screen">
@@ -484,6 +349,11 @@
         <a href="#diagnostico" class="mobile-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800">Diagnóstico</a>
       </div>
     </header>
+
+    <!-- ======================================================================= -->
+    <!-- CONTENIDO PRINCIPAL SEMÁNTICO (<main>)                                -->
+    <!-- ======================================================================= -->
+    <main id="main-content">
 
     <!-- ======================================================================= -->
     <!-- SECCIÓN 1: HERO PRINCIPAL (Compacto & Contundente)                      -->
@@ -1171,6 +1041,9 @@
             </div>
 
             <!-- CAMPOS DE CONTACTO: Nombre y Correo/Teléfono -->
+            <!-- Campo Honeypot Anti-Bots (Invisible para usuarios, trampa para scrapers/bots) -->
+            <input type="text" id="website-hp" name="website_url" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <div>
                 <label for="client-name" class="block text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold mb-1">
@@ -1224,6 +1097,7 @@
 
       </div>
     </section>
+    </main>
 
     <!-- ======================================================================= -->
     <!-- FOOTER CORPORATIVO Y SELLO DE SEGURIDAD (Con Padding Inferior Anti-Tape) -->
@@ -1252,7 +1126,7 @@
 
           <!-- Columna 2: Plataformas Activas -->
           <div>
-            <h4 class="font-heading font-bold text-white text-xs uppercase tracking-wider mb-2.5">Ecosistema PPV</h4>
+            <h3 class="font-heading font-bold text-white text-xs uppercase tracking-wider mb-2.5">Ecosistema PPV</h3>
             <ul class="space-y-1.5 text-xs font-mono">
               <li>
                 <a href="https://timbraapp.cl" target="_blank" rel="noopener noreferrer" class="hover:text-emeraldAccent-400 transition-colors flex items-center gap-1.5">
@@ -1283,7 +1157,7 @@
 
           <!-- Columna 3: Contacto Técnico Directo (Teléfono, WhatsApp, Telegram, Correo) -->
           <div>
-            <h4 class="font-heading font-bold text-white text-xs uppercase tracking-wider mb-2.5">Contacto Directo</h4>
+            <h3 class="font-heading font-bold text-white text-xs uppercase tracking-wider mb-2.5">Contacto Directo</h3>
             <ul class="space-y-1.5 text-xs text-slate-300">
               <li class="font-mono flex items-center gap-2 text-slate-300">
                 <i class="fa-solid fa-phone text-slate-400 text-xs"></i>
@@ -1324,6 +1198,111 @@
     </footer>
 
   </div>
+
+  
+    <!-- ========================================================================= -->
+  <!-- BOTÓN FLOTANTE ESTILO TIMBRAAPP: "¿Dudas? Habla con un asesor"            -->
+  <!-- ========================================================================= -->
+  <div id="floating-chat-pill" 
+       class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-slate-900/95 hover:bg-slate-800 text-white font-medium text-xs shadow-2xl shadow-cyan-500/30 border border-cyan-500/40 hover:border-cyan-400 transition-all group backdrop-blur-md cursor-pointer select-none">
+    <span class="relative flex h-2.5 w-2.5">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
+    </span>
+    <i class="fa-regular fa-comment-dots text-emerald-400 text-sm"></i>
+    <span class="tracking-wide">¿Dudas? Habla con un asesor</span>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- WIDGET DE CHAT EN VIVO BIDIRECCIONAL (Estilo TimbraApp / Legrand Petit)   -->
+  <!-- ========================================================================= -->
+  <div id="live-chat-widget" 
+       class="fixed bottom-6 right-6 z-50 w-[94vw] sm:w-[380px] h-[520px] max-h-[85vh] glass-panel-elevated rounded-3xl border border-cyan-500/40 shadow-2xl overflow-hidden flex flex-col hidden animate-in fade-in zoom-in-95 duration-200">
+    
+    <!-- Chat Header -->
+    <div class="px-5 py-3.5 border-b border-white/10 flex items-center justify-between bg-slate-950/90 backdrop-blur-md select-none">
+      <div class="flex items-center gap-2.5">
+        <span class="font-heading font-black text-xl text-white">PPV<span class="text-[#00f3ff]">.</span></span>
+        <div class="flex flex-col">
+          <span class="text-xs font-heading font-bold text-white leading-tight">Asesoría Técnica Directa</span>
+          <span class="text-[10px] font-mono text-emeraldAccent-400 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emeraldAccent-400 animate-ping"></span>
+            <span>En línea (Respuesta rápida)</span>
+          </span>
+        </div>
+      </div>
+      <div class="flex items-center gap-1">
+        <button id="minimize-chat-btn" class="text-slate-400 hover:text-white p-1 text-xs focus:outline-none" title="Minimizar">
+          <i class="fa-solid fa-minus"></i>
+        </button>
+        <button id="close-chat-btn" class="text-slate-400 hover:text-white p-1 text-sm focus:outline-none" title="Cerrar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Vista 1: Formulario Inicial de Ingreso al Chat -->
+    <div id="chat-auth-view" class="p-6 flex-1 flex flex-col justify-center space-y-4 bg-slate-900/70">
+      <div class="text-center space-y-1.5">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl shadow-lg shadow-cyan-500/20">
+          <i class="fa-solid fa-comments"></i>
+        </div>
+        <div class="font-heading font-bold text-base text-white" role="heading" aria-level="2">Inicia una Conversación</div>
+        <p class="text-xs text-slate-300 leading-relaxed max-w-xs mx-auto">
+          Habla con nuestro equipo de ingeniería para cotizar o resolver tus dudas en tiempo real.
+        </p>
+      </div>
+
+      <form id="chat-start-form" class="space-y-3 pt-1">
+        <div>
+          <label class="block text-[11px] font-mono text-slate-400 mb-1">Tu Nombre o Empresa:</label>
+          <input type="text" id="chat-user-name" required placeholder="Ej: Patricio / Agro del Mar"
+                 class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-white/10 text-white text-xs focus:outline-none focus:border-cyan-400 font-sans transition-all">
+        </div>
+        <div>
+          <label class="block text-[11px] font-mono text-slate-400 mb-1">Teléfono o WhatsApp (+56 9...):</label>
+          <input type="tel" id="chat-user-phone" required placeholder="+56 9 XXXX XXXX"
+                 class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-white/10 text-white text-xs focus:outline-none focus:border-cyan-400 font-sans transition-all">
+        </div>
+        <button type="submit" 
+                class="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-emeraldAccent-500 text-white font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-all shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 mt-2">
+          <span>Comenzar Chat con Asesor</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- Vista 2: Mensajes del Chat en Vivo (Feed Bidireccional) -->
+    <div id="chat-messages-view" class="flex-1 flex flex-col hidden bg-slate-950/80 overflow-hidden">
+      <div id="chat-messages-container" class="flex-1 p-4 overflow-y-auto space-y-3.5 scroll-smooth">
+        <!-- Burbujas inyectadas por JS -->
+      </div>
+
+      <!-- Indicador Escribiendo -->
+      <div id="chat-typing-indicator" class="hidden px-4 py-1 text-[10px] font-mono text-emeraldAccent-400 flex items-center gap-1.5 italic">
+        <span>Asesor respondiendo</span>
+        <span class="flex gap-0.5">
+          <span class="w-1 h-1 bg-emeraldAccent-400 rounded-full animate-bounce"></span>
+          <span class="w-1 h-1 bg-emeraldAccent-400 rounded-full animate-bounce [animation-delay:150ms]"></span>
+          <span class="w-1 h-1 bg-emeraldAccent-400 rounded-full animate-bounce [animation-delay:300ms]"></span>
+        </span>
+      </div>
+
+      <!-- Barra de Envío -->
+      <form id="chat-send-form" class="p-3 border-t border-white/10 bg-slate-950/95 flex items-center gap-2">
+        <input type="text" id="chat-input" placeholder="Escribe un mensaje..."
+               autocomplete="off"
+               class="flex-1 px-3.5 py-2.5 rounded-full bg-slate-900 border border-white/10 text-white text-xs focus:outline-none focus:border-cyan-400 font-sans">
+        <button type="submit" id="chat-send-btn"
+                class="w-10 h-10 rounded-full bg-gradient-to-r from-sky-500 to-emeraldAccent-500 text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-cyan-500/30 flex-shrink-0"
+                aria-label="Enviar mensaje">
+          <i class="fa-solid fa-paper-plane text-xs ml-0.5"></i>
+        </button>
+      </form>
+    </div>
+
+  </div>
+
 
   <!-- ========================================================================= -->
   <!-- MOTOR JS NATIVO: CANVAS CYBERPUNK 60 FPS, DRAGGABLE PILL, MODAL & TABS    -->
@@ -1525,16 +1504,19 @@
       // -----------------------------------------------------------------------
       // 2. SPOTLIGHT CARD EFFECT (Linear / Stripe Gradient Follower)
       // -----------------------------------------------------------------------
-      const spotlightCards = document.querySelectorAll('.spotlight-card');
-      spotlightCards.forEach((card) => {
-        card.addEventListener('mousemove', (e) => {
-          const rect = card.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          card.style.setProperty('--mouse-x', `${x}px`);
-          card.style.setProperty('--mouse-y', `${y}px`);
+      // Optimización Touch: Desactivar listener en pantallas puramente táctiles
+      if (!window.matchMedia('(hover: none)').matches) {
+        const spotlightCards = document.querySelectorAll('.spotlight-card');
+        spotlightCards.forEach((card) => {
+          card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+          });
         });
-      });
+      }
 
       // -----------------------------------------------------------------------
       // 3. SELECTOR DE TABS INTERACTIVO POR RUBROS
@@ -1840,6 +1822,16 @@
       const btnSubmit = document.getElementById('btn-submit-telegram');
       const feedbackBox = document.getElementById('submit-feedback');
 
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
       function getFullMessage() {
         const clientName = clientNameInput ? clientNameInput.value.trim() : '';
         const clientContact = clientContactInput ? clientContactInput.value.trim() : '';
@@ -1857,9 +1849,25 @@
       }
 
       function updateTelegramPreview() {
-        if (previewBox) {
-          previewBox.textContent = `"${getFullMessage()}"`;
+        if (!previewBox) return;
+        const rawName = clientNameInput ? clientNameInput.value.trim() : '';
+        const rawContact = clientContactInput ? clientContactInput.value.trim() : '';
+
+        const safeName = escapeHtml(rawName);
+        const safeContact = escapeHtml(rawContact);
+        const safeArea = escapeHtml(selectedArea);
+        const safePriority = escapeHtml(selectedPriority);
+
+        let intro = 'Hola Patricio, revisé ppvsoluciones.cl.';
+        if (safeName && safeContact) {
+          intro = `Hola Patricio, soy <strong class="text-white not-italic font-semibold">${safeName}</strong> (<strong class="text-white not-italic font-semibold">${safeContact}</strong>) y revisé ppvsoluciones.cl.`;
+        } else if (safeName) {
+          intro = `Hola Patricio, soy <strong class="text-white not-italic font-semibold">${safeName}</strong> y revisé ppvsoluciones.cl.`;
+        } else if (safeContact) {
+          intro = `Hola Patricio (<strong class="text-white not-italic font-semibold">${safeContact}</strong>), revisé ppvsoluciones.cl.`;
         }
+
+        previewBox.innerHTML = `"${intro} Mi empresa necesita <strong class="text-white not-italic font-semibold">${safeArea}</strong> enfocado en <strong class="text-white not-italic font-semibold">${safePriority}</strong>. Me gustaría agendar una sesión técnica privada para evaluar mi caso."`;
       }
 
       const areaPills = document.querySelectorAll('#area-selector .launcher-pill');
@@ -1903,9 +1911,37 @@
       if (btnSubmit) {
         btnSubmit.addEventListener('click', async (e) => {
           e.preventDefault();
+
+          // 1. Campo Honeypot Anti-Bots (trampa silenciosa para scrapers)
+          const hpField = document.getElementById('website-hp');
+          if (hpField && hpField.value.trim().length > 0) {
+            if (feedbackBox) {
+              feedbackBox.className = 'p-3 rounded-xl text-xs font-mono bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 block mb-3';
+              feedbackBox.innerHTML = '<i class="fa-solid fa-check mr-1.5"></i> ¡Requerimiento recibido con éxito! El equipo de ingeniería te responderá a la brevedad.';
+            }
+            return;
+          }
+
+          // 2. Validación obligatoria de contacto (mínimo 5 caracteres)
+          const contact = clientContactInput ? clientContactInput.value.trim() : '';
+          if (contact.length < 5) {
+            if (clientContactInput) {
+              clientContactInput.classList.remove('border-white/10');
+              clientContactInput.classList.add('border-amber-500', 'ring-2', 'ring-amber-500/40');
+              clientContactInput.focus();
+            }
+            if (feedbackBox) {
+              feedbackBox.className = 'p-3 rounded-xl text-xs font-mono bg-amber-500/20 border border-amber-500/40 text-amber-300 block mb-3';
+              feedbackBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Por favor, ingresa tu teléfono (+56 9...) o correo para que podamos contactarte.';
+            }
+            return;
+          } else if (clientContactInput) {
+            clientContactInput.classList.remove('border-amber-500', 'ring-2', 'ring-amber-500/40');
+            clientContactInput.classList.add('border-white/10');
+          }
+
           const message = getFullMessage();
           const name = clientNameInput ? clientNameInput.value.trim() || 'Cliente Web PPV' : 'Cliente Web PPV';
-          const contact = clientContactInput ? clientContactInput.value.trim() : '';
 
           const originalBtnHTML = btnSubmit.innerHTML;
           btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Enviando requerimiento a Telegram...</span>';
